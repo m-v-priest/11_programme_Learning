@@ -1,0 +1,465 @@
+
+= mongoose
+:toc:
+---
+
+== mongoose安装
+
+[source, typescript]
+....
+yarn add mongoose
+yarn add @types/mongoose
+yarn add @types/mongodb
+....
+
+英文官方文档 +
+https://github.com/Automattic/mongoose +
+https://mongoosejs.com/docs/index.html
+
+中文文档 +
+https://cn.mongoosedoc.top/docs/index.html
+
+---
+
+== 连接数据库
+
+[source, typescript]
+....
+let mongoose = require('mongoose')
+
+mongoose.connect("mongodb://localhost/test", {useNewUrlParser: true}) //连接test数据库. 第二个参数 {useNewUrlParser: true} 是个URL字符串的解析器.
+
+let db = mongoose.connection; //监听各种连接状态
+
+db.on('error', () => { //如果发生错误,就调用回调函数
+    console.log(`连接失败fail`);
+})
+
+db.once('open', () => { //Once our connection opens, our callback will be called.
+    console.log(`连接成功success!`);
+})
+
+db.once('close', () => {
+    console.log(`数据库已断开连接disconnect!`);
+})
+....
+
+---
+
+== Schema(接口) - Model(类) - document(实例)
+
+
+|===
+|概念 |说明
+
+|Schema 模式对象
+|类似于 接口 Interface.  +
+它定义了数据库模型的骨架, 相当于excel的表头一样.
+
+|Model 集合名
+|类似于 类 Class +
+Model是由Schema发布生成的模型. 对应mongoDB中的collection集合概念.
+
+|document 文档
+|类似于 实例 instance
+
+|===
+
+....
+schema  /'skiːmə/
+N-COUNT A schema is an outline of a plan or theory. 概要
+...a definite position in the schema of the economic process.  ...在经济进程概要中的明确位置。
+....
+
+schemas中的数据类型有以下几种： String, Number, Date, Boolean, Buffer, ObjectId, Mixed, Array
+
+---
+
+== document - (增): 插入document 到collection中
+
+==== 方法1 -> Model名.create(文档实例,(err)=>{})
+
+[source, typescript]
+....
+import {bool, number} from "prop-types";
+
+let mongoose = require('mongoose')
+
+function fn_连接数据库(url:string){
+    mongoose.connect(url, {useNewUrlParser: true})
+    //连接某个数据库. 第二个参数 {useNewUrlParser: true} 是个URL字符串的解析器.
+
+    let db = mongoose.connection; //监听各种连接状态
+
+    db.on('error', () => { //如果发生错误,就调用回调函数
+        console.log(`连接失败fail`);
+    })
+
+    db.once('open', () => { //Once our connection opens, our callback will be called.
+        console.log(`连接成功success!`);
+    })
+
+    db.once('close', () => {
+        console.log(`数据库已断开连接disconnect!`);
+    })
+}
+
+//----------------------------------------
+
+let url_DbTest = "mongodb://localhost/test"
+
+//1.连接test数据库
+fn_连接数据库(url_DbTest)
+
+
+//2.创建表头模型, 类似于接口.
+let SchemaPerson = mongoose.Schema({
+    name:String,
+    age:Number,
+    isFemale:{
+        type:Boolean,
+        default:false
+    },
+    charm:Number
+})
+
+
+/*
+3.根据表头模型, 生成Model对象(Model 就是我们用来构造 文档document 的 Class。),
+就如同用interface接口, 来约束class类一样!
+注意!! 如果你之前已经创建过了ModelPerson, 为了避免重复创建ModelPerson而导致的报错,
+我们要先进行判断ModelPerson是否已经存在, 如果存在, 就直接返回它; 如果不存在, 再创建它.
+*/
+let ModelPerson //先声明, 下面再来赋值给它
+if (mongoose.models && mongoose.models['colpeople']) { //注意, 判断是, 这里的models是有s的, 是复数!
+    //如果ModelReactState之前就已经被创建出来了,这里不需要重复创建了, 我们就直接返回它
+    console.log('model已存在');
+    //console.log('mongoose.models -->', mongoose.models);
+    // console.log('mongoose.models[\'colpeople\']-->',mongoose.models['colpeople']);
+    ModelPerson = mongoose.models['colpeople'];
+}
+else { //如果ModelReactState还没创建过, 就新建它
+    ModelPerson = mongoose.model('colpeople', SchemaReactState) //创建它是, 这里的model是单数.
+    console.log('新建了model');
+    //console.log('colpeople -->', ModelReactState);
+}
+return ModelPerson
+/*
+用法: Mongoose.Model(1.Model的名字, 2.生成Model所需要的schema) 根据接口, 生成类.
+默认情况下, mongoose会根据我们传入的Model名字, 来生成collection名字.
+比如本例, 虽然我们创建的Model名字是"colPerson', 但mongoDB会把这个collection名字改成"colpeople'.
+*/
+
+
+//4.创建 类的实例,即mongoDB中的文档.
+let doc1 = new ModelPerson({
+    name:'zzr',
+    age:23,
+    isFemale:true,
+    charm:75
+}) //每个 document 都是一个person实例(json对象)，它的属性和行为都会被声明在 schema(类似于"class类")里面.
+
+console.log(doc1);
+/*
+{ isFemale: true,
+  _id: 5d1c18f9b8b2a2417c09e226,
+  name: 'zzr',
+  age: 23,
+  charm: 75 }
+ */
+
+
+//5.将document插入collection中.
+//Model提供了一个create方法来对数据进行保存。用法是: Model.create(文档数据，callback)
+ModelPerson.create(doc1,(err:Error)=>{
+    if(!err){
+        console.log('Document inserted into collection successfully');
+    }
+    else {throw err}
+})
+....
+
+---
+
+==== (增) 同时插入多个文档 -> Model名.create(arrDoc,(err)⇒{})
+
+[source, typescript]
+....
+ModelPerson.create([doc1,doc2,doc3],(err:Error)=>{ //如果要插入多个文档, 可以把它们放在一个数组[ ]中
+    if(!err){
+        console.log('Document inserted into collection successfully');
+    }
+    else {throw err}
+})
+....
+
+---
+
+==== 方法2 -> 文档.save((err,product)=>{})
+
+save()是文档原型链上的方法, 所以只能由文档实例自己来调用它.
+
+[source, typescript]
+....
+doc1.save((err:Error, product:any) => { //product参数, 就是你当前插入的文档体,即doc1实例
+    if(!err){
+        console.log('Document inserted into collection successfully');
+    }
+})
+....
+
+---
+
+== document - (删)
+
+==== Model名.deleteOne() -> 删除符合条件的"第一条"文档
+
+[source, typescript]
+....
+ModelPerson.deleteOne(
+    {_id: "5c6656884d01a51d8ce127fe"}, //找到这条id的文档, 然后删除该文档
+    (err) => {
+        if (!err) {
+            console.log(`删除文档成功`);
+        } else {
+            throw err
+        }
+    })
+....
+
+---
+
+==== Model名.deleteMany() -> 删除符合条件的"所有"文档
+
+[source, typescript]
+....
+//删除所有年龄大于等于30的人
+ModelPerson.deleteMany(
+    {age: {$gte: 30}},
+    (err) => {
+        if (!err) {
+            console.log(`删除文档成功`);
+        } else {
+            throw err
+        }
+    })
+....
+
+---
+
+== document - (改)
+
+==== Model名.updateOne() --> 只更新符合条件的"第一条"文档
+
+updateOne()方法没有返回值, 这就意味着它的回调函数中的参数, 只有err, 没有res.
+
+下面, 将集合中年龄大于35的第一个人(文档), charm值改成120
+[source, typescript]
+....
+ModelPerson.updateOne(
+    {age: {$gte: 35}},
+    {$set: {charm: 120}},
+    (err) => {
+        if (!err) {
+            console.log(`update修改成功!`);
+        } else {
+            throw err;
+        }
+    })
+....
+
+---
+
+==== Model名.updateMany() --> 只更新符合条件的"所有"文档
+
+[source, typescript]
+....
+ModelPerson
+    .updateMany(
+        {age: {$gte: 30}, isMarried: false}, //找到所有年龄>=30, 并且未婚的人
+        {$set: {isMarried: true}} //都改成已婚
+    )
+    .exec((err: Error) => {
+            console.log(err);
+        }
+    )
+
+//然后把他们打印出来看看, 是否已修改成功.
+ModelPerson
+    .find(
+        {age: {$gte: 30}}, //查找所有年龄>=30
+        "-_id age isMarried" //只显示name和age字段, 不显示_id字段.
+    )
+    .exec((err: Error, arrDoc: any[]) => {
+            console.log(arrDoc)
+        }
+    )
+....
+
+---
+
+== document - (查)
+
+==== 查找符合条件的"所有"文档, 方法1 -> Model名.find(arg1:条件, arg2:只显示某些字段, arg3:{skip:number, limit:number}, arg4:回调函数)
+
+find()第二个参数,是个obj对象, 可以用来指明 只显示某些字段.
+
+[source, typescript]
+....
+ModelPerson.find(
+    {age: {$gte: 17, $lte: 30}},
+    {_id: 0, name: 1, age: 1}, //只显示name和age字段, 并隐藏掉_id字段
+    (err: Error, arrDoc: any[]) => {
+        console.log(arrDoc);
+    }
+)
+....
+
+find()第二个参数, 也可以用数组, 用来指明只显示这n个字段.
+
+[source, typescript]
+....
+ModelPerson.find(
+    {age: {$gte: 17, $lte: 30}},
+    ['name','age'], //放在数组中. 只显示name和age字段, 但默认也会显示_id字段.
+    (err: Error, arrDoc: any[]) => {
+        console.log(arrDoc);
+    }
+)
+....
+
+也可以把要查询的n个字段, 放在字符串中, 用空格隔开, 来指定要查询的这n个字段
+
+[source, typescript]
+....
+ModelPerson.find(
+    {},
+    "name age", //整体放在一个字符串中. 只显示name和age字段, 但默认也会显示_id字段.
+    (err: Error, arrDoc: any[]) => {
+        console.log(arrDoc);
+    }
+)
+....
+
+**用字符串时, 如果不想显示 _id字段, 可以在它前面加一个负号. 注意, 负号只对 _id 字段起作用. 对其他字段是无效的.**
+
+[source, typescript]
+....
+ModelPerson.find(
+    {},
+    "-_id name age", //只显示name和age字段, 不显示_id字段.
+    (err: Error, arrDoc: any[]) => {
+        console.log(arrDoc);
+    }
+)
+....
+
+
+find()还可以添加第三个参数, 用来控制 skip和limit功能,把它们放在一个{}对象中.
+
+[source, typescript]
+....
+ModelPerson.find(
+    {}, //查找全部
+    "-_id name age", //只显示name和age字段, 不显示_id字段.
+    {skip: 10, limit: 5}, //跳过前10条后, 再只显示5条
+    (err: Error, arrDoc: any[]) => {
+        console.log(arrDoc);
+    }
+)
+....
+
+---
+
+==== 查找符合条件的"所有"文档, 方法2 -> Model名.find().exec((err, arrDoc)=>{})
+
+关于find()方法的中文文档 https://cn.mongoosedoc.top/docs/api.html#find_find
+
+[source, typescript]
+....
+//find()方法返回一个Query对象
+let insQuery = ModelPerson.find({age: {$gte: 17, $lte: 30}}) //查找年龄在[17-30]岁之间的所有人
+
+//给Query实例, 传一个回调函数, 就能拿到Query对象里面的值(即我们用find()方法找到的符合条件的所有文档)
+insQuery.exec((err: Error, arrDoc: any[]) => {
+    if (err) {
+        console.log(err);
+    } else {
+        arrDoc.map(item => { //item就是每一条文档
+            console.log(item.name, item.age);
+        })
+    }
+})
+....
+
+---
+
+==== 查找符合条件的"第一条"文档 -> Model名.findOne().exec((err, firstDoc)=>{})
+
+[source, typescript]
+....
+// find()方法返回一个Query对象
+ModelPerson
+    .findOne({age: {$gte: 17, $lte: 30}})
+    .exec((err: Error, firstDoc: any) => {
+        console.log(firstDoc);
+    })
+....
+
+---
+
+==== 查找指定id的文档 -> findById(id)
+
+findById(id),用来查找指定id的文档. 该方法几乎等同于findOne({ _id: id }).
+
+注意, 传入id时, 虽然mongoDB中, 是这样写的:  "_id" : ObjectId("5c6639c5e30c7938b80ab884"),  但是,我们传给findById()时, id只要写里面的字符串"5c6639c5e30c7938b80ab884"就行了, 不需要带外面的ObjectId字样!
+
+[source, typescript]
+....
+let strId = '5d1c2970ebd2d723f8f609a4'
+
+ModelPerson.findById(strId,(err:Error,resDoc:any)=>{
+    console.log(resDoc);
+})
+....
+
+---
+
+== 统计一个collection中, 共有多少条document
+
+==== Model名.estimatedDocumentCount() --> 对集合中的文档条数, 做估计
+
+对于一个超级大的集合, 推荐使用estimatedDocumentCount()方法来做数量估计.
+
+[source, typescript]
+....
+ModelPerson.estimatedDocumentCount(
+    {},
+    (err: Error, count: number) => {
+        if (err) {
+            throw err
+        } else {
+            console.log(count);
+        }
+    })
+....
+
+
+---
+
+==== Model名.countDocuments() --> 统计符合搜索的条件的文档数目
+
+比如, 找到年龄>=35岁的所有人
+[source, typescript]
+....
+ModelPerson.countDocuments(
+    {age: {$gte: 35}},
+    (err: Error, count: number) => {
+        if (err) {
+            throw err
+        } else {
+            console.log(count);
+        }
+    })
+....
+

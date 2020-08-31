@@ -1,0 +1,315 @@
+
+= python 内置函数
+:toc:
+---
+
+== print()
+
+[source, python]
+....
+print(self, *args, sep=' ', end='\n', file=None)
+....
+
+==== 参数sep ->  设置输出字符串之间的字符串，默认是空格
+
+[source, python]
+....
+a='aa'
+b='bb'
+c='cc'
+print(a,b,c,sep='++') # aa++bb++cc
+....
+
+---
+
+==== 参数end -> 设置输出文本末尾的字符串。默认是”\n”
+
+[source, python]
+....
+print('白日依山尽',end='') # 把end参数设为空字符串, print打印出的句子就不会默认换行了
+print('黄河入海流',end='')
+
+# 白日依山尽黄河入海流
+....
+
+---
+
+==== 永远只在同一行上打印输出
+
+[source, python]
+....
+import time
+
+for i in range(100):
+    print('\r{}'.format(i), end='')
+    '''
+    \r 是回车, 由于我们没有加上\n换行,
+    所以这里就永远只是在本行回车(光标回到开头)但不换行(进入下一行),
+    就相当于永远在同一行上输出内容.
+    '''
+    time.sleep(0.5)
+....
+
+---
+
+==== 每个固定毫秒数, 才执行下一步操作 -> sys.stdout.flush()
+
+[source, python]
+....
+import time,sys
+
+for i in range(150):
+    百分比 = (i/150)*100
+    print('\r'+'%.2f'%百分比+'%',end='')   # '%.2f'转义保留两位小数.  \r是回车符
+    time.sleep(0.5)
+    sys.stdout.flush()
+
+''' 效果:
+13.33%...   <--一直在变化的百分比
+'''
+....
+
+sys.stdout.flush()的作用是什么?
+
+当我们打印一些字符时，并不是调用print函数后就立即打印的。一般会先将字符送到缓冲区，然后再打印。这就存在一个问题，如果你想立刻看到日志，但由于缓冲区没满，不会打印。就需要采取一些手段。如每次打印后强行刷新缓冲区。
+
+sys.stdout.flush()，就是用来强制刷新stdout的.
+
+---
+
+==== file参数 -> 将打印的内容直接写入txt文本中
+
+file参数: 指定文本将要发送到的文件、标准流或者其它类似文件的对象，默认是sys.stdout
+
+[source, python]
+....
+a='aa'
+b='bb'
+c='cc'
+print(a,b,c,end='+',file=open(r'f:\aabb.txt','w'))
+'''
+注意：使用'w'时, 会打开指定的文件来完成'写入'.
+如果文件不存在, 会自动新建. 如果文件已经存在, 会清空它的全部内容后, 再写入.
+所以如果想保留原来的内容, 就必须用'w+'模式,.
+'''
+
+#结果: 会新建一个txt文件，里面存了一行数据：aa bb cc+
+....
+
+
+
+---
+
+== input() 获取用户输入
+
+input() 函数: 用来获取用户的输入 +
+input()默认接收到的是str类型
+
+[source, python]
+....
+aNumber=int(input("请输入一个整数:"))
+print(aNumber)
+....
+
+---
+
+==== input如何接收多个值? -> 加上.strip().split()
+
+即去除左右白字符后, 再按空格切割
+
+[source, python]
+....
+list1 = input('请输入一个列表,用空格隔开每个元素:').strip().split()
+print(list1)
+
+''' 效果
+请输入一个列表,用空格隔开每个元素:one two three four
+['one', 'two', 'three', 'four']
+'''
+....
+
+---
+
+==== 接收用户输入的元组
+
+在input()接收了内容后, 再使用tuple()函数来转换成元组类型.
+
+[source, python]
+....
+str_tuple = input('请输入元组的所有元素,用空格隔开每个元素:').strip().split()
+true_tuple = tuple(str_tuple)
+print(true_tuple)
+
+''' 效果
+请输入元组的所有元素,用空格隔开每个元素:one two three four
+('one', 'two', 'three', 'four')
+'''
+....
+
+---
+
+==== 接收用户输入的字典
+
+[source, python]
+....
+dict1 = {}  # 用来存放用户输入的键值对
+i = 0
+print('请分别输入键值对,输入exit则退出')
+
+while True:
+    key = input('{}-输入key:'.format(i))
+    if key == 'exit':
+        break
+
+    value = input('{}-输入value:'.format(i))
+
+    dict1[key] = value  # 将键值对添加进字典中
+    i += 1
+
+print('你创建的dict 如下:')
+print(dict1)
+
+''' 效果
+请分别输入键值对,输入exit则退出
+0-输入key:c
+0-输入value:china
+1-输入key:j
+1-输入value:japan
+2-输入key:a
+2-输入value:usa
+3-输入key:exit
+你创建的dict 如下:
+{'c': 'china', 'j': 'japan', 'a': 'usa'}
+'''
+....
+
+---
+
+== range(n) -> 返回一个可迭代对象
+
+range 类型表示不可变的数字序列，通常用于在 for 循环中循环指定的次数。
+
+如果你需要一个数值序列，内置函数 range() 会很方便，它生成一个等差级数链表:
+
+[source, python]
+....
+print(range(5)) # range(0, 5) <-- 包头不包尾, 从0到4
+
+for i in range(5):
+    print(i)
+
+#打印
+0
+1
+2
+3
+4
+....
+
+range() 函数返回一个可迭代对象. 对于可迭代对象, 必须使用for循环来取出它里面的每一个元素, 或者使用list()函数,来先把它转换成 list对象, 才能直接打印它.
+
+[source, python]
+....
+print(list(range(5))) # [0, 1, 2, 3, 4]
+....
+
+可以结合使用 len() 和range()
+[source, python]
+....
+a = ['Mary', 'had', 'a', 'little', 'lamb']
+for i in range(len(a)):
+# 先用len获得列表的长度, 再把这个数字传给range()函数, 本例即为 range(5).
+    print(i, a[i])
+
+# 打印
+0 Mary
+1 had
+2 a
+3 little
+4 lamb
+....
+
+不过，这种场合使用 enumerate() 会更方便.
+
+
+---
+
+
+==== 步进 -> class range(start, stop[, step])
+
+也可以让 range() 操作从另一个数值开始，或者可以指定一个不同的步进值（甚至是负数，有时这也被称为 “步长”）:
+
+[source, python]
+....
+for i in range(5,10): # 从5递增到9, 默认按1位步进
+    print(i)
+
+# 打印
+5
+6
+7
+8
+9
+....
+
+又如:
+[source, python]
+....
+for i in range(5,15,3): # 从5递增到14, 按3位步进
+    print(i)
+
+# 打印
+5
+8
+11
+14
+....
+
+---
+
+== enumerate(iterable, start=0) 返回一个枚举对象
+
+enumerate() 函数用于将一个可遍历的数据对象(如列表、元组或字符串) 组合为一个索引序列，同时列出数据和数据下标，一般用在 for 循环当中。
+
+在同时需要index和value值的时候, 可以使用 enumerate()。
+
+enumerate 函数的返回值为enumerate类.
+
+[source, python]
+....
+a = ['Mary', 'had', 'a', 'little', 'lamb']
+
+obj_enum = enumerate(a)
+for tuple_Item in obj_enum:
+    print(tuple_Item)
+
+#打印
+(0, 'Mary')
+(1, 'had')
+(2, 'a')
+(3, 'little')
+(4, 'lamb')
+....
+
+又如:
+[source, python]
+....
+str1 = 'give a brief account of what has happened'
+list1 = str1.split()
+
+for index,item in enumerate(list1,10):  # 下标从10开始计数
+    print(index,item)
+
+# 打印
+10 give
+11 a
+12 brief
+13 account
+14 of
+15 what
+16 has
+17 happened
+....
+
+---
+

@@ -1,0 +1,762 @@
+
+= babel
+:toc:
+---
+
+
+== 安装babel
+
+官方中文文档 https://www.babeljs.cn/docs/usage
+
+升级到 Babel 7, 官方提供了一个工具babel-upgrade :
+https://github.com/babel/babel-upgrade
+
+对于已有的项目，运行以下命令即可：
+....
+npx babel-upgrade --write --install   //升级到 Babel 7
+....
+
+
+所有的 Babel 模块, （从版本 7 开始）都是以 @babel 作为冠名的。 +
+@这个符号，这个是只有babel7才特有的，babel6都没有. +
+原来的 babel-xx 包统一迁移到babel域 下 - 域由 @ 符号来标识. +
+
+从 babel7 开始，所有的官方插件和主要模块，都放在了 @babel 的命名空间下。从而可以避免在 npm 仓库中 babel 相关名称被抢注的问题。比如 @babel/node @babel/core @babel/cli @babel/preset-env.
+
+
+
+
+|===
+|安装 |说明
+
+|npm install --save-dev @babel/core @babel/cli @babel/preset-env +
+ npm install --save @babel/polyfill
+
+ 或 +
+ yarn add -g  babel-loader @babel/core @babel/cli @babel/preset-env @babel/polyfill @babel/runtime @babel/preset-react @babel/plugin-transform-runtime @babel/plugin-proposal-decorators
+
+|安装babel. 安装完后, 可以用 babel -V 命令来查看版本号, 以检测是否安装成功.
+
+|yarn add -g  @babel/core @babel/preset-env @babel/preset-flow @babel/preset-react @babel/preset-typescript
+|安装预设
+
+|===
+
+
+@babel/preset-react 此预设的官网
+https://babeljs.io/docs/en/babel-preset-react/
+
+
+概览:
+
+- 我们使用 @babel/cli , 从终端运行 Babel，
+- 利用 @babel/polyfill , 来模拟所有新的 JavaScript 功能，
+- 而 env preset 只对我们所使用的并且目标浏览器中缺失的功能, 进行"代码转换"和"加载 polyfill"。
+
+---
+
+==== @babel/core  -> 核心库
+
+Babel 的核心功能包含在 @babel/core 模块中。通过以下命令安装：
+[source, typescript]
+....
+npm install --save-dev @babel/core
+....
+
+你可以在 JavaScript 程序中直接 require 并使用它：
+[source, typescript]
+....
+const babel = require("@babel/core");
+babel.transform("code", optionsObject);
+....
+
+---
+
+==== @babel/cli -> 命令行工具
+
+@babel/cli 是一个能够从终端（命令行）使用的工具。它让你能直接在命令行中, 来编译代码。
+
+下面是其安装命令和基本用法：
+
+[source, typescript]
+....
+npm install --save-dev @babel/core @babel/cli
+
+./node_modules/.bin/babel src --out-dir lib
+//这将解析 src 目录下的所有 JavaScript 文件，并应用我们所指定的代码转换功能，然后把每个文件输出到 lib 目录下。
+// --out-dir 代表输出到哪个目录下.
+....
+
+由于我们还没有指定任何代码转换功能，所以输出的代码将与输入的代码相同（不保留原代码格式）。我们可以将我们所需要的"代码转换功能", 作为参数传递进去。
+
+---
+
+==== 代码转换功能 -> 以"插件"的形式出现
+
+代码转换功能, 以插件的形式出现，**插件是小型的 JavaScript 程序，用于指导 Babel 如何对代码进行转换. 即, 用一个小型的js代码程序(plugins), 来告诉Babel 如何转换你的源码。** 例如将 ES2015+ 语法转换为 ES5 语法，我们可以使用诸如 @babel/plugin-transform-arrow-functions 之类的官方插件：
+
+[source, typescript]
+....
+npm install --save-dev @babel/plugin-transform-arrow-functions //开启对箭头函数的支持
+
+./node_modules/.bin/babel src --out-dir lib --plugins=@babel/plugin-transform-arrow-functions
+....
+
+现在，我们代码中的所有箭头函数（arrow functions）, 都将被转换为 ES5 兼容的函数表达式了.
+
+==== @babel/preset-env -> preset预设, 即一组预先设定的插件
+对于高于es5的所有JavaScript新功能, 我们希望对它们也进行转换, 但我们不需要一个接一个地添加所有需要的插件，可以使用一个 "preset" （即一组预先设定的插件）。
+
+[source, typescript]
+....
+npm install --save-dev @babel/preset-env
+
+./node_modules/.bin/babel src --out-dir lib --presets=@babel/env
+....
+
+如果不进行任何配置，**上述 preset 所包含的插件, 将支持所有最新的 JavaScript （ES2015、ES2016 等）特性。**
+
+但是 preset 也是支持参数的。我们来看看**另一种传递参数的方法：配置文件，而不是通过终端控制台同时传递 cli 和 preset 的参数。**
+
+事实上, 对于正经的 ES 标准特性，babel从6开始就建议要使用 @babel/preset-env 这个预设了(它能根据环境, 进行自动配置)。 到了 babel 7，我们就可以完全告别这几个历史预设了: preset-es2015/es2016/es2017/latest, 这些老的预设已经被废弃了.
+
+
+---
+
+==== babel.config.js -> 配置文件
+
+https://new.babeljs.io/docs/en/next/babelconfigjs.html
+
+之前版本的babel都是使用.baberc来做配置文件，babel7引入了babel.config.js。但是它并不是.baberc的替代品，二者根据使用的场景不同自行选择。
+
+babel.config.js 是个全局配置(服务于整个项目的配置), 而老的.babelrc 是基于文件层面的配置.
+
+
+在项目的根目录下, 创建一个命名为 babel.config.js 的配置文件，其内容为：
+[source, typescript]
+....
+const presets = [ //创建预设, 是个数组类型
+  [
+    "@babel/env",
+    {
+      targets: {
+        edge: "17",
+        firefox: "60",
+        chrome: "67",
+        safari: "11.1",
+      },
+      useBuiltIns: "usage",
+    },
+  ],
+];
+
+module.exports = { presets }; //导出预设
+....
+
+现在，名为 env 的 preset 只会为目标浏览器中没有的功能, 加载转换插件。
+
+---
+
+==== @babel/polyfill -> 用于模拟完整的 ES2015+ 环境(比如es6,es7...)
+
+Babel 默认只转换新的 JavaScript 语法，而不转换新的 API。例如，Iterator、Generator、Set、Maps、Proxy、Reflect、Symbol、Promise 等全局对象，以及一些定义在全局对象上的方法（比如 Object.assign）都不会转译。如果想使用这些新的对象和方法，必须使用 @babel/polyfill，为当前环境提供一个垫片。
+
+
+@babel/polyfill，它会”加载整个polyfill库”，针对编译的代码中新的API进行处理，并且在代码中插入一些帮助函数。
+
+
+@babel/polyfill 模块, 包括 core-js 和一个自定义的 regenerator runtime 模块, 用于模拟完整的 ES2015+ 环境。即, 利用 @babel/polyfill , 我们可以用来模拟所有新的 JavaScript 功能
+
+这意味着, 你可以使用诸如 Promise 和 WeakMap 之类的新的内置组件、 Array.from 或 Object.assign 之类的静态方法、 Array.prototype.includes 之类的实例方法, 以及生成器函数（generator functions）（前提是你使用了 regenerator 插件）。
+
+为了添加这些功能，polyfill 将添加到全局范围（global scope）, 和类似 String 这样的内置原型（native prototypes）中。
+
+对于软件库/工具的作者来说，这可能太多了。**如果你不需要类似 Array.prototype.includes 的实例方法，可以使用 transform runtime 插件, 而不是对全局范围（global scope）造成污染的 @babel/polyfill。**
+
+由于我们构建的是一个应用程序，因此我们只需安装 @babel/polyfill 即可：
+[source, typescript]
+....
+npm install --save @babel/polyfill
+//注意，使用 --save 参数而不是 --save-dev，因为这是一个需要在你的源码之前运行的 polyfill。
+....
+
+幸运的是，我们所使用的 env preset 提供了一个 "useBuiltIns" 参数，当此参数设置为 "usage" 时，就会加载上面所提到的最后一个优化措施 ----也就是只包含你所需要的 polyfill。
+
+使用此新参数后，修改配置如下：
+
+[source, typescript]
+....
+const presets = [
+  [
+    "@babel/env",
+    {
+      targets: {
+        edge: "17",
+        firefox: "60",
+        chrome: "67",
+        safari: "11.1",
+      },
+      useBuiltIns: "usage", //添加上 useBuiltIns参数
+    },
+  ],
+];
+
+module.exports = { presets };
+....
+
+
+Babel 将检查你的所有代码，以便查找目标环境中缺失的功能，然后只把必须的 polyfill 包含进来。示例代码如下：
+[source, typescript]
+....
+Promise.resolve().finally();
+
+//将被转换为（由于 Edge 17 没有 Promise.prototype.finally）：
+require("core-js/modules/es.promise.finally");
+Promise.resolve().finally();
+....
+
+如果我们不使用 env preset 的 "useBuiltIns" 参数（即设置为 "usage"），那么我们必须在所有代码之前, 通过 require 加载一次完整的 polyfill。
+
+---
+
+==== @babel/runtime ->
+
+https://www.npmjs.com/package/@babel/runtime +
+https://babeljs.io/docs/en/babel-plugin-transform-runtime/
+
+虽然@babel/polyfill解决了Babel不转换新API的问题，但是直接在代码中插入帮助函数，会导致污染了全局环境，并且不同的代码文件中包含重复的代码，导致编译后的代码体积变大。
+
+为了解决这个问题，提供了单独的包 @babel/runtime, 需要安装以下两个包:
+
+安装
+....
+npm install --save @babel/runtime  或  yarn add @babel/runtime
+npm install --save-dev @babel/plugin-transform-runtime
+....
+
+在启用了插件 @babel/plugin-transform-runtime后，Babel就会使用 @babel/runtime下的工具函数. 这样可以避免自行引入polyfill时导致的污染全局命名空间的问题。
+
+---
+
+== @babel/plugin-transform-runtime
+
+官网 https://babel.docschina.org/docs/en/babel-plugin-transform-runtime
+
+虽然@babel/polyfill提供了对es6+ 新功能的转换, 但它也会带来一些缺点:
+
+- 体积太大：会把整个包都引进来, 而非只是你用到的那些个新功能.
+- 污染全局环境：如果你引用了 @babel/polyfill，那么像Promise这样的新类就是挂载在全局上的，这样就会污染了全局命名空间。如果你是开发者, 你把全局环境污染了，别人用你的工具，就有可能把别人给坑了。
+
+**一个解决方案就是引入transform runtime 来替代 @babel/polyfill。**
+
+幸运的是，我们有env这个preset，它又一个useBuiltIns选项，如果设置成"usage"，那么将会自动检测语法帮你require你代码中使用到的功能。
+
+[source, typescript]
+....
+const presets = [
+  [
+    "@babel/env",
+    {
+      targets: {
+        edge: "17",
+        firefox: "60",
+        chrome: "67",
+        safari: "11.1",
+      },
+      useBuiltIns: "usage", //添加上 useBuiltIns参数
+    },
+  ],
+];
+
+module.exports = { presets };
+....
+
+---
+
+==== 为什么某个 babel-x 软件包（package）没有更新？
+
+其实, 所有软件包共用了一个版本号。当我们发布新版本时，唯一被更新的, 是 实际发生了改变的那个软件包（package）而已(而非包括它全部的依赖包). 所以, 比如 Babel v6.6.0 版本, 就并不意味着所有软件包（package）现在都是 6.6.0 版的。
+
+**为了确保你所使用的是最新版本的软件包（package），你可能需要删除 node_modules 目录, 并重新执行 npm install 命令。**
+
+
+---
+
+== Babel 的配置文件 -> babel.config.js 和 .babelrc
+
+所有 Babel API 参数 都可以被配置。
+
+
+|===
+|配置文件 |功能
+
+
+|.babelrc 文件
+|能用于一个简单的, 并且只用于单个软件包的配置
+
+|babel.config.js
+|可以编译 node_modules 目录下的模块.
+
+我们建议使用 babel.config.js 格式的配置文件。Babel 本身使用的就是这种。
+
+|===
+
+
+---
+
+==== babel.config.js
+
+在项目的根目录（package.json 文件所在目录）下创建一个名为 babel.config.js 的文件，并输入如下内容。
+
+[source, typescript]
+....
+module.exports = function (api) {
+  api.cache(true);
+
+  const presets = [ ... ];
+  const plugins = [ ... ];
+
+  return {
+    presets,
+    plugins
+  };
+}
+....
+
+---
+
+==== .babelrc
+
+在你的项目中创建名为 .babelrc 的文件，并输入以下内容。
+
+[source, typescript]
+....
+{
+  "presets": [...],
+  "plugins": [...]
+}
+....
+
+以前babel会递归向上查找babelrc, 而现在, 检索行为会停在package.json所在层级。
+
+---
+
+==== .babelrc.js
+
+与 .babelrc 的配置相同，但你可以使用 JavaScript 编写。
+
+[source, typescript]
+....
+const presets = [ ... ];
+const plugins = [ ... ];
+
+module.exports = { presets, plugins };
+....
+
+你还可以调用 Node.js 的任何 API，例如基于进程环境, 进行动态配置：
+
+[source, typescript]
+....
+const presets = [ ... ];
+const plugins = [ ... ];
+
+if (process.env["ENV"] === "prod") { //根据进程环境, 来进行动态配置
+  plugins.push(...);
+}
+
+module.exports = { presets, plugins };
+....
+
+
+---
+
+==== package.json
+
+或者，**还可以选择将 .babelrc 中的配置信息, 作为 babel 键（key）的值添加到 package.json 文件中**，如下所示：
+
+[source, typescript]
+....
+{
+  "name": "my-package",
+  "version": "1.0.0",
+
+  "babel": { //在这里!!
+    "presets": [ ... ],
+    "plugins": [ ... ],
+  }
+}
+....
+
+---
+
+==== 使用 API (@babel/core) 来进行配置
+
+[source, typescript]
+....
+require("@babel/core").transform("code", {
+  plugins: ["@babel/plugin-transform-arrow-functions"]
+});
+....
+
+---
+
+== 插件 -> 可以以 preset 的形式启用一组插件
+
+Babel 是一个编译器（输入源码 => 输出编译后的代码）。就像其他编译器一样，**编译过程分为三个阶段：解析、转换, 和打印输出。**
+
+现在，Babel 虽然开箱即用，但是什么动作都不做。它基本上类似于:
+[source, typescript]
+....
+const babel = (code) => {return code};
+....
+将代码解析之后再输出同样的代码。
+
+
+Babel 6 移除了很多参数，更多功能交由 插件 实现. 对于每个被删除的参数，都应该有一个插件与之对应。
+
+**如果想要 Babel 做一些实际的工作，就需要为其添加插件。** +
+除了一个一个的添加插件，你还**可以以 preset 的形式启用一组插件。**
+
+---
+
+==== 转换插件 -> 会自动帮你启用相应的"语法插件"
+
+第一种是"转换插件", 用于转换你的代码. +
+包括: https://www.babeljs.cn/docs/plugins
+
+注意:** "转换插件", 将启用相应的"语法插件"，因此你不必同时指定这两种插件(转换插件 与 语法插件)。**
+
+---
+
+==== 语法插件 -> 只解析, 而不转换语法
+
+第二种是"语法插件", 只允许 Babel 解析（parse） 特定类型的语法（而不是转换）。
+
+注意："转换插件"会自动启用"语法插件"。因此，如果你已经使用了相应的"转换插件"，则不需要指定"语法插件"。
+
+---
+
+==== 插件 和 Preset预设 的路径
+
+如果插件在 npm 上，你可以输入插件的名称，babel 会自动检查它是否已经被安装到 node_modules 目录下:
+
+[source, typescript]
+....
+{
+  "plugins": ["babel-plugin-myPlugin"]
+}
+....
+
+如果插件名称的前缀为 babel-plugin-，你还可以使用它的短名称：
+[source, typescript]
+....
+{
+  "plugins": [
+    "myPlugin",
+    "babel-plugin-myPlugin" // 两个插件实际是同一个
+  ]
+}
+....
+
+这也适用于带有冠名（scope）的插件：
+[source, typescript]
+....
+{
+  "plugins": [
+    "@org/babel-plugin-name",
+    "@org/name" // 两个插件实际是同一个
+  ]
+}
+....
+
+支持"装饰器"的插件
+https://www.npmjs.com/package/babel-plugin-transform-decorators-legacy
+
+---
+
+==== 插件的排列顺序, 决定着插件的执行顺序! -> (1)插件>Presets , (2)插件(前->后) , (3)Presets (后->前)
+
+插件的排列顺序很重要。如果有两个"转换插件", 都会去处理“程序（Program）”的某个代码片段，则, 它们会根据"转换插件"或 "preset预设" 中的排列顺序, 来依次执行。
+
+- **插件在 Presets 前运行。**
+- **插件顺序, 从前往后排列。**
+- **Presets 顺序, 是颠倒的（从后往前）。**
+
+
+例如：
+[source, typescript]
+....
+{
+  "plugins": ["transform-decorators-legacy", "transform-class-properties"]
+}
+....
+
+会先执行 transform-decorators-legacy ，后执行 transform-class-properties。
+
+重要的时，**preset 的顺序是 颠倒的**。如下设置：
+
+[source, typescript]
+....
+{
+  "presets": ["es2015", "react", "stage-2"]
+}
+....
+
+将按如下顺序执行：stage-2、react 然后是 es2015。这主要的是为了确保"向后兼容"，因为大多数用户将 "es2015" 排在 "stage-0" 之前。
+
+---
+
+==== 插件的参数
+
+插件和 preset 都可以接受参数，**参数是由"插件名"和"参数对象"组成一个数组，可以在"配置文件"中设置。**
+
+如果不指定参数，下面这几种形式都是一样的：
+[source, typescript]
+....
+{
+  "plugins": ["pluginA", ["pluginA"], ["pluginA", {}]]
+}
+....
+
+**要指定参数，请传递一个以参数名作为键（key）的对象。**
+[source, typescript]
+....
+{
+  "plugins": [
+    [
+      "transform-async-to-module-method",
+      { //本obj对象, 就是用来设置插件的参数的!
+        "module": "bluebird",
+        "method": "coroutine"
+      }
+    ]
+  ]
+}
+....
+
+preset 的设置参数的工作原理 完全相同：
+[source, typescript]
+....
+{
+  "presets": [
+    [
+      "env",
+      { //本obj对象, 就是用来设置"preset预设"的参数的!
+        "loose": true,
+        "modules": false
+      }
+    ]
+  ]
+}
+....
+
+---
+
+== 预设（Presets）
+
+不想自己动手组合插件？没问题！**preset 可以作为 Babel 插件的组合**，甚至可以作为可以共享的 options 配置。
+
+官方 Preset
+我们已经针对常用环境编写了一些 preset：
+[source, typescript]
+....
+@babel/preset-env
+@babel/preset-flow
+@babel/preset-react
+@babel/preset-typescript
+....
+
+一次性安装上面所有预设:
+[source, typescript]
+....
+npm install -g  @babel/core @babel/preset-env @babel/preset-flow @babel/preset-react @babel/preset-typescript
+....
+
+许多由社区维护的 preset 可以从 npm 上获取！ https://www.npmjs.com/search?q=babel-preset
+
+---
+
+==== Stage-X  -> (babel7明确指出: 用stage-x命名的presets已被弃用!)
+
+Stage-X （实验性质的 Presets）
+
+TC39 将提案分为以下几个阶段：
+
+
+|===
+|阶段 |说明
+
+|Stage 0 - 设想（Strawman）| 只是一个想法，可能有 Babel插件。
+|Stage 1 - 建议（Proposal）|这是值得跟进的。
+|Stage 2 - 草案（Draft）|初始规范。
+|Stage 3 - 候选（Candidate）|完成规范并在浏览器上初步实现。
+|Stage 4 - 完成（Finished）|将添加到下一个年度版本发布中。
+|===
+
+这些提案可能会有变化，因此，**特别是处于 stage-3 之前的任何提案，请务必谨慎使用。**
+
+Babel 7 移除了stage-x插件. babel 官方认为，把不稳定的 stage 0-3 作为一种预设是不太合理的，因此废弃了 stage 预设，转而让用户自己选择 使用哪个 proposal(提议; 建议; 动议) 特性的插件，这将带来更多的明确性（用户无须理解 stage，自己选的插件，自己便能明确的知道代码中可以使用哪个特性）。所有"建议特性"的插件，都改变了命名规范，即类似 @babel/plugin-proposal-function-bind 这样的命名方式, 来表明它是个 proposal 阶段特性。
+
+同样, 对于polyfill, 官方也移除了它里面的只处于"建议阶段stage"的特性.
+
+---
+
+==== 创建 Preset
+
+如需创建一个自己的 preset，只需导出一份配置即可。可以是返回一个"插件数组". 如下:
+
+[source, typescript]
+....
+module.exports = function() {
+  return { //返回一个"插件数组", 作为配置.
+    plugins: [
+      "pluginA",
+      "pluginB",
+      "pluginC",
+    ]
+  };
+}
+....
+
+preset 可以包含其他的 "preset"，以及"带有参数的插件"。
+
+[source, typescript]
+....
+module.exports = () => ({
+
+  presets: [
+    require("@babel/preset-env"),
+  ],
+
+  plugins: [
+    [require("@babel/plugin-proposal-class-properties"), { loose: true }],
+    require("@babel/plugin-proposal-object-rest-spread"),
+  ],
+});
+....
+
+有关更多信息，请参考 babel 手册 中关于 preset 的部分。 https://github.com/jamiebuilds/babel-handbook/blob/master/translations/en/user-handbook.md#making-your-own-preset
+
+---
+
+==== 预设Preset 的路径
+
+如果 preset 在 npm 上，可以输入 preset 的名称，babel 将自动检查是否已经将其安装到 node_modules 目录下了
+[source, typescript]
+....
+//json
+{
+  "presets": ["babel-preset-myPreset"]
+}
+....
+
+---
+
+==== Preset 的短名称
+
+如果 preset 名称的前缀为 babel-preset-，你还可以使用它的短名称：
+[source, typescript]
+....
+{
+  "presets": [
+    "myPreset",
+    "babel-preset-myPreset" // equivalent
+  ]
+}
+....
+
+这也适用于带有冠名（scope）的 preset：
+
+[source, typescript]
+....
+{
+  "presets": [
+    "@org/babel-preset-name",
+    "@org/name" // equivalent
+  ]
+}
+....
+
+---
+
+==== Preset 的排列顺序 (后->前)
+
+Preset 是逆序排列的（从后往前）。
+
+例如
+[source, typescript]
+....
+//json
+{
+  "presets": [
+    "a",
+    "b",
+    "c"
+  ]
+}
+....
+将按如下顺序执行： c、b 然后是 a。
+
+---
+
+==== Preset 的参数
+
+插件和 preset 都可以接受参数，参数是由"插件名"和"参数对象"组成的一个数组，可以在配置文件中设置。
+
+如果不指定参数，下面这几种形式都是一样的：
+[source, typescript]
+....
+//json
+{
+  "presets": [
+    "presetA",
+    ["presetA"],
+    ["presetA", {}],
+  ]
+}
+....
+
+要指定参数，请传递一个以参数名作为键（key）的对象。
+[source, typescript]
+....
+//json
+{
+  "presets": [
+    ["@babel/preset-env", {
+      "loose": true,
+      "modules": false
+    }]
+  ]
+}
+....
+
+---
+
+== Polyfills ->  @babel/polyfill
+
+由于 Babel 假定你的代码将在 ES5 环境中执行，因此使用的都是 ES5 函数。如果你所使用的运行环境 对 ES5 的支持有限或不支持，例如低版本的 IE，那么就需要使用 @babel/polyfill 来满足需求。
+
+为了使某些功能能够正常工作。你可以 通过引入 @babel/polyfill 来满足 Babel 功能的 所有 需求。
+
+你可以按需引入：
+https://www.babeljs.cn/docs/caveats
+
+---
+
+
+
+
+
+/////////////////
+---
+
+
+
+
+
+npm install -g babel-preset-react // 负责将JSX语法转化为JavaScript
+
+
+
+npm install -g babel-plugin-transform-decorators-legacy //开启对修饰器（Decorator）的支持
+....

@@ -1,0 +1,127 @@
+
+= 获取前端用get或 post方法, 提交来的表单中的数据
+:toc:
+
+---
+
+== 拿到前端 get请求中, 传给后端的数据
+
+前端html页面中的每一个表单控件, 必须拥有name属性, 后端服务器才能接受到这些表单数据. 换言之, 没有name值的控件, 浏览器不会提交到服务器.
+
+注意,下面的例子中, 我们不需要在node.js中先读取html文件, 因为这个html文件中的表单, 已经写明了  action="http://127.0.0.1:8000/anythingPage/" ,即会提交给我们node.js服务器监听的 ip地址和端口号, 所以你可以直接打开html文件, 只要点击提交按钮后, 表单数据自动会提交到 我们服务器监听的ip和端口上. node.js直接就能接收到这些表单数据!
+
+html文件的内容是:
+[source, html]
+....
+<form action="http://127.0.0.1:8000/anythingPage/" method="get"> <!-- 表单页面的提交地址, 就是我们node.js监控的ip地址和端口号-->
+    <p>姓名 <input type="text" name="userName"></p>
+    <p>密码 <input type="text" name="userPsw"></p>
+    <p>性别 <br>
+        男 <input type="radio" name="userSex" value="male">
+        女 <input type="radio" name="userSex" value="female">
+    </p>
+    <input type="submit" value="click to submit">
+</form>
+<!-- 本表单用get请求提交后, 浏览器地址栏, 会得到-> http://127.0.0.1:8000/anythingPage/?userName=zzr&userPsw=123&userSex=male -->
+....
+
+node.js文件的内容是:
+[source, typescript]
+....
+let http = require("http");
+let util = require("util");
+let fs = require("fs");
+let path = require("path");
+let url = require("url");
+let queryString = require("querystring"); //该模块专门用来对url字符串, 解析里面的查询字符串部分, 并封装成query对象, 就能调用里面的属性(即用户表单中填写的姓名,密码,性别等数据)
+
+let str_ipHost = "http://127.0.0.1:8000";
+
+let server = http.createServer((req, res) => {
+    if (req.url === "/favicon.ico") {
+        //空语句, 即屏蔽掉对favicon.ico文件的请求操作. 啥都不执行.
+    } else {
+        res.writeHead(200, {"Content-Type": "text/html; charset=utf-8"});
+
+        const strUrl = req.url; // 拿到url地址. /anythingPage/?userName=zzr&userPsw=123&userSex=male
+
+        const objUrl = url.parse(strUrl);
+        //用老的方法, 来解析这个url字符串成obj对象. objUrl内容见下,
+        可以看到, 查询字符串部分, 在query字段中.
+
+        const strQuery = objUrl.query; //userName=zzr&userPsw=123&userSex=male
+
+        const objQuery = queryString.parse(strQuery);
+        //我们还需要通过queryString模块,来将这个strQuery字符串, 封装成query对象, 才能调用到里面的属性(即用户表单中填写的姓名,密码,性别等数据)
+        //parse()这个方法是将一个字符串, 反序列化为一个对象。
+
+        /*其实上面4步操作, 来回在str和obj之间来回转换了好几次:
+        req.url 是个url string
+        --> url.parse(strUrl) 是个url obj
+        --> objUrl.query 是个查询字符串部分的str
+        --> queryString.parse(strQuery) 是个obj
+        */
+
+        console.log("-->", objUrl);
+        console.log(`用户名: ${objQuery.userName}`); //zzr
+        console.log(`密码: ${objQuery.userPsw}`); //123
+        console.log(`性别: ${objQuery.userSex}`); //male
+
+        res.end("");
+    }
+});
+server.listen(8000, "127.0.0.1");
+
+/*
+--> Url {
+  protocol: null,
+  slashes: null,
+  auth: null,
+  host: null,
+  port: null,
+  hostname: null,
+  hash: null,
+  search: '?userName=zzr&userPsw=123&userSex=male',
+  query: 'userName=zzr&userPsw=123&userSex=male',  //查询字符串, 在这个query属性中!
+  pathname: '/anythingPage/',
+  path: '/anythingPage/?userName=zzr&userPsw=123&userSex=male',
+  href: '/anythingPage/?userName=zzr&userPsw=123&userSex=male' }
+ */
+....
+
+**其实, 我们可以直接给 url.parse()传第二个参数true, 就能把它封装的url对象中的query属性, 变成一个queryObj对象!** 而不需要你再手动调用queryString模块了, 相当于参数true, 自动帮你把这一步做了. +
+如下:
+[source, typescript]
+....
+const strUrl = req.url; //  /anythingPage/?userName=zzr&userPsw=123&userSex=male
+const objUrl = url.parse(strUrl,true); //第二个参数加true后, objUrl内容见下, 可以看到, query字段已经是个obj对象了!
+const objQuery =objUrl.query;
+
+console.log(`用户名: ${objQuery.userName}`); //zzr
+
+/*
+Url {
+  protocol: null,
+  slashes: null,
+  auth: null,
+  host: null,
+  port: null,
+  hostname: null,
+  hash: null,
+  search: '?userName=zzr&userPsw=123&userSex=male',
+  query:
+   [Object: null prototype] { userName: 'zzr', userPsw: '123', userSex: 'male' },
+  pathname: '/anythingPage/',
+  path: '/anythingPage/?userName=zzr&userPsw=123&userSex=male',
+  href: '/anythingPage/?userName=zzr&userPsw=123&userSex=male' }
+ */
+....
+
+---
+
+== 接收post请求发来的数据
+
+
+
+
+

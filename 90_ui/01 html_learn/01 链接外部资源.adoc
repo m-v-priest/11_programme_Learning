@@ -1,0 +1,51 @@
+
+= 超链接
+:toc:
+
+---
+
+== 连接外部页面
+可以在图片上创建超链接, 即, 点击图片, 就跳转页面. 只要把图片<img>包括进a标签中即可.
+
+[source,html]
+....
+ <a href="http://www.abc.com"><img src='./某图片.jpg' alt='图片说明'></a>
+....
+
+---
+
+==== 链接到本页内的锚点处
+
+[source,html]
+....
+<a name='锚点'>我是锚点处</a> <!-- 设置锚点 -->
+<a href='#锚点'>点我跳跃到锚点处</a>
+....
+
+如果浏览器找不到锚点，就会定位到文档的顶端, 不会有错误发生。
+
+---
+
+== 连接js文件
+
+
+
+
+---
+
+== 连接css文件
+
+[source,html]
+....
+<head>
+    <link rel="stylesheet"  type="text/css"  href="./mystyle.css">
+</head>
+....
+
+|===
+| 属性 | 功能
+| rel  | 规定当前文档与被链接文档之间的关系。上例, rel 属性表明被链接的文档是个css样式表.
+| href | 用于指定超链接目标的 URL.<br />href 即 Hypertext Reference
+|===
+
+---

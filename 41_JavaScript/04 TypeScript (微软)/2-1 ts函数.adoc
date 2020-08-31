@@ -1,0 +1,168 @@
+
+= typescript 函数
+:toc:
+
+---
+
+
+== 函数的类型 = 数类型 + 返回值类型
+
+函数类型包含两部分：参数类型和返回值类型。   +
+**函数可以直接访问函数外的变量, 而无需将它们作为参数引入.**
+
+[source, typescript]
+....
+let a:number = 10
+
+//大括号前的number,表明此函数的返回值类型是数字, 不过, 由于TypeScript能够根据返回语句, 自动推断出返回值类型，因此我们通常可以省略它。
+function fnAdd(b:number):number {
+    return a+b;
+}
+
+console.log(fnAdd(20)); //30
+....
+
+也可以写作
+
+[source, typescript]
+....
+let fnAdd = function(b:number):number {
+    return t+b;
+}
+....
+
+通常，你不需要指明函数的"返回类型"，它可以由编译器自动推断出来. 但是，指明"返回类型", 有利于错误提示.
+
+---
+
+== 可选参数 ?
+
+JavaScript里，每个参数都是可选的，可传可不传。 没传参的时候，它的值就是undefined。  +
+但是在ts中, 传递给一个函数的参数个数, 必须与函数期望的参数个数一致。传入的参数数量不符合函数要求, 就会报错.
+
+[source, typescript]
+....
+function fn_creatPersonObj(name:string,age:number,isFemale:boolean) {
+    return {name:name,age:age,ifFemale:isFemale}
+}
+
+let p1 = fn_creatPersonObj('objZzr',19,true)
+console.log(p1); //{ name: 'zzr', age: 19, ifFemale: true }
+
+
+let p2 = fn_creatPersonObj('wyy',22) //报错 error TS2554: Expected 3 arguments, but got 2. <--缺少第三个参数的传入
+....
+
+但是, ts提供了"可选参数"的功能, 只要在参数名旁使用问号 ? 就行了.
+
+[source, typescript]
+....
+//下面, 我们让 isFemale设置为是可选参数, 可以不传递实参给它, 其值就是undefined
+function fn_creatPersonObj(name: string, age: number, isFemale?: boolean) { //isFemale是可选参数
+    return {name: name, age: age, ifFemale: isFemale}
+}
+
+let p1 = fn_creatPersonObj('objZzr', 19, true)
+console.log(p1); //{ name: 'zzr', age: 19, ifFemale: true }
+
+
+let p2 = fn_creatPersonObj('wyy', 22) //不传isFemale
+console.log(p2); //{ name: 'wyy', age: 22, ifFemale: undefined }
+....
+
+**注意: "可选参数"必须跟在"必须参数"后面。**
+
+---
+
+== 默认参数 =
+
+我们还可以为参数提供一个默认值, 当用户没有传递这个参数进来, 或传递的值是undefined时, 默认参数的值就会起作用。
+
+[source, typescript]
+....
+function fn_creatPersonObj(name: string, age: number, isFemale = false) { //isFemale被设置为默认参数, 默认值是 false
+    return {name: name, age: age, ifFemale: isFemale}
+}
+
+let p1 = fn_creatPersonObj('objZzr', 19, true)
+console.log(p1); //{ name: 'zzr', age: 19, ifFemale: true }
+
+
+let p2 = fn_creatPersonObj('zrx', 72) //不传默认参数isFemale, 则默认值起作用
+console.log(p2); //{ name: 'zrx', age: 72, ifFemale: false }
+
+
+let p3 = fn_creatPersonObj('令狐冲', 36,undefined) //给默认参数isFemale传递undefined, 默认值照样起作用, isFemale的实际值会是 false
+console.log(p3); //{ name: '令狐冲', age: 36, ifFemale: false }
+....
+
+**注意: 在定义函数时, 默认参数, 不需要一定放在必须参数之后, 可以放在前面. 但是在调用该函数时, 也就是在给它传参时, 默认参数的实参, 必须手动传入 undefined, 才能获得默认值.**
+
+[source, typescript]
+....
+function fn_creatPersonObj(name: string, isFemale = false, age: number,) { //现在, 我们把默认参数isFemale放在前面, 而非在最后
+    return {name: name, ifFemale: isFemale, age: age}
+}
+
+let p1 = fn_creatPersonObj('objZzr', undefined, 19) //在调用该函数时, 就必须给默认参数, 手动传入undefined值才行, 不能跳过!
+console.log(p1); //{ name: 'zzr', ifFemale: false, age: 19 } <--依然能拿到默认值
+
+let p2 = fn_creatPersonObj('令狐冲', , 36) //报错, error TS2554: Expected 3 arguments, but got 2.
+....
+
+---
+
+== 剩余参数
+
+有时，你想同时操作多个参数，或者你并不知道会有多少参数传递进来。 在JavaScript里，你可以使用 arguments来访问所有传入的参数。  
+在TypeScript里，你可以把所有参数收集到一个变量(数组)里：
+
+[source, typescript]
+....
+function fn(firstArg:number, ...restArg:number[]) {
+    console.log(restArg);
+}
+fn(1,2,3,4,5) //[ 2, 3, 4, 5 ]
+....
+
+---
+
+== 重载
+
+函数名相同, 但参数不同, 或参数类型不同, 即可视为"函数重载".  
+**不允许两个函数, 除了返回类型外, 其他所有的要素都相同（因为只有返回类型不同，调用函数的时候不能区分调用的是哪一个函数）**。
+
+**注意: 在对一个函数写函数重载时, 同一个参数的参数名必须相同! 它只是参数类型不同而已.**  
+
+
+比如, 我们来做一个函数重载, 它的参数接收一个url字符串, 或一个对象(含有url属性); 函数会对url进行某种处理, 并返回一个字符串提示信息.
+
+(本来想做一个传入obj对象或tuple元组, 作为参数的实验, 但js会把元组识别成 obj, 导致无法区分tuple和object的类型. 并且typeScript中, 似乎也没有专门用来判断tuple类型的方法, 比较难办.)
+ 
+[source, typescript]
+....
+function fn(arg: string): object;  //函数重载之一
+function fn(arg: { url: string, webName?: string }): object; //函数重载之二. 接收一个对象, 该对象必须含有一个url属性, webName属性则可选.
+function fn(arg: string | object): any { //定义具体的函数体. 返回值推荐写any类型, 因为如果你写成object的话, 就必须有返回值. 而如果你写成any, 可以有不返回任何值的分支存在.
+    if (typeof arg === 'string') {
+        //do sth...
+        return '进入"类型是string"的分支'
+    }
+    else if (typeof arg === 'object') {
+        //do sth...
+        return '进入"类型是object"的分支'
+    }
+}
+
+console.log(fn('http://www...')); //进入"类型是string"的分支
+console.log(fn({url: 'http://www...'})); //进入"类型是object"的分支
+....
+
+**注意: 上面 function fn(arg:string|object):any 并不是重载列表的一部分，因此上面只有两个重载：一个是接收字符串, 另一个接收对象。**  
+
+在定义重载的时候，一定要把最精确的定义放在最前面。
+ 
+---
+
+
+

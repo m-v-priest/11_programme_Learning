@@ -1,0 +1,295 @@
+
+= js类型转换
+:toc:
+
+== string <- number
+
+方法1:  数字..toSting()
+
+[source, Javascript]
+----
+console.log(123..toString()); //双点法
+----
+
+
+方法2: (数字).toString()
+
+[source, Javascript]
+----
+console.log((123).toString()); //把数字放在从小括号中
+----
+
+---
+
+
+==== num类型.toString()
+
+对数字调用 toString(10) 与 toString() 相同，它们都返回十进制形式。
+
+[source, typescript]
+....
+let num: number = 123
+let str: string = num.toString() // toString() 方法，可以把Boolean值, 数字, 转换成字符串
+console.log(typeof str, str); //string 123
+....
+
+---
+
+==== String(value)
+[source, typescript]
+....
+String(444) //把给定的值转换成字符串
+....
+
+String(value): 这种方法可读性更好, 唯一的问题是, 这种函数调用可能会迷惑一些人, 尤其是那些熟悉Java的程序员, 因为String同时也是一个构造函数. 要注意的是它作为普通函数, 和作为构造函数时的表现, 完全不同.
+
+---
+
+==== number + '' -> string
+
+要把一个数字转换为字符串，只要给它添加一个空的字符串即可.
+
+[source, typescript]
+....
+let num: number = 123
+let strNum = num + '' //数字+空格, 就能转成字符串.
+console.log(typeof strNum, strNum); //string 123
+....
+
+
+---
+
+==== num.toFixed()方法把一个数字转换为字符串，并且显示小数点后的指定的位数。它不使用指数表示法。
+
+[source, typescript]
+....
+console.log(3.1415926.toFixed(2)); //3.14
+console.log(18.toFixed(2)); //报错! 说明toFixed()方法只能用在"带有小数点的"数字字符串上.
+....
+
+---
+
+==== num.toExponential(), 使用指数表示法, 把一个数字转换为字符串.
+小数点前面有1位数，而小数点后面有特定的位数。
+
+[caption=Exponential]
+NOTE: Exponential [,ekspə'nenʃ(ə)l] +
+1. exponential growth/increase etc
+exponential growth, increase etc becomes faster as the amount of the thing that is growing increases 指数式增长/增加，越来越快的增长/增加等 +
+例：an exponential increase in travel
+旅游的指数式增长 +
+2. using a small number or letter slightly above and to the right of a number or letter that shows how many times a quantity is to be multiplied by itself 指数的，含有指数的
+
+[source, typescript]
+....
+let num: number = 123456.789
+let strNum = num.toExponential(2) //参数表示显示到2位小数
+console.log(typeof strNum, strNum); //string 1.23e+5
+....
+
+
+//-------------------------
+
+== string <- boolean
+
+==== bool类型.toString()
+Boolean 类型的 toString() 方法, 只输出 "true" 或 "false"
+
+
+//-------------------------
+
+==  string <- array
+
+==== arr.join('分隔符')
+将数组中的元素, 用指定的分隔符, 组成一个字符串
+[source, typescript]
+....
+let str = ['a','b','c'].join('/')  // a/b/c
+....
+
+
+---
+
+==== arr.toString()
+把数组转换为字符串
+[source, typescript]
+....
+console.log(['a', 'b', 'c'].toString()); //a,b,c
+....
+
+
+//--------------------------
+
+---
+
+== string <- object
+
+==== obj对象转成字符串 -> JSON.stringify(obj)
+
+
+//-------------------------
+
+---
+
+== number <- string
+
+==== parseInt(str) 转换成整数
+
+[source, typescript]
+....
+console.log(parseInt('3.99')); //3 <--在把str转成num的同时, 又相当于向下取整
+console.log(parseInt('123abc456')); //123 <--判断到第一个非数字字符串为止.
+console.log(parseInt('abc123')); //NaN <--如果第一个字符就不是数字字符串, 则不再向后判断.
+....
+
+
+---
+
+==== parseFloat(str) 转换成浮点数
+
+[source, typescript]
+....
+console.log(parseFloat('3.14')); //3.14
+console.log(parseFloat('11.22.33')); //11.22 <--对于parseFloat()方法来说，第一个出现的小数点是有效字符。如果有两个小数点，第二个小数点将被看作无效的。
+....
+
+
+---
+
+==== Number(str)
+把给定的值, 转换成数字（可以是整数或浮点数)
+[source, typescript]
+....
+console.log(Number('3.14')); //3.14
+console.log(Number('3.14.89')); //NaN
+console.log(Number('123abc456')); //NaN
+....
+
+---
+
+//-------------------------
+
+== boolean <- string
+
+==== Boolean(value) 把给定的值转换成 Boolean 型
+
+---
+
+//-------------------------
+
+== array <- object
+
+==== Array.from(类数组或可迭代对象arrayLike[, 回调函数mapFn[, thisArg]])  //将类数组或可遍历对象,转成真正的数组
+
+*Array.from方法用于将两类对象转为真正的数组："类似数组的对象"（array-like object）, 和"可遍历（iterable）的对象"（包括 ES6 新增的数据结构 Set 和 Map）。* +
+mapFn是回调函数，新数组中的每个元素会执行该回调函数。
+
+
+这里面, 有几个注意事项要记住: +
+1. 类数组中的 *key,必须是数字* (才能转成数组的索引值), 如果key 不能转成数字下标, 转换后的数组 ,就会输出都是undefined. +
+2. 类数组中的 *key, 必须从0开始*, 才能转成正确的数组初始下标. +
+3. 类数组如果是 *对象, 必须含有length属性.* 否则转出来的数组是空. +
+4. 类数组中的key的数字, 不能有数字跳跃, 否则会出现undefined
+
+[source, typescript]
+....
+let obj1 = {name: 'zrx', age: 33, sex: 'male', length: 3} //注意, length必须要写!
+let list1 = Array.from(obj1)
+console.log(list1) //[ undefined, undefined, undefined ] <--为什么是undefined? 因为本obj1的key,不是数字
+
+
+let obj2 = {1: 'zzr', 2: 17, 3: 'female', length: 3} //key必须从0开始, 才能转成正确的数组, 本例没有从0开始,会有问题.
+let list2 = Array.from(obj2)
+console.log(list2) //[ undefined, 'zzr', 17 ]
+
+
+let obj3 = {0: 'zzr', 1: 17, 2: 'female', length: 3} //这才正确, 还有别忘了length属性
+let list3 = Array.from(obj3)
+console.log(list3) //[ 'zzr', 17, 'female' ]
+....
+
+[source, typescript]
+....
+let obj1 = {0: 'zzr', 2: 17, 3: 'female', length: 3}  //key出现数字跳跃
+let list1 = Array.from(obj1)
+print(list1) //[ 'zzr', undefined, 17 ]
+....
+
+
+---
+
+==== Array.from(objSet)方法, 可以将 Set 结构转为数组
+这就提供了去除数组重复成员的另一种方法。
+
+[source, typescript]
+....
+list1 = [1,1,2,3,3,3,5,6,6,6]
+let s = new Set(list1)
+
+let arr1 = Array.from(s) //Array.from方法可以将 Set 结构转为数组。
+console.log(arr1); //[ 1, 2, 3, 5, 6 ]
+
+let arr2 = [...s] //<-- 解包的方式更方便
+console.log(arr2); //[ 1, 2, 3, 5, 6 ]
+....
+
+
+
+---
+
+==== 用 ...解包, 将set转成arr
+[source, typescript]
+....
+let set = new Set([1, 2, 3, 3, 3, 4, 5]),
+    array = [...set];   //将set解包后的每一个元素, 放在一个数组中
+console.log(array); // [1,2,3,4,5]
+....
+
+当已经存在一个数组，而你想从它提炼出一个无重复值的新数组时，该方法十分有用。即, 分两步走:
+1. 先将数组传递给 Set 构造函数, 即将数组转换为set. +
+2. 再使用扩展运算符…, 将 Set解包, 放入一个数组容器中, 就能转换回数组。
+
+
+
+---
+
+==== Array.from(objMap)方法, 可以将 Map 结构转为数组
+[source, typescript]
+....
+let list3: any[] = [['k1', 'v1'], ['k2', 'v2'], ['k3', 'v3']]
+let m = new Map(list3)
+console.log(m); //Map { 'k1' => 'v1', 'k2' => 'v2', 'k3' => 'v3' }
+
+let listFromMap = Array.from(m) //将map对象转成数组
+console.log(listFromMap); //[ [ 'k1', 'v1' ], [ 'k2', 'v2' ], [ 'k3', 'v3' ] ]
+....
+
+
+---
+
+==== Array.from(arrLike)方法, 可以将类数组 转为数组
+
+//-------------------------
+
+== array <- 离散的值
+
+==== Array.of() 用于将一组值，转换为数组
+[source, typescript]
+....
+Array.of(3, 11, 8) // [3,11,8]
+Array.of(3) // [3]
+Array.of(3).length // 1
+
+print(Array.of()) //[]
+print(Array.of(1)) //[ 1 ]
+print(Array.of(1,2)) //[ 1, 2 ]
+print(Array.of(1,2,3)) //[ 1, 2, 3 ]
+....
+
+---
+
+//--------------------------
+
+== object <- string
+
+====  JSON.parse(strJson) -> object

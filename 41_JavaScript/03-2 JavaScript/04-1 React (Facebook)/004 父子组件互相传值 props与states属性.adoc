@@ -1,0 +1,110 @@
+
+= react 父子组件互相传值
+:toc:
+
+
+---
+
+== 父组件向子组件传值
+父组件向要传给子组件的值, 放在子组件元素的属性中就行了.  +
+子组件能从props对象中, 拿到父组件传来的所有值.
+
+
+|===
+
+|父组件中的写法 +
+父组件调用子组件, 将要传递的值放在子组件的属性中 |子组件中的写法  +
+父组件传来的所有值, 在子组件的props对象中
+
+
+|<Cpn_son fatherMsg={'你好,儿子!我是父亲'}/> |子组件拿到了父组件传来的值: +
+{this.props.fatherMsg}
+
+|===
+
+---
+
+== 子组件向父组件传值
+
+react不推荐子组件来修改父组件中的值, 如果你一定要修改, 子组件不能直接向父组件传值, 只能通过调用父组件的方法(即, 父组件先把自己的方法传给子组件, 来让子组件), 来修改父组件中的值.
+
+比如, 我们来让子组件修改父组件的money属性值. 父组件就要把自己创修改money的函数, 传给子组件, 让子组件来调用.
+
+父组件:
+[source, typescript]
+....
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {object} from "prop-types";
+import {Cpn_Son} from './Cpn_Son'
+
+interface Itf_props {
+}
+
+interface Itf_state {
+    money: number
+}
+
+export class Cpn_Father extends React.Component<Itf_props, Itf_state> {
+    constructor(props: Itf_props) {
+        super(props)
+        this.state = {
+            money: 4500
+        }
+        this.fn_changeFatherMoney = this.fn_changeFatherMoney.bind(this)
+    }
+
+    render() {
+        return (
+            <React.Fragment>
+                <p>父组件</p>
+                <div>父组件的money:{this.state.money}</div>
+                <hr/>
+                <Cpn_Son fn_changeFatherMoney={this.fn_changeFatherMoney}></Cpn_Son>   {/* 父组件把自己的函数, 传给子组件*/}
+            </React.Fragment>
+        )
+    }
+
+    fn_changeFatherMoney(newValue: number) {
+        this.setState({money: newValue})
+    }
+}
+....
+
+
+子组件:
+[source, typescript]
+....
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {object} from "prop-types";
+
+interface Itf_props {
+    fn_changeFatherMoney:(newValue:number)=>void
+}
+
+interface Itf_state {
+}
+
+export class Cpn_Son extends React.Component<Itf_props, Itf_state> {
+    constructor(props: Itf_props) {
+        super(props)
+        this.state = {}
+    }
+
+    render() {
+        return (
+            <React.Fragment>
+                <p>子组件</p>
+                <input type="button" value={'子组件修改父组件的money'}
+                onClick={()=>{this.props.fn_changeFatherMoney(50000)}}/>   {/*子组件调用父组件的函数*/}
+            </React.Fragment>
+        )
+    }
+}
+....
+
+---
+
+
+

@@ -1,0 +1,9 @@
+
+= 类型判断
+:toc:
+---
+
+== 使用optc法 -> Object.prototype.toString.call()
+
+---
+

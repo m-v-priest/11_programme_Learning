@@ -1,0 +1,115 @@
+
+= 创建一个http服务器的实例对象
+:toc:
+
+---
+
+== 在 node.js中使用typescript
+
+==== 配置 typescript
+
+执行命令 tsc --init , 创建一个tsconfig.json文件.
+
+打开tsconfig.json文件, 把下面几条暴露出来:
+
+[source, typescript]
+....
+"outDir": "./", //编译后生成的JS目录. 可以创建一个bin目录, 把"rootDir"的值设置为 "./bin"
+"rootDir": "./", //源文件目录
+"experimentalDecorators": true, //允许es7装饰器功能
+....
+
+安装  @types/node 和 @types/express
+....
+yarn add @types/node
+yarn add @types/express
+....
+
+
+
+
+---
+
+==== 在phpStorm中打开对node.js的代码提示:
+
+image:./img_nodeJs/phpStorm中对node.js打开代码提示.png[]
+
+image:./img_nodeJs/phpStorm中对node.js打开代码提示2.png[]
+
+---
+
+==== 运行node.js
+
+在终端输入:
+....
+1. node 你的js文件名.js
+2. 打开浏览器访问 http://127.0.0.1:你监听的端口号/
+....
+
+---
+
+== 创建并运行一个http服务器的实例对象
+
+[source, typescript]
+----
+let http = require("http");
+
+//创建服务器实例. request参数接收"发来的请求", response参数是返回回去的"响应的数据".
+let server = http.createServer((req, res) => {
+    res.writeHead(200, {"Content-Type": "text/html; charset=utf-8"}); //后端向前端返回http头部信息. 注意 charset=utf-8 一定要写, 否则中文乱码
+
+    res.write("服务器已经收到你的请求...");  // response.write():将信息写入http响应输出流。
+    res.write("<br>支持<i>html</i>格式哦<br>");
+
+    res.end("服务器结束响应!");
+    //后端向前端发送响应的数据. response.end([data][, encoding][, callback])方法, 表明服务器发出的所有响应头和主体数据,都已发送完毕.
+    // 每个响应都必须调用response.end()方法。 如果指定了callback，将在响应流完成时调用它。
+    // response.end()将当前所有缓冲的输出, 发送到客户端，停止该页的执行，并引发EndRequest事件。
+
+});
+server.listen(8000, "127.0.0.1"); //对服务器实例进行监听, 使用 listen() 方法绑定 8000 端口。
+----
+
+---
+
+== 读取一个本地 txt文件, 并把它写入前端浏览器的页面上
+
+[source, typescript]
+....
+let http = require("http");
+let fs = require("fs");
+let path = require("path");
+let util = require("util");
+
+let fnPms_readFile = util.promisify(fs.readFile); //把传统的异步函数, 变成一个返回promise对象的函数.
+
+const urlTxt = path.join(__dirname, "./poem.txt");
+
+let server = http.createServer((req, res) => {
+    res.writeHead(200, {"Content-Type": "text/html; charset=utf-8"});
+
+    fnPms_readFile(urlTxt)
+        .then((res_txtFile: string) => {
+            res.write(res_txtFile.toString()); //将读取到的文件内容, 写到浏览器页面上. 注意, readFile直接读取到的res是一个二进制数据, 必须要用toString()来转成字符串才能看懂.
+
+            res.end("end"); //注意! res.end()一定要写在这个pms函数里面, 否则promise是个异步函数,会在所有"同步操作"执行完后才执行. 因此如果你 res.end()写在pms函数外面的话, res.end()就是一个"同步操作". 换句话说, res.end()会先执行, 然后才执行异步的pms函数! 这样你读取到的文件内容, 就永远也不会输出到浏览器页面上了!
+        })
+        .catch((err: Error) => {
+            console.log(err);
+            res.end("end");
+        });
+});
+
+server.listen(8000, "127.0.0.1");
+....
+
+---
+
+== 读取一个本地 json文件, 并把它转成object对象, 写在前端页面上
+
+可以同样用 fs.readFile(filePath) 来读取本地json文件, 然后把json字符串, 用 JSON.parse(strJson) 转成 object对象就行了. 你就可以对这个obj对象进行任何操作, 写回前端页面上.
+
+---
+
+
+

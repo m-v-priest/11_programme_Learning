@@ -1,0 +1,412 @@
+
+= typeScript 基础类型
+:toc:
+
+---
+
+
+有以下数据类型:
+
+ - boolean（布尔类型）
+ -  number（数字类型）
+ -  string（字符串类型）
+ -  array（数组类型）
+ -  tuple（元组类型）
+ -  enum（枚举类型）
+ -  any（任意类型）
+ -  null 和 undefined 类型
+ -  void 类型
+ -  never 类型
+ -  object 对象类型
+
+---
+
+== 字符串类型 string
+
+[source, typescript]
+....
+let userName:string = 'zzr'
+....
+
+---
+
+== 数字类型 number
+和JavaScript一样，TypeScript里的所有数字都是浮点数。 这些浮点数的类型是 number。
+
+[source, typescript]
+....
+let age:number = 17
+....
+
+---
+
+== 布尔值类型 boolean
+
+[source, typescript]
+....
+let isFemale: boolean = true
+....
+
+---
+
+== 数组类型 [] 或 Array<元素类型>
+
+[source, typescript]
+....
+let arrName: string[] = ['zzr', 'wyy', 'mwq']
+//或
+let arrAge: Array<number> = [19, 24, 36] //使用数组泛型
+....
+
+---
+
+
+
+==== 只读的数组 ReadonlyArray<T>
+
+TypeScript具有 ReadonlyArray<T>类型，它与 Array<T>相似，只是把所有可变方法去掉了，因此可以确保数组创建后再也不能被修改.
+
+[source, typescript]
+....
+let arr: ReadonlyArray<string> = ['zzr', 'wyy', 'ypp'] //只读数组
+
+arr.push('mwq') //报错 error TS2339: Property 'push' does not exist on type 'readonly string[]'.
+
+arr[2] = 'hr' //报错 error TS2542: Cpn_Map signature in type 'readonly string[]' only permits reading.
+
+let arr2: string[] = arr //报错 error TS2740: Type 'readonly string[]' is missing the following properties from type 'string[]': pop, push, reverse, shift, and 3 more.
+// <--可以看到, 就算把整个ReadonlyArray赋值到一个普通数组也是不可以的。 但是你可以用类型断言重写：
+
+let arr3: string[] = arr as string[] //可以类型断言,没问题!
+// 相当于把只读数组, 强制类型转换成了普通可读可写的数组.
+
+arr3.push('令狐冲')
+console.log(arr3); //[ 'zzr', 'wyy', 'ypp', '令狐冲' ]
+....
+
+---
+
+==== 用readonly, 来将数组元素设为只读的.
+
+[source, typescript]
+....
+interface Itf_arrStr { //该接口定义了一个数组的类型
+    readonly [index: number]: string //将数组元素设为只读
+}
+
+let arr: Itf_arrStr = ['zzr', 'wyy', 'mwq']
+arr[1] = 'ypp' //报错 error TS2542: Index signature in type 'Itf_arrStr' only permits reading.
+....
+
+---
+
+==== readonly 和 const 的区别
+最简单判断该用readonly还是const的方法是看, 要把它做为变量使用,还是做为一个属性使用?
+
+|===
+|readonly |const
+
+|用于"属性"
+|用于"变量", 相当于把变量变成"常量"
+
+|===
+
+简单的例子:
+[source, typescript]
+....
+const name = "zzr"; // 将变量设为"常量"
+
+type type_objPerson = { //类型别名
+    readonly isFemale: boolean; // 只读属性
+};
+....
+
+注意: readonly 能确保“我”不能修改属性值value，但是当你把这个属性值交给(赋值给)其他不受"只读"约束的自由变量时, 就能通过它们, 来修改value值了!
+[source, typescript]
+....
+type type_objPerson = { //类型别名
+    readonly isFemale: boolean; // 只读属性
+};
+
+let p1 :type_objPerson={isFemale: true}
+// p1.isFemale = false //报错, 只读属性无法修改. error TS2540: Cannot assign to 'isFemale' because it is a read-only property.
+
+//但是, 如果把只读属性的值, 赋给另一个不受只读约束的变量的话
+let sex = p1.isFemale  //sex变量并非只读, 所以可以修改它指向的值.
+
+sex = false //就能修改原来只读的值了!
+console.log(sex); //false
+....
+
+
+
+---
+
+
+== 元组类型 Tuple
+
+元组类似于数组一样, **里面的元素可以不是同一类型的**. 但区别是, 元组允许为里面每个元素, 规定住类型! 即, 排序第几的元素必须是某种类型.
+
+JavaScript 并没有支持类似于元组的支持。开发者通常只能使用数组来表示元组，但是 TypeScript 类型系统支持它。使用 :[typeofmember1, typeofmember2] 能够为元组添加类型注解，元组可以包含任意数量的成员.
+
+[source, typescript]
+....
+let tuplePerson:[string,number,boolean] //声明一个元组类型的变量, 规定了里面有三个元素, 和每个元素的类型必须是什么
+tuplePerson = ['zzr',19,true] //赋值
+console.log(tuplePerson[1]); //19
+
+tuplePerson = [33, 'wyy', 44] //报错, 报错如下, 意思就是你的元素类型不对!
+/*
+ts1.ts(6,16): error TS2322: Type 'number' is not assignable to type 'string'.
+ts1.ts(6,20): error TS2322: Type 'string' is not assignable to type 'number'.
+ts1.ts(6,27): error TS2322: Type 'number' is not assignable to type 'boolean'.
+ */
+....
+
+**元组很像数据库中的表头Schema设置, 即, 里面的元素类型一旦规定好,以后赋值给它的各元素的类型, 就必须完全符合规定的要求!**
+
+
+
+元组会被识别成数组类型:
+
+[source, typescript]
+....
+let t:[string,number] = ['zzr',19]
+console.log(t);
+console.log(Array.isArray(t)); //true
+....
+
+元组同样可以被"解包":
+
+[source, typescript]
+....
+let tupleWyy:[string,number] = ['wyy',22]
+let [userName,userAage] = tupleWyy //解包元组
+console.log(userName, userAage); //wyy 22
+....
+
+
+
+---
+
+== 枚举类型 enum
+
+[source, typescript]
+....
+//EnumGender是一个"枚举类型", 专门用来指定人的性别
+enum EnumGender {
+    Male = 'male',
+    Female = 'female',
+    Unknow = 'unknow'
+}
+
+let wyyGender: EnumGender = EnumGender.Female
+let zrxGender: EnumGender = EnumGender.Male
+
+console.log(wyyGender); //female
+console.log(zrxGender); //male
+....
+
+---
+
+==== 注意: 如果我们定义枚举类型时, 不赋值的话, 值就会默认是一个从0开始的元素编号.
+
+[source, typescript]
+....
+//注意:下面,我们没有给EnumGender这个枚举类型中的各元素, 赋值
+enum EnumGender {
+    Male , //索引值是 0
+    Female , //索引值是 1
+    Unknow
+}
+
+let zrxGender: EnumGender = EnumGender.Male
+let wyyGender: EnumGender = EnumGender.Female
+
+console.log(zrxGender); //0 <--这样, 其值就是索引的值
+console.log(wyyGender); //1
+....
+
+---
+
+==== 当然, 如果你不希望索引从0开始, 可以手动设置一个起始数字.
+
+[source, typescript]
+....
+enum EnumGender {
+    Male=99 , //手动指定索引值从99开始
+    Female ,  //则此索引值就会是100
+    Unknow
+}
+
+let zrxGender: EnumGender = EnumGender.Male
+let wyyGender: EnumGender = EnumGender.Female
+
+console.log(zrxGender); //99
+console.log(wyyGender); //100
+....
+
+---
+
+==== 我们还可以从枚举元素的值, 反向拿到该枚举元素的名字
+
+[source, typescript]
+....
+enum EnumCourse { //定义一个课程的枚举类型
+    economics = 100, //经济学课程, 索引是100
+    finance = 200,
+    law = 300
+}
+
+//我们来拿到枚举元素值是300的, 该枚举元素的名字(即课程名)
+let zzrCourse:string = EnumCourse[300] //相当于是数组操作中的"以索引取值" , 拿到的名字就是 law 法律课.
+console.log(zzrCourse); //law
+....
+
+---
+
+==== 一个枚举类中的元素, 不能赋值给另一个枚举类中的元素
+注意: 来自于不同枚举的枚举变量，被认为是不兼容的, 所以它们不能互相赋值.
+
+[source, typescript]
+....
+enum enumA {
+    aa,
+    cc
+}
+
+enum enumB {
+    bb,
+    cc
+}
+
+let cc1 = enumA.cc
+let cc2 = enumB.cc
+cc2 = cc1 //报错 error TS2322: Type 'enumA.cc' is not assignable to type 'enumB'.
+....
+
+---
+
+== 任何类型 Any
+
+any 类型提供给你一个类型系统的「后门」,TypeScript 将会把类型检查关闭。any 能够兼容所有的类型（包括它自己）。因此，所有类型都能被赋值给它，它也能被赋值给其他任何类型。
+
+当你从 JavaScript 迁移至 TypeScript 时，你将会经常性使用 any。但你必须减少对它的依赖，因为你需要确保类型安全。当使用 any 时，你基本上是在告诉 TypeScript 编辑器不要进行任何的类型检查。
+
+[source, typescript]
+....
+let sth:any = 'zzr'
+console.log(typeof sth); //string
+
+sth = 19
+console.log(typeof sth);  //number
+....
+
+当你只知道一部分数据的类型时，any类型也是有用的。 比如，你有一个数组，它包含了不同的类型的数据：
+
+[source, typescript]
+....
+let arr: any[] = ['zzr', 19, true]
+arr[1] = 'female'
+console.log(arr); //[ 'zzr', 'female', true ]
+....
+
+---
+
+== Void类型
+
+某种程度上来说，void类型像是与any类型相反，它表示没有任何类型。 当一个函数没有返回值时，你通常会见到其返回值类型是 void：
+
+[source, typescript]
+....
+function fn(): void {
+    console.log("hello typeScript");
+}
+....
+
+声明一个void类型的变量没有什么大用，因为你只能为它赋予undefined和null：
+
+[source, typescript]
+....
+let unusable: void = undefined;
+....
+
+---
+
+==  Null 和 Undefined 类型
+TypeScript里，undefined和null两者各自有自己的类型分别叫做undefined和null。 和 void相似，它们的本身的类型用处不是很大：
+
+[source, typescript]
+....
+let u: undefined = undefined;
+let n: null = null;
+....
+
+Null 和 Undefined 一般用在联合类型上
+
+[source, typescript]
+....
+let userName: string | null = null
+let userAge: number | null = 23
+let userSex: boolean | null | undefined  //只声明, 未赋值
+
+console.log(userName); //null
+console.log(userAge); //23
+console.log(userSex); //undefined
+....
+
+---
+
+== never类型, 表示那些永不存在的值的类型
+
+never类型表示的是那些永不存在的值的类型。 比如, 一个函数总是会抛出异常, 或永远不会运行结束, 则这个函数的返回值类型就是 never类型.
+下面是一些返回never类型的函数：
+
+[source, typescript]
+....
+// 返回never的函数, 必须存在无法达到的终点
+function error(message: string): never {
+    throw new Error(message); //抛出错误
+}
+
+// 推断的返回值类型为never
+function fail() {
+    return error("Something failed");
+}
+
+// 返回never的函数, 必须存在无法达到的终点
+function infiniteLoop(): never {
+    while (true) {   //永远不会运行结束, 类似死循环
+    }
+}
+....
+
+---
+
+== object类型, 表示非原始类型
+
+object表示非原始类型，也就是除number，string，boolean，symbol，null 或 undefined之外的类型。
+
+
+object类型 和 any类型 有什么区别呢?
+**任何类型的值, 你都可以赋值给object类型的变量身上, 但是, 一旦赋值后, 原类型就丢失了. 比如, 一个字符串类型的值, 赋值给object类型的变量后, 就会丢失字符串特有的方法.**
+
+相当于一只白天鹅赋值给丑小鸭类型后, 就忘了自己还有飞翔的功能.
+
+[source, typescript]
+....
+let p2:Object = 'zzr' //字符串赋给Object类型后, 就会丢失字符串特有的方法
+console.log(p2.toUpperCase()); //报错: error TS2339: Property 'toUpperCase' does not exist on type 'Object'. <--字符串赋值给Object类型后, 就丢失了字符串类型特有的方法.
+....
+
+但是, any类型则没有这个缺陷.
+
+[source, typescript]
+....
+let p2: any = 'zzr'
+console.log(p2.toUpperCase()); //ZZR <--没有任何问题! 原类型的所有方法, 全部记得
+....
+
+---
+
+

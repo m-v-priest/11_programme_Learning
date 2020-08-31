@@ -1,0 +1,317 @@
+
+= 类型兼容性
+:toc:
+
+---
+
+== 类型兼容性
+TypeScript里的类型兼容性, 是基于结构子类型的。它正好与java等使用的"名义（nominal）类型"形成对比。
+
+[source, typescript]
+....
+interface Itf_HasName {
+    name: string
+}
+
+class ClsPerson {
+    name: string
+
+    constructor(name: string) {
+        this.name = name;
+    }
+}
+
+//实例既可以是"接口"类型的
+let p: Itf_HasName = new ClsPerson('zzr') //在使用基于名义类型（nominal）的语言，比如C#或Java中，这段代码会报错，因为Person类没有明确说明其实现了Name接口。但是在ts中, 可行.
+console.log(p); //ClsPerson { name: 'zzr' }
+
+//实例也可以是"类"类型
+let p2: ClsPerson = new ClsPerson('wyy')
+console.log(p2); //ClsPerson { name: 'wyy' }
+....
+
+**TypeScript"结构化类型系统"的基本规则是: 如果x要兼容y，那么y至少具有与x相同的属性。**
+
+[source, typescript]
+....
+interface Itf_HasName {
+    name: string
+}
+
+let x: Itf_HasName //dog是Itf_HasName接口类型的
+x.age = 36 //报了两个错误
+// error TS2454: Variable 'x' is used before being assigned.
+// error TS2339: Property 'age' does not exist on type 'Itf_HasName'.
+
+let y = {name: 'wyy', age: 29} //注意，y有个额外的age属性，但y在赋值给x时,这不会引发错误。 只有目标类型（这里是Itf_HasName）的成员会被一一检查是否兼容。
+x = y //可行?? 虽然x不能自己添加age属性, 但能接收别人赋值的age属性?
+console.log(x); //{ name: 'wyy', age: 29 }
+....
+
+这里要检查y是否能赋值给x，编译器检查x中的每个属性，看是否能在y中也找到对应属性。 在这个例子中，y必须包含名字是name的string类型成员。y满足条件，因此赋值正确。
+
+---
+
+== 判断两个函数是否是兼容的
+
+==== 下面两个函数, 返回值类型相同, 但参数不同
+
+[source, typescript]
+....
+let x = (a: number) => 0;
+let y = (b: number, s: string) => 0;
+
+y = x; // OK <--x中的每个参数, 都能在y中找到对应参数
+x = y; // Error  <--y中的每个参数, 无法在x中都找到对应参数. 所以当y函数的s参数赋值给x函数时, x函数拿什么来对应接收它呢?
+....
+
+要查看x是否能赋值给y，首先看它们的参数列表。 **x的每个参数必须能在y里找到对应类型的参数。** 注意, 参数的名字是否相同无所谓，关键是看它们的类型! 上例中，**x的每个参数在y中都能找到对应的参数，所以允许赋值。**
+
+第二处产生了赋值错误，因为y有个必需的第二个参数，但是x并没有，所以不允许赋值。
+
+你可能会疑惑, y=x 这句, 为什么允许忽略y的第二个s参数? 原因是忽略额外的参数在JavaScript里是很常见的。 比如, 即使Array#forEach能给回调函数传3个参数：数组元素，索引和整个数组。传入一个只使用第一个参数的回调函数也是很常见的.
+
+==== 如果两个函数, 是返回值类型不同呢? 它们能否互相赋值? 此函数能不能赋值给彼函数?
+
+[source, typescript]
+....
+//下面两个函数, 参数相同,但返回值类型不同(含有的属性不同)
+let fnAnimal = () => { //好比是父类
+    return {name: 'zzr'}
+}
+let fnPerson = () => { //好比人是动物的子类, 所以属性比父类更多!
+    return {name: 'Alice', job: 'lawyer'}
+}
+
+fnPerson = fnAnimal //报错 error TS2322: Type '() => { name: string; }' is not assignable to type '() => { name: string; job: string; }'.
+// Property 'job' is missing in type '{ name: string; }' but required in type '{ name: string; job: string; }'.
+
+fnAnimal = fnPerson
+....
+
+目标函数 = 源函数 //函数赋值  
+
+**赋值, 等号左边的是"目标函数", 等号右边的是"源函数". 想要赋值成功, 则"源函数"(等号右边)的返回值类型, 必须是"目标函数"(等号左边)返回值类型的子类型(子类)!**   
+
+即:
+**父类 = 子类  //复杂的可以赋值给简单的, 可行!**  
+**子类 = 父类  //简单的赋值给复杂的, 错误!**
+
+---
+
+== 类的实例之间, 能否赋值的问题
+
+==== 只比较"实例成员", 不比较"构造函数和静态成员"
+
+类有静态部分和实例部分的类型。 **比较两个类类型的对象时，只有"实例的成员"会被比较。 静态成员和构造函数不在比较的范围内。**
+
+[source, typescript]
+....
+class ClsA {
+    str: string //ClsA和ClsB的实例属性str的类型相同
+
+    constructor(str: string, num: number) { //ClsA和ClsB的构造方法的类型不同!
+        this.str = str;
+        console.log(num);
+    }
+}
+
+class ClsB {
+    str: string
+
+    constructor(str: string, bool: boolean) {
+        this.str = str;
+        console.log(bool);
+    }
+}
+
+//class类名,也可以作为类型来用哦
+let insA: ClsA = new ClsA('zzr', 22)
+let insB: ClsB = new ClsB('wyy', true)
+insA = insB //ok
+insB = insA //ok
+....
+
+
+又如":
+
+[source, typescript]
+....
+class ClsMan {
+    name: string
+
+    constructor(name: string) {
+        this.name = name;
+    }
+}
+
+class ClsWoman {
+    name: string
+    charm: number //女人类比男人类多一个属性
+
+    constructor(name: string, charm: number) {
+        this.name = name;
+        this.charm = charm;
+    }
+}
+
+let m = new ClsMan('zrx')
+let w = new ClsWoman('wyy', 99)
+
+m = w //属性多的一方, 能够赋值给属性少的一方.
+w = m //报错 error TS2741: Property 'charm' is missing in type 'ClsMan' but required in type 'ClsWoman'. <--属性少的一方, 无法赋值给属性多的一方
+....
+
+注意: 类的私有成员和受保护成员, 会影响赋值兼容性。 当检查类实例的兼容时，如果目标类型包含一个私有成员，那么源类型必须包含来自同一个类的这个私有成员。   
+同样地，这条规则也适用于包含受保护成员实例的类型检查。   
+这**允许子类赋值给父类**，但是不能赋值给其它有同样类型的类。
+
+对一个简单类型 Base(基类) 和 Child(子类) 来说，**如果 Child 是 Base 的子类，Child 的实例能被赋值给 Base 类型的变量。**
+
+
+---
+
+==== 变体
+
+对类型兼容性来说，变体是一个重要的概念。
+
+
+|===
+|概念 |说明
+
+|协变（Covariant）
+|只在同一个方向；
+
+|逆变（Contravariant）
+|只在相反的方向；
+
+|双向协变（Bivariant）
+|包括同一个方向和不同方向；
+
+|不变（Invariant）
+|如果类型不完全相同，则它们是不兼容的。
+|===
+
+子类型 在编程理论上是一个复杂的话题，而他的复杂之处来自于一对经常会被混淆的现象，我们称之为"协变"与"逆变"。
+
+我们先约定如下的标记：
+
+|===
+|写法 |表示
+
+|A ≼ B
+|意味着 A 是 B 的子类型
+
+|A → B
+|指的是以 A 为参数类型，以 B 为返回值类型的函数类型。
+
+|x : A
+|意味着 x 的类型为 A。
+|===
+
+假设我有如下三种类型：
+....
+灰猎犬Greyhound ≼ Dog ≼ Animal
+....
+
+https://jkchao.github.io/typescript-book-chinese/tips/covarianceAndContravariance.html#%E4%B8%80%E4%B8%AA%E6%9C%89%E8%B6%A3%E7%9A%84%E9%97%AE%E9%A2%98
+
+
+
+
+---
+
+==== private 和 protected 成员, 必须来自于相同的类, 实例才能互相赋值
+
+通常, 只要是继承自同一个类, 属性多的(类或子类)实例, 可以赋值给属性少的(类或子类)实例. 但反过来则不行, 属性少的, 不能赋值给属性多的实例.  +
+**或者可以简单化的这样记忆: 子类实例可以赋值给父类实例, 但父类实例不能赋值给子类实例.**
+
+[source, typescript]
+....
+class ClsPerson {
+    private income: number //私有的收入
+    protected house: object //受保护的房子
+
+    constructor(income: number, house: object) {
+        this.income = income;
+        this.house = house;
+    }
+}
+
+class ClsWoman extends ClsPerson {
+    private age: number //子类比父类多了一个age属性
+
+    constructor(income: number, house: object, age: number) {
+        super(income, house);
+        this.age = age;
+    }
+}
+
+let insPerson = new ClsPerson(5000, {})
+console.log(insPerson); //ClsPerson { income: 5000, house: {} }
+
+let insGirl = new ClsWoman(3000, {}, 25)
+insPerson = insGirl //ok <--虽然父类不存在子类拥有的age属性, 但子类实例,依然可以赋值给父类实例!
+console.log(insPerson); //ClsWoman { income: 3000, house: {}, age: 25 }
+
+insGirl = insPerson //报错 <--子类实例想要接收age属性,但父类实例无法提供. error TS2741: Property 'age' is missing in type 'ClsPerson' but required in type 'ClsWoman'.
+....
+
+
+**private私有属性(或protected受保护属性)相同的两个实例, 如果它们不来自(或继承自)同一个类, 则这两个实例之间是无法互相赋值的!**
+[source, typescript]
+....
+class ClsPerson{
+    private mate:object //配偶, 私有属性
+
+    constructor(mate: object) {
+        this.mate = mate;
+    }
+}
+
+class ClsAnimal{
+    private mate:object //配偶, 私有属性
+
+    constructor(mate: object) {
+        this.mate = mate;
+    }
+}
+
+let insPerson = new ClsPerson({})
+let insAnimal = new ClsAnimal({})
+
+insPerson = insAnimal //报错 <-- 虽然私有属性相同, 但如果两个实例不来自(或继承自)同一个类, 则这两个实例之间是无法互相赋值的!
+/*
+error TS2322: Type 'ClsAnimal' is not assignable to type 'ClsPerson'.
+Types have separate declarations of a private property 'mate'.
+ */
+....
+
+但是如果是"普通属性"相同的话, 即使这两个实例来自不同的类, 也能互相赋值. (有点像"鸭子类型"?)
+
+[source, typescript]
+....
+class ClsPerson {
+    mate: object //配偶, 若改成普通属性的话...
+
+    constructor(mate: object) {
+        this.mate = mate;
+    }
+}
+
+class ClsAnimal {
+    mate: object //配偶, 普通属性
+
+    constructor(mate: object) {
+        this.mate = mate;
+    }
+}
+
+let insPerson = new ClsPerson({})
+let insAnimal = new ClsAnimal({})
+
+insPerson = insAnimal //ok 可行!
+....
+
+
+---

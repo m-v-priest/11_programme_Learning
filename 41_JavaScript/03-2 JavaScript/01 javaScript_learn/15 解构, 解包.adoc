@@ -1,0 +1,255 @@
+
+
+= 解构 /解包
+:toc:
+
+---
+
+
+解构（destructuring ），就是将一个数据结构分解为更小的部分的过程。
+
+---
+
+== 将object解构
+对象的解构语法, 是 *在赋值语句的左侧(即等号= 的左边), 使用了"对象字面量".*
+
+[source, typescript]
+....
+let objZzr = {userName: 'zzr', userAge: 19}
+let {userName, userAge} = objZzr //声明两个新变量, 并接收从对象p中解构出来的两个值. name与 age 标识符既声明了本地变量，也读取了对象的相应属性值。
+//<--注意!! 等号左边的接收变量名, 必须严格相等于被解包对象中的属性名! 否则报错. 比如, 如果你左边写成userName2, 就会报错 error TS2339: Property 'userName2' does not exist on type '{ userName: string; userAge: number; }'.
+console.log(userName, userAge); //zzr 19
+....
+
+上面的例子, 我们将对象解构后, 赋值给了新变量. +
+也可以将对象解构后, 赋值给已存在的变量:
+
+[source, typescript]
+....
+let userName = 'Obama' //假设userName变量中存的是前任美国总统的名字
+let objTrump = {userName: 'Trump', birthday: 1946}; //注意!! 由于下面一句开头就是小括号, 所以本句处必须用分号结尾!
+({userName} = objTrump)//<--美国总统换人了. 注意你必须用圆括号()包裹解构赋值语句，这是因为暴露的花括号{}, 会被解析为代码块语句，而块语句不允许在赋值操作符（即=等号）左侧出现。圆括号()标示了里面的花括号{}并不是块语句、而应该被解释为表达式，从而允许完成赋值操作。
+console.log(userName); //Trump
+....
+
+---
+
+==== 可以对等号左边接收的变量, 起个新名字, 而不需要一定只能是被解构对象中的属性名
+
+[source, typescript]
+....
+let objZzr = {userName: 'zzr', userAge: 19}
+let {userName: newName, userAge: newAge} = objZzr //将接收方的变量, 改名成 newName和newAge
+console.log(newName, newAge); //zzr 19
+....
+
+---
+
+==== 将"嵌套的对象"解构
+
+[source, typescript]
+....
+let world = {
+    europe:{},
+    asia:{
+        japan:{},
+        china:{
+            zhejiang:{},
+            jiangsu:{
+                wuxi:{
+                    北塘区:"bei_tang"
+                }
+            }
+        }
+    }
+}
+
+let{asia:{china:{jiangsu:{wuxi:{北塘区}}}}} = world   // 即, =等号右边的对象, 有多少层嵌套, =等号左边的接收方, 同样模拟多少层嵌套, 来获取特定的元素. 这个有点像电脑路径一层层往下,来获取最内层的文件夹一样了.
+// 这句代码中的每一个:冒号, 表示这是每一个嵌套对象的key值, 因为js的对象字面量是(key:value)形式的.
+console.log(北塘区) //bei_tang
+....
+
+*每当有一个冒号在解构模式中出现，就意味着冒号之前的标识符代表需要检查的位置，而冒号右侧则是赋值的目标。*  +
+*当冒号右侧存在花括号时，表示目标被嵌套在对象的更深一层中。*
+
+
+你还能更进一步，在对象的嵌套解构中, 同样能为本地变量使用不同的名称：
+
+[source, typescript]
+....
+let objAddress = {
+    usa: {},
+    cn: {
+        shanghai: {},
+        jiangsu: {
+            suzhou: {},
+            wuxi: 'wuxi'
+        }
+    }
+}
+
+let {cn: {jiangsu: {wuxi: myCity}}} = objAddress //将解构出来的wuxi属性名, 改名成 myCity变量
+console.log(myCity); //wuxi
+....
+
+---
+
+== 将array解构
+
+数组解构的语法, 看起来与对象解构非常相似，只是将等号左边的"对象字面量"替换成了"数组字面量"。
+
+[source, typescript]
+....
+let arrP = ['zzr','wyy','mwq']
+let [one,,three] = arrP
+console.log(one); //zzr
+console.log(three); //mwq
+....
+
+---
+
+==== 能用数组解构, 来互换两个变量的值
+[source, typescript]
+....
+let a = 1, b = 2; // 注意, 这句必须要有分号结尾, 否则报错
+[a, b] = [b, a]  //注意: 左边不要写成 let [a,b]! 等号右边是为了互换而"临时创建的"数组字面量。 b 与 a 的值分别被复制到"临时数组"的第一个与第二个位置，并对该数组进行解构，结果两个变量就互换了它们的值。
+console.log(a); //2
+console.log(b); //1
+....
+
+---
+
+==== 将"嵌套的数组"解构
+
+[source, typescript]
+....
+let list1 = [1, 2, [3, 4, 5], 6]
+let [a, , [, b,],] = list1
+console.log(a) //1
+console.log(b) //4
+....
+
+
+---
+
+==== 在解构数组时, 可以使用"剩余项"
+类似于给函数传参, 可以有"剩余参数"的东西存在，在数组解构中, 也有个类似的、名为"剩余项（ rest items ）"，它使用三个点 ... 语法, 来将剩余的item赋值给一个指定的变量.
+
+[source, typescript]
+....
+let list1 = [1, 2, 3, 4, 5]
+let [a, ...arrRest] = list1  // 从索引[1]到最后的元素, 赋给了一个新数组arrRest
+//注意: "剩余项"必须是数组解构模式中最后的部分，之后不能再有逗号，否则会语法错误。
+console.log(a) // 1
+console.log(arrRest) //[ 2, 3, 4, 5 ]
+....
+
+---
+
+==== 可以使用"剩余项"功能, 来对数组进行克隆
+
+[source, typescript]
+....
+let arr=[1,2,3,4]
+let [...arrCopy] = arr //将arr中的全部有元素作为"剩余项", 赋值给arrCopy变量, 相当于克隆了arr给arrCopy
+console.log(arrCopy); //[ 1, 2, 3, 4 ]
+....
+
+---
+
+== 同时使用"对象解构"和"数组解构" ----混合解构
+
+[source, typescript]
+....
+//下面, 我们来拿到obj对象中的city, 和obj里数组中的wyy
+let obj = {
+    item1: {},
+    item2: {
+        item2_1: {},
+        item2_2: {money: 999, city: 'wuxi'},
+        item2_3: {
+            item2_3_1: {},
+            item2_3_2: {
+                arr1: ['zzr', 'wyy'],
+                arr2: [],
+            },
+        },
+    },
+}
+
+//进行解构拿值
+let {
+    item2: {
+        item2_2: {city},
+        item2_3: {
+            item2_3_2:
+                {arr1: [, two]}
+        }
+    }
+} = obj //将obj解构
+
+console.log(city); //wuxi
+console.log(two); //wyy
+....
+
+对于从 JOSN 配置结构中抽取数据来说，这种方法尤其有用，因为它不需要探索整个结构。
+
+---
+
+== 函数的参数(obj或arr类型的参数), 也可以使用上解构功能
+
+[source, typescript]
+....
+interface itf_Person {
+    name: string
+    age: number,
+    isFemale: true
+    birthday: Date
+}
+
+let objZzr: itf_Person = {name: 'zzr', age: 19, isFemale: true, birthday: new Date()}
+
+function fn(arg1: any, argObj: itf_Person | null) {
+    if (argObj) {
+        let {name, age} = argObj //将obj类型的参数, 进行解构
+        console.log(name, age); //zzr 19
+    }
+}
+
+fn('', objZzr)
+....
+
+上面的函数, 我们是把一个完整的obj对象, 全部传参进去了. 但函数内其实我们只需要name和age两个属性值即可, 而 不需要其他的属性值. 那么其实我们可以将"对象的解构", 直接写在定义函数时的形参上即可.
+
+[source, typescript]
+....
+function fn(arg1: any, {name, age}: itf_Person) { //直接解构(解包)出name和age属性值
+    console.log(name, age); //zzr 19
+}
+....
+
+---
+
+==== 可以为"参数解构", 提供可解构的默认值
+
+只需在其中每个参数后面添加等号, 并指定默认值即可。
+
+[source, typescript]
+....
+interface Itf_Person {
+    name: string
+    age: number
+    location?: string //可选属性
+    sex?: string //可选属性
+}
+
+let objZzr: Itf_Person = {name: 'zzr', age: 19} //可选属性都不填
+
+function fn({name, sex = "secret"}: Itf_Person) { //直接解包在函数形参上(即,我们只提取name和sex属性的值, 其他的不需要). 并且将Itf_Person类型中的可选属性sex, 设置一个默认值
+    console.log(name, sex);
+}
+
+fn(objZzr) //zzr secret <--既然objZzr中没有设置sex这个可选属性, 那函数就会给sex赋值一个默认值secret.
+....
+
+

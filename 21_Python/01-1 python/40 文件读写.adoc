@@ -1,0 +1,71 @@
+
+= python 文件读写
+:toc:
+
+---
+
+== 文件读写模式
+
+
+|===
+|模式 |可做操作 |若文件不存在 |是否覆盖
+
+|r
+|只能读
+|报错
+|
+
+|r+
+|可读可写
+|报错
+|是
+
+|w
+|只能写
+|创建
+|是
+
+|w+
+|可读可写
+|创建
+|是
+
+|a
+|只能写
+|创建
+|否，追加写
+
+|a+
+|可读可写
+|创建
+|否，追加写
+
+|===
+
+---
+
+== 案例: 将托福词汇mobi转成的总txt, 每一个单元就存成一个txt文件 (一共45个单元, 每个单元之间用 '===='线来分分隔着), 即, 最终会存成45个小txt文件.
+
+[source,python]
+....
+urlFile = r'C:\...\托福词汇红宝书.txt'
+
+urlFileSave = r'C:\.../toefl'
+
+count = 0 # txt文件计数器, 也是用做文件名编号
+fWrite = open('{}-{}.txt'.format(urlFileSave, count), 'w+', encoding='utf-8')
+
+with open(urlFile, 'r', encoding='utf-8') as fRead: # 先读取总的txt文件
+    for line in fRead:
+        if not line.startswith('==='): # 判断该行是否是以 '==='开头的, 即改行是否已经到单元之间的分割线处了?
+            fWrite.write(line)
+        else: # 如果已经到分割线处, 就再创立一个写入文件的句柄 fWrite. 并且将文件名编号加1.
+            count += 1
+            print(count)
+            fWrite = open('{}-{}.txt'.format(urlFileSave, count), 'w+', encoding='utf-8')
+            # fWrite.write(line)
+
+....
+
+---
+

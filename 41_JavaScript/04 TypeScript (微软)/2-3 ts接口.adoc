@@ -1,0 +1,700 @@
+
+= ts接口（Interfaces）
+:toc:
+
+---
+
+== 接口类型
+
+接口, 是对「对象的形状（Shape）」进行描述。也就是说, 接口和数据库中的表头Schema概念很像. 定义一个数据结构的形状, 和数据类型.
+
+赋值的时候，变量的形状必须和接口的形状保持一致。
+
+[source, typescript]
+....
+interface Itf_ObjPerson //接口一般首字母大写。有的编程语言中会建议接口的名称加上 I 前缀。
+    name:string,
+    age:number,
+    isFemale:boolean
+}
+
+let p1:Itf_ObjPerson = { //p1是itf_ObjPerson这个接口类型的.
+    name:'objZzr',
+    age:22,
+    isFemale:'female' //报错 error TS2322: Type 'string' is not assignable to type 'boolean'.
+}
+....
+
+---
+
+==== 在接口中, 使用"可选属性" ?
+
+[source, typescript]
+....
+interface itf_ObjPerson {
+    name:string,
+    age:number,
+    isFemale?:boolean //可选属性
+}
+
+let p1:itf_ObjPerson = {
+    name:'objZzr',
+    age:22
+}
+
+console.log(p1); //{ name: 'zzr', age: 22 }
+....
+
+又例:
+
+[source, typescript]
+....
+//本例,我们来做个试验, 定义一个函数, 接收一个对象, 给这个对象添加一个id属性, 并返回这个新对象.
+
+enum EnumSex {
+    Male = 'male',
+    Female = 'female',
+    Unknow = 'unknow'
+}
+
+interface Itf_ObjPerson {
+    name?: string,
+    isFemale?: EnumSex //枚举类型
+}
+
+let idCount: number = 1 //专门用来给id属性赋值
+
+
+//下面的函数的返回值, 是一个对象类型, 含有name属性, isFemale属性 和 id属性.
+function fn(obj: Itf_ObjPerson): { name: string, isFemale: EnumSex, id: number } {
+    let objDefaultPerson = {name: 'anonym', isFemale: EnumSex.Unknow} //如果传入本函数的对象, 缺少某个属性, 就以此objDefaultPerson中的对应属性作为默认值存在.
+    let newObjPerson = {...objDefaultPerson, ...obj, id: idCount} //后者会覆盖前者中的同名属性.
+    idCount += 1
+    return newObjPerson
+}
+
+let zzr = fn({name: 'zzr'}) //不传性别
+let wyy = fn({isFemale: EnumSex.Female}) //不传名字
+
+console.log(zzr); //{ name: 'zzr', isFemale: 'unknow', id: 1 }
+console.log(wyy); //{ name: 'anonym', isFemale: 'female', id: 2 }
+....
+
+---
+
+
+==== 接口里使用 readonly ,把属性定义成"只读"的
+
+readonly关键字, 可以用在interface, 或type, 或class里面.
+
+用在接口中:
+[source, typescript]
+....
+interface Itf {
+    name:string
+    readonly isFemale:boolean //只读属性
+}
+
+let zzr:Itf = {
+    isFemale: true, name: ""
+}
+
+zzr.isFemale = false //报错, 只读属性无法修改. error TS2540: Cannot assign to 'isFemale' because it is a read-only property.
+....
+
+
+用在类型别名type里:
+[source, typescript]
+....
+type typePerson =  { //类型别名
+    name:string
+    readonly isFemale:boolean //只读属性
+}
+
+let zzr:typePerson = {
+    isFemale: true, name: ""
+}
+
+zzr.isFemale = false //报错, 只读属性无法修改. error TS2540: Cannot assign to 'isFemale' because it is a read-only property.
+....
+
+用在class中的属性身上:
+
+[source, typescript]
+....
+class ClsPerson {
+    name: string
+    readonly isFemale: boolean //只读属性
+
+    constructor(name: string, isFemale: boolean) {
+        this.name = name;
+        this.isFemale = isFemale;
+    }
+}
+....
+
+
+---
+
+
+== 用接口, 来规定"能够用索引来取值"的数据的类型
+
+我们也可以用接口, 来描述那些能够“通过索引得到”的类型，比如a[10]或ageMap["daniel"]。
+
+TypeScript支持两种索引签名：字符串和数字。
+可以同时使用两种类型的索引，但是数字索引的返回值必须是字符串索引返回值类型的子类型。 这是因为**当使用 number来索引时，JavaScript会将它转换成string然后再去索引对象。 也就是说用 100（一个number）去索引等同于使用"100"（一个string）去索引**，因此两者需要保持一致。
+
+
+---
+
+==== 用接口, 来定义object对象, 及其中的key
+
+可以**用keyof 来取 interface 里的键**。比如下面的fnGetValue函数, 有两个参数: 第一个接收obj对象, 第二个接收该obj对象中的key. 那么如何来约束第二个参数的类型呢? 就能使用 ->  **第二个key参数的类型 extends keyof 第一个参数obj的类型**
+
+[source, typescript]
+....
+interface Itf_Person {
+    name: string,
+    age: number,
+    isFemale: boolean
+}
+
+let zzr: Itf_Person = {
+    age: 19, isFemale: true, name: "zzr"
+}
+
+//<O extends Itf_Person, K extends keyof O> 表示: O类型继承自接口, K类型继承自接口中的key.
+function fnGetValue<O extends Itf_Person, K extends keyof O>(obj: O, key: K) {
+    return obj[key]
+}
+
+console.log(fnGetValue(zzr, "isFemale"));
+....
+
+---
+
+==== 让ojb对象有"添加额外属性"的功能, 而非被接口中的规定框死, 在接口中加上这句  [propName: string]: any
+
+[source, typescript]
+....
+function fn(arg: { name: string }) { //arg参数是个obj类型, 里面必须有一个name属性.
+    console.log(arg.name);
+}
+
+fn({name:'zzr'}) //ok
+fn({name:'zzr',age:33}) //报错. age属性并不存在于 { name: string }这个类型中.
+....
+
+如果想让上面的arg参数, 这个obj对象,能添加超过name属性的其他属性, 可以把obj的类型这样来写:  { name: string, [propName:string]:any }
+
+[source, typescript]
+....
+function fn(arg: { name: string, [propName:string]:any }) { // [propName:string]:any 就表示, 可以添加任意多的其他属性. 只要该属性的key是字符串, value是any类型.
+    console.log(arg.name);
+}
+
+fn({name:'zzr'}) //ok
+fn({name:'zzr',age:33, isFemale:true}) //ok
+....
+
+又如:
+[source, typescript]
+....
+interface Itf_objPerson {
+    name: string,
+    age: number,
+    [propName: string]: any //<--这句话, 表示本对象除了上面的name和age属性外, 你还可以添加任意多的其他属性!
+}
+
+let idcount = 1
+
+//本函数接收一个对象,给它添加一个id属性, 并返回新对象
+function fn_AddIdProp(obj: Itf_objPerson): object {
+    let newObj = {...obj, id: idcount}
+    idcount += 1
+    return newObj
+}
+
+console.log(fn_AddIdProp({name: 'zzr', age: 19}));
+//{ name: 'zzr', age: 19, id: 1 }
+
+console.log(fn_AddIdProp({name: 'zzr', age: 19, isFemale: true}));
+//{ name: 'zzr', age: 19, isFemale: true, id: 2 }
+
+console.log(fn_AddIdProp({name: 'zzr', age: 19, birthday: new Date(1984, 7, 15), country: 'cn', job: 'designer'}));
+/*
+{ name: 'zzr',
+  age: 19,
+  birthday: 1984-08-14T16:00:00.000Z,
+  country: 'cn',
+  job: 'designer',
+  id: 3 }
+ */
+....
+
+但是, 上面的方法虽然便利, 也会导致接口审查的失效.
+
+正常情况下, 接口会拒绝"接口中没规定的属性"出现:
+
+[source, typescript]
+....
+interface Itf_objPerson {
+    name: string,
+    age: number
+}
+
+let zzr:Itf_objPerson = {name:'zzr',aje:33} //假设, 你把age错拼成了aje, 接口检查会发现这一点, 并报错'aje' does not exist in type 'Itf_objPerson'.
+....
+
+但是你添加了 [propName: string]: any 语句后:
+
+[source, typescript]
+....
+interface Itf_objPerson {
+    name: string,
+    age: number,
+    [propName: string]: any //这句话, 表示本对象除了上面的name和age属性外, 你还可以添加任意多的其他属性!
+}
+
+let zzr:Itf_objPerson = {name:'zzr',aje:33} //即使你输错了属性名, 也会通过. 而这可能不是你的本意.
+console.log(zzr); //{ name: 'zzr', aje: 33 }
+....
+
+---
+
+==== 使用场景案例: 在React中, 使用 接口来定义 state对象.
+
+[source, typescript]
+....
+// 假设
+interface State { //该接口规定了state对象
+  foo: string;
+  bar: string;
+}
+
+// 你可能想做：只更新里面的foo属性, 而其他属性不动.
+this.setState({ foo: 'Hello' }); // Error: 没有属性 'bar'
+
+// 因为 state 包含 'foo' 与 'bar'，TypeScript 会强制你这么做：把整个state对象中的所有属性都写一遍新值
+this.setState({ foo: 'Hello', bar: this.state.bar });
+....
+
+为了避免上面的问题, 可以把state对象中的所有成员标记为"可选":
+[source, typescript]
+....
+// 假设
+interface State {
+  foo?: string;  //都可选
+  bar?: string;  //都可选
+}
+
+// 你可能想做
+this.setState({ foo: 'Hello' }); // Yay works fine!
+
+// 由于 Freshness，你也可以防止错别字
+this.setState({ foos: 'Hello' }}; // Error: 对象只能指定已知属性
+
+// 仍然会有类型检查
+this.setState({ foo: 123 }}; // Error: 无法将 number 类型赋值给 string 类型
+....
+
+
+
+---
+
+==== 用接口, 来规定"arr数组"类型
+
+[source, typescript]
+....
+interface Itf_arr {
+    [index: number]: string // 可索引类型具有一个 索引签名，它描述了对象索引的类型，还有相应的索引返回值类型。
+}
+
+let arr1: Itf_arr = ['zzr', 'wyy', 'mwq'] //类型正确
+
+let arr2: Itf_arr = [2, 3, 4] //error TS2322: Type 'number' is not assignable to type 'string'.....
+....
+
+---
+
+
+==== 用接口, 来规定"map字典"类型
+
+字符串索引签名能够很好的描述dictionary模式.
+字符串索引声明了 obj.property 和 obj["property"] 两种形式都可以取到值。
+
+
+---
+
+== 用接口, 来规定fn函数的类型
+
+[source, typescript]
+....
+//用接口规定一个函数类型, 该函数接收三个参数, 类型分别如下, 并返回一个布尔值.
+interface Itf_fun {
+    (arg1: string, arg2: number, arg3: Date): boolean
+    //为了使用接口表示函数类型，我们需要给接口定义一个调用签名。
+    // 它就像是一个只有"参数列表"和"返回值类型"的函数定义。
+    // 参数列表里的每个参数, 都需要名字和类型。
+}
+
+//定义函数
+let fn1: Itf_fun = function (arg1: string, arg2: number, arg3: Date) { //完全符合接口中的规定.
+    return true
+}
+
+//函数的参数名, 不需要与接口里定义的名字相匹配。
+let fn2: Itf_fun = function (参数1: string, 参数2: number, 参数3: Date) { //完全没问题!
+    return false
+}
+
+let fn3: Itf_fun = function (arg1: string, arg2: object) { //参数类型不符合接口中的规定的话, 就报错. <--因为函数的参数会逐个进行检查，要求对应位置上的参数类型是与接口中规定的兼容的。
+    //报错 error TS2322: Type '(arg1: string, arg2: object) => true' is not assignable to type 'Itf_fun'.
+    //Type 'number' is not assignable to type 'object'.
+    return true
+}
+....
+
+---
+
+==== 接口可以定义 函数中的"可选参数", 及 "rest 参数"
+
+[source, typescript]
+....
+interface Itf_fn { //本接口定义一个函数的类型, 里面的参数有"可选"的, 也有"剩余接收"的
+    (age: number, name?: string, ...ArrArg: boolean[]): number
+    //1.注意, 你在接口中, 写了什么参数名, 代码提示就会是这个参数名. 假设你这里写成了arg1:number, 那么代码提示就会是fn(arg1,...) 很显然, 不要用抽象名字!
+    //2.可选参数不能放在第一个!
+}
+
+let fn: Itf_fn = function (age: number, name?: string, ...arrArg: boolean[]): number { //剩余参数...arrArg 会把接收到的离散参数, 打包在一个数组中.
+    console.log(Object.prototype.toString.call(arrArg)); //[object Array]
+    return 123
+}
+
+fn(23, 'zzr', true, false, true)
+....
+
+---
+
+==== 接口还能定义"函数重载"
+
+分三步完成:  +
+1. 先写接口itf(规定了"函数重载"的类型) +
+2. 写函数重载体fn (此时还没用到接口) +
+3. 将一个变量(fn2)定义成是接口类型itf, 然后将"函数重载"的函数名(fn), 赋值给这个变量(fn2).
+
+[source, typescript]
+....
+//该接口规定了一个"函数重载"的类型
+interface Itf_fnOverload {
+    (isFemale: boolean): boolean
+    (name: string): string
+}
+
+//重载函数 (函数名相同, 但参数不同, 或参数类型不同)
+//注意, 此时我们还没有用到接口. 但这个函数重载, 是符合接口中规定的函数类型的.
+function fn(isFemale: boolean): boolean
+function fn(name: string): string
+function fn(arg: any): any {
+    if (typeof arg === 'boolean') {
+        return Object.prototype.toString.call(arg)
+    } else if (typeof arg === 'string') {
+        return Object.prototype.toString.call(arg)
+    }
+}
+
+//下面就用到接口了, 用接口来将一个变量fn2, 规定为是"重载函数fn"的类型.
+let fn2: Itf_fnOverload = fn
+console.log(fn2(true)); //[object Boolean]
+console.log(fn2('girl')); //[object String]
+....
+
+但是, 上面这种步骤的逻辑, 你会发现它并不是在用一个接口, 来规定 "函数重载"的创建, 因为似乎无法这么做? 如下会报错:
+[source, typescript]
+....
+let 函数名:接口 = 函数重载体 //这种形式, 会报错!
+....
+
+上上面的三步法的本质, 逻辑其实变成了是: 你用接口来规定了一个变量, 让它只能接收"符合该接口的函数重载"的赋值! 换句话说, 逻辑其实是这样的:
+[source, typescript]
+....
+let 变量x:接口
+变量x = 符合接口规定的"函数重载体"fn1
+变量x = 符合接口规定的"函数重载体"fn2
+....
+
+**即, 接口其实是规定了"变量x", 而没有去规定"函数重载体"!**
+
+---
+
+==== class中, 一个只含有 getter 但是没有 setter 的属性，会被typescript自动推断为是"只读"属性
+
+在一些情况下，编译器能把一些特定的属性,推断为是 readonly只读的. 例如, 在一个 class 中，如果你有一个只含有 getter 但是没有 setter 的属性，那他就会被推断为是"只读"的：
+
+[source, typescript]
+....
+interface ItfPerson {
+    isFemale: boolean,
+}
+
+class ClsPerson implements ItfPerson {
+    private _isFemale: boolean;
+
+    constructor(isFemale: boolean) {
+        this._isFemale = isFemale;
+    }
+
+    //由于我们只给isFemale属性, 设了get方法,而没有set方法, 所以该isFemale属性就是"只读"的!
+    get isFemale(): boolean {
+        return this._isFemale;
+    }
+}
+
+let zzr: ItfPerson = new ClsPerson(true)
+zzr.isFemale = false //报错 TypeError: Cannot set property isFemale of #<ClsPerson> which has only a getter
+....
+
+---
+
+== 用接口, 来规定箭头函数
+
+下例, 该箭头函数的类型就是 (arg: number) => string , 参数是number类型, 并返回一个string类型的返回值.
+[source, typescript]
+....
+const fn: (arg: number) => string = (arg) => {
+    return arg.toString()
+};
+....
+
+
+---
+
+== 用接口, 来规定"class类"的类型
+
+接口描述了类的公共部分，而不是公共和私有两部分。 它不会帮你检查类是否具有某些私有成员。
+
+[source, typescript]
+....
+//接口合同
+interface Itf_ClsPerson {
+    name: string
+    age: number
+    isFemale?: boolean
+
+    fn_DoWrok(work: string): void //凡继承此接口的类, 必须实现此方法
+}
+
+//类实现接口, 类必须符合接口合同中的规定.
+class ClsPerson implements Itf_ClsPerson {
+    age: number;
+    name: string;
+    id?: number //可选
+
+    constructor(age: number, name: string, id?: number) { //id属性可输入, 也可不输入
+        this.age = age;
+        this.name = name;
+        if (this.id) {
+            this.id = id;
+        }
+    }
+
+    //实现接口中的方法
+    fn_DoWrok(work: string): void {
+        console.log(`${this.name} 的职业是 ${work}...`);
+    }
+
+    fn_other() {
+        console.log('其他函数...');
+    }
+}
+
+let p = new ClsPerson(19, 'wyy')
+console.log(p); //ClsPerson { age: 19, name: 'wyy' }
+p.fn_DoWrok('律师') //wyy 的职业是 律师...
+console.log(p.fn_other()); //其他函数...
+....
+
+---
+
+==== 用接口, 来规定"类的construct构造方法"
+
+类中的属性和方法, 分两类: 静态的, 和实例的. 接口只能对类中的实例部分, 进行类型检查。 而**构造方法constructor是存在于类的静态部分的，所以不在接口的检查的范围内。**
+
+那么, 我们怎么做才能用"接口"来规定"构造方法"呢? 方法如下, 五步法: +
+1. 定义一个"人类"接口. +
+2. 定义一个"人类的构造方法"接口, 里面的new函数是"人类接口"类型的. +
+3. 定义一个"人类", 实现"人类接口". +
+4. 定义一个函数, 功能是创建人类实例. 它接收的参数是:(1)人类的构造方法(是"人类构造方法接口"类型的), (2)传给人类构造方法的参数. +
+5. 用第4点所创建的函数, 来创建人类实例.
+
+[source, typescript]
+....
+//第1步
+interface Itf人类接口 {
+    fn_必须实现的方法(): any
+}
+
+//第2步
+interface Itf人类构造方法的接口 {
+    new(name: string, age: number): Itf人类接口 //构造方法的类型, 是"Itf人类接口"类型
+}
+
+//第3步
+class Cls人类 implements Itf人类接口 {
+    name: string
+    age: number
+
+    //下面, 人类构造方法中的属性, 要符合"人类构造方法接口"中的规定. 即使这里并没有给这个构造方法指定它是何种约束类型.
+    constructor(name: string, age: number) {
+        this.name = name;
+        this.age = age;
+    }
+
+    //类实现接口中的方法
+    fn_必须实现的方法(): any {
+    }
+}
+
+//第4步
+//下面就能定义, Cls人类, 是"Itf人类构造方法的接口"类型的!
+function fn创建人类实例(Cls人类: Itf人类构造方法的接口, name: string, age: number): Itf人类接口 {
+    return new Cls人类(name, age)
+}
+
+//第5步
+let zzr = fn创建人类实例(Cls人类, 'zzr', 19)
+console.log(zzr); //Cls人类 { name: 'zzr', age: 19 }
+....
+
+注意: 在第4步中, 我们对函数的参数(即 Cls人类: Itf人类构造方法的接口),使用上了 "构造方法的接口", 用它来规定了类名(即构造方法)的类型.
+
+
+又例:
+[source, typescript]
+....
+interface Itf_FnConstructor {
+  new (): string;
+}
+
+// 使用
+declare const fn: Itf_FnConstructor;
+const fn2 = new fn(); // fn2 被推断为 string 类型
+....
+
+---
+
+== 接口可以相互继承
+
+和类一样，接口也可以相互继承。 这让我们能够从一个接口里复制成员到另一个接口里，可以更灵活地将接口分割到可重用的模块里。
+
+[source, typescript]
+....
+interface Itf_ObjLife { //生命体类
+    lifespan: number //寿命
+}
+
+//接口可以继承自另一个接口
+interface Itf_ObjPerson extends Itf_ObjLife {
+    name: string
+}
+
+//下面三种写法都行
+let zzr: Itf_ObjPerson = {lifespan: 120, name: 'zzr'}
+
+let wyy = <Itf_ObjPerson>{} //类型断言, 即将一个空对象{}强制类型转换为Itf_ObjPerson接口的类型.
+wyy = {lifespan: 120, name: 'wyy'}
+
+let mwq = {} as Itf_ObjPerson //类型断言, 即将一个空对象{}强制类型转换为Itf_ObjPerson接口的类型.
+mwq = {lifespan: 120, name: 'mwq'}
+....
+
+---
+
+==== 接口可以继承自类
+
+当接口继承了一个类类型时，它会继承类的成员但不包括其实现。 就好像接口声明了所有类中存在的成员，但并没有提供具体实现一样。
+
+[source, typescript]
+....
+class ClsFather {
+    fatherProp1:string
+    fatherProp2:number
+
+    constructor(fatherProp1: string, fatherProp2: number) {
+        this.fatherProp1 = fatherProp1;
+        this.fatherProp2 = fatherProp2;
+    }
+
+    fatherFn():void{}
+}
+
+//接口可以继承类, 会自动拿到类里面的所有成员
+interface ItfClsSon extends ClsFather{
+    itfAttr1:boolean
+    itfAttr2:Date
+    itfFn():string
+}
+
+class ClsSon implements ItfClsSon{
+    fatherProp1: string;
+    fatherProp2: number;
+    itfAttr1: boolean;
+    itfAttr2: Date;
+
+    constructor(fatherProp1: string, fatherProp2: number, itfAttr1: boolean, itfAttr2: Date) {
+        this.fatherProp1 = fatherProp1;
+        this.fatherProp2 = fatherProp2;
+        this.itfAttr1 = itfAttr1;
+        this.itfAttr2 = itfAttr2;
+    }
+
+    fatherFn(): void {
+    }
+
+    itfFn(): string {
+        return "";
+    }
+}
+....
+
+接口同样会继承到类的private和protected成员。 这意味着当你创建了一个接口继承了一个拥有私有或受保护的成员的类时，这个接口类型, 只能被这个类或其子类所实现（implement）。
+
+
+---
+
+== 用接口, 来定义混合类型
+
+有时你会希望一个对象, 可以同时具有上面提到的多种类型。
+一个例子就是，一个对象可以同时做为函数和对象使用，并带有额外的属性。
+
+换句话说, 我们可以定义一个函数, 该函数还能带有自己的属性和方法. 相当于这个函数有两重身份, 它本身是一个函数, 并且, 它带有自己的属性和方法, 就像一个对象一样.
+
+[source, typescript]
+....
+interface Itf_funcObj {
+    (arg1:string,arg2:number):void //该函数对象, 本身是一个函数
+    author:string //该函数,有自己的属性: 作者
+    fn_getHelp():string //该函数,有自己的方法: 获取帮助信息, 并返回一个字符串(官网地址)
+}
+
+//下面的函数,专门用来创造上面接口定义的这个特殊的函数对象.
+function fn_createFuncObj() {
+    let specialFunObj = <Itf_funcObj>function (arg1:string,arg2:number):void { //将一个函数强制类型转换为是Itf_funcObj类型
+        console.log(`接收到了参数 ${arg1}, ${arg2}`);
+    }
+    specialFunObj.author = 'wyy' //给这个函数对象,添加上属性
+    specialFunObj.fn_getHelp = function():string{ //给这个函数对象,添加上方法
+return `官网上的帮助地址是 http://www....`
+    }
+    return specialFunObj
+}
+
+let specialFunObj = fn_createFuncObj()
+console.log(specialFunObj); //{ [Function: specialFunObj] author: 'wyy', fn_getHelp: [Function] }
+
+
+specialFunObj('wyy',19) //接收到了参数 wyy, 19 <--该函数对象, 本身是个函数
+console.log(specialFunObj.author); //wyy <--该函数对象, 又有自己的属性和方法
+console.log(specialFunObj.fn_getHelp()); //官网上的帮助地址是 http://www....
+....

@@ -1,0 +1,120 @@
+
+
+= 类型断言 与 类型捕获
+:toc:
+
+---
+
+== 类型断言 -> 变量名 as 某类型
+
+当你比typeScript更清楚某个变量的类型是什么时, 而不需要ts自己去判断时, 你就可以使用类型断言, 相当于强制类型转换.
+
+类型断言有两种形式: 1.“尖括号”语法, 2.as语法
+
+[source, typescript]
+....
+let userName: any = 'zzr'
+
+//断言法1: <某类型>变量
+let strLength: number = (<string>userName).length //将userName变量,从any类型,强制转换为 string类型
+console.log(strLength); //3
+
+//断言法2: 变量 as 某类型
+let strLength2: number = (userName as string).length
+console.log(strLength2); //3
+....
+
+为什么会有这两种写法? 因为当你在 jsx/tsx 中使用 尖括号法 <某类型> 的断言语法时，这会与 jsx 的语法存在歧义. 因此，强烈建议你使用 "as 某类型" 的语法, 来为类型断言。
+
+---
+
+==== "类型断言", 与"类型转换"的区别
+
+它之所以不被称为「类型转换」，是因为"转换"通常意味着某种"运行时"的支持。但是，"类型断言"纯粹是一个"编译时"语法.
+
+---
+
+==== 双重断言: 类型A -> any类型 -> 类型B
+
+
+"类型断言"的使用场景又如:
+[source, typescript]
+....
+function fn(event: Event) {
+  const mouseEvent = event as MouseEvent; //你将event参数从Event类型, 更加细化到精确的mouseEvent类型.
+}
+....
+
+但是如果两个类型是不兼容的, 则不能使用断言:
+[source, typescript]
+....
+function fn(event: Event) {
+  const element = event as HTMLElement; // Error: 'Event' 和 'HTMLElement'类型 中的任何一个, 都不能赋值给另外一个
+}
+....
+
+如果你仍然想使用那个类型，你可以使用**"双重断言"(即用any类型来作为中间过度, 来将两个不兼容的类型, 能从一个转换成另一个)。**首先断言成兼容所有类型的 any，编译器将不会报错:
+
+[source, typescript]
+....
+function fn(event: Event) {
+  const element = (event as any) as HTMLElement; // ok <--所谓"双重断言", 意思其实就是,用any类型作为中间过度. 先让Event类型变成any类型, 再把any类型断言成HTMLElement类型.
+}
+....
+
+上例中的  (event as any) as HTMLElement 就是"双重断言":  Event类型 -> any类型(中转过度) -> HTMLElement类型
+
+---
+
+==== TypeScript 是怎么确定"断言"操作是否能成功的?
+
+当 S 类型是 T 类型的子集，或者 T 类型是 S 类型的子集时，S 能被"成功断言"成 T。 +
+除此外,完全毫无根据的随便"断言"是危险的，如果你想这么做，请使用 any类型。
+
+---
+
+== 捕获某个变量的类型 -> typeof 某变量 -> 返回的是"字符串字面量类型"
+
+我们可以"捕获"另一个变量的类型, 使用 typeof即可. 让后你可以使用 const  定义一个变量, 来存储捕获到的类型.
+
+[source, typescript]
+....
+let usrAge = 22
+let type_UsrAge = typeof usrAge //typeof 判断一个变量的类型, 返回一个"字符串字面量类型". 注意, 返回的是一个类型, 而不是字符串值!
+console.log(Object.prototype.toString.call(type_UsrAge)); //[object String]
+console.log(type_UsrAge); //"number" <--字符串字面量类型
+
+//因为type_UsrAge是个"字符串字面量类型", 所以你就不能给它赋不属于"类型名"的字符串值!
+type_UsrAge = 'abc' //报错! error TS2322: Type '"abc"' is not assignable to type '"string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function"'.
+
+type_UsrAge = 'number' //ok
+type_UsrAge = 'boolean' //ok
+....
+
+---
+
+==== 捕获键key的名称 (返回的依然是"字符串字面量类型")
+
+[source, typescript]
+....
+let obj = {
+    name: 'zzr',
+    age: 22
+}
+
+type type_Keys = keyof typeof obj //type_Key是个"字符串字面量类型", 而非字符串值. 即, type_Keys的类型是"name" | "age"
+
+let propName: type_Keys
+propName = 'wyy' //报错 error TS2322: Type '"wyy"' is not assignable to type '"name" | "age"'. <-- 即, propName的值只能取"name" 或 "age".
+propName = 'name' //ok
+propName = 'age' //ok
+....
+
+很像枚举功能.
+
+---
+
+
+
+
+

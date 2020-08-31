@@ -1,0 +1,59 @@
+
+= python 类型判断
+:toc:
+
+---
+
+== 某对象, 是否是某class类的实例? -> isinstance(object, classinfo)
+
+Return true if the object argument is an instance of the classinfo argument, or **of a (direct, indirect or virtual) subclass** thereof.
+
+- object -- 实例对象。
+- classinfo -- 可以是直接类; 间接类(祖先类); 基本类型; 或者由它们组成的元组。
+
+[source, python]
+....
+class ClsGrandFather(object):
+    pass
+
+
+class ClsFather(ClsGrandFather):
+    pass
+
+
+class ClsSon(ClsFather):
+    pass
+
+
+insSon = ClsSon()
+
+print(isinstance(insSon, ClsSon))  # True
+print(isinstance(insSon, ClsFather))  # True <--支持检查类的继承关系
+print(isinstance(insSon, ClsGrandFather))  # True
+....
+
+
+[source, python]
+....
+class A(): # A类和B类毫无继承关系
+    pass
+
+
+class B():
+    pass
+
+
+b = B()
+
+print(isinstance(b, A))  # False
+print(isinstance(b, (A, B)))  # True
+'''
+如果第二个参数是元组的话, 只要里面存在一个是属于实例的类, 就会返回true,
+而不需要元组里所有的类, 都满足是属于实例的类.
+'''
+....
+
+---
+
+
+

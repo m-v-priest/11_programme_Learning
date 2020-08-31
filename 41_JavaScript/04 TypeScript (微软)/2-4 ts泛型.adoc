@@ -1,0 +1,196 @@
+
+= 泛型类型
+:toc:
+
+---
+
+设计"泛型"的目的, 是在成员之间提供有意义的"约束"，这些成员可以是：
+
+- 类的实例成员
+- 类的方法
+
+- 函数的参数
+- 函数的返回值
+
+---
+
+== 泛型函数
+我们来定义一个函数, 该函数接收任何类型的参数, 并把接收到的数据原样返回. 即, 吃什么,就吐出什么. 并且要保证数据类型不变.  
+我们需要一种方法, 使返回值的类型, 与传入参数的类型是相同的。  
+这里，我们使用 **"类型变量"，它是一种特殊的变量，只用于表示"类型"而不是值。**
+
+
+[source, typescript]
+....
+function fn<T>(arg: T): T { //这个fn函数,会用到一个类型变量T
+    return arg
+}
+
+console.log((typeof fn('zzr'))); //string
+console.log((typeof fn(true))); //boolean
+....
+
+上面的代码, 我们给fn函数, 给于一个 **类型变量T, T帮助我们捕获用户传入的类型（比如：number），之后我们就可以使用这个类型。** 之后我们再次使用了 T当做返回值类型。现在我们可以知道参数类型与返回值类型是相同的了。 这允许我们跟踪函数里使用的类型的信息。
+
+我们把这个版本的fn函数,叫做`泛型`，因为它可以适用于多个类型。 不同于使用 any(any会丢失类型信息)，泛型不会丢失类型信息.
+
+
+
+定义了泛型函数后，可以通过两种方法来使用它:
+ 1. 传入所有的参数，包含`类型参数`：
+
+[source, typescript]
+....
+let str = fn<string>('zzr')
+....
+
+2. 第二种方法更普遍。利用了类型推论 ---- 即编译器会根据传入的参数, 自动地帮助我们确定T的类型：
+
+[source, typescript]
+....
+let str = fn('zzr')
+....
+
+编译器会查看'zzr'的值，然后把T设置为它的类型。 类型推论帮助我们保持代码精简和高可读性。   
+但如果编译器不能够自动地推断出类型的话，只能像上面第一种那样明确的传入T的类型，在一些复杂的情况下，这是可能出现的。
+
+---
+
+== 泛型变量
+
+[source, typescript]
+....
+function fn<T>(arg: T): T { //这个fn函数,会用到一个类型变量T
+    return arg.length; O
+}
+....
+
+上面报错了, 原因是,**<T>类型变量代表的是任意类型，使用这个函数的人可能传入的是个数字，而数字是没有 .length属性的。 所以, 在传入确切的实参之前, typescript只能去除掉这个泛型变量身上的专属于某一类型的方法.**
+
+但是, 如果是泛型数组 T[] 的话, 即一个数组中的元素是任何单一类型的值的话(比如 ['str1','str2',...], [true, false, true,...]), 数组本身是有length属性的.
+
+[source, typescript]
+....
+function fn<T>(arg: T[]): number { 
+    return arg.length;
+}
+....
+
+---
+
+== 泛型约束
+上面的例子中, 泛型类型, 会丢失专属于某一类的独特属性和方法, 比如 length属性会丢失. 那么如何解决这一问题呢? 我们可以让一个泛型类型, 由一个带有length属性的接口来规定类型, 就行了.
+
+[source, typescript]
+....
+ interface Itf_HasLengthProp {
+    length: number
+}
+
+function fnGeneric<T extends Itf_HasLengthProp>(arg: T): T { //T类型的变量arg,是接口Itf_HasLengthProp类型的, 所以该arg变量里面有length属性
+    console.log(arg.length);
+    return arg
+}
+....
+
+即, 我们可以定义一个接口来描述约束条件。 创建一个包含 .length属性的接口，使用这个接口,和extends关键字,来实现约束.
+
+---
+
+== 泛型接口
+用一个普通接口, 来规定一个泛型函数:
+
+[source, typescript]
+....
+interface Itf_GenericFn { O
+    <T>(arg: T): T
+}
+
+let fn: Itf_GenericFn = function fn(arg) {
+    O
+    return arg //正确
+}
+....
+
+用一个泛型接口, 来规定一个函数:
+
+[source, typescript]
+....
+interface Itf_GenericFn<T> { O
+    (arg: T): T
+}
+
+let fn2: Itf_GenericFn<number> = function fn(arg) {
+    return 123 //正确
+}
+....
+
+这第二种写法, 能让我们在调用泛型函数时,一眼就看清, 该泛型类型的最终的真正类型是什么, 本例中是Itf_GenericFn\<number\>, 即number类型.
+
+---
+
+== 泛型类
+
+"泛型类"看上去与"泛型接口"差不多。 泛型类使用（ <>）括起泛型类型，跟在类名后面。
+
+[source, typescript]
+....
+class ClsGeneric<T, E, S> { //该类会使用三种类型的变量,分别用T,E,S来代表. 至于最终是哪三种, 我们现在还不知道.
+    prop1: T
+    prop2: E
+
+    constructor(prop1: T, prop2: E) {
+        this.prop1 = prop1;
+        this.prop2 = prop2;
+    }
+
+    fn(arg1: S, arg2: T): any {
+
+    }
+}
+....
+
+与接口一样，直接把"泛型类型"放在类名后面，可以帮助我们确认类的所有属性,所使用的类型。  
+
+类有两部分：静态部分和实例部分。 **注意: "泛型类"指的是"实例部分"的类型，所以类的"静态属性"不能使用这个泛型类型。**
+
+---
+
+== ts没有"泛型枚举"和"泛型命名空间"!
+
+---
+
+== Readonly<泛型类型或类型别名> <- 能把该类型中的所有属性, 都设置为"只读"的
+
+注意 readonly 和 Readonly的区别:
+
+|===
+|区别 |说明
+
+|readonly 属性名 //首字母r是小写
+|将"单个"的属性, 变成只读的
+
+|Readonly<某类型> //首字母R是大写!
+|将一个类型中的"所有"属性, 都设置为只读的.
+
+|===
+
+
+
+[source, typescript]
+....
+interface ItfPerson {
+    isFemale: boolean,
+    charm: number
+}
+
+type ItfPerson_Readonly = Readonly<ItfPerson> //注意, Readonly的R是大写! 这里, 把ItfPerson中的所有属性, 都设置为只读的.
+
+let zzr: ItfPerson_Readonly = {charm: 0, isFemale: true}
+zzr.charm = 99 //报错, 只读属性无法修改. error TS2540: Cannot assign to 'charm' because it is a read-only property.
+zzr.isFemale = false //报错, 只读属性无法修改.
+....
+
+
+---
+

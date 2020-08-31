@@ -1,0 +1,34 @@
+
+= javaScript原生 获取dom节点
+:toc:
+
+---
+
+== document.getElementsByTagName('元素名') -> 返回一个HTMLCollection 对象
+
+[source, Javascript]
+----
+window.onload = function ()
+    /* window.onload指定的函数, 能够在整个html页面加载完毕后, 再来执行本函数.
+    否则, JavaScript会找不到页面中的dom元素
+     */ {
+    let collctionHtml_span = document.getElementsByTagName('span')
+    //document.getElementsByTagName()方法, 会返回一个HTMLCollection 对象
+
+    console.log(collctionHtml_span.length); //3
+
+    //拿到各个span元素里面的内html
+    for (objSpan of collctionHtml_span) {
+        console.log(objSpan.innerHTML); //son1, son2, son3
+    }
+
+    //用JavaScript, 给每个span元素, 设置css
+    for (objSpan of collctionHtml_span) {
+        objSpan.style.border = "solid 1px"
+        objSpan.style.height = `${Math.random()*20}%`
+    }
+}
+----
+
+---
+

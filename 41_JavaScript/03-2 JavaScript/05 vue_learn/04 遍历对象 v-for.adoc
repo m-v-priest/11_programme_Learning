@@ -1,0 +1,75 @@
+
+= swift 遍历 v-for
+:toc:
+
+---
+
+== 遍历arr数组 ->  v-for="item in arr"
+
+[source, html]
+----
+<p v-for="item in arrPerson">{{item}}</p> <!--遍历数组-->
+----
+
+页面渲染出
+....
+zzr
+wyy
+mwq
+....
+
+---
+
+== 遍历obj对象 ->  v-for="(v,k) in obj"
+
+JavaScript中, obj是不能遍历value的, 只能用for...in...来遍历key. 而在vue中, v-for却能遍历obj对象的value.
+
+[source, html]
+----
+<p v-for="itemValue in objZzr">{{itemValue}}</p> <!--遍历objZzr对象中的属性值-->
+
+<p v-for="(value, key, index) in objZzr">{{value}} -- {{key}} -- {{index}}</p>
+----
+页面上会渲染出
+....
+wyy
+16
+true
+
+wyy -- name -- 0
+16 -- age -- 1
+true -- isFemale -- 2
+....
+
+可知, 在遍历"对象"时, 有三个值可以便利到, 即, 按参数顺序分别是: value, key, index
+
+---
+
+== 遍历数字区间(即对数字递增) -> v-for="n in 10"
+v-for  还能对数字递增, 注意, 递增是从1开始的, 而不是从0开始, 这和js中的索引起始, 和python中的range 都略有差异.
+
+[source, html]
+----
+<p v-for="n in 5">{{n}}</p>
+----
+
+页面渲染出
+....
+1
+2
+3
+4
+5
+....
+
+---
+
+== 案例: 给arr增删元素
+
+
+
+
+
+
+
+

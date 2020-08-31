@@ -1,0 +1,231 @@
+= react 读取本地json
+:toc:
+---
+
+== 直接把json文件, 当做模块导入! 即可当做object文件来用了
+
+注意, 必须把你的json.json文件, 放在src目录下, 它才能被当做模块导入.  +
+否则, 如果你放到别的目录中, 会报错: "Module not found: You attempted to import ../public/json.json which falls outside of the project src/ directory. Relative imports outside of src/ are not supported."
+
+原因是: 当src目录中的文件, 想引用src目录外的文件时, 会因为官方限制问题而报错。
+
+[source,Javascript]
+....
+import React from 'react';
+import ReactDOM from 'react-dom';
+import jsonData from './json.json' // 将src目录中的json文件, 当做模块来导入, 即可拿到该json对象
+
+export default class Cpn_Father extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            jsonData: jsonData
+        }
+
+        this.fn_getJson = this.fn_getJson.bind(this)
+    }
+
+    render() {
+        return (
+            <React.Fragment>
+                <input type="button"
+                       onClick={(jsonData) => {
+                           this.fn_getJson(this.state.jsonData)
+                       }}
+                       value={'获取json数据'}/>
+            </React.Fragment>
+        )
+    }
+
+    fn_getJson(jsonData) {
+        console.log(jsonData); //即打印出json中的object对象
+    }
+}
+....
+
+---
+
+== axios 库
+
+把你的 json文件, 放在public目录中, **注意重点来了!! 它的url地址, 要写成 './json.json'**, 而非是'../public/json.json'. 后者地址根本读不到!
+
+项目目录结构如下:
+....
+|-- undefined
+    |-- public
+    |   |-- index.html
+    |   |-- json.json //你的json放在这里
+    |   |-- text.txt
+
+    |-- src
+        |-- Cpn_Father.tsx //父组件
+        |-- index.tsx
+....
+
+
+代码如下:
+
+[source, typescript]
+....
+import React from 'react';
+import axios from 'axios'
+import fs from 'fs'
+
+interface Itf_props {
+}
+
+interface Itf_state {
+    urlJson: string,
+    urlTxt: string
+}
+
+export class Cpn_Father extends React.Component<Itf_props, Itf_state> {
+    constructor(props: Itf_props) {
+        super(props)
+        this.state = {
+            urlJson: './json.json',
+            /* 注意!! 虽然我们的json文件时放在项目的public目录下的,
+            但是我们这里引用它的地址是, 却千万不要写成 ../public/json.json,
+            而只要写成 './json.json' 才能读取到!
+             */
+            urlTxt: './text.txt'
+        }
+    }
+
+    render() {
+        return (
+            <React.Fragment>
+                <p>father page...</p>
+
+                <input type="button" value={'get local json'}
+                       onClick={() => {
+                           this.fn_getJson(this.state.urlJson) //调用函数
+                       }}/> &nbsp;
+
+            </React.Fragment>
+        )
+    }
+
+    fn_getJson = (urlJson: string) => { //定义一个读取json的函数
+        axios.get(urlJson)
+            .then(res => {
+                console.log(res.data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+}
+
+export default Cpn_Father;
+....
+
+---
+
+== fetch
+
+英文官方文档 +
+https://github.com/github/fetch
+
+使用fetch, 要连续两次then(),才能拿到真正的obj对象. +
+第一次then()要返回一个 res.json() -> 依然是个promise对象 +
+第二次then(), 拿到的 res, 才是真正的 objJson对象!
+
+[source, typescript]
+....
+import React from 'react';
+import ReactDOM from 'react-dom'
+
+export default class App extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            urlJson: './json.json'
+        }
+    }
+
+    render() {
+        return (
+            <React.Fragment>
+                <input
+                    type='button'
+                    value='get json by fetch'
+                    onClick={() => { this.fn_getJsonByFetch(this.state.urlJson) }}
+                ></input>
+            </React.Fragment>
+        )
+    }
+
+    fn_getJsonByFetch = (urlJson) => {
+        fetch(urlJson)
+            .then(res => {
+                console.log(res.status); //200
+                if (res.status === 200) {
+                    return res.json() //res.json()还是个promise对象.它封装着objJson对象
+                }
+                else { return {} }
+            })
+            .then(objJson => {
+                console.log(objJson) //终于拿到了真正的objJson对象
+                console.log(Object.prototype.toString.call(objJson)) //[object Object]
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+}
+....
+
+---
+
+==== fetch 也能读取txt文件
+
+同样,txt文件必须放在react项目的public目录下, 访问txt的路径时, 只需要写'./txt.txt'就行了, 不需要写成'./public/txt.txt'!
+
+[source, typescript]
+....
+import React from 'react';
+import ReactDOM from 'react-dom'
+
+export default class App extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            urlJson: './json.json', //除了能读json外,
+            urlTxt: './txt.txt' //fetch()还能读取txt文件! 同样, html文件就也能读了
+        }
+    }
+
+    render() {
+        return (
+            <React.Fragment>
+                <input
+                    type='button'
+                    value='get json by fetch'
+                    onClick={() => { this.fn_getJsonByFetch(this.state.urlTxt) }}></input>
+            </React.Fragment>
+        )
+    }
+
+    fn_getJsonByFetch = (url) => {
+        fetch(url)
+            .then(res => {
+                console.log(res.status); //200
+                if (res.status === 200) {
+                    return res.text() //res.text()还是个promise对象.它封装着String对象
+                }
+                else { return {} }
+            })
+            .then(objJson => {
+                console.log(objJson) //终于拿到了真正的String对象
+                console.log(Object.prototype.toString.call(objJson)) //[object String]
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+}
+....
+
+---
+

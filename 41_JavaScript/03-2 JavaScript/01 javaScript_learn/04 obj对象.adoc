@@ -1,0 +1,583 @@
+
+# Object对象
+:toc:
+
+---
+
+== 简写
+
+==== obj中 属性的简写
+可以直接在obj对象中, 写变量. 这时,变量名就会自动变成对象的属性名, 变量值就会变成属性值.
+
+[source, typescript]
+....
+let userName = 'objZzr'
+let userAge = 18
+let objP = {userName,userAge}
+console.log(objP); //{ userName: 'zzr', userAge: 18 }
+....
+
+---
+
+==== obj中 方法的简写法
+[source, typescript]
+....
+let obj = {
+    fn(){ //方法的简写
+        console.log('objZzr');
+    }
+}
+obj.fn() //zzr
+
+//上面, 对象的方法的简写, 等价于下面的写法
+let p2 ={
+    fn:function () {
+        console.log('wyy');
+    }
+}
+p2.fn() //wyy
+....
+
+---
+
+== 属性
+
+==== 属性名 / 在对象中，属性名(即key值)永远都是字符串
+如果你使用string（字面量）以外的其他值作为属性名，那它首先会被转换为一个字符串。即使是数字也不例外，虽然在数组下标中使用的的确是数字，但是在对象属性名中, 数字会被转换成字符串.
+
+---
+
+==== 属性名 / 属性名, 除了字符串, 还可以用变量来当
+支持用变量来作为对象属性名, 这样, 变量的值, 会成为真正的属性名
+
+[source, typescript]
+....
+let attr1Name = 'userName'
+let attr2Name = 'userAge'
+
+let obj = {
+    [attr1Name]:'objZzr', //把变量放在中括号[]中即可
+    [attr2Name]:19
+}
+
+console.log(obj); //{ userName: 'zzr', userAge: 19 }
+....
+
+如同上面例子中的那样, ES6 增加了"可计算属性名"，可以在字面量形式中, 使用中括号[] 包裹一个表达式, 来当作属性名：
+
+[source, typescript]
+....
+let country = "cn"
+
+let list_考察团人员 = {
+    [country+"_name1"]:"周芷若",
+    [country+"_name2"]:"王语嫣",
+}
+
+console.log(list_考察团人员) //{ cn_name1: '周芷若', cn_name2: '王语嫣' }
+....
+
+
+"可计算属性名", 最常用的场景可能是ES6 的符号（Symbol），简单来说，它们是一种新的基础数据类型，包含一个不透明且无法预测的值（从技术角度来说就是一个字符串）。一般来说你不会用到符号的实际值（因为理论上来说在不同的JavaScript 引擎中值是不同的），所以通常你接触到的是符号的名称，比如Symbol.Something（这个名字是我编的）：
+
+[source, typescript]
+....
+var myObject = {
+[Symbol.Something]: "hello world"
+}
+....
+
+
+---
+
+==== 增 /
+
+
+---
+
+
+==== 删 /
+
+---
+
+==== 改 /
+
+---
+
+==== 查 / 判断某个属性, 是否存在于对象中 -> 使用 in 操作符
+
+可以用 in 来判断某属性是否存在于一个对象中, 返回一个布尔值. +
+不过， *in 运算符会搜索对象的原型*，这使得它只有在处理原型为 null 的对象时才是安全的。
+
+[source, typescript]
+....
+let p1 = {name:'zzr',age:10}
+let f1 = {country:'cn'}
+Reflect.setPrototypeOf(p1,f1) //将p1的原型指向f1
+
+console.log('name' in p1); //true
+console.log('sex' in p1); //false
+console.log('country' in p1); //true <--in 运算符 会搜索对象的原型
+....
+
+---
+
+==== 遍历 / 遍历对象的属性 -> Object.keys(obj) 返回数组
+
+ES6 一共有 5 种方法, 可以遍历对象的属性。
+
+
+|===
+|操作 |自身 |继承 |可枚举 |不可枚举 |Symbol 属性
+
+|for...in
+|√
+|√
+|√
+|×
+|×
+
+|Object.keys(obj)
+|√
+|×
+|√
+|×
+|×
+
+|Object.getOwnPropertyNames(obj)
+|√
+|×
+|√
+|√
+|×
+
+|Object.getOwnPropertySymbols(obj)
+|√
+|×
+|
+|
+|√
+
+|Reflect.ownKeys(obj)
+|√
+|×
+|√
+|√
+|√
+
+|===
+
+
+---
+
+==== 浅拷贝 / 将一个对象中的可枚举属性, 浅拷贝到另一个对象中 -> Object.assign()
+
+Object.assign(target目标对象, ...sources源对象)  ->返回目标对象
+
+Object.assign方法用于对象的合并，*将源对象（source）的所有可枚举属性，复制到目标对象（target）。* +
+Object.assign() 方法用于将所有可枚举属性的值, 从一个或多个源对象复制到目标对象。它将返回目标对象。
+
+[source, typescript]
+....
+let p1 = {name: 'zrx'}
+let p2 = {age: 17}
+let p3 = {
+    fn_talk() {
+        console.log('hello ' + this.name);
+    }
+}
+let new_p = {}  //注意,这里不能写成null,否则下面的程序是无法执行的, 因为不能将属性拷贝给null, 只能拷贝给一个对象(本处是空对象). 因为: undefined和null无法转成对象。
+
+Object.assign(new_p,p1,p2,p3)
+console.log(new_p); //{ name: 'zrx', age: 17, fn_talk: [Function: fn_talk] }
+new_p.fn_talk() //hello zrx
+....
+
+如果目标对象中的属性具有相同的键，则属性将被源中的属性覆盖。后来的源的属性将类似地覆盖早先的属性。
+
+Object.assign拷贝的属性是有限制的，*只拷贝源对象的自身属性（不拷贝继承属性），也不拷贝不可枚举的属性（enumerable: false）。* +
+*属性名为 Symbol 值的属性，也会被Object.assign拷贝。*
+
+
+[big]#Object.assign()方法实行的是浅拷贝，而不是深拷贝.#
+
+也就是说，如果源对象某个属性的值是对象，那么目标对象拷贝得到的, 是这个对象的引用。
+
+[source, typescript]
+....
+let obj1 = {friends:[1,2,3]}
+
+let obj2 = Object.assign({},obj1)
+console.log(obj2); //{ friends: [ 1, 2, 3 ] }
+
+obj1.friends.push(4) //对obj1的引用类型的属性,进行修改,也会反映在obj2身上.
+console.log(obj2); //{ friends: [ 1, 2, 3, 4 ] }
+....
+
+
+[big]#Object.assign()方法可以用来克隆对象#
+
+[source, typescript]
+....
+function clone(origin) {
+  return Object.assign({}, origin);
+}
+....
+
+上面代码将原始对象拷贝到一个空对象，就得到了原始对象的克隆。
+
+*不过，采用这种方法克隆，只能克隆原始对象自身的值，不能克隆它继承的值。* 如果想要保持继承链，可以采用下面的代码。
+
+[source, typescript]
+....
+function clone(origin) {
+  let originProto = Object.getPrototypeOf(origin); //现获取一个对象的原型
+  return Object.assign(Object.create(originProto), origin);  //然后先以这个原型为原型对象,创建一个对象
+}
+....
+
+又例:
+[source, typescript]
+....
+let father = {country:'usa',money:999}
+let son1 = {name:'zzr',age:19}
+Reflect.setPrototypeOf(son1,father) //将son的原型,指向father
+console.log(son1.money); //999 <--获得了爸爸的钱
+
+//将son1克隆出一个son2
+let son2 = Object.assign({},son1)
+console.log(son2.money); //undefined <--表明Object.assign()方法, 只能克隆一个对象自身的属性, 克隆不到它继承的值.
+
+
+//如果想要保持继承链，可以采用下面的方法:
+function fn_clone(obj_被克隆对象A) {
+    let obj_A的原型 = Reflect.getPrototypeOf(obj_被克隆对象A)
+    let obj_有爸爸的基因的容器 = Object.create(obj_A的原型) //Object.create(prototype, descriptors) 创建一个具有指定原型,且可选择性地包含指定属性的对象。
+    let obj_克隆出的对象A2 = Object.assign(obj_有爸爸的基因的容器,obj_被克隆对象A) // 将后者的属性,拷贝到前者身上
+    return obj_克隆出的对象A2
+}
+
+let true_son2 = fn_clone(son1)
+console.log(true_son2.money); //999 <--原型上的属性也拷贝下来了
+
+....
+
+
+---
+
+== 属性的"描述对象"
+
+==== 拿到对象的某个属性的"描述对象" Object.getOwnPropertyDescriptor(obj, prop)
+
+[source, typescript]
+....
+let p1 = {
+    userName: 'objZzr',
+    userAge: 19,
+    fnGetInfo(){
+        console.log(this.userName, this.userAge);
+    }
+}
+
+console.log(Object.getOwnPropertyDescriptor(p1, 'userName'));
+/* 打印出
+{ value: 'zzr',
+  writable: true,
+  enumerable: true, //<--对象的enumerable属性，称为“可枚举性”，如果该属性为false，就表示某些操作会忽略该属性。
+  configurable: true }
+*/
+....
+
+
+---
+
+==== "描述对象"中的enumerable属性(即'可枚举性'属性)
+
+ES6 规定，*所有 Class 的原型的方法, 都是不可枚举的。*
+
+目前，有四个操作会忽略enumerable为false的属性。
+换句话说, 以下4个操作, 不会去操作"不具有枚举性"的属性:
+
+
+|===
+|操作 |自身 |继承 |可枚举
+
+|for...in循环
+|√
+|√
+|√
+
+|Object.keys()
+|√
+|×
+|√
+
+|JSON.stringify()
+|√
+|×
+|√
+
+|Object.assign()
+|√
+|×
+|√
+|===
+
+总的来说，*操作中引入继承的属性会让问题复杂化. 大多数时候，我们只关心对象自身的属性。所以，尽量不要用for...in循环，而用Object.keys()代替。*
+
+---
+
+== super关键字
+==== 关键字super，指向当前对象的原型对象
+JavaScript 引擎内部，super.foo等同于Object.getPrototypeOf(this).foo（属性）或Object.getPrototypeOf(this).foo.call(this)（方法）。
+
+注意，super关键字表示原型对象时，只能用在对象的方法之中，用在其他地方都会报错。
+
+[source, typescript]
+....
+// 报错
+const obj = {
+  foo: super.foo //super用在属性里面,而没有用在对象的方法之中.
+}
+
+// 报错
+const obj = {
+  foo: () => super.foo //super用在一个函数里面，然后赋值给foo属性, 这样也会报错。因为目前，只有对象方法的简写法可以让 JavaScript 引擎确认，定义的是对象的方法。
+}
+
+// 报错
+const obj = {
+  foo: function () {
+    return super.foo //super用在一个函数里面，然后赋值给foo属性。
+  }
+}
+....
+
+具体试验如下
+[source, typescript]
+....
+let objProto = {
+    userName:'objProto'
+}
+
+let obj = {
+    userName:'obj',
+
+    //目前，只有对象方法的简写法, 才能让js承认, 能使用super
+    fn_getUserName(){
+        console.log(super.userName); //super，指向当前对象的原型对象
+    },
+
+    //这种对象方法的写法, js不会承认能使用super
+    fn_getUserName2:function(){
+        console.log(super.userName); //报错:SyntaxError: 'super' keyword unexpected here
+    },
+
+    fn_getUserName3:function(){
+        console.log(this.userName); //使用this没问题
+    },
+
+}
+
+Object.setPrototypeOf(obj,objProto)
+obj.fn_getUserName() //objProto
+obj.fn_getUserName2() //报错
+obj.fn_getUserName3() //obj
+....
+
+---
+
+== 解构(解包)对象
+
+==== 解构赋值, 分两种: 1.单纯的解构, 2. 用...扩展运算符来解构
+
+区别是:
+
+- 单纯的解构赋值，可以读取到对象继承过来的属性.
+- 用...扩展运算符的解构赋值，只能读取对象自身的属性,而拿不到该对象继承自它原型对象身上的属性.
+
+[source, typescript]
+....
+let objProto = {
+    money:999999
+}
+
+let obj = {
+    work:'下九流',
+    food:'粗茶淡饭'
+}
+
+obj.__proto__ = objProto
+
+//for...in循环, 能拿到继承来的可枚举属性。
+for (prop in obj){
+    console.log(prop); //work, food, money <--有money存在!
+}
+
+let {money} = obj //不用三个点..., 即单纯的解构, 等号左边对象中,用来接收的属性名, 必须和等号右边对象中拥有的属性名, 完全一致, 才能接收到后者的属性值. 名字不一样的话, 是接收不到的! <--注意, 单纯的解构赋值，是可以读取等号右边对象上继承来的属性的!
+console.log(money); //999999
+
+
+let {...objY} = obj //前面用三个点...,即扩展运算符解构赋值. 扩展运算符的解构,是拿不到等号右边对象上继承来的属性的, 只能拿到后者自身拥有的属性.
+console.log(objY); //{ work: '下九流', food: '粗茶淡饭' } <--objX只复制到了obj自身的属性, 没有复制到obj的原型对象上的属性(money).
+....
+
+---
+
+==== 用...扩展运算符,进行对象的解构赋值
+[source, typescript]
+....
+let obj1 = {a:1,b:2,c:3,d:4}
+let {a,b,...objC} = obj1 //解构赋值要求等号右边是一个对象!
+console.log(objC); dirSon
+....
+
+
+解构赋值必须是最后一个参数，否则会报错。
+[source, typescript]
+....
+let { ...x, y, z } = someObject; // 句法错误
+let { x, ...y, ...z } = someObject; // 句法错误
+....
+
+对象的解构赋值, 用于从一个对象取值，相当于将目标对象自身的所有可遍历的（enumerable）、但尚未被读取的属性，分配到指定的新对象上面。所有的键和它们的值，都会拷贝到新对象上面。
+
+---
+
+==== 解构赋值的拷贝是浅拷贝
+注意，解构赋值的拷贝是浅拷贝，即如果一个键的值是复合类型的值（数组、对象、函数）、那么解构赋值拷贝的是这个值的引用，而不是这个值的副本。
+
+---
+
+==== 再说一遍! 用...扩展运算符进行的解构赋值，不能复制等号右边对象上的继承自原型对象的属性!
+
+[source, typescript]
+....
+//Object.create(proto, [propertiesObject])方法创建一个新对象，使用现有的对象,来提供新创建的对象的proto。
+const o = Object.create({ x: 1, y: 2 }); //o的原型对象,指向{ x: 1, y: 2 }
+console.log(o); //{} <--o本身没有内容, 因为它的内容都在它的原型对象上.
+
+o.z = 3;
+console.log(o); //{ z: 3 }
+
+let { x, ...newObj } = o; //<--变量x是单纯的解构赋值，所以可以读取o对象上继承来的属性
+console.log(x); //1
+console.log(newObj); //{ z: 3 } <--newObj前面有三个点号...,是扩展运算符的解构赋值, 因此拿不到o对象继承到的属性, 只能拿到o对象自身拥有的属性.
+
+let { y, z } = newObj; //<--这是普通的解构赋值, 等号左边对象中, 用来接收的属性名, 必须和等号右边对象中拥有的属性名, 名字完全一致才行!
+console.log(x); // 1
+console.log(y); // undefined
+console.log(z); // 3
+....
+
+另外要注意: ES6 规定，变量声明语句之中，如果使用解构赋值，扩展运算符后面必须是一个变量名，而不能是一个解构赋值表达式，所以上面代码引入了中间变量newObj，如果写成下面这样会报错。
+
+[source, typescript]
+....
+let { x, ...{ y, z } } = o;
+// SyntaxError: ... must be followed by an identifier in declaration contexts
+....
+
+
+解构赋值的一个用处，是扩展某个函数的参数，引入其他参数。
+[source, typescript]
+....
+function baseFunction({ a, b }) {
+  // ...
+}
+function wrapperFunction({ x, y, ...restConfig }) {
+  // 使用 x 和 y 参数进行操作
+  // 其余参数传给原始函数
+  return baseFunction(restConfig);
+}
+....
+
+上面代码中，原始函数baseFunction接受a和b作为参数，函数wrapperFunction在baseFunction的基础上进行了扩展，能够接受多余的参数，并且保留原始函数的行为。
+
+---
+
+==== 扩展运算符（...）
+对象的扩展运算符（...）用于取出参数对象的所有可遍历属性，拷贝到当前对象之中。
+
+[source, typescript]
+....
+let p1 = {name:'objZzr',age:19}
+let p2 = {...p1} //将p1中所有可遍历属性, 拷贝到p2中.
+console.log(p2); //{ name: 'zzr', age: 19 }
+....
+
+由于数组是特殊的对象，所以对象的扩展运算符也可以用于数组。
+[source, typescript]
+....
+let arr = ['objZzr','wyy','mwq']
+let p2 = {...arr}
+console.log(p2); //{ '0': 'zzr', '1': 'wyy', '2': 'mwq' }
+....
+
+---
+
+==== 如果扩展运算符后面不是对象，则会自动将其转为对象
+
+[source, typescript]
+....
+let obj = {...1} //等同于 {...Object(1)}
+console.log(obj); //{}  <--这个代码中，扩展运算符后面是整数1，会自动转为数值的包装对象Number{1}。由于该对象没有自身属性，所以返回一个空对象。
+....
+
+但是，如果扩展运算符后面是字符串，它会自动转成一个类似数组的对象，因此返回的不是空对象。
+
+[source, typescript]
+....
+let obj = {...'objZzr'}
+console.log(obj); //{ '0': 'z', '1': 'z', '2': 'r' }
+....
+
+对象的扩展运算符等同于使用Object.assign()方法。
+
+[source, typescript]
+....
+let aClone = { ...t };
+// 等同于
+let aClone = Object.assign({}, t);
+....
+
+---
+
+==== 扩展运算符可以用于合并两个对象
+
+[source, typescript]
+....
+let ab = { ...t, ...b };
+// 等同于
+let ab = Object.assign({}, t, b);
+....
+
+又例
+[source, typescript]
+....
+let obj1 = {name:'objZzr',age:19}
+let obj2 = {sex:'female', money:99999}
+obj3 = {...obj1, ...obj2}
+console.log(obj3); //{ name: 'zzr', age: 19, sex: 'female', money: 99999 }
+....
+
+---
+
+==== 后吃前, 放在"应用了扩展运算符对象"后面的属性, 会覆盖掉"扩展运算符对象"中的同名属性
+
+[source, typescript]
+....
+let p1 = {name:'objZzr', money:99999}
+let p2 = {...p1, money: 123} //注意money属性, 会覆盖掉p1中的money属性
+console.log(p2); //{ name: 'zzr', money: 123 }
+....
+
+但如果反过来做的话, 即把自定义属性放在扩展运算符前面，就变成了设置新对象的默认属性值。相当于是对新对象, 进行了一次"初始化"操作.
+
+[source, typescript]
+....
+let obj_defalutValue = {brand: 'Iphone', size: 4.7} //被很多iphone型号所共通的数据
+let iphone6 = {type: 'iphone6', brand: null, size: null, ...obj_defalutValue} //用obj_defalutValue中的属性值, 来初始化iphone6中的同名属性值
+console.log(iphone6); //{ type: 'iphone6', brand: 'Iphone', size: 4.7 }
+....
+

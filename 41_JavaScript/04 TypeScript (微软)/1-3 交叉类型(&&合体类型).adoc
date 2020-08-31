@@ -1,0 +1,73 @@
+
+
+= 交叉类型 &
+:toc:
+
+---
+
+== 交叉类型（Intersection Types）: 多个类型"合并"为一个类型
+
+在 JavaScript 中， **extend 是一种非常常见的模式，在这种模式中，你可以从两个对象中创建一个新对象，新对象会拥有着两个对象所有的功能。**交叉类型可以让你安全的使用此种模式.
+
+---
+
+
+== 混入 （mixins）
+
+"交叉类型"是将多个类型合并为一个类型。 这让我们**可以把现有的多种类型叠加到一起, 成为一种类型，它包含了所需的所有类型的特性。** 例如， Person & Serializable & Loggable同时是 Person 和 Serializable 和 Loggable。 就是说这个类型的对象, 同时拥有了这三种类型的成员。
+
+**我们大多是在混入（mixins）, 或其它不适合典型面向对象模型的地方, 看到交叉类型的使用。** （在JavaScript里发生这种情况的场合很多！）
+
+**JS中只有对象，并不存在可以被实例化的类。** JS的开发者们想出一种模拟类的行为, 假设有两个对象o1，o2，如果要把o2的方法和属性拷贝到o1中，**混入是继承是最简便的方法之一. 方法就是: 用for…in…的方式遍历o2对象的属性和方法，并将o2的属性和方法赋值给o1.**
+
+
+下面是如何创建混入的一个简单例子：把动物实例身上的属性, 和神实例, 都拷贝给人类对象.
+
+[source, typescript]
+....
+interface Itf_Life {
+    lifespan: number //寿命
+}
+
+class Cls_Animal implements Itf_Life {
+    desire: string //欲望
+    lifespan: number;
+
+    constructor(desire: string, lifespan: number) {
+        this.desire = desire;
+        this.lifespan = lifespan;
+    }
+}
+
+class Cls_God {
+    wisdom: number
+
+    constructor(wisdom: number) {
+        this.wisdom = wisdom;
+    }
+}
+
+//人是动物与神的结合体
+function fn_Mixin<A, G>(insA: A, insG: G): A & G { //注意, 返回值是一个A和G类型的"合体"类型, 这里不能写成<A&G>, 外面不要带尖括号<> !
+    let insRes = <A & G>{} //定义一个返回值, 先把一个空对象强制类型转换为A和G类型的"合体"类型
+    for (let prop in insA) {
+        (<any>insRes)[prop] = insA[prop] //把insA对象中的所有属性的值, 拷贝给insRes对象.
+        // 注意,等号左边的接收方必须先转成any类型, 否则会报错: Type 'A' is not assignable to type 'A & G'. Type 'A' is not assignable to type 'G'.
+    }
+
+    for (let prop in insG) {
+        if (!insRes.hasOwnProperty(prop)) { //如果insG中存在insRes中没拥有的属性的话
+            (<any>insRes)[prop] = insG[prop]
+        }
+    }
+
+    return insRes
+}
+
+let insA = new Cls_Animal('繁衍', 120)
+let insG = new Cls_God(250)
+let person = fn_Mixin(insA, insG)
+console.log(person); //{ desire: '繁衍', lifespan: 120, wisdom: 250 }
+....
+
+---

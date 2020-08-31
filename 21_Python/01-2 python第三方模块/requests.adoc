@@ -1,0 +1,333 @@
+
+= requests 库: 获取网页的html代码
+:toc:
+---
+
+== 官方文档
+
+http://2.python-requests.org/zh_CN/latest/user/quickstart.html +
+http://2.python-requests.org/zh_CN/latest/user/advanced.html#advanced
+
+---
+
+== 获取反馈回来的信息
+
+==== 获取 head 信息 -> requests.head(url).headers
+
+[source, python]
+....
+import requests
+
+url = 'https://movie.douban.com/'
+
+objRes = requests.get(url)
+print(objRes) # <Response [200]>
+
+objHeadRes = requests.head(url) # 只获取头部信息的内容(返回值仍然是一个response对象)
+print(objHeadRes) # <Response [200]>
+
+dict_HeadInfo = objHeadRes.headers # 再继续调用headers属性, 就能拿到解封之后的头部信息, 一个dict
+....
+
+但是这个字典比较特殊：它是仅为 HTTP 头部而生的。而根据 RFC 2616， HTTP 头部是大小写不敏感的。所以, 我们可以使用任意大小写形式, 来访问这个dict中的响应头字段.
+
+
+---
+
+==== 自定义请求头, 发送给服务器 -> requests.get(url, headers=你自定义的请求头dict)
+
+[source, python]
+....
+import requests
+
+url = 'https://movie.douban.com/'
+objMyHear = {'User-Agent': 'Mozilla/5.0'}  # 自定义的请求头内容, 必须是个dict格式.
+objRes = requests.get(url, headers=objMyHear)  # 把你自定义的请求头dict, 挂在headers参数上
+
+print(objRes)                   # <Response [200]>
+print(objRes.request)           # <PreparedRequest [GET]>
+print(objRes.request.headers)   # {'User-Agent': 'Mozilla/5.0', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'}
+....
+
+---
+
+==== 获取服务器返回的"响应状态码" -> requests.get(url).status_code == requests.codes.ok
+
+[source, python]
+....
+import requests
+
+url = 'https://movie.douban.com/'
+objRes = requests.get(url)
+print(objRes.status_code) # 200 <-- 拿到服务器返回的"响应状态码"
+
+print(requests.codes.ok) # 200 <--Requests还附带了一个内置的状态码查询对象, 可以用来和服务器实际返回的响应状态码, 进行比较
+print(objRes.status_code == requests.codes.ok) # True
+....
+
+如果发送了一个错误请求(一个 4XX 客户端错误，或者 5XX 服务器错误响应)，我们可以通过 Response.raise_for_status() 来抛出异常：
+
+[source, python]
+....
+import requests
+
+url = 'http://httpbin.org/status/404/'
+objRes = requests.get(url)
+print(objRes.status_code) # 404
+
+objRes.raise_for_status() # 对res调用raise_for_status()方法, 就能抛出了错误:
+ # requests.exceptions.HTTPError: 404 Client Error: NOT FOUND for url: http://httpbin.org/status/404/
+....
+
+---
+
+==== 获取"重定向"的信息
+例如，Github 将所有的 HTTP 请求重定向到 HTTPS. +
+Response.history 是一个 Response 对象的列表，里面按照从最老到最近的请求, 对所请求的url进行了排序.
+
+[source, python]
+....
+import requests
+
+url = 'http://github.com'
+objRes = requests.get(url)
+
+print(objRes.history) # [<Response [301]>] <--是个list, 里面的数据表明, 之前已经经历过重定向了
+
+print(objRes.url) # https://github.com/ <--重定向后. 就从http 跳转到 https上了
+print(objRes.status_code) # 200
+....
+
+如果你使用的是GET、OPTIONS、POST、PUT、PATCH 或者 DELETE，那么你可以通过 allow_redirects 参数禁用重定向处理：
+
+[source, python]
+....
+import requests
+
+url = 'http://github.com'
+objRes = requests.get(url, allow_redirects=False)  # allow_redirects=False 表示禁止重定向
+
+print(objRes.history)  # []
+
+print(objRes.url)  # http://github.com/ <--由于禁止了重定向, 就依然停在 http 上
+print(objRes.status_code)  # 301
+....
+
+---
+
+== 设置超时 -> requests.get(url, timeout=秒数)
+
+用 timeout参数, 来设定在n秒后, 就停止等待服务器的响应.  +
+基本上所有的生产代码都应该使用这一参数。如果不使用，你的程序可能会永远失去响应.
+
+[source, python]
+....
+requests.get('http://github.com', timeout=0.001)
+....
+
+注意: timeout 仅对连接过程有效，与响应体的下载无关。 **timeout 并不是整个下载响应的时间限制，而是如果服务器在 timeout 秒内没有应答，将会引发一个异常.**
+
+
+---
+
+== 下载
+
+==== 带上"查询字符串", 发送get命令 -> requests.get(url, params=你的查询字符串dict)
+
+[source, python]
+....
+import requests
+
+url = 'https://movie.douban.com/subject_search'
+objQueryString = {'search_text': '黑客帝国'}
+objRes = requests.get(url, params=objQueryString)  # 把你自定义的查询字符串dict, 挂在params参数上
+
+print(objRes.url)  # 可以用url属性, 来查看你提交的url是否正确
+# https://movie.douban.com/subject_search?search_text=黑客帝国
+....
+
+注意: 字典里 value值为None 的键key, 都不会被添加到 URL 的查询字符串里。
+
+你还可以将一个list, 作为值传入：
+
+[source, python]
+....
+import requests
+
+url = 'https://movie.douban.com/subject_search'
+objQueryString = {'key1': 'value1', 'key2': ['value2', 'value3']} # 其中一个键值对的value是个list
+objRes = requests.get(url, params=objQueryString)
+
+print(objRes.url)
+# https://movie.douban.com/subject_search?key1=value1&key2=value2&key2=value3
+....
+
+---
+
+==== 拿到服务器返回给前端的"html代码" -> requests.get(url).text
+
+[source, python]
+....
+import requests
+
+url = 'https://movie.douban.com/subject_search'
+objQueryString = {'search_text': '黑客帝国'}
+objRes = requests.get(url, params=objQueryString)
+
+print(objRes.text) # 拿到后端服务器返回给前端的数据, 即html代码.
+print(objRes.content) # 以二进制字节的形式, 来显示后端返回给前端的内容. 如果后端返回的是非文字的图片,视频等文件的话.
+....
+
+---
+
+==== 查看服务器返回的html的"编码" -> requests.get(url).encoding 或 apparent_encoding
+[source, python]
+....
+import requests
+
+url = 'https://movie.douban.com/subject_search'
+objQueryString = {'search_text': '黑客帝国'}
+objRes = requests.get(url, params=objQueryString)
+
+print(objRes.encoding) # utf-8 <-- 从http的header中, 来查看这个网页的编码是什么
+print(objRes.apparent_encoding) # utf-8
+# 从网页内容本身,来分析出这个编码是什么. 通常比上面的 r.encoding 更为准确.
+....
+
+你也可以对服务器返回的html的编码, 进行重新设置, 比如:
+[source, python]
+....
+objRes.encoding = 'ISO-8859-1'
+....
+注意: 如果你改变了编码，每当你访问 objRes.text ，Request 都将会使用 objRes.encoding 的新值。
+
+
+---
+
+==== 拿到服务器返回的"二进制数据"(比如图片) -> requests.get(urlImage).content
+
+[source, python]
+....
+import requests
+from PIL import Image
+from io import BytesIO
+
+urlImage = 'https://img1.doubanio.com/view/photo/s_ratio_poster/public/p451926968.webp'
+dataBinary = requests.get(urlImage).content  # 拿到返回的二进制数据
+objImg = Image.open(BytesIO(dataBinary))  # Image.open()返回一个Image对象. BytesIO()能实现在内存中读写bytes
+
+objImg.show()  # 调用默认的图片软件显示图片
+print(objImg.format, objImg.size, objImg.mode)  # WEBP (270, 386) RGB
+....
+
+---
+
+==== 拿到服务器返回的是"JSON数据" -> requests.get(urlJson).json()
+
+[source, python]
+....
+import requests
+from PIL import Image
+from io import BytesIO
+
+urlJson = 'https://api.github.com/events' # 该url指向的是个json文件
+objJson = requests.get(urlJson).json() # 对返回的res对象, 调用JSON 解码器.
+print(objJson) # 注意: 如果服务器上的这个json文件内容, 是个大list的话, 这里就是个list.
+....
+
+需要注意的是，成功调用 r.json() 并**不**意味着响应的成功。有的服务器会在失败的响应中包含一个 JSON 对象（比如 HTTP 500 的错误细节）。这种 JSON 会被解码返回。
+
+所以要检查请求是否成功，请使用 r.raise_for_status() 或者检查 r.status_code 是否和你的期望相同。
+
+---
+
+== 上传
+
+==== 用post请求, 发送"表单数据"给服务器
+
+通常，你想要发送一些编码为表单形式的数据 ——非常像一个 HTML 表单。要实现这个，只需简单地**传递一个字典给 data 参数。你的数据字典在发出请求时, 会自动编码为表单形式**：
+
+[source, python]
+....
+import requests
+from PIL import Image
+from io import BytesIO
+
+url = 'http://httpbin.org/post'  # httpbin.org 这个网站能测试 HTTP 请求和响应的各种信息
+objForm = {'key1': 'value1', 'key2': 'value2'}
+objRes = requests.post(url, data=objForm) # 将你的表单数据(dict格式), 挂在 data 参数上
+
+print(objRes.text)
+'''
+{
+  "args": {},
+  "data": "",
+  "files": {},
+  "form": { # <--注意这里
+    "key1": "value1",
+    "key2": "value2"
+  },
+  "headers": {
+    "Accept": "*/*",
+    "Accept-Encoding": "gzip, deflate",
+    "Content-Length": "23",
+    "Content-Type": "application/x-www-form-urlencoded",
+    "Host": "httpbin.org",
+    "User-Agent": "python-requests/2.22.0"
+  },
+  "json": null,
+  "origin": "58.241.3.226, 58.241.3.226",
+  "url": "https://httpbin.org/post"
+}
+'''
+....
+
+除了可以自行对 dict 进行编码，你还可以使用 json 参数直接传递，然后它就会被自动编码。
+
+[source, python]
+....
+import requests
+from PIL import Image
+from io import BytesIO
+
+url = 'http://httpbin.org/post'  # httpbin.org 这个网站能测试 HTTP 请求和响应的各种信息
+objForm = {'key1': 'value1', 'key2': 'value2'}
+objRes = requests.post(url, json=objForm) # 将你的表单数据(dict格式), 挂在 json 参数上
+
+print(objRes.text)
+'''
+{
+  "args": {},
+  "data": "{\"key1\": \"value1\", \"key2\": \"value2\"}",
+  "files": {},
+  "form": {},
+  "headers": {
+    "Accept": "*/*",
+    "Accept-Encoding": "gzip, deflate",
+    "Content-Length": "36",
+    "Content-Type": "application/json",
+    "Host": "httpbin.org",
+    "User-Agent": "python-requests/2.22.0"
+  },
+  "json": { # <-- 注意这里
+    "key1": "value1",
+    "key2": "value2"
+  },
+  "origin": "58.241.3.226, 58.241.3.226",
+  "url": "https://httpbin.org/post"
+}
+'''
+....
+
+
+---
+
+==== 用post请求 "上传文件"到服务器
+
+http://2.python-requests.org/zh_CN/latest/user/quickstart.html
+
+---
+
+
+
+

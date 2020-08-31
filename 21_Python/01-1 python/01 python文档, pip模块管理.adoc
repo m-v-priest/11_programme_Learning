@@ -1,0 +1,73 @@
+= python
+:toc:
+
+== 安装
+
+英文官方文档  +
+https://docs.python.org/3/
+
+中文文档 +
+https://docs.python.org/zh-cn/3.7/library/index.html
+
+Python Cookbook 3rd 中文版 +
+https://python3-cookbook.readthedocs.io/zh_CN/latest/index.html
+
+---
+
+
+
+---
+
+
+== python 命令行
+
+|===
+|功能 |命令
+
+|查看python安装路径
+|where python
+
+|===
+
+---
+
+== pip 模块管理
+
+|===
+|功能 |命令
+
+|使用国内镜像的pip
+|pip install -i 镜像地址 模块名 +
+例如: pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pandas # 会从清华镜像, 安装pandas库
+
+国内源： +
+清华：https://pypi.tuna.tsinghua.edu.cn/simple +
+阿里云：http://mirrors.aliyun.com/pypi/simple/ +
+中国科技大学 https://pypi.mirrors.ustc.edu.cn/simple/
+
+
+|查看pip版本
+|pip show pip
+
+|升级pip
+|python -m pip install --upgrade pip
+
+|列出当前安装的包
+|pip list
+
+|列出可升级的包
+|pip list --outdate
+
+|升级一个包
+|pip install --upgrade xxx +
+mac,linux,unix 在命令前加 sudo -H
+
+|升级所有可升级的包
+|利用pip-review模块 （亲测可用） +
+ pip install pip-review +
+ pip-review --local --interactive
+
+|===
+
+---
+

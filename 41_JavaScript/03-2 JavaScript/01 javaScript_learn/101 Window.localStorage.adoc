@@ -1,0 +1,135 @@
+
+= window.localStorage
+:toc:
+---
+
+window.localStorage 是前端本地存储的一种方案. +
+它类似于一个object对象, 里面是用kv键值对的形式存储数据的.
+
+注意: localStorage 中的键值对, 总是以string字符串的形式存储。换句话说, 即使你存入number数字, 也会被转换成string.
+
+**注意: window.localStorage只在前端渲染的情况下有效, 如果你的react是后端渲染的, 那后端是没有 window对象的! **
+
+
+
+**注意一个坑: 我曾经发生存在localStorage中的数据, 一刷新页面, 就会重置的问题.** 后来发现, 其实是我在页面里, 写的代码:
+[source, typescript]
+....
+let objStorage = window.localStorage
+objStorage['indexStart'] = -1
+objStorage['indexEnd'] = -1
+....
+在第一次运行时, 的确是帮我们创建出了一个localStorage对象! 然后你就更新了里面的值. 但**每次刷新页面后, 相当于又重新执行了一遍赋值为-1的操作, 于是里面的数据就被"重置"了**. 每次刷新页面, 就每次执行这个赋值语句的重置操作.
+
+**那怎么解决呢? 很简单, 在你第一次创建localStorage对象时, 可以写上赋值语句. 等第二次运行本页面, 就把赋值语句删掉就行了.**
+
+
+完整用法如下:
+[source, typescript]
+....
+import React from 'react';
+
+let objStorage = window.localStorage //先获取 window.localStorage对象
+// objStorage['indexStart'] = -1 //如果你是第一次赋值(进行初始化), 就写上这句, 如果不是第一次赋值, 千万不要写上赋值语句.
+// objStorage['indexEnd'] = -1
+/*
+这两句赋值语句, 只能在第一次创建localStorage对象时写!
+之后就要删掉它们, 免得每次运行都会重新赋值, 就造成"重置"的效果.
+*/
+
+export default class Cpn_Father extends React.Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            inputMsg: '',
+
+            //用window.localStorage中的值, 来赋值给state对象中的属性
+            indexStart: objStorage.getItem('indexStart'),
+            indexEnd: objStorage.getItem('indexEnd')
+        }
+    }
+
+    render() {
+        return (
+            <React.Fragment>
+
+                <div>indexStart
+                    <input type="text"
+                           value={this.state.indexStart}
+                           onChange={(event) => {
+                               this.fnUpdate_IndexStart(event)
+                           }}/>
+                    --
+                    indexEnd
+                    <input type="text"
+                           value={this.state.indexEnd}
+                           onChange={(event) => {
+                               this.fnUpdate_IndexEnd(event)
+                           }}/>
+
+                    <input type="button"
+                           value={'next 20'}
+                           onClick={() => {
+                               this.fn_getNext20()
+                           }}/>
+                </div>
+
+
+                <form action="#" method={'get'}>
+                    <input type="text"
+                           name="inputMsg"
+                           value={this.state.inputMsg}
+                           onChange={(event) => {
+                               this.setState({inputMsg: event.target.value})
+                           }}/>
+
+                    <input type="submit"
+                    />
+                    {/*
+                    注意: 表单的提交按钮, 会把state中的数据都重置, 比如inputMsg中的值就会被重置.
+                    但对于indexStart 和 indexEnd 属性来说, 由于我们把它们的值是由 window.localStorage 来赋值的,
+                    所以它们的值不受表单重置影响, 因为 window.localStorage中的值是永久存储的. 不受页面刷新影响.
+                    */}
+                </form>
+
+            </React.Fragment>
+        );
+    }
+
+
+    fnUpdate_IndexStart = (event) => {
+        this.setState({indexStart: event.target.value})
+        objStorage.setItem('indexStart', event.target.value)
+    }
+
+    fnUpdate_IndexEnd = (event) => {
+        this.setState({indexEnd: event.target.value})
+        objStorage.setItem('indexEnd', event.target.value)
+    }
+
+    fn_getNext20 = () => {
+        this.setState({
+                indexStart: parseInt(this.state.indexEnd) + 1,
+                indexEnd: parseInt(this.state.indexEnd) + 20
+            },
+            () => {
+                objStorage.indexStart = this.state.indexStart
+                objStorage.indexEnd = this.state.indexEnd
+            }
+            /*
+            在setState中,可以加上第二个参数,
+            即用一个回调函数, 来在setState后立刻执行某个操作,
+            此处, 我们让window.localStorage中的值能和state中的完全同步!
+            否则window.localStorage中的值会比state中的值慢一拍.
+             */
+        )
+    }
+}
+....
+
+
+官网 https://developer.mozilla.org/zh-CN/docs/Web/API/Window/localStorage
+
+---
+

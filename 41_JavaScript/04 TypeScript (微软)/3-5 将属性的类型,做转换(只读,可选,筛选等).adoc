@@ -1,0 +1,476 @@
+
+= typescript 转换"属性的类型"
+:toc:
+
+---
+
+TypeScript提供一些全局的工具类型.
+
+---
+
+====  keyof 和 in 关键字的区别
+
+首先我们需要理解两个关键字 keyof 和 in:
+
+|===
+|关键字 |说明
+
+|keyof
+|keyof 可以用来取得一个对象接口的所有 key 值(即属性名).
+
+|in
+|in 可以遍历枚举类型
+|===
+
+**keyof 产生"联合类型(or的关系)", in 则可以"遍历"枚举类型, 所以他们经常一起使用.**
+
+例如:
+[source, typescript]
+....
+interface Itf_Person {
+    name?: string,
+    age: number,
+    isFemale: boolean,
+    birthplace?: object
+}
+
+type type_ObjPerson = { //定义一个obj的类型, 其key(即p)只能从接口中的key名字中来取, value值是any类型.
+    [p in keyof Itf_Person]: any
+}
+/*
+1. keyof Itf_Person 意思是拿到Itf_Person接口中所有的key名字
+2. in 能遍历枚举类型. 所以, in + keyof Itf_Person 就遍历了Itf_Person接口中的所有key名字.
+3. p + in + keyof Itf_Person, 意思就是 p的取值, 必须是 Itf_Person接口中的每一个key名字. 因为是遍历取值么, 必须遍历到接口中的所有key名字.
+ */
+
+
+let p1: type_ObjPerson = {
+    age: 0, birthplace: undefined
+} //报错, 少写了isFemale属性
+
+
+let p3: type_ObjPerson = {
+    age: 0, birthplace: undefined, isFemale: false, name: ""
+}  //ok
+....
+
+
+---
+
+
+==== 变"可选" ->Partial<某类型> :   能将某个类型O 中的所有属性(key), 变成"可选属性".
+
+Partial 是 typescript 的内置类型. 用法如下:
+
+[source, typescript]
+....
+interface Itf_Person {
+    name: string,
+    age: number,
+    isFemale: boolean
+}
+
+//Partial<Itf_Person>表示, 将Itf_Person类型中的所有属性, 标记为"可选属性".
+let zzr: Partial<Itf_Person> = {
+    age: 22 //现在就不用写全接口中定义的key了, 因为它里面的key现在都通过Partial<Itf_Person>类型, 变成"可选属性"了么!
+}
+
+//<O extends Partial<Itf_Person>, K extends keyof O> 表示: O类型继承自Partial<接口>类型, K类型继承自接口中的key.
+function fnGetValue<O extends Partial<Itf_Person>, K extends keyof O>(obj: O, key: K) {
+    return obj[key]
+}
+
+console.log(fnGetValue(zzr, "age")); //22
+....
+
+这样, 就省得你在接口中把所有的key后面带上问号?了. +
+
+Partial的功能相当于如下:
+
+[source, typescript]
+....
+type Partial<T> = {
+    [P in keyof T]?: T[P];  //把所有的key(或property), 都带上问号?, 变成可选的
+};
+....
+这就是Partial 的源码. **上面语句的意思是: keyof T 拿到 T 的所有属性名; 然后用 in 进行遍历; 将值赋给 P; 最后 T[P] 取得相应属性的value值.**
+
+
+---
+
+==== 变"必选" -> Required<T> : 将某个类型O 中的所有属性(key), 变成"必选属性".
+
+与 Partial 相反，Required 将 某类型 T(即Type) 的所有属性, 都标记为"必选属性".
+
+
+[source, typescript]
+....
+interface Itf_Person {
+    name: string,
+    age?: number,  //可选属性
+    isFemale?: boolean
+}
+
+//Required<Itf_Person>表示, 将Itf_Person类型中的所有属性, 都标记为"必须要写的属性".
+let zzr: Required<Itf_Person> = {
+    name: "zzr" //报错: error TS2739: Type '{ name: string; }' is missing the following properties from type 'Required<Itf_Person>': age, isFemale.
+    //虽然在接口中, age和isFemale带问号, 是可选属性. 但我们对zzr 规定的类型, 却不是原Itf_Person接口本身, 而是进化后的 Required<Itf_Person> 类型, 这就取消了接口里"可选属性"的特权, 而变成所有属性都是"必填"的了. 你不实现它们, 就会报错.
+}
+
+//<O extends Partial<Itf_Person>, K extends keyof O> 表示: O类型继承自Partial<接口>类型, K类型继承自接口中的key.
+function fnGetValue<O extends Partial<Itf_Person>, K extends keyof O>(obj: O, key: K) {
+    return obj[key]
+}
+
+console.log(fnGetValue(zzr, "age"));
+....
+
+Required 的原理如下:
+[source, typescript]
+....
+type Required<T> = {
+    [P in keyof T]-?: T[P];
+};
+....
+
+**可以发现, 里面有个 "-?" 这是什么意思呢? 它的意思就是: 将"可选项"代表的 ? 去掉, 从而让这个类型变成"必选项".  +
+与之对应的还有个 "+?" , 这个含义自然与 "-?" 之前相反, 它是用来把属性变成"可选项"的.**
+
+---
+
+==== Mutable (未包含)
+
+类似地, 其实还有对** "+" 和 "-", 它们能对 readonly 进行加减.**
+
+[source, typescript]
+....
+type Mutable<T> = {
+  -readonly [P in keyof T]: T[P]
+} //将 T 的所有属性的 readonly 移除
+....
+
+例如:
+
+[source, typescript]
+....
+interface Itf_Person {
+    name?: string,
+    age: number,
+    isFemale: boolean,
+    birthplace?: object
+}
+
+type type_ReadOnly<T> = { //这个T类型(犹如形参),会在之后实际调用它时, 把实际的类型(犹如实参)传进来.
+    readonly [P in keyof T]: T[P]
+}
+
+//下面将Itf_Person接口类型中的所有属性, 改成只读的
+let zzr: type_ReadOnly<Itf_Person> = { //<Itf_Person>就是实参, 会替换掉<T>这个形参
+    age: 0, birthplace: undefined, isFemale: false, name: ""
+}
+
+//zzr.name = 'zzr' //报错 error TS2540: Cannot assign to 'name' because it is a read-only property.
+
+
+//下面, 再重新将 T(本例即上面的 type_ReadOnly<Itf_Person>) 中的所有属性的 readonly 移除. 变成可写的.
+type type_CanChange<T> = {
+    -readonly [P in keyof T]: T[P] //移除T类型中的所有属性的只读特性, 让属性变成可修改的
+}
+
+let wyy: type_CanChange<type_ReadOnly<Itf_Person>> = {
+    age: 0, birthplace: undefined, isFemale: false, name: ""
+}
+
+wyy.name = 'wyy' //ok!
+....
+
+
+---
+
+==== 变"只读" -> Readonly<T> : 将某个类型P 中的所有属性(key), 变成"只读的".
+
+Readonly 能将所有属性标记为只读, 即不能修改.
+
+源码如下:
+[source, typescript]
+....
+type Readonly<T> = {
+    readonly [P in keyof T]: T[P];
+};
+....
+
+如:
+[source, typescript]
+....
+interface Itf_Person {
+    name: string,
+    age?: number,
+    isFemale?: boolean
+    birthday: object
+}
+
+//Readonly<Itf_Person>表示, 将Itf_Person类型中的所有属性, 都标记为"只读的".
+let zzr: Readonly<Itf_Person> = {
+    name: "zzr",
+    birthday:new Date()
+}
+
+zzr.name = 'wyy' //报错 error TS2540: Cannot assign to 'name' because it is a read-only property.
+zzr.birthday = new Date() //报错 error TS2540: Cannot assign to 'birthday' because it is a read-only property.
+....
+
+
+
+==== 注意 "Readonly<T>" 和 "readonly 单个变量名"的区别:
+
+
+|===
+|区别 |说明
+
+|Readonly<T>
+|用来规定整个T类型中的**所有**属性都是只读的. 第一个字母R是**大写**!
+
+|readonly 变量名
+|只是规定**单个**的变量是只读的. 第一个字母r是**小写**!
+|===
+
+
+在接口中设置"单个只读的属性" -> readonly
+
+[source, typescript]
+....
+interface Itf_ObjPerson {
+    name: string,
+    readonly birthplace: string, //只读属性
+    readonly birthday: Date, //日期类型
+}
+
+let zzr: Itf_ObjPerson = {name: 'zzr', birthplace: 'wx', birthday: new Date(1970, 2, 14)} //月份的参数介于 0 到 11 之间。
+console.log(zzr);
+/*
+{ name: 'zzr',
+  birthplace: 'wx',
+  birthday: 1970-03-13T16:00:00.000Z }
+ */
+
+zzr.birthplace = 'sh' dirGrandfather
+....
+
+---
+
+==== 做"筛选" -> Pick<T, K> : 从Type类型中, 只取出它里面的K类型的属性,
+
+从类型T中, 挑选部分属性K, 来构造类型。
+
+写法是:
+[source, typescript]
+....
+//从 T 中取出 一系列 K 的属性
+type Pick<T, K extends keyof T> = {
+    [P in K]: T[P];
+};
+....
+即, 意思是: **从T(Type类型)中, 只取出它里面的K属性, 其他属性统统忽略掉.**
+
+例如:
+[source, typescript]
+....
+interface Itf_Person {
+    name?: string,
+    age: number,
+    isFemale: boolean
+    birthday?: object
+}
+
+/*
+Pick<Itf_Person, 'name' | 'age' | 'isFemale'>表示, 我们点名(指名道姓)只取出(筛选出)Itf_Person类型中的name, age, isFemale这三个属性, 其他属性统统忽略掉, 不能写.
+对于"点到名"的属性: (1)必须写, 不写会报错. (2)但是如果它是"可选属性", 那可以不写.
+对于"没点到名"的属性, 一定不能写, 你写了就报错.
+ */
+let zzr: Pick<Itf_Person, 'name' | 'age' | 'isFemale'> = {
+    name: "zzr",
+    birthday: new Date() //birthday属性不在我们点名取出的属性里, 所以会报错.
+}
+/*报错:
+error TS2322: Type '{ name: string; birthday: Date; }' is not assignable to type 'Pick<Itf_Person, "name" | "age">'.
+Object literal may only specify known properties, and 'birthday' does not exist in type 'Pick<Itf_Person, "name" | "age">'.
+ */
+
+//下面ok
+let wyy: Pick<Itf_Person, 'name' | 'age' | 'isFemale'> = {
+    isFemale: true,
+    age:31
+} //虽然我们点名了name属性, 但由于name是可选属性, 所以可以不写.
+....
+
+---
+
+==== "剔除"某些属性出去 -> Exclude<T,U>
+
+从类型T中剔除所有可以赋值给U的属性，然后构造一个类型。
+
+在 ts 2.8 中引入了一个条件类型, 示例如下
+[source, typescript]
+....
+T extends U ? X : Y
+....
+上面这句的意思是: 如果 T 是 U 的子类型的话，那么就会返回 X，否则返回 Y.
+
+甚至可以组合多个:
+[source, typescript]
+....
+type TypeName<T> =
+    T extends string ? "string" :
+        T extends number ? "number" :
+            T extends boolean ? "boolean" :
+                T extends undefined ? "undefined" :
+                    T extends Function ? "function" :
+                        "object";
+....
+
+对于联合类型来说, 会自动分发条件，例如 T extends U ? X : Y, 其T 可能是 A | B 的联合类型, 那实际情况就会变成 (A extends U ? X : Y) | (B extends U ? X : Y)
+
+有了以上的了解, 我们再来理解下面的工具泛型:
+
+来看看 Exclude 源码
+[source, typescript]
+....
+type Exclude<T, U> = T extends U ? never : T;
+....
+**Exclude 的作用是从 T 中找出 U 中没有的元素, 换句话说, 其实就是从T 中排除 U.**
+
+
+....
+exclude v. /ɪkˈskluːd/
+词根词缀： ex-向外 + -clud-关,闭 + -e动词词尾 → 把…关闭在外
+
+(1) ~ sth (from sth): to deliberately not include sth in what you are doing or considering 不包括；不放在考虑之列
+Try excluding fat from your diet. 平时用餐时尽量避免含脂肪的食品。
+
+(2)to decide that sth is not possible 排除（…的可能性）；认为…不可能
+We should not exclude the possibility of negotiation. 我们不应该排除谈判的可能性。
+....
+
+例如
+[source, typescript]
+....
+type T = Exclude<1 | 2, 1 | 3> // -> 2
+....
+
+---
+
+==== Extract<T, U> -> 从 T 中提取出 U
+
+源码
+[source, typescript]
+....
+type Extract<T, U> = T extends U ? T : never;
+....
+
+**Extract 的作用是: 提取出 T 包含在 U 中的元素. 换句话说其实就是 从 T 中提取出 U. **
+
+---
+
+==== Omit (这个无法试验, 虽不报错, 但却无法运行)
+
+用之前的 Pick 和 Exclude 进行组合, 实现忽略对象某些属性功能.
+
+源码如下
+[source, typescript]
+....
+type Omit<T, K> = Pick<T, Exclude<keyof T, K>>
+
+// 使用
+type Foo = Omit<{name: string, age: number}, 'name'> // -> { age: number }
+....
+
+
+....
+omit v. /əˈmɪt/
+(1)~ sth/sb (from sth): to not include sth/sb, either deliberately or because you have forgotten it/them 删除；忽略；漏掉；遗漏
+People were surprised that Smith was omitted from the team. 人们感到惊讶，史密斯竟未列入该队。
+
+(2)[ V to inf ] to not do or fail to do sth 不做；未能做
+She omitted to mention that they were staying the night. 她没说他们当晚要留宿的事。
+....
+
+例如:
+[source, typescript]
+....
+
+....
+
+
+---
+
+==== 分别指定key和value的类型 -> Record<K, T> : 规定下一个对象(类型)的key和value的类型
+
+构造一个类型，其"属性名"的类型为K，"属性值"的类型为T。这个工具可用来将某个类型的属性映射到另一个类型上。
+
+
+写法是:
+[source, typescript]
+....
+//将所有属性(K)的value值, 转化为 T 类型
+type Record<K extends keyof any, T> = {
+    [P in K]: T;
+};
+....
+
+<K extends keyof any, T> 的意思是:
+
+- K(即key)要么是某种数据的类型, 要么是继承自某种数据(any)的类型.
+- T就是value值的类型. <- 这可以从 [P in K]: T 可知. 冒号前面是key, 后面是value, 所以T就是value的类型.
+- P是K(key)属性之一. 因为 [P in K] 嘛.
+
+例如:
+[source, typescript]
+....
+interface Itf_Person {
+    name?: string,
+    age: number,
+    isFemale: boolean
+    birthday?: object
+}
+
+/*
+Record<number,Itf_Person>[] 类型的意思是:
+1. 首先, 该变量是个数组[]
+2. 数组中的每个元素的类型, 是Record<number,Itf_Person> 这个类型, 即每个元素是个有key-value键值对的obj对象!
+3.Record<number,Itf_Person> 就表示了该obj对象中的key和value的类型. 即, key是一个number类型, value是一个Itf_Person类型.
+ */
+let arr_ObjPersonAndId: Record<number, Itf_Person>[] = [
+    {101: {age: 19, isFemale: true}},
+    {102: {age: 43, isFemale: false}},
+    {103: {age: 27, isFemale: true}},
+]
+....
+
+
+还可以直接指定key的名字: Record<nameOfKey:typeOfValue>
+[source, typescript]
+....
+let p1:Record<'age'|'isFemale',number|boolean> = { //规定key只能是age和isFemale, 少写一个就会报错; 输入其他的key也会报错.
+    age:21,
+    isFemale:true,
+}
+....
+
+
+
+又例:
+[source, typescript]
+....
+
+....
+
+---
+
+==== ReturnType
+
+首先我们要了解一下 infer 这个关键字(英文意思是"推断；推论；推理"). 在条件类型语句中, 我们可以用 infer 声明一个类型变量,并且对它进行使用, 我们可以用它获取函数的返回类型. 源码如下
+
+[source, typescript]
+....
+type ReturnType5<T> = T extends (...args: any[]) => infer R ? R : any;
+....

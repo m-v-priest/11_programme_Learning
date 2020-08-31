@@ -1,0 +1,62 @@
+
+
+= 联合类型 |
+:toc:
+
+---
+
+== 联合类型, 是"or或"的关系
+
+联合类型（Union Types）表示取值可以为多种类型中的一种。
+联合类型使用 | 分隔每个类型。
+
+[source, typescript]
+....
+function fn(firstArg: number, ...restArg: number[] | null[]) { //restArg参数的类型, 可以是一个数字数组, 也可以不输入任何值.
+//注意:此处必须写成 null[], 而不能只写成 null, 否则报错: error TS2370: A rest parameter must be of an array type.
+    console.log(restArg);
+}
+
+fn(1, 2, 3, 4, 5) //[ 2, 3, 4, 5 ]
+fn(1) //[]
+....
+
+联合类型表示一个值可以是几种类型之一。 我们用竖线（ |）分隔每个类型，所以 number | string | boolean表示一个值可以是 number， string，或 boolean。
+
+---
+== 联合类型, 只能访问到它所有类型的"共有成员", 而访问不到专属于某一类型的"特有"属性或方法.
+
+**如果一个值是联合类型，我们只能访问此联合类型的所有类型里共有的成员。**
+
+[source, typescript]
+....
+interface ItfBird {
+    fn_Fly(): void;
+    fn_LayEggs(): any;
+}
+
+interface ItfFish {
+    fn_Swim(): void;
+    fn_LayEggs(): any;
+}
+
+function fnTest(arg: ItfFish | ItfBird) {
+    if ((<ItfFish>arg).fn_Swim) { //由于arg是个联合类型, 我们只能访问到联合类型中共同拥有的属性或方法。本例, 其实你只能访问到fn_LayEggs()方法. 
+        // 所以, 为了能访问到鱼接口专有的游泳或鸟接口专有的飞翔方法, 必须先对arg进行强制类型转换才行.
+        (<ItfFish>arg).fn_Swim()
+    } else {
+        (<ItfBird>arg).fn_Fly()
+    }
+}
+....
+
+为什么对联合类型,只能访问到共有属性和方法? 因为 比如上例, Bird具有一个 fly成员。 我们不能确定一个 Bird | Fish类型的变量是否有 fly方法。 如果变量在运行时是 Fish类型，那么调用 pet.fly()就出错了。
+
+**注意: 联合类型意味着, 在你最终传入确切的值之前, ts只能摒弃掉某一个类型特有的方法和属性, 而使用联合类型中这几个类型所共有的方法和属性.**
+
+[source, typescript]
+....
+function fn(sth: string | number) {
+    console.log(sth.length); //报错 error TS2339: Property 'length' does not exist on type 'string | number'. <--因为number类型没有length属性存在!
+}
+....

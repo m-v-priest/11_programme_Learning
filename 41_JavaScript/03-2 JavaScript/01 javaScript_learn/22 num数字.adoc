@@ -1,0 +1,141 @@
+
+= number 数值
+:toc:
+---
+
+== 随机数
+
+==== 获取[0,1) 之间的随机数 -> Math.random()
+
+伪随机浮点数在范围[0，1)，包括0, 但是不包括1.
+
+---
+
+==== 获取某个区间内的随机数 -> _.random([lower=0], [upper=1], [floating])
+
+用lodash库
+
+[source, typescript]
+....
+_.random([lower=0], [upper=1], [floating])
+....
+[lower=0] (number): 下限。 +
+[upper=1] (number): 上限。 +
+[floating] (boolean): 指定是否返回浮点数。
+
+
+产生一个**包括** lower 与 upper 之间的数。
+
+如果只提供一个参数, 则返回一个0到提供数之间的数。 +
+如果 floating 设为 true，或者 lower 或 upper 是浮点数，则结果返回浮点数。
+
+[source, typescript]
+....
+_.random(16, 29) //获取一个[16-29]之间的随机数, 注意是闭区间! 即包括16和29.
+
+console.log(_.random(16, 29,true)); //例如: 18.165005133509208
+....
+
+---
+
+
+== 分数操作
+
+
+==== 向上取整 -> Math.ceil()
+
+[source, typescript]
+....
+Math.ceil(1.01) //2
+....
+
+==== 向上取整 -> _.ceil(number, [precision=0])
+
+lodash的方法
+
+根据 precision（精度） 向上舍入 number。（ precision（精度）可以理解为保留几位小数。）
+
+[source, typescript]
+....
+let _ = require('lodash');
+console.log(_.ceil(1.54021, 3)); //1.541
+console.log(_.ceil(1.00001, 2)); //1.01
+....
+
+---
+
+==== 向下取整 -> Math.floor()
+
+floor() 方法返回小于等于x的最大整数。
+
+[source, typescript]
+....
+Math.floor(1.99) //1
+....
+
+---
+
+==== 向下取整 -> _.floor(number, [precision=0])
+
+根据 precision（精度） 向下舍入 number。（ precision（精度）可以理解为保留几位小数。）
+
+[source, typescript]
+....
+let _ = require('lodash');
+
+console.log(_.floor(198.7654, -2)); //100 <--看来第二个参数, 必须用负数才行.
+console.log(_.floor(198.7654, 2)); //198.76 <--第二个参数为正数的话, 看不出任何效果.
+....
+
+---
+
+==== 四舍五入 -> round(x)
+
+[source, typescript]
+....
+Math.round(1.499) //1
+Math.round(1.5) //2
+....
+
+---
+
+==== 四舍五入 -> _.round(number, [precision=0])
+根据 precision（精度） 四舍五入 number。
+
+[source, typescript]
+....
+let _ = require('lodash'); //lodash库
+
+console.log(_.round(12.554, 2)); //12.55
+console.log(_.round(12.559, 2)); //12.56
+console.log(_.round(1255.9, -2)); //1300
+....
+
+---
+
+====  四舍五入为指定小数位数 -> NumberObject.toFixed(num)
+
+[source, typescript]
+....
+ console.log(Math.random().toFixed(2)); //比如: 0.86
+....
+
+
+---
+
+== 指数 / 幂数
+
+==== x 的 y 次幂 -> Math.pow(x,y)
+
+[source, typescript]
+....
+Math.pow(2,3) //8
+....
+
+---
+
+
+
+
+
+

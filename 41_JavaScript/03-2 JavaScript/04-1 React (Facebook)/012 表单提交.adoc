@@ -1,0 +1,156 @@
+
+= react 表单提交
+:toc:
+
+---
+
+== 表单提交
+
+在react中, 提交表单的步骤, 和纯html中的操作有不同. +
+react中的表单要这样写:
+[source, typescript]
+....
+<form action="#"
+      method={'get'}
+      onSubmit={this.handleSubmit}> //在表单被提交时(点击了submit按钮后), 就执行此handleSubmit()函数.
+
+    文本框: <input type="text" value={this.state.单行文本框value} onChange={this.fn双向绑定单行文本框}/>
+
+    多行文本框: <textarea value={this.state.多行文本框value} onChange={this.fn双向绑定多行文本框}/>
+
+    < input type="submit" value="提交"/>
+</form>
+....
+
+即分两步: +
+(1) 把表单控件的value, 都双向绑定到 state对象中去. +
+(2) 表单在提交时要做出哪些动作, 是通过onSubmit所指向的函数来操作的. onsubmit事件, 会在提交表单时执行一段 JavaScript. 即, onsubmit属性, 会在提交表单时触发。
+
+
+
+完整代码如下:
+
+下面, 我们来提交两种类型的表单控件: text单行文本框, 和 textarea多行文本框 中的值.
+
+[source, typescript]
+....
+import React from 'react';
+import Cpn_Son from './Cpn_Son'
+
+export default class Cpn_Father extends React.Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            userName: '',
+            strTextArea: '',
+        }
+    }
+
+    render() {
+        return (
+            <React.Fragment>
+                <p>userName: {this.state.userName}</p>
+                <p>strTextArea: {this.state.strTextArea}</p>
+
+                {/* action="#" 表示 提交给本页*/}
+                <form action="#" method={'get'} onSubmit={this.fnSubmitFrom}>
+                    单行文本框-用户名: <input type="text" value={this.state.userName} onChange={(event) => {
+                    this.fn_UpdateUserName(event)
+                }}/>
+
+                    多行文本框:<textarea value={this.state.strTextArea} onChange={this.fn_updateStrTextArea}/>
+
+                    {/*提交按钮*/}
+                    <input type="submit" value="提交"/>
+                </form>
+
+            </React.Fragment>
+        );
+    }
+
+    fn_UpdateUserName = (event) => { //双向绑定userName单行文本框中的值
+        this.setState({userName: event.target.value})
+    }
+
+    fn_updateStrTextArea = (event) => { //双向绑定strTextArea多行文本框中的值
+        this.setState({strTextArea: event.target.value})
+    }
+
+    fnSubmitFrom = (event) => {
+        // event.preventDefault() //首先必须阻止表单的默认提交行为, 即放置提交时刷新页面
+        /*
+        注意!!! 如果你想node.js服务器, 接收到你提交的表单数据的话, 就一定不要写上面一句,
+        即不要阻止掉表单提交的默认动作, 否则node.js服务器是接收不到你提交的数据的!
+        */
+        console.log(`已提交:${this.state.userName}, ${this.state.strTextArea}`)
+    }
+}
+....
+
+---
+
+== 单选按钮 radio
+
+[source, typescript]
+....
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+// import {Cpn_Son} from './Cpn_Son'
+
+
+export default class App extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            sex: ''
+        }
+    }
+
+    render() {
+        return (
+            <React.Fragment>
+                <p> 你选择的性别:{this.state.sex}</p>
+
+                {/*将单选按钮的选中的值value, 保存在state对象中*/}
+                <div onChange={(event) => { //这里用onClick, 也能成功.
+                    this.fn_updateSex(event)
+                }}>
+                    {this.fn_createHtmlRadio('male')}
+                    {this.fn_createHtmlRadio('female')}
+                </div>
+
+            </React.Fragment>
+        )
+    }
+
+    fn_createHtmlRadio = (str_itemOption) => {
+        return (
+            <React.Fragment>
+                <input type="radio" id={str_itemOption} name="sex" value={str_itemOption}/>
+                <label htmlFor={str_itemOption}>{str_itemOption}</label>
+            </React.Fragment>
+        )
+    }
+
+    fn_updateSex = (event) => {
+        this.setState({sex: event.target.value})
+    }
+}
+....
+
+渲染出来的单选按钮的html代码为:
+[source, html]
+....
+<div>
+    <input type="radio" id="male" name="sex" value="male" />
+    <label for="male">male</label>
+
+    <input type="radio" id="female" name="sex" value="female" />
+    <label for="female">female</label>
+</div>
+....
+
+---
+

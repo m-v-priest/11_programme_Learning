@@ -1,0 +1,483 @@
+
+= mongoDB
+:toc:
+
+---
+
+== SQL 和 NoSQL 的对应关系
+
+
+|===
+|SQL(关系型数据库) |NoSQL(非关系型数据库)
+mongoDB
+
+|数据库
+|数据库 +
+数据库名应全部小写, 最多64字节。
+
+mongoDB的内置数据库有: +
+db <- 这是MongoDB的默认数据库，位于data目录中. +
+admin <- 这是"root"数据库。只要将一个用户添加到这个数据库，他就会自动继承所有数据库的权限。 +
+一些特定的服务器端命令也只能从这个数据库运行，比如列出所有的数据库或者关闭服务器。 +
+local <- 这个数据永远不会被复制.
+
+|表
+|collection 集合
+
+关于集合名的要求: +
+- 集合名不能以"system."开头，这是为系统集合保留的前缀。 +
+- 千万不要在名字里出现$
+
+|行
+|document 文档 +
+文档是一组"键值(key-value)对"(即BSON)。
+
+Capped collections 就是固定大小的collection。
+
+|列
+|字段
+
+
+|===
+
+---
+
+== 启动mongoDB
+
+
+|===
+|功能 |命令
+
+|首先, 运行 MongoDB 服务器
+|mongod
+
+注意: 如果你没有设置到win10"系统环境"的变量中, 你必须从 MongoDB 目录的 bin 目录中, 执行 mongod.exe 文件。
+
+
+|接着, 连接MongoDB
+|mongo
+
+打开第二个cmd窗口, 运行 mongo.exe 命令, 即可连接上 MongoDB. 当连接被建立后，就会开始打印日志信息。
+
+|===
+
+---
+
+== database 数据库操作
+
+
+|===
+|功能 |命令
+
+|列出所有数据库
+|show dbs
+
+注意, 如果该数据库中没有任何集合, 用show dbs来查看所有数据库, 是看不到它的.
+
+
+|如果数据库不存在，则创建数据库; 否则切换到指定数据库。
+|use 数据库名 //switched to db 数据库名
+
+该数据库存在, 则使用它; +
+该数据库不存在, 则新建它
+
+|查看当前处在哪个数据库中
+|db 或 db.getName() //db代表的是当前数据库
+
+|删除当前所在的数据库
+|db.dropDatabase() //你可以先用 db 命令, 查看当前数据库名。
+
+|===
+
+---
+
+== collection 集合操作
+
+|===
+|功能 |命令
+
+|查看当前数据库中的所有集合
+|show collections 或 show tables
+
+|创建集合
+|db.createCollection('集合名') //其实根本不用手动来创建集合, 只要你直接一步到位, 在新集合中插入了一条文档, 该集合就会自动被创建出来. 比如写成这样: db.新集合名.insert({k1:'v1',k2:'v2'})
+
+|删除集合
+|db.collection集合名.drop()
+
+如果成功删除选定集合，则 drop() 方法返回 true，否则返回 false。
+
+|===
+
+---
+
+== document 文档操作 (增删改查)
+
+==== (增) 插入一条文档 ->  db.集合名collection.insert(document)
+....
+db.colGDP.insert({city:"广东",GDP:97277,growthRate:0.066}) //向colGDP这个集合中, 插入一条文档
+....
+
+MongoDB 中默认的数据库为 test，如果你没有创建新的数据库，集合将存放在 test 数据库中。
+
+---
+
+==== (增) 插入一条文档 ->  db.集合名collection.save(document)
+
+插入文档你也可以使用 db.col.save(document) 命令。 +
+-> 如果不指定 _id 字段, save() 方法类似于 insert() 方法, 即插入一条新文档。 +
+-> 如果指定 _id 字段，则会更新该 _id 的数据。
+
+[source, typescript]
+....
+db.col4.save({name:'ypp'}) //在col4集合中, 插入一条文档. 注意:这里我们没有添上 _id字段, 所以是插入一条新文档, 而非更新该 _id 文档中的数据!
+....
+
+如果有 _id字段的话, 就是更新该文档中的数据, 而非新建一个文档. 如下:
+[source, typescript]
+....
+db.col4.save({"_id" : ObjectId("5d1b5f9a15d339c4c128e371"), name:'mwq'}) //更新该_id对应的文档.
+....
+
+
+---
+
+==== (删) 删除符合条件的"所有"文档
+
+[source, typescript]
+....
+db.collection.remove(
+   <query>, //（可选）删除的文档的条件。
+   {
+     justOne: <boolean>, //（可选）如果设为 true 或 1，则只删除"一个"文档; 如果不设置该参数，或使用默认值 false，则删除"所有"匹配条件的文档。
+     writeConcern: <document> //（可选）抛出异常的级别。
+   }
+)
+....
+
+例, 删除数学大于等于80的"所有"人
+[source, typescript]
+....
+db.colP4.remove(
+    {"objAbilityValue.数学":{$gte:80}}
+)
+....
+
+
+---
+
+==== (删) 删除符合条件的"第一条"文档
+
+[source, typescript]
+....
+db.colpeople.remove(
+    {name:'zzr'}, //注意, 字段的key不写成字符串, 也行
+    {justOne:1} //删除name是'zzr'的所有文档中的"第一条"文档.
+)
+....
+
+---
+
+==== (删) 清空集合中的"所有"文档 -> db.集合名.remove({})
+
+[source, typescript]
+....
+db.colP4.remove({})
+....
+
+注意, 只是清空, 而非删除该集合, 该集合依然可以用 show collections 命令查看到.
+
+
+
+---
+
+==== (改) 修改符合条件的"第一条"文档 -> db.集合名.update(query, update, options)
+
+update() 方法用于更新已存在的文档。语法格式如下：
+
+[source, typescript]
+....
+db.collection.update(
+   <query>, //update的查询条件，类似sql update查询内where后面的。
+   <update>, //update的对象,和一些更新的操作符（如$set,$inc...）等，也可以理解为sql update查询内set后面的
+   {
+     upsert: <boolean>, //可选，这个参数的意思是，如果不存在update的记录，是否插入objNew, true为插入，默认是false，不插入。
+     multi: <boolean>, //可选，mongodb 默认是false, 只更新找到的第一条记录; 如果这个参数为true,就把按条件查出来多条记录全部更新。
+     writeConcern: <document> //可选，抛出异常的级别。
+   }
+)
+....
+
+比如, 我们将hr的年龄改成49:
+[source, typescript]
+....
+db.colP4.update(
+    {name:"hr"}, 
+    {$set:{age:49}}
+) //以上语句只会修改第一条发现的文档，如果你要修改多条相同的文档，则需要设置 multi 参数为 true。
+....
+
+---
+
+==== (改) 修改符合某条件的"所有"文档
+
+将所有体育大于70的人, 性别改成男:
+[source, typescript]
+....
+db.colP4.update(
+    {"objAbilityValue.体育":{$gt:70}},
+    {$set:{sex:"male"}},
+    {multi:true} //修改所有找到的文档!
+)
+....
+
+---
+
+==== (改) 替换整条文档 -> db.集合名.update()方法, 不加$set参数即可
+
+update()方法, 不加$set参数即可, 就是查找到某条后, 把该文档直接整体替换掉.
+
+[source, typescript]
+....
+db.colP4.update(
+    {name:"gj"},
+    {money:999, sex:'female'}
+) //找到带有name字段值是'gj'的第一条文档, 然后把它整条替换成{money:999, sex:'female'}
+....
+
+
+---
+
+==== (改) 替换整条文档 -> db.colpeople.save({_id:xxx, newKey1:'v1', newK2:'v2'})
+
+[source, typescript]
+....
+db.colpeople.save({
+    _id:ObjectId("5d1b502a15d339c4c128e368"), //注意! id前别忘了_下划线!
+    charm:99, sex:'female'
+})
+//把 '_id'字段值为"5d..."对应的文档, 整条替换成 { "_id" : ObjectId("5d1b502a15d339c4c128e368"), "charm" : 99, "sex" : "female" },  _id依然保留原值.
+....
+
+---
+
+==== 查看某集合中, 有多少条document数据
+[source, typescript]
+....
+db.集合名.count()
+....
+
+---
+
+
+==== (查) 查看集合中符合条件的"第一条"文档 -> db.集合名.findOne()
+
+---
+
+==== (查) 查看某个集合中的"所有"文档 -> db.集合名collection.find()
+
+[source, typescript]
+....
+db.集合名.find()
+db.集合名.find().pretty() //pretty() 方法会以"对数据格式化代码(即有缩进, 方便阅读)"的方式, 来显示所有文档。
+....
+
+---
+
+==== (查) 排序文档 -> db.集合名.find().sort({KEY:1})
+
+sort() 方法可以通过参数, 指定排序的字段: 其中 1 为升序排列，而 -1 是降序排列。
+
+例如, 找到所有的文档后, 先按年龄正序排, 年龄相同的, 就按体育成绩倒叙排.
+
+[source, typescript]
+....
+db.colP4.find().sort(
+    {
+        age: 1, //年龄按升序排(从小到大)
+        "objAbilityValue.体育": -1  //体育按降序排(从大到小)
+    }
+)
+....
+
+
+---
+
+==== (查) 用"单个条件", 来查找符合条件的"所有"文档 -> db.集合名.find({某字段名key:value})
+
+比如, 查找数学大于等于80的"所有"人.
+[source, typescript]
+....
+db.colP4.find(
+    {"objAbilityValue.数学":{$gte:80}}
+)
+....
+
+如果某个字段的值是array, 可以直接搜索里面的元素.
+
+例如, 假设有条文档如下: +
+{name:"wyy",age:22, arrFamily:['wyyFather','wyyMother']} +
+
+我们可以直接这样找到它:
+[source, typescript]
+....
+db.colpeople.find({arrFamily:'wyyMother'})
+....
+
+---
+
+==== (查) 用"多个条件", 来查找符合条件的"所有"文档
+
+多个条件之间, 用逗号隔开即可. +
+查找英语大于80分, 且体育低于等于60分的所有人:
+
+[source, typescript]
+....
+db.colP4.find(
+    {
+        "objAbilityValue.英语": {$gt: 80},
+        "objAbilityValue.体育": {$lte: 60}
+    }
+)
+....
+
+---
+
+== 查询的条件
+
+
+==== 数值大小比较
+
+
+|===
+|比较 |写法 |说明
+
+| (>) 大于操作符 - $gt (greater than)
+|db.col.find({key : {$gt : 100}})
+|获取 "col" 集合中 "某key" 大于 100 的数据
+
+|(>=) 大于等于操作符 - $gte (greater than equal)
+|db.col.find({key : {$gte : 100}})
+|
+
+|(<) 小于操作符 - $lt (less than)
+|db.col.find({key : {$lt : 100}})
+|
+
+| (\<=) 小于等于操作符 - $lte (less than equal)
+|Column 2, row 4
+|db.col.find({key : {$lte : 100}})
+
+
+|区间范围
+|db.col.find({key : {$lt :200, $gt : 100}})
+|获取"col"集合中 "某key" 大于100，小于 200 的数据
+
+|$eq (equal)
+|
+|
+
+|$ne (not equal)
+|
+|
+
+
+
+|===
+
+
+
+---
+
+==== AND 与 -> 有逗号隔开多个kv键值对
+
+ find() 方法可以传入多个键(key), 每个键(key)以逗号隔开, 即常规 SQL 的 AND 条件.
+
+ [source, typescript]
+ ....
+db.集合名.find({k1:v1, k2:v2})
+ ....
+
+---
+
+==== OR 或 -> $or: [{k1:v1}, {k2,v2}]
+
+MongoDB OR 条件语句, 使用了关键字 $or,语法格式如下：
+
+[source, typescript]
+....
+db.col.find(
+   {
+      $or: [
+         {key1: value1}, {key2:value2}
+      ]
+   }
+).pretty()
+....
+
+例如, 查找年龄大于等于25岁, 或者体育大于80分的所有人:
+
+[source, typescript]
+....
+db.colP4.find({
+    $or:[
+        {"age":{$gte:25}},
+        {"objAbilityValue.体育":{$gt:90}}
+    ]
+})
+....
+
+---
+
+==== AND 和 OR 联合使用
+
+
+
+
+---
+
+== json 和 mongoDb 的互相导入导出
+
+要使用到 mongoimport工具.
+
+注意: 使用mongoexport，mongoimport, 需要退出当前的数据库运行环境 (即关掉运行mongo的cmd窗口)
+否则会报错：[js] SyntaxError: missing ; before statement @(shell):1:15
+
+
+|===
+|功能 |命令
+
+|把json文件, 导入到mongoDB中来
+|mongoimport  --db 数据库名  --collection 集合名  --drop  --file 文件名.json
+
+参数说明: +
+--db 数据库名 -> 指明你向往那个数据库里导入? +
+--collection 集合名 -> 指明你向往那个集合中导入? +
+--drop -> 表示把数据库中已经存在的集合清空. +
+--file 文件名.json -> 表示你要导入哪个json文件?
+
+|Column 1, row 2
+|Column 2, row 2
+|===
+
+---
+
+==== 导出为json
+
+导出整个集合
+
+mongoexport -h dbhost -d dbname -c collectionname -f collectionKey -o dbdirectory
+
+-h: MongoDB所在服务器地址
+-d: 需要恢复的数据库实例
+-c: 需要恢复的集合
+-f: 需要导出的字段(省略为所有字段)
+-o: 表示导出的文件名
+
+[source, typescript]
+....
+mongoexport -h 127.0.0.1:27017 -d test -c colkollins  -o e:/mongodb_Kollins.json
+....
+
+
+https://www.cnblogs.com/shaosks/p/9318209.html

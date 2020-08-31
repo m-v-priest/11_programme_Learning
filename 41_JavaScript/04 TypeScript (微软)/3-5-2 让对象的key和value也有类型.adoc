@@ -1,0 +1,340 @@
+
+
+= 定义一个obj的 key和value的类型
+:toc:
+
+---
+
+== 让对象的key和value也有类型
+
+[source, typescript]
+....
+interface ItfObj {
+    [index: string]: { msg: string }  //key的类型是[index:string], value的类型是{msg:string}
+    // key是一个index索引, 是字符串(而非数字)(所以我们这个接口, 规定的就不是arr数组了,而是obj对象),
+    // value值是一个{} 即obj对象! 里面必须有一个msg属性.
+}
+
+let obj:ItfObj = {}
+obj['strPropName1'] = {msg: "zzr"} //ok
+obj['strPropName2'] = {msg: 19} //报错, msg属性必须是个字符串类型! --> error TS2322: Type 'number' is not assignable to type 'string'.
+
+obj[3] = {msg: "sth..."} //ok <--这里index是个number类型, 居然不报错??? 没有去检测key的类型?? 其实, 这是个假象而已, 其实typescript已经把你的这个3 转成了字符串'3', 把obj打印出来看看, 就会发现的确如此, 如下:
+
+console.log(obj); //{ '3': { msg: 'sth...' }, strPropName1: { msg: 'zzr' } } // 注意'3'是个字符串了!
+
+//----------------------------------------
+
+interface ItfObj2 {
+    [index: number]: { msg: string }
+}
+
+let obj2:ItfObj2 = {}
+obj2[3] = {msg:''} //ok
+obj2['strPropName1'] = {msg: "zzr"} //报错 <--这里依然能够检测key的类型, 但是为什么报错说 元素值value隐含变成了any类型? 但我们在接口中定义的value值是object类型啊?!
+// error TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+....
+
+注意:  **索引签名的名称（如：{ [index: string]: { message: string } } 里的 index ）除了可读性外，并没有任何意义。**例如：如果有一个用户名，你可以使用 { username: string}: { message: string }，这有利于下一个开发者理解你的代码。
+
+number 类型的索引也支持：{ [count: number]: 'SomeOtherTypeYouWantToStoreEgRebate' }。
+
+
+
+下面, 我们来定义一个函数, 它能遍历对象的属性值
+
+下面的函数, 会接收两个泛型类型, 一个用O代表, 一个用K代表. +
+并且, K的类型必须是O的一个属性的类型.
+对于任何类型 T， keyof T的结果, 为 T上已知的公共属性名的联合。注意: 是"联合", 即"or或"的关系! +
+"fn遍历对象的属性值"函数,会返回一个数组, 里面的每一个元素就是O[K], 即 obj[key], 即,obj属性的值组成的数组.
+
+[source, typescript]
+....
+function fn遍历对象的属性值<O, K extends keyof O>(obj: O, arrkeyName: K[]): O[K][] {
+    let arrValue: O[K][] = arrkeyName.map((item, index, arr) => {
+        return obj[item]
+    })
+    return arrValue
+}
+
+let p1 = {name: 'zzr', age: 19, isFemale: true, money: 999}
+//注意, 在定义p1时, 不能把它定义成obje类型, 即不能写成 let p1:object = {} , 否则下面的最后一个console.log() 就会报错: error TS2322: Type 'string' is not assignable to type 'never'.
+
+console.log(fn遍历对象的属性值(p1, ['name', 'age', 'isFemale', 'money'])); //[ 'zzr', 19, true, 999 ]
+/*注意, 这里函数的第二个参数, 必须直接写入一个数组, 而不能先定义一个数组, 在传进来. 即 , 不能写成:
+ let arrP1KeyName= ['name', 'age', 'isFemale', 'money']
+ console.log(fn遍历对象的属性值(p1,arrP1KeyName));
+这样写会报错:
+error TS2345: Argument of type 'string[]' is not assignable to parameter of type '("name" | "age" | "isFemale" | "money")[]'.
+  Type 'string' is not assignable to type '"name" | "age" | "isFemale" | "money"'.
+*/
+....
+
+上面这种功能, 官方文档称为 **"索引的类型（Cpn_Map types）" , 我的理解是: 即给对象的索引, 即不同的key, 定义成不同的类型.**
+
+上面的函数中:
+
+[source, typescript]
+....
+function fn遍历对象的属性值<O, K extends keyof O>(obj: O, arrkeyName: K[]): O[K][] {....}
+....
+
+第二个泛型类型, **K extends keyof O, 这种写法, 会让编译器会检查 K是否真的是 O的一个属性。**
+
+---
+
+==== 当你用比如 [key: string]: number 定义了key和value的类型后, 该对象中的所有成员属性, 都必须符合该kv类型!
+
+当你声明一个"索引签名"时，所有明确的成员, 都必须符合"索引签名"：
+[source, typescript]
+....
+interface ItfObj {
+    [index: string]:string //规定了所有成员的value值, 都必须是string类型!
+    name:string, //ok
+    age:number, //报错 error TS2411: Property 'age' of type 'number' is not assignable to string index type 'string'.
+    isFemale:boolean //报错 error TS2411: Property 'isFemale' of type 'boolean' is not assignable to string index type 'string'.
+}
+....
+
+又如
+[source, typescript]
+....
+interface ItfObj {
+    [index: string]:{msg:string} //规定了所有成员的value值, 都必须是含有msg属性的object对象!
+    name:string, //报错. 上面一句规定了所有成员的值, 必须是一个object对象(里面含有msg属性), 但你这里给name成员的类型, 却是string字符串类型! 不符合要求!
+    // error TS2411: Property 'name' of type 'string' is not assignable to string index type '{ msg: string; }'.
+}
+....
+
+---
+
+== in可以用来从"联合类型"中, 取出其一(种类型), -> 比如 [key in type联合类型]: boolean
+
+[source, typescript]
+....
+type type联合类型 = 'a' | 'b' | 'c'; //"字符串字面量"类型
+type typeObj = { [key in type联合类型]?: boolean } //key是"可选"的, key从联合类型中取出其一种类型来用
+
+let obj1: typeObj = {a: true, c: false} //ok
+
+let obj2: typeObj = {a: true, c: 123} // 报错 error TS2322: Type 'number' is not assignable to type 'boolean | undefined'.
+
+let obj3: typeObj = {a: true, d: false} //报错
+/*
+error TS2322: Type '{ a: true; d: boolean; }' is not assignable to type 'typeObj'.
+Object literal may only specify known properties, and 'd' does not exist in type 'typeObj'.
+ */
+....
+
+这通常与 keyof/typeof 一起使用，来获取变量的类型.
+
+变量的规则, 一般可以延迟被推断：
+[source, typescript]
+....
+type FromSomeIndex<K extends string> = { [key in K]: number };
+....
+
+---
+
+== 同时拥有 string 和 number 类型的索引签名
+
+这并不是一个常见的用例，但是 TypeScript 支持它。
+
+string 类型的"索引签名", 比 number 类型的"索引签名"更严格。这是故意设计的，它允许你有如下类型：
+
+[source, typescript]
+....
+interface Itf {
+    [key: string]: string | number; // 所用成员value的类型, 只能从string和number中取
+
+    // [index: number]: boolean; // 报错error TS2322: Type 'string' is not assignable to type 'boolean'. <--因为上面已经规定了所有成员的类型只能是string 或 number.
+    [index: number]: string; // “字符串索引类型”的子级. 注意, 虽然这里的index貌似是number类型, 但它会被typescript字段转换成string类型.
+
+    // isFemale: boolean //报错! error TS2411: Property 'isFemale' of type 'boolean' is not assignable to string index type 'string | number'.
+
+    sex: string
+}
+
+let obj: Itf = {
+    sex: 'female',
+    prop1: 'zzr',
+    prop2: 19,
+    123: 'hello', //这里的key 123, 会被转成字符串'123'. 因为key的类型, 在接口中规定为必须是string类型!
+}
+
+console.log(obj); //{ '123': 'hello', sex: 'female', prop1: 'zzr', prop2: 19 }
+....
+
+---
+
+== 如果避免"属性名输错,却没有错误提示"的问题 -> 设计模式："索引签名"的嵌套
+
+在 JavaScript 社区, 你将会见到很多滥用"索引签名"的 API。如 JavaScript 库中使用 CSS 的常见模式：
+
+[source, typescript]
+....
+interface NestedCSS {
+  color?: string; //<--有效的属性名
+  // strictNullChecks=false 时索引签名可为 undefined
+  [selector: string]: string | NestedCSS; // <-- 字符串索引签名
+}
+
+const example: NestedCSS = {
+  color: 'red',
+  '.subclass': {
+    color: 'blue'
+  }
+};
+....
+
+尽量不要使用这种把"字符串索引签名"与"有效变量"混合使用。如果属性名称中有拼写错误，这个错误不会被捕获到：
+
+[source, typescript]
+....
+const failsSilently: NestedCSS = {
+  colour: 'red' // <--这里属性名写错了, 接口中定义的是"color",但你可能错写成"colour", 但这个错误不会被捕捉到.
+};
+....
+
+
+那么怎么解决这个问题呢? 取而代之，我们把索引签名分离到自己的属性里，如命名为 nest（或者 children、subnodes 等）：
+
+[source, typescript]
+....
+interface NestedCSS {
+  color?: string; //这里是接口自带的属性! 会有属性名写错的代码提示.
+  nest?: { //这个nest对象中, 是你可以自由添加的属性.
+    [selector: string]: NestedCSS;
+  };
+}
+
+const example: NestedCSS = {
+  color: 'red',
+  nest: {
+    '.subclass': {
+      color: 'blue'
+    }
+  }
+}
+
+const failsSliently: NestedCSS {
+  colour: 'red'  // TS Error: 未知属性 'colour'
+}
+....
+
+
+我的例子如下:
+[source, typescript]
+....
+interface Itf {
+    name?: string,
+    [key: string]: any
+}
+
+let obj: Itf = {
+    name: 'zzr',
+    neme: 'zzr' //ok!! <--如果你把name属性错误写成了neme, typescript不会捕捉到这个书写错误!
+}
+....
+
+下面, 我们来改一下, 把接口自带的属性, 和你可以自由添加的新属性, 分离开来.
+
+[source, typescript]
+....
+interface Itf {
+    name?: string,
+    objYourSelfProp?: { //把你能自由添加的属性, 都写在这个obj对象中! 这个对象也同样是"可选"的.
+    //换句话说, 我们不在父空间开放权限(父层级中只用于存放接口自带的属性!), 而是自己创建一个子空间, 开放权限, 在这个子层级中来添加自己新创建的属性.
+        [key: string]: any
+    }
+}
+
+let obj: Itf = {
+    name: 'zzr', //ok
+    neme: 'zzr', //有报错提示了! Object literal may only specify known properties, and 'neme' does not exist in type 'Itf'.
+
+    objYourSelfProp: {
+        neme: 'zzr' //ok
+    }
+}
+....
+
+
+---
+
+== keyof T，是"索引类型查询操作符"。
+**对于任何类型 T， keyof T的结果为  T上已知的公共属性名的联合。**  例如：  
+
+[source, typescript]
+....
+let person = {
+    name: 'Jarid',
+    age: 35
+};
+
+let personProps: keyof Person; // 'name' | 'age'
+....
+
+ **keyof Person是完全可以与 'name' | 'age'互相替换的。** 不同的是, 如果你添加了其它的属性到 Person，例如 address: string，那么 keyof Person会自动变为 'name' | 'age' | 'address'。 
+ 
+ 你可以在像 "fn遍历对象的属性值"函数这类上下文里使用 keyof，因为在使用之前, 你并不清楚可能会出现的属性名。 但编译器会检查你是否传入了正确的属性名给  "fn遍历对象的属性值"函数：
+
+[source, typescript]
+....
+//注意: 第二个泛型类型, 意思是, K类型继承了 keyof O, 而Keyof O 的类型是什么呢? 就是 O中属性的联合类型.
+// 本例, O中属性的联合类型, 其实就是p1对象中的所有属性的联合(or的关系), 就 'name' | 'age' | 'isFemale' | 'money', 所以K也必须是这些类型之一.
+function fn遍历对象的属性值<O, K extends keyof O>(obj: O, arrkeyName: K[]): O[K][] {
+    let arrValue: O[K][] = arrkeyName.map((item, index, arr) => {
+        return obj[item]
+    })
+    return arrValue
+}
+
+let p1 = {name: 'zzr', age: 19, isFemale: true, money: 999}
+
+console.log(fn遍历对象的属性值(p1, ['name', 'age', 'sex'])); //添加了一个p1中不存在的'sex'属性名后, 就会报错: error TS2322: Type 'string' is not assignable to type '"name" | "age" | "isFemale" | "money"'.
+....
+
+---
+
+== T[K]，是"索引访问操作符"
+
+[source, typescript]
+....
+function fn遍历对象的属性值<O, K extends keyof O>(obj: O, arrkeyName: K[]): O[K][] {....}
+....
+
+上面的代码中, 函数的返回值的类型是 O[K][] ,其中 O[K] 就相当于object[key], 即以键取值.
+
+又比如:
+
+[source, typescript]
+....
+function getProperty<T, K extends keyof T>(o: T, name: K): T[K] {
+    return o[name]; //以键取值,返回o对象的name属性的值. <-- o[name] is of type T[K]
+}
+
+let name: string = getProperty(person, 'name');
+let age: number = getProperty(person, 'age'); //返回person对象的age属性的值
+let unknown = getProperty(person, 'unknown'); // error, 'unknown' is not in 'name' | 'age'
+....
+
+getProperty里的 o: T和 name: K，意味着 o[name]: T[K]。 当你返回 T[K]这种类型的结果时，编译器就会实例化键的真实类型，因此 getProperty的返回值类型, 会随着你需要的属性而改变。
+
+---
+
+== keyof和 T[K] 与"字符串索引签名"进行交互的情况
+
+如果你有一个带有字符串索引签名的类型，那么 keyof T会是 string。 并且 T[string]为索引签名的类型：
+
+[source, typescript]
+....
+interface Map<T> { //Map接口中运用了一个泛型类型T
+    [key: string]: T; //看起来是定义一个对象的属性的
+}
+let keys: keyof Map<number>; // string
+let value: Map<number>['foo']; // number
+....
+
+
+---

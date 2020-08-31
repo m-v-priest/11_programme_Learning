@@ -1,0 +1,231 @@
+
+= vue 绑定变量 / 双向绑定
+:toc:
+
+---
+
+== 绑定变量
+
+==== 绑定变量到页面内容上 -> {{变量名}} 和 v-text="变量名"
+
+将变量值插入html中, 有两种方式:
+
+
+|===
+|方式 |说明
+
+| <tag>**{{变量名}}**</tag>
+| 称为"插值表达式". 它的特点是: +
+1. 不会覆盖tag元素中已有的值, 只会替换自己的占位空间. +
+2. 在变量值被最终渲染出来前, **会**在html页面上**暴露出**自己的源代码.
+
+| <tag *v-text="变量名"*>
+|它的特点是: +
+1. 会覆盖掉元素中已有的值 +
+2. 在变量值被最终渲染出来前, **不会**在html页面上暴露出自己的源代码.
+
+|===
+
+
+[source, Javascript]
+----
+window.onload = function () {
+
+    // 注意, vm实例中的变量名, 不支持用中文
+    let vm = new Vue({
+        el: "#app",  //el即element, 它表示我们这个vue实例, 要控制页面上的哪个区域(元素). 本例为控制class="app"的元素
+
+        data: {  //data属性中, 存放的是el中要用到的数据.
+            str_name: "zzr",
+            int_age: 19,
+            bool_isFemale: true,
+            arr_friends: ["wyy", "mwq", "ypp"],
+            obj_info: {'money': 3000, charm: "charm_best"}
+        },
+
+        methods: {
+
+        }
+
+    })
+}
+----
+
+[source, html]
+----
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="./css.css">
+
+    <script src="axios.min.js"></script>
+    <script src="vue.js"></script>
+    <script src="js1.js"></script>
+
+</head>
+<body>
+<div id="app" v-cloak> <!--注意:
+1. id="app", 是写在一个<div>里面的, 不能写在<body>元素上! 因为vue2.0不支持它写在<body>上.
+2. v-cloak指令(斗篷，披风), 能防止"变量被正式渲染替换为真实数据"之前, 页面会暴露出"变量的源代码"的情况. v-cloak并不需要添加到每个标签，只要在el挂载的tag标签上添加就可以.
+-->
+    <div>
+        <p>name: {{str_name}}</p> <!-- {{}}插值表达式, 是不会覆盖元素中已有的值, 只会替换自己的占位空间. -->
+        <p>age: {{int_age}}</p>
+        <p>isFemale: {{bool_isFemale}}</p>
+
+        <p v-text="arr_friends"> arr friend </p>
+        <!-- 1. vue支持直接渲染出数组,obj对象里的内容! 很方便
+        2. v-text属性, 默认是不会有闪烁问题的. 即, 就算你不写css样式来隐藏它, 它也会在真实数据被渲染出来前, 自动隐藏, 好评!
+        3. 但是, v-text属性, 会覆盖掉元素中已有的值, 比如, 本句会覆盖掉<p>元素中已有的值"arr friend"
+        -->
+        <p v-text="obj_info"></p>
+        <p v-text="obj_info.charm">/p>
+    </div>
+
+</div>
+
+</body>
+</html>
+----
+
+css文件
+....
+[v-cloak] { /*中括号表示属性, 本句, 即选中含有v-cloak属性的所有tag */
+    display: none;
+}
+....
+
+页面的渲染效果是:
+....
+name: zzr
+age: 19
+isFemale: true
+[ "wyy", "mwq", "ypp" ]
+{ "money": 3000, "charm": "charm_best" }
+charm_best
+....
+
+
+---
+
+==== 将"html源代码效果"也渲染出来 -> v-html指令
+
+双大括号的数据绑定写法{{ }},  和 v-text属性, 都会被VUE当成纯文本输出，为了能够输出HTML，需要用到V-HTML指令.   +
+注意, v-html指令, 也会覆盖掉元素已有的内容.
+
+[source, Javascript]
+----
+let vm = new Vue({
+    el: "#app",
+
+    data: {
+        msg: "<i>我是斜体</i>" //注意, 依然要放在一个字符串中!
+    },
+
+    methods: {}
+})
+----
+
+[source, html]
+----
+<div id="app" v-cloak>
+    <div v-html="msg">old value</div> <!--原内容会被覆盖掉, 会渲染出斜体的"我是斜体"-->
+</div>
+----
+
+---
+
+== 绑定变量到tag属性值上 -> v-bind:value="变量名"
+
+下面, 将按钮的文字, 绑定为msg的值
+[source, Javascript]
+----
+let vm = new Vue({
+    el: "#app",
+
+    data: {
+        msg: "click to get Collins Dictionary"
+    },
+
+    methods: {}
+})
+----
+
+[source, html]
+----
+<div id="app" v-cloak>
+    <input type="button" v-bind:value="msg"> <!-- 渲染出的按钮, 按钮文本就是"click to get Collins Dictionary" -->
+</div>
+----
+
+---
+
+==== v-bind属性, 会把它后面字符串中的内容, 当做js代码去执行!
+
+[source, html]
+----
+<div id="app" v-cloak>
+    <input type="button" v-bind:value="msg.toUpperCase()"> <!-- 按钮上的文字变成了全大写字母 -->
+</div>
+----
+
+但是注意, 虽然可以把它当做js代码, 但不能当作"字符串格式化" ` ` 来用!
+
+---
+
+==== 简写形式 ->   :value= "变量名"
+
+
+|===
+|写法 |说明
+
+|正常写法
+|*v-bind: value=*"msg1.toUpperCase()"
+
+|简写形式
+| *: value=*"msg1.toUpperCase()"
+
+|===
+
+[source, html]
+----
+<div id="app" v-cloak>
+    <input type="button" :value="msg"> <!-- 简写形式,用一个冒号:就可以表示"将变量值绑定到tag的属性值上"-->
+</div>
+----
+
+---
+
+== 双向绑定 -> v-bind:value="变量名"
+v-bind, 只能实现对数据的"单向绑定", 从M(model)绑定到V(view). 要"双向绑定"数据, 只能用 v-mode 来实现.
+
+[source, javascript]
+----
+let vm = new Vue({
+    el: "#app",
+
+    data: {
+        inputValue : "", //与html中的input输入框中的值双向绑定
+    },
+
+    methods: {}
+})
+----
+
+[source, html]
+----
+<div id="app" v-cloak>
+    <input type="text" v-model="inputValue"> <!-- 与inputValue变量双向绑定 -->
+    <p v-text="inputValue"></p>
+</div>
+----
+
+注意: +
+1. 直接写 v-model后跟 ="msg"就行了! 不需要再写表单元素中的属性value=… 的. +
+2. v-model, 只能运用在"表单"元素中.
+
+---
+

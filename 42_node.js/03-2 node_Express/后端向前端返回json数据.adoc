@@ -1,0 +1,100 @@
+
+= 后端向前端返回json数据
+:toc:
+---
+
+== 前端发送ajax请求, 后端express向前端返回json数据
+
+方法是: +
+前端通过axios()或fetch()方法, 向后端的某地址(比如: /xxx )发送ajax请求, 要求获取json数据. +
+后端监听 /xxx 地址, 然后读取服务器上的json文件, 提取出json数据, 并用res.send(json数据) 或 res.json(json数据)的方式, 向前端发回数据. 前端在axios或fetch中, 就能拿到这个json数据.
+
+前端
+[source, html]
+....
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+
+    <script>
+        function fn_getJsonByFetch() { //该函数专门用来发送ajax请求
+            fetch('/getJson') //前端向 '/getJson'地址,来请求获取json数据.
+                .then(res => {
+                    return res.json(); //res.json()依然是个pms对象
+                })
+                .then(objJson => {
+                    console.log(objJson); //亲测成功
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
+    </script>
+
+</head>
+
+<body>
+<h1></h1>
+<p>Welcome to ejs</p>
+<input
+        type="button"
+        value="get json by axios"
+        onclick="fn_getJsonByFetch()"> <!-- 点击按钮, 就调用fetch()方法,来发送ajax请求, 获取服务器返回的json数据 -->
+</body>
+</html>
+....
+
+后端 express
+[source, typescript]
+....
+let express = require('express')
+let React = require('react');
+let renderToString = require('react-dom/server')
+let fs = require('fs')
+
+let urlJson = './public/json.json'
+
+let app = express()
+
+app.set("view engine", "ejs") //设置模板引擎为ejs
+app.use(express.static("./public")) //设置静态目录
+
+app.get('/', (req, res) => {
+    res.render("index.ejs")
+    res.end()
+})
+
+app.get('/getJson', (expressReq, expressRes) => { //后端监听 '/getJson'地址, 来知道前端发送了ajax请求, 然后后端对此作出响应.
+    fnPms_readFile(urlJson) //后端来读取json文件
+        .then(res => {
+            console.log(res);
+            expressRes.send(res) //后端把从json文件中读取出来的json内容, 返回给前端页面. 这里写成expressRes.json(res) 也行.
+            expressRes.end() /*
+            注意:由于是fnPms是异步函数, 所以这里的 end()方法一定要写在这里面, 不要写在fnPms外面,
+            否则, end方法会先执行! 后执行send方法! 导致express报错
+            */
+        })
+        .catch(err => {
+            console.log(err);
+        })
+})
+
+app.listen(4000)
+
+//----------------------------------------
+
+function fnPms_readFile(url) { //读取服务器上的任何文件
+    return fs.promises.readFile(url, {encoding: 'utf8'})
+        .then((data) => {
+            return data; //data中就是文件中的内容
+        })
+        .catch((err) => {
+            return err;
+        })
+}
+....
+
+---
+

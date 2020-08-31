@@ -1,0 +1,142 @@
+
+= string 字符串
+:toc:
+---
+
+== 增
+
+==== 连接n个字符串 stringObject.concat(stringX,stringX,...,stringX)
+[source, typescript]
+....
+let newStr = str1.concat(str2,str3); // 该方法会返回一个新的字符串
+....
+
+---
+
+==== 在原字符串的开头, 填充指定的填充字符串 -> str.padStart(targetLength [, padString])
+
+ES2017 引入了字符串补全长度的功能。如果某个字符串不够指定长度，会在头部或尾部补全。padStart()用于头部补全，padEnd()用于尾部补全。
+
+targetLength参数是指, 填充完后, 整个字符串一共有多少长?
+
+padString参数, 就是填充字符串。如果字符串太长，使填充后的字符串长度超过了目标长度，则只保留最左侧的部分，其他部分会被截断。
+
+
+[source, typescript]
+....
+let str = '123'
+
+print(str.padStart(6,'+')) //+++123
+print(str.padEnd(6,'+')) //123+++
+
+print(str.padEnd(5,'xyz')) //123xy
+//如果你只空出了两个字母位置,却想以3个字母来填充, 则超出编制的填充字母(本例为z), 会被舍弃.
+
+print(str.padEnd(7,'xyz')) //123xyzx
+
+print(`---${str.padStart(7)}---`) //---    123---
+//如果省略第二个参数，默认使用空格补全长度。
+
+print('6543'.padStart(10,0)) //0000006543
+//padStart的常见用途是为数值补全指定位数。本句生成 10 位的数值字符串。
+
+print('18-14'.padStart(10,'yyyy-mm-dd')) //yyyy-18-14
+/*
+可以巧用字符串"补全长度"的功能, 来做提示字符串的输入格式.
+本句的意思就是, 对于"18-14"这个字符串,左边要再空出5个字符的编制, 让'yyyy-mm-dd'来填充,
+由于填充完后一共就只有10个字母的占位编制, 所以只能前5个字母(yyyy-)有编制可以存放下, 后面5个字母就被抛弃了.
+所以最终结果就是 "yyyy-"+"18-14"
+*/
+
+....
+
+---
+
+== 删
+
+==== 删除字符串两端的空白字符 -> str.trim()
+
+[source, typescript]
+....
+let str = '\r\n   zzr wyy  \r\n   '
+
+console.log(str.trim()); //"zzr wyy"
+....
+
+---
+
+== 改
+
+---
+
+== 查
+
+==== 判断一个字符串是否包含在另一个字符串中? -> str.includes(searchString[, position])
+
+第二个参数，表示开始搜索的位置。 +
+注意: includes() 方法是区分大小写的。
+
+[source, typescript]
+....
+let str = 'zzr wyy mwq'
+
+console.log(str.includes('wyy')); //true
+
+console.log(str.includes('wyy', str.indexOf('m'))); //false
+console.log(str.includes('wyy', str.indexOf('w'))); //true
+....
+
+---
+
+==== 判断字符串是否以某"子字符串"开头?  -> str.startsWith(searchString[, position])
+
+---
+
+==== 判断字符串是否以某"子字符串"结尾? ->  str.endsWith(searchString[, length])
+
+
+---
+
+== 切片
+
+==== 切片(包头不包尾) str.substring(indexStart[, indexEnd])
+
+[source, typescript]
+....
+let str = '0123456789'
+
+console.log(str.substring(3,6)); //"345"
+console.log(str.substring(3)); //"3456789"
+
+console.log(str.substring(6,3)); //"345"
+// 如果 indexStart 大于 indexEnd，则 substring 的执行效果就像两个参数调换了一样。
+....
+
+---
+
+
+== 切割成数组元素
+
+==== 用指定的分隔符, 将一个String对象分割成字符串数组 -> str.split([separator[, limit]])
+
+[source, typescript]
+....
+let str = 'zzr wyy mwq'
+
+console.log(str.split()); //[ 'zzr wyy mwq' ] <--如果不指定分隔符，则返回的数组包含一个由整个字符串组成的元素。
+
+console.log(str.split(" ")); //[ 'zzr', 'wyy', 'mwq' ] <--以空格作为分隔符
+....
+
+---
+
+== 重复
+
+==== 将原字符串重复n次 -> str.repeat(count)
+
+[source, typescript]
+....
+console.log('-'.repeat(10)); //----------
+....
+
+---

@@ -1,0 +1,174 @@
+
+= 字面量类型
+:toc:
+
+---
+
+
+== "字符串字面量"类型
+
+"字符串字面量"类型, 有点类似于"枚举类型"的作用, 但主要是用来让你为一个"字符串变量", 指定一些"固定的字符串值".
+
+
+"字符串字面量"类型, 可以与"联合类型"，"类型保护"和"类型别名"结合使用, **你可以实现类似"枚举类型的字符串"。**
+
+[source, typescript]
+....
+type type_userName = 'zzr' | 'wyy' | 'mwq' //type_userName是个"符串字面量的类型", 该类型的变量的值, 只能从我们这里定义的三个字符串值中来取. 相当于它是一个枚举类型的作用了.
+
+let usrName:type_userName = 'zzr' //ok
+usrName = 'xyz' //报错: Type '"xyz"' is not assignable to type 'type_userName'.
+....
+
+
+又如:
+
+[source, typescript]
+....
+type typeStatus = "type州牧" | "type王" | "type皇帝" //注意: 用type定义的, 不是个变量, 而是个类型的别名.
+// 我的理解是, 这里相当于把"type州牧","type王","type皇帝" 这些值, 当做了三种不同的字符串类型(换句话说,一个字符串值就当做一个字符串类型). 
+// 官方文档说: 字符串字面量类型, 允许你指定字符串必须的固定值。
+
+function fn(status: typeStatus) { //status参数是typeStatus类型的
+    if (status === 'type州牧') {
+    }
+    else if (status === 'type王') {
+    }
+    else if (status === 'type皇帝') {
+    }
+    else {
+    }
+}
+
+fn('type州牧') //ok
+fn('type太守') //报错 error TS2345: Argument of type '"type太守"' is not assignable to parameter of type 'typeStatus'. <--换句话说, 你只能从三种允许的字符中选择其一来做为参数传递，传入其它值则会产生错误。
+....
+
+"字符串字面量"类型, 还可以用于区分函数重载：
+
+[source, typescript]
+....
+type typeStatus = "type州牧" | "type王" | "type皇帝"
+
+//函数重载(三个重载. 最后一个是函数体, 不属于重载列表之一)
+function fn(status: 'type州牧'): any
+function fn(status: 'type王'): any
+function fn(status: 'type皇帝'): any
+function fn(status: typeStatus): any { //status是typeStatus类型
+    //...
+}
+....
+
+TypeScript提供了重载功能，但是这个重载功能和C#等语言的重载相比是不完整的。
+
+在标准面向对象语言（C#或者java等）中, 函数重载是根据函数签名的不同，在函数被调用时，根据传递实参的类型, 来绑定到特定的重载函数. 但TypeScript的函数重载只有一个函数体，也就是说无论声明多少个同名且不同签名的函数，它们共享一个函数体.
+
+比如, 
+[source, typescript]
+....
+function done(x: string): string;
+function done(x: number): number;
+function done(x: any): any {
+    if (typeof x == "string") {
+        return "some text..."
+    } else if (typeof x == "number") {
+        return 123
+    }
+}
+....
+
+注意, 上面的 function done(x:any):any 不是函数重载列表一部分，所以上述代码只定义两个重载。
+
+---
+
+==== 一定要分清楚 string类型, 与"字符串字面量类型"的区别!
+
+**一定要分清楚 string类型, 与"字符串字面量类型"的区别!** 否则, 你就可能采坑, 遇到类似如下的错误: Type string is not assignable to type 'foo' . 比如下例:
+
+[source, typescript]
+....
+let objZzr = {
+    name:'zzr' //这里, name是个string类型, 这里的"zzr"只是value值而已, 它不是类型名!
+}
+
+function fn(name:'zzr') { //注意!! 这里name参数的类型是个"字符串字面量类型"!! 而不是string类型. 即, 这里的"zzr"是个类型名! 而不是value字符串值.
+}
+
+fn(objZzr.name) //报错  error TS2345: Argument of type 'string' is not assignable to parameter of type '"zzr"'. <--因此, string类型的值, 无法赋值给zzr类型. 就报错了.
+....
+
+上例, 如果你一定要传参给函数中去, 可以把string类型, 用as断言成是"zzr"字面量类型! 写成 -> objZzr.name as "zzr", 如下:
+
+[source, typescript]
+....
+let objZzr = {
+    name:'zzr'//name是个string类型
+}
+
+function fn(name:'zzr') { //name参数是"字符串字面量类型"
+}
+
+fn(objZzr.name as "zzr") //ok <-- 把string类型, 断言成是 zzr类型, 就符合fn函数对name参数所规定的类型了.
+....
+
+或者可以直接用一个接口, 来规范objZzr中属性的类型:
+
+[source, typescript]
+....
+interface ItfPerson {
+    name: 'zzr' | 'wyy' | 'mwq' //把name属性定义成是"字符串字面量类型", 而非string类型.
+}
+
+let objZzr: ItfPerson = { //用接口来约束一个变量objZzr
+    name: 'zzr'//这里name就是个"字符串字面量类型", 而非string类型
+}
+
+function fn(name: 'zzr' | 'wyy' | 'mwq') { //name参数是"字符串字面量类型". 注意, 这里不能写成 fn(name:ItfPerson), 因为 'zzr'|'wyy'|'mwq'类型 不是 ItfPerson类型! 两者并不兼容. 即, 下面会传入的实参 objZzr.name 它是"字符串字面量类型", 而不是ItfPerson类型!
+}
+
+fn(objZzr.name) //ok
+....
+
+
+或者也可以直接用一个"类型别名", 来规范objZzr的类型:
+
+[source, typescript]
+....
+type type_Person = { //用类型别名, 来定义一个对象的类型. 它里面的name属性是个"字符串字面量类型"
+    name: 'zzr' | 'wyy' | 'mwq' //把name属性定义成是"字符串字面量类型", 而非string类型.
+}
+
+let objZzr: type_Person = { //用"类型别名"来约束一个变量objZzr
+    name: 'zzr'//这里name就是个"字符串字面量类型", 而非string类型
+}
+
+function fn(name: 'zzr' | 'wyy' | 'mwq') {
+}
+
+fn(objZzr.name) //ok
+....
+
+
+---
+
+== "number字面量" 类型
+typeScript 同样也提供 boolean 和 number 的字面量类型.
+
+[source, typescript]
+....
+type typeOneToFive = 1 | 2 | 3 | 4 | 5; //number字面量类型
+let num:typeOneToFive = 3 //ok
+num = 99 //error TS2322: Type '99' is not assignable to type 'typeOneToFive'.
+....
+
+---
+
+== "boolean字面量"类型
+
+[source, typescript]
+....
+type typeBools = true | false;
+....
+
+---
+

@@ -1,0 +1,18 @@
+
+== python技巧
+:toc:
+
+---
+
+== 把字符串形式的代码, 转成真正的python可执行代码 -> eval()
+
+[source, python]
+....
+str = "print(*[1, 2, 3])"  # 星号可以直接解包列表
+eval(str)  # 1 2 3 <--用eval()即可进行转换!
+
+str2 = "{'name':'zzr','age':19}"
+dictZzr = eval(str2)
+print(dictZzr)  # {'name': 'zzr', 'age': 19}
+print(type(dictZzr))  # <class 'dict'>
+....

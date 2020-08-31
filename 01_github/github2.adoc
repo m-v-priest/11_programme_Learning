@@ -1,0 +1,115 @@
+
+= github
+:toc:
+---
+
+== 上传到github时, 如何排除 node_modules目录? -> 创建 .gitignore文件
+
+在项目根目录, 新建一个 .gitignore 文件, 内容如下:
+....
+node_modules
+....
+
+注意: .gitignore只能忽略那些原来没有被track的文件，如果某些文件已经被纳入了版本管理中，则修改.gitignore是无效的。
+
+解决方法就是先把本地缓存删除（改变成未track状态），然后再提交:
+
+[source, Shell]
+....
+git rm -r --cached .
+git add .
+git commit -m '本次提交的说明信息'
+git push origin master
+....
+
+
+---
+
+== + 将本地项目, 上传到github上
+
+比如, 你要把本地的oldProjs项目, 上传到github上的newProj文件夹中.
+
+1.进入Github首页，点击右上角的+号, 按 New repository新建一个项目(假设叫newProj).
+
+2.进入newProj项目, 点击右上方的绿色按钮 Clone or dowload, 会出现一个地址(即newProj在github上的url地址)，copy这个地址下来, 我们下面有用. +
+该地址形如:
+
+[source, Shell]
+....
+git@github.com:m-v-priest/newProj.git
+....
+
+3.在你的电脑中, 进入某一个目录, 你会把网上的newProj项目, 下载到这里.
+
+4.右键鼠标, 选择 Git Bash Here
+
+5.把github上面的仓库, 克隆到本地, 方法是 -> git clone newProj的项目地址
+代码如下:
+
+[source, Shell]
+....
+git clone git@github.com:m-v-priest/newProj.git
+....
+
+现在, 你电脑上就会多出一个newProj目录, 该目录名即为你github上面的项目名.
+
+6.现在就能上传了, 先把oldProj项目里面的所有内容(文件与子目录), 都拷贝到newProj目录中. 然后进入newProj目录.
+
+7.进行上传, 输入下面三条命令:
+
+[source, Shell]
+....
+git add .
+git commit  -m  "提交信息"
+git push origin master
+....
+
+
+---
+
+== 上传时, 报提示 warning: LF will be replaced by CRLF in ... 的问题
+
+主要源于不同操作系统, 所使用的"换行符"不一样:
+
+|===
+|系统 |采用的换行符
+
+|Uinx/Linux
+|LF (LineFeed) (换行)
+
+|Dos/Windows
+|CRLF (CarriageReturn LineFeed)(回车+换行)
+
+|Mac OS
+|CR (CarriageReturn) (回车)
+|===
+
+在Git中，可以通过以下命令(git config core.autocrlf), 来显示当前你的Git中, 采取的是哪种对待换行符的方式: +
+比如, 在我的win10上
+
+[source, Shell]
+....
+$ git config core.autocrlf //<--输入此命令
+true  //<--输出的结果
+....
+
+此命令会有三个输出值: “true”，“false” 或者“input”
+
+
+|===
+|输出值 |说明
+
+|为true时
+|add时, 会进行这个转换: CRLF(win) -> LF(linux), +
+checkout时, 再进行这个转换: LF(linux) -> CRLF(win)
+
+|为false时
+|line endings(行尾换行符)不做任何改变，文本文件保持其原来的样子。
+
+|为input时
+|add时, 会进行这个转换: CRLF(win) -> LF(linux), +
+ checkout时, 不做转换, 保持这个换行符换: LF(linux) ，所以Windows操作系统不建议设置此值。
+|===
+
+---
+

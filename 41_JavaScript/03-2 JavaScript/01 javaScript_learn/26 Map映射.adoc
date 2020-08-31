@@ -1,0 +1,161 @@
+
+= Map
+:toc:
+
+== 什么是Map?
+js中, array数组的key, 只能是number数字. +
+Map的key, 则可以是任何类型!
+
+---
+
+==== 可以将"对象"作为键
+[source, typescript]
+....
+let objZrx = {'name': 'zrx', 'age': 78}
+let objWyy = {'name': 'wyy', 'age': 23}
+
+let insMap_Sex = new Map() //这个map类型的数据中, 保存着每个人的性别记录, 即"某个人和其性别的映射关系"的记录
+insMap_Sex.set(objZrx, 'male') //object对象可以作为map的key!
+insMap_Sex.set(objWyy, 'female')
+
+console.log(insMap_Sex);
+/*
+Map {
+  { name: 'zrx', age: 78 } => 'male',
+  { name: 'wyy', age: 23 } => 'female' }
+ */
+
+console.log(insMap_Sex.get(objWyy)); //female <--获取wyy对象的性别
+....
+
+---
+
+==== js的Map 与python的dict的比较:
+
+|===
+| |说明
+
+|js Map的key
+|可以是任何类型.
+
+|python dict的key
+|键必须是不可变的，如字符串，数字或元组。
+
+|===
+
+
+js的Map, 是键key 与相对应的值value 的集合(类似于python中的dict)。因此， Map 中的每个项, 都存储了两块数据，通过指定所需读取的键key, 即可检索对应的值value (即"以键取值")。 +
+ES6 的 Map 类型是kv键值对的有序列表 (python中的dict是无序的).
+
+---
+
+//--------------------------
+
+== 用arr数组, 来初始化map实例
+
+与 Set 类似，*你能将数组传递给 Map 构造器，以便使用数据来初始化一个 Map 。注意: 该数组中的每一项也必须是数组*，内部数组的首个项会作为键，第二项则为对应值。因此整个Map 就被这些双项数组所填充。
+
+例如：
+[source, typescript]
+....
+let list_kv: any[] = [
+    ['key1', 'value1'],
+    ['key2', 'value2'],
+]
+let insMap = new Map(list_kv)
+console.log(insMap) //Map { 'key1' => 'value1', 'key2' => 'value2' }
+console.log(insMap.size) //2
+....
+
+
+
+---
+
+//-------------------------
+
+==  增添item -> insMap.set(k,v)
+
+用 set(k,v) 来添加项目 +
+用 get(k) 来以键取值.
+
+[source, typescript]
+....
+let insMap = new Map()
+insMap.set('name', 'zzr') //注意:参数不要写成 'name':'zzr' 的冒号形式! 是逗号!
+insMap.set('age', 19)
+console.log(insMap); //Map { 'name' => 'zzr', 'age' => 19 }
+
+console.log(insMap.get('age')); //19 <--以键取值
+
+console.log(Object.prototype.toString.call(insMap)); //[object Map]
+....
+
+---
+
+== 删除元素 -> insMap.delete(key)
+
+
+---
+
+== 清空map -> insMap.clear()
+
+---
+
+//--------------------------
+
+== 遍历set -> insMap.entries()
+[source, typescript]
+....
+//用for...of...来遍历insSet.entries() 这个可迭代对象
+for (let i of insMap_Sex.entries()){
+    console.log(i);
+}
+/*
+[ { name: 'zrx', age: 78 }, 'male' ]
+[ { name: 'wyy', age: 23 }, 'female' ]
+ */
+....
+
+
+//--------------------------
+
+---
+
+==== 遍历set -> 可以直接用 for...of...来遍历set实例对象, 效果等价于 遍历insSet.entries()
+[source, typescript]
+....
+for (let i of insMap_Sex){
+    console.log(i);
+}
+/*
+[ { name: 'zrx', age: 78 }, 'male' ]
+[ { name: 'wyy', age: 23 }, 'female' ]
+ */
+....
+
+从上面可以看到, *遍历出的set中的每一项, 是一个数组, 里面有两个元素, 一个是key, 一个是value.* +
+我们可以继续对这个每一项的数组, 进行继续解包, 拿到单独的key和value.
+
+[source, typescript]
+....
+for (let [keyObj,value] of insMap_Sex){ //直接解包item. <--本例, 我们是拿一个object对象来作为key的
+    console.log(`key = ${JSON.stringify(keyObj)}, value = ${value}`);
+}
+/*
+key = {"name":"zrx","age":78}, value = male
+key = {"name":"wyy","age":23}, value = female
+ */
+....
+
+---
+
+== 判断指定的键是否存在于 Map 中 -> insMap.has(key)
+
+---
+
+== 查看map中元素的数量 -> insMap.size属性
+
+---
+
+== insMap.forEach((value, key, map)\=>{...})
+

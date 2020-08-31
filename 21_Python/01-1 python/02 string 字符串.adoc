@@ -1,0 +1,153 @@
+
+= python string
+:toc:
+---
+
+
+== 格式化
+
+
+---
+
+
+== 增 / 连接
+
+
+
+
+
+
+---
+
+== 删
+
+==== 移除字符串头尾指定的字符 -> str.strip([chars])
+
+[source, python]
+....
+str.strip([chars]) --> new str
+....
+用于移除字符串头尾指定的字符序列（默认为空白符（包括'\n', '\r',  '\t',  ' ')）。
+
+**注意: 删除的是一个字母序列! 而不是一个单词或一段短语! 即: chars 参数并非指定单个前缀或后缀；而是会移除参数值的所有组合.**
+
+**最外侧的前导和末尾 chars 参数值, 将从字符串中移除。 开头端的字符的移除, 将在遇到一个未包含于 chars 所指定字符集的字符时停止。 类似的操作也将在结尾端发生。**
+
+[source, python]
+....
+print('saaaay yes no yaaaassyas'.strip('say')) # " yes no "
+print('ysassyayes no syasayyas'.strip('say')) # "es no "
+....
+
+又如:
+[source, python]
+....
+list_str = ['http://www.google.com',
+            'www.facebook.com',
+            'http://www.twitter.com']
+
+for i in list_str:
+    new_str = i.strip('http://www.')  # 注意,由于strip()方法删除的是一个序列, 所以这里就包括了删除:"htp:/w."这里面的所有字符
+    print(new_str)
+
+'''
+google.com
+facebook.com
+itter.com <-- 注意这个, twitter 中的 tw也被删除
+'''
+....
+
+由于strip()返回的是一个新的字符串, 所以就支持链式调用string的方法了, 可以连着写:
+[source, python]
+....
+str = '  a b  c,,,   '
+print(str.strip().rstrip(','))  # a b  c
+....
+
+---
+
+==== 截掉字符串左边的指定字符序列 -> str.lstrip([chars])
+
+[source, python]
+....
+str.lstrip([chars]) --> new str
+返回一个新字符串。
+....
+
+---
+
+==== 删除 string 字符串末尾的指定字符序列 -> str.rstrip([chars])
+
+[source, python]
+....
+str = '朝辞白帝\n'
+print(str.rstrip('\n'))  # 朝辞白帝
+....
+
+
+---
+
+== 改
+
+---
+
+== 查
+
+==== 查找子字符串的索引值 -> str.find(str, beg=0, end=len(string))
+
+[source, python]
+....
+str.find(str, beg=0, end=len(string)) --> index
+....
+
+- str -- 指定检索的字符串
+- beg -- 开始索引，默认为0。
+- end -- 结束索引，默认为字符串的长度。
+
+**检测字符串中是否包含子字符串 str** ，如果指定 beg（开始） 和 end（结束） 范围，则检查是否包含在指定范围内，如果包含子字符串**返回开始字符的索引值**，否则返回-1。
+
+[source, python]
+....
+str = "A man can't ride your back unless it is bent. "
+print(str.find('ride'))  # 12   ride中的r字母,索引位置是[12]
+print(str.find('ok')) # -1
+....
+
+---
+
+==== 查找子字符串最后一次出现的index位置 -> str.rfind(str, beg=0 end=len(string))
+
+[source, python]
+....
+str.rfind(str, beg=0 end=len(string))
+....
+
+返回字符串最后一次出现的索引位置(从右向左查询)，如果没有匹配项则返回-1。 +
+
+[source, python]
+....
+str = "A year from now you will wish you had started today."
+
+index1 = str.find('you')
+print(index1) # 16  从前向后找,第一个
+
+index2 = str.rfind('you')
+print(index2)  # 30  从后向前找,第一个
+....
+
+
+
+
+---
+
+== 转换
+
+==== 字符和ascii码 互转
+
+[source, python]
+....
+print(chr(65)) # A <-- ASCII数值 -> 转成字母
+print(ord('A')) # 65 <-- 字母 -> 转成ASCII数值
+....
+
+---

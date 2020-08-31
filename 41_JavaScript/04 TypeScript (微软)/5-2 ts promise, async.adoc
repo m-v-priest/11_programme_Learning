@@ -1,0 +1,166 @@
+
+= 在typescript中使用 promise, async await
+:toc:
+
+---
+
+
+== promise
+
+可以看这本书 <TypeScript Deep Dive> +
+https://basarat.gitbooks.io/typescript/docs/promise.html
+
+---
+
+==== 自定义一个pms函数, 用来封装 setTimeout()延迟操作
+
+[source, typescript]
+....
+function fnSayHello() { //该函数用来被延迟执行
+    console.log("hello zzr");
+}
+
+//下面函数, 第一步, 拿到setTimeout()函数的返回值, 即一个id对象; 第二步: 把这个id对象封装为一个promise对象, 并返回.
+function fnPms_GetId(fn: () => void, millisecond: number): Promise<NodeJS.Timeout> { //1.参数fn是个函数. 类型是 ()=>void , 即无参数,无返回值.
+    return new Promise((res, rej) => {
+        res(setTimeout(fn, millisecond));
+        //1. setTimeout(function, milliseconds, param1, param2, ...)函数, 返回一个 ID（数字），可以将这个ID传递给 clearTimeout() 来取消执行。
+        //2. setTimeout()的返回值的类型是: <NodeJS.Timeout> 或者也可以写成 ReturnType<typeof setTimeout>, 所以本fnPms_GetId()函数的返回值类型就是 Promise<NodeJS.Timeout> 或者 Promise<ReturnType<typeof setTimeout>>
+    });
+}
+
+fnPms_GetId(fnSayHello, 1000)
+    .then(data => {
+        console.log(data);
+    })
+    .catch((err: Error) => {
+        console.log(err);
+    });
+....
+
+上例, 数据的类型为:
+
+|===
+|数据 |类型
+
+|参数fn是个函数, 无参数,无返回值.
+|()=>void
+
+|setTimeout()函数的返回值(返回一个ID)的类型
+|NodeJS.Timeout 或 ReturnType<typeof setTimeout>
+
+ReturnType<T> 用来获取 "函数 T 返回值的类型". +
+还有一个 InstanceType<T>, 可以用来 获取一个构造函数类型的"实例的类型"。
+
+|===
+
+---
+
+==== 自定义一个函数, 专门用来执行"读取文件"的操作, 返回一个pms对象.
+
+下面, 我们自定义一个函数fnPms_getTxt, 把 fs.readFile() 操作封装起来, 即我们的函数就能专门用来执行"读取文件"的操作了.  +
+fnPms_getTxt函数返回一个 promise对象, 类型是 Promise<string>.
+
+[source, typescript]
+....
+let fs = require("fs");
+let path = require("path");
+
+const urlTxt = path.join(__dirname, "./src/public/poem.txt");
+
+//下面的函数, 第一步, 先用fs.readFile()读取到文件内容; 第二步:把这个文件内容封装成promise对象, 并返回.
+async function fnPms_getTxt(urlTxt: string): Promise<string> { //本函数的返回值类型是 Promise<string>, 即一个promise对象,封装着string类型的数据.
+    return new Promise<string>((res, rej) => {
+        fs.readFile(urlTxt, (err: Error, data: string) => {
+            if (err) {
+                rej(err);
+            } else {
+                res(data.toString()); //data是个二进制数据, 必须用toString()来转成字符串
+                res(data); //data是个Buffer, 必须用toString()来转成字符串.
+            }
+        });
+    });
+}
+
+fnPms_getTxt(urlTxt).then(res => {
+    console.log(res);
+}).catch(err => {
+    console.log(err);
+});
+....
+
+上例, 数据的类型为:
+
+|===
+|数据 |类型
+
+|我们的pms函数的返回值类型是
+|Promise<string>
+
+|err对象的类型
+|Error
+
+|===
+
+---
+
+==== util.promisify() -> 把老的异步操作函数, 改成promise函数
+
+虽然 Promise 已经普及，但是 Node.js 里仍然有大量的依赖回调的异步函数，如果我们每个函数都封装一次，就很麻烦了. 所以 Node8 就提供了 **util.promisify() 这个方法，方便我们快捷的把原来的异步回调方法, 改成返回 Promise 实例的方法**，接下来，想继续用队列，还是用 await,  就看你需要了。
+
+
+比如, 我们来把fs.readFile(), 改成 会返回promise对象的函数.
+
+[source, typescript]
+....
+const fs = require("fs");
+const path = require("path");
+const util = require("util");
+
+const urlTxt = path.join(__dirname, "./src/public/poem.txt");
+
+const fnPmsReadFile = util.promisify(fs.readFile) //把fs.readFile(), 改成会返回promise对象的函数
+
+fnPmsReadFile(urlTxt)
+    .then((data: string) => {
+        console.log(data.toString());
+    })
+    .catch((err: Error) => {
+        console.log(err);
+    });
+....
+
+
+事实上, fs.readFile(url) 可以直接读取本地的json文件, 拿到字符串, 然后再用JSON.parse(strJson)解析, 还原成object对象就行了!
+
+[source, typescript]
+....
+const fs = require("fs");
+const path = require("path");
+const util = require("util");
+
+const urlJson = path.join(__dirname, "./src/public/json.json");
+
+const fnPmsReadFile = util.promisify(fs.readFile) //把fs.readFile(), 改成会返回promise对象的函数
+
+fnPmsReadFile(urlJson) //读取本地json文件
+    .then((data: string) => {
+        let objJson = JSON.parse(data.toString());
+        console.log(typeof objJson, objJson);
+    })
+    .catch((err: Error) => {
+        console.log(err);
+    });
+
+/* 打印
+object { employees:
+   [ { firstName: 'Bill', lastName: 'Gates' },
+     { firstName: 'George', lastName: 'Bush' },
+     { firstName: 'Thomas', lastName: 'Carter' } ] }
+*/
+....
+
+---
+
+
+

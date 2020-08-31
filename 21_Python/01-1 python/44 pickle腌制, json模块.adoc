@@ -1,0 +1,243 @@
+
+= pickle, json
+:toc:
+
+---
+
+== pickle模块: 腌制数据
+
+==== 腌制数据到文件中 -> pickle.dump(data, objFile, [,protocol])
+
+将对象obj, 保存到文件file中去。
+
+[source, python]
+....
+import pickle
+import os
+
+txtPath = os.getcwd() + '/pickle腌制.txt'
+objFile = open(txtPath, 'wb')  # 注意,必须以wb,二进制模式写入pickle操作
+
+data = {1: 'usa', 2: 'china', 3: 'jp'}
+
+pickle.dump(data, objFile)  # 将data数据,腌制到objFile文件中
+objFile.close()  # 注意,dump后必须先关闭文件句柄.这句一定要写!
+....
+
+---
+
+==== 读取腌制 ->pickle.load(objFile)
+
+从file中读取一个字符串(二进制)，并将它重构为原来的python对象。
+
+[source, python]
+....
+import pickle
+import os
+
+txtPath = os.getcwd() + '/pickle腌制.txt'
+objFile = open(txtPath, 'rb')
+# 因为pickle时是用的二进制模式,所以读取时也要rb二进制模式来读取
+
+
+data = pickle.load(objFile)  # 从文件对象中,读取腌制的数据
+print(data)  # {1: 'usa', 2: 'china', 3: 'jp'}
+....
+
+---
+
+== json 模块
+
+Json   模块提供了四个方法： dumps、dump、loads、load +
+pickle 模块也提供了四个功能：dumps、dump、loads、load +
+用法一样。
+
+....
+python对象 --> encoding --> json字符串
+python对象 <-- decoding <-- json字符串
+....
+
+转化关系
+
+
+|===
+|Python ->|json
+
+|int, long, float
+|number
+
+|str, unicode
+|string
+
+|list, tuple
+|array
+
+|dict
+|object
+
+|True
+|true
+
+|False
+|false
+
+|None
+|null
+
+|===
+
+总结:
+
+|===
+| |pythonObj -> jsonStr |jsonStr -> pythonObj
+
+|在内存中(方法名有s)
+|json.dumps(pythonObj) -> jsonStr
+|json.loads(jsonStr) -> pythonObj
+
+
+|在硬盘文件中(不带s)
+|json.dump(pythonObj, file) -> jsonStr
+|json.load(file) -> pythonObj
+
+|===
+
+
+
+
+==== (python对象=>json字符串) -> json.dumps(pythonObj)
+
+注意: dumps是有s结尾的.  **有s结尾,即表示只是纯转换, 而不涉及文件存储操作**
+
+
+[source, python]
+....
+import json
+
+print(json.__all__)
+# ['dump', 'dumps', 'load', 'loads', 'JSONDecoder', 'JSONDecodeError', 'JSONEncoder']
+'''
+模块若定义了__all__属性，则只有__all__内指定的属性、方法、类可被导入。
+若没定义，则会导入模块内的所有公有属性，方法和类 。
+'''
+
+listPython = [
+    {"name":"zrx",
+    "language":("python", "english"),
+    "age":40}
+    ]
+jsonStr = json.dumps(listPython) # 将python数据结构, 编码成json字符串结构
+
+print(jsonStr) # [{"name": "zrx", "language": ["python", "english"], "age": 40}]
+print(type(jsonStr)) # <class 'str'> <-- json.dumps()转成的是json字符串, 而不是JavaScript json对象!
+....
+
+json.dumps() 还可以接收后面的"可选参数", 用来更好的显示json的缩进结构, 即让输出对人类更具有"可读性"（这对机器是无所谓的）
+
+[source, python]
+....
+import json
+
+listPython = [
+    {"name": "zrx",
+     "language": ("python", "english"),
+     "age": 40}
+]
+jsonStr = json.dumps(listPython, sort_keys=True, indent=2)
+'''
+将python数据结构, 编码成json字符串结构.
+sort_keys=True 意思是按照键的字典顺序排序，
+indent=2 是让每个kv对 显示的时候，以缩进两个字符对齐。
+'''
+
+print(jsonStr)
+
+''' 效果
+[
+  {
+    "age": 40,
+    "language": [
+      "python",
+      "english"
+    ],
+    "name": "zrx"
+  }
+]
+'''
+
+....
+
+---
+
+==== (json字符串 => python对象) -> json.loads(jsonString)
+
+[source, python]
+....
+import json
+
+listPython = [
+    {"name": "zrx",
+     "language": ("python", "english"),
+     "age": 40}
+]
+jsonStr = json.dumps(listPython)
+
+# ---------------------------
+# 上面创建了一个json字符串, 下面我们来进行逆操作, 把json字符串 转变回python的对象
+
+listPython2 = json.loads(jsonStr)  # 把json字符串,转变回python的对象
+
+print(listPython2) # 注意: json中没有元组的概念, 所以python的元组转过去后就丢失了, 变成了JavaScript的数组array概念了.
+# [{'name': 'zrx', 'language': ['python', 'english'], 'age': 40}] <--原先的元组并没有还原.
+print(type(listPython2))  # <class 'list'>
+....
+
+上面的操作是将数据都读入内存，如果太大了, json还 提供了 **load() 和 dump() 函数(注意, 函数名最后没有字母s) , 能一步到位地将python对象转 json字符串后, 直接写入文本文件中.**
+
+---
+
+==== (python对象 =>转json存入文件中) -> json.dump(pythonObj, file)
+
+[source, python]
+....
+import json
+import os
+
+filePath = os.getcwd() + "/strJson.txt"
+
+listPython = [
+    {"name": "zrx",
+     "language": ("python", "english"),
+     "age": 40}
+]
+
+with open(filePath, 'w+', encoding='utf-8') as f:
+    json.dump(listPython, f, ensure_ascii=False) # 将python对象转json字符串后, 直接存入json文件.
+....
+
+注意, 如果你不加参数 ensure_ascii=False, 则导出的中文, 就会变成'\u4e1c\u67cf\u6797'这种形式的!  +
+添加ensure_ascii=False，就是为了防止ascii编码.
+
+
+---
+
+==== (从文件中读取json数据 =>转成python数据类型) -> json.load(f)
+
+[source, python]
+....
+import json
+import os
+
+filePath = os.getcwd() + "/strJson.txt"
+
+with open(filePath, 'r') as f:
+    listPython2 = json.load(f)  # 从文件中读取json字符串, 并转成python的数据类型
+    print(listPython2)  # [{'name': 'zrx', 'language': ['python', 'english'], 'age': 40}]
+    print(type(listPython2))  # <class 'list'>
+....
+
+---
+
+
+
+

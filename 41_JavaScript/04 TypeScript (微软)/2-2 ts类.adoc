@@ -1,0 +1,406 @@
+
+
+= class 类
+:toc:
+
+---
+
+
+== class 类的写法
+
+[source, typescript]
+....
+class ClsPerson {
+    private _name: string
+    private _age: number
+    private _isFemale: boolean
+
+    constructor(name: string, age: number, isFemale: boolean) {
+        this._name = name;
+        this._age = age;
+        this._isFemale = isFemale;
+    }
+
+    get name(): string {
+        return this._name;
+    }
+
+    set name(value: string) {
+        this._name = value;
+    }
+
+    get age(): number {
+        return this._age;
+    }
+
+    set age(value: number) {
+        this._age = value;
+    }
+
+    get isFemale(): boolean {
+        return this._isFemale;
+    }
+
+    set isFemale(value: boolean) {
+        this._isFemale = value;
+    }
+
+    fnGetInfo() {
+        return `name:${this.name}, age:${this.age}, isFemale:${this.isFemale}` //调用本类中的get方法时, 不需要带上()括号的!
+    }
+}
+
+let p = new ClsPerson('wyy', 32, true)
+
+console.log(p); //ClsPerson { _name: 'wyy', _age: 32, _isFemale: true }
+console.log(p.fnGetInfo()); //name:wyy, age:32, isFemale:true
+console.log(p.name); //wyy
+....
+
+---
+
+== static 静态属性
+类的静态属性, 属于类本身, 而不属于类的实例上。
+类的静态属性, 只能由类名来调用.
+
+[source, typescript]
+....
+class ClsFather {
+    readonly name: string //只读实例属性
+    static money: number = 999 //类的静态属性
+
+    constructor(name: string) {
+        this.name = name;
+    }
+}
+
+let f = new ClsFather('zzr')
+console.log(f); //ClsFather { name: 'zzr' }
+
+console.log(ClsFather.money); //999 <--类的静态属性只能用类名来调用. 实例是访问不到类的静态属性的.因为静态属性不属于实例.
+....
+
+---
+
+== extends 继承
+
+[source, typescript]
+....
+class ClsFather {
+    money: number
+
+    constructor(money: number) {
+        this.money = money;
+    }
+
+    fn_doWork(): void {
+        console.log("炒房");
+    }
+
+}
+
+class ClsSon extends ClsFather {
+    score: number
+
+    constructor(money: number, score: number) {
+        super(money); //注意: 子类(派生类)的构造函数，必须调用 super()，它会执行父类(基类)的构造函数。 
+        // 而且，在构造函数里访问 this的属性之前，我们一定要调用 super()。 这个是TypeScript强制执行的一条重要规则。
+        this.score = score;
+    }
+
+    fn_doWork(): void { //子类里可以重写父类的方法
+        console.log("考研");
+    }
+}
+
+let son = new ClsSon(99999, 60)
+console.log(son); //ClsSon { money: 99999, score: 60 }
+son.fn_doWork() //考研
+....
+
+---
+
+== implements -> 类实现接口
+
+[source, typescript]
+....
+interface Itf_Person {
+    name?: string,
+    age: number,
+    isFemale: boolean,
+    birthplace?: object
+}
+
+class Cls_Person implements Itf_Person{ //类实现接口
+    age: number;
+    isFemale: boolean;
+
+    constructor(age: number, isFemale: boolean) {
+        this.age = age;
+        this.isFemale = isFemale;
+    }
+}
+
+let zzr: Itf_Person = new Cls_Person(33, true) //实例是Itf_Person接口类型.
+....
+
+
+---
+
+== 修饰符: public公共 / private私有 / protected受保护的
+
+下面指明了, 被不同"修饰符"声明的属性和方法, 的对外开放性(即能从哪些地方访问到它们?)
+|===
+|修饰符 |该类的内部 |该类的外部 |该类的实例 |该类的子类
+
+|public
+|√
+|√
+|√
+|
+
+|protected
+|√
+|
+|×
+|√
+
+|private
+|√
+|×
+|×
+|
+
+|===
+
+---
+
+====  private修饰符
+
+[source, typescript]
+....
+class ClsFather {
+    name: string
+    private password: string //私有属性!! 只能在本类内部,才能访问到. 
+    // 该类的实例也不能访问到. 
+    // 该类的子类内部也不能访问到.
+
+    constructor(name: string, password: string) {
+        this.name = name;
+        this.password = password;
+    }
+}
+
+let ins = new ClsFather('mwq', "admin123")
+console.log(ins.name); //可以访问到
+// console.log(ins.password); //报错 error TS2341: Property 'password' is private and only accessible within class 'Cls'. 
+// <--无法在类外,访问到类中定义的私有属性. 哪怕通过类的实例也无法访问到.
+
+class ClsSon extends ClsFather {
+    constructor(name: string, password: string) {
+        super(name, password);
+    }
+
+    fnGetPassword() {
+        console.log(this.password); //报错 error TS2341: Property 'password' is private and only accessible within class 'ClsFather'. 
+        // <--表明子类内部, 访问不到父类中的私有属性.
+    }
+}
+
+let son = new ClsSon('wyy', 'admin456')
+son.fnGetPassword()
+....
+
+
+---
+
+==== protected修饰符
+
+protected修饰符与 private修饰符的行为很相似，但有一点不同， protected成员在子类内部仍然可以访问。当然, 父类的实例, 和子类的实例, 依然不能访问类中的受保护属性.
+
+[source, typescript]
+....
+class ClsFather {
+    private password: string
+    protected money: number  //受保护属性!!
+
+    constructor(password: string, money: number) {
+        this.password = password;
+        this.money = money;
+    }
+}
+
+class ClsSon extends ClsFather {
+    constructor(password: string, money: number) {
+        super(password, money);
+    }
+
+    fn_GetMoney() {
+        console.log(this.money); //父类的受保护属性, 子类内部可以访问到!
+    }
+}
+
+let son = new ClsSon('admin123', 99999)
+console.log(son.money); //报错 error TS2445: Property 'money' is protected and only accessible within class 'ClsFather' and its subclasses. 
+// <--但是, 子类的实例访问不到受保护属性! 
+// 换句话说, 受保护属性只能在类(父类与子类)的内部被访问到, 类的实例仍然不能访问到.
+son.fn_GetMoney() //99999
+
+let father = new ClsFather('admin123', 99999)
+console.log(father.money); //报错 error TS2445: Property 'money' is protected and only accessible within class 'ClsFather' and its subclasses. 
+// <-- 父类的实例也访问不到父类中的受保护属性.
+....
+
+---
+
+==== protected 构造函数 -> 只能被继承, 不能被实例化
+
+构造函数也能被标记成 protected。 这意味着什么呢? 这个类就不能被实例化(因为构造函数被"受保护"后, 就无法在类外被访问, 也就无法用 "new 构造方法()"语句, 来进行实例化了)，只能被继承(受保护者, 在父子类内部是打通的, 可以被子类访问到)。
+
+[source, typescript]
+....
+class ClsFather {
+    protected name: string
+
+    protected constructor(name: string) { //受保护的构造方法
+        this.name = name;
+    }
+}
+
+// let f = new ClsFather('zzr') //error TS2674: Constructor of class 'ClsFather' is protected and only accessible within the class declaration. <--在类外无法访问构造方法, 所以该类也不能被实例化
+
+class ClsSon extends ClsFather { //但不妨碍子类继承
+    constructor(name: string) {
+        super(name);
+    }
+}
+
+let s = new ClsSon('wyy')
+console.log(s); //ClsSon { name: 'wyy' }
+....
+
+---
+
+== readonly 只读修饰符
+
+readonly关键字, 能将属性一开始就设置为只读的。 
+
+[source, typescript]
+....
+class ClsFather {
+    readonly name: string //只读属性
+    constructor(name: string) {
+        this.name = name;
+    }
+}
+
+let f = new ClsFather('zzr')
+console.log(f); //ClsFather { name: 'zzr' }
+
+f.name = 'wyy' dirGrandfather
+....
+
+另外别忘了, 只带有 get不带有 set的存取器, 会自动被推断为 readonly。
+
+---
+
+== abstract 抽象类 和 抽象方法
+
+==== 抽象方法
+抽象方法，是指没有"方法体实现"的方法.  
+抽象方法必须为public或者protected（因为如果为private，则不能被子类继承，子类便无法实现该方法），缺省情况下默认为public.
+
+---
+
+==== 抽象类
+一个类如果有了抽象方法(), 那它就是抽象类. 抽象类实际上就比普通类多了一些抽象方法而已，其他组成部分和普通类完全一样.  
+
+抽象类做为其它派生类的基类来使用, 它们一般不会被直接实例化, **抽象类必须被继承, 让子类去实现抽象类中的抽象方法.** 换句话说, 抽象类只用来描述一种类型应该具备的基本特征与功能，具体如何去完成这些行为, 交由子类通过"方法重写"来完成.     
+  
+**如果一个类继承于抽象类，则该子类必须实现父类中的全部抽象方法。如果子类没有实现父类的抽象方法，则必须将子类也定义为abstract类.**    
+
+虽然一个类的子类可以去继承任意的一个普通类，可是从开发的实际要求来讲，普通类尽量不要去继承另外一个普通类，而是去继承抽象类。
+
+---
+
+==== 抽象类中有构造方法么？ 一定存在.
+
+由于抽象类里会存在一些属性，那么抽象类中一定存在构造方法，其存在目的是为了属性的初始化。
+并且子类对象实例化的时候，依然满足先执行父类构造，再执行子类构造的顺序。
+
+[source, typescript]
+....
+abstract class ClsAbs { //抽象类
+    name: string
+
+    //抽象类中的构造方法,官方推荐加上protected保护起来. Suggests to make the constructor of an abstract class protected (because it is useless to have it public)
+    protected constructor(name: string) {
+        this.name = name;
+    }
+
+    abstract fn_DoWork(): void //抽象方法,不能包括函数体! 即不能有具体实现.
+}
+
+//抽象类必须有子类来继承, 以实现抽象类中的抽象方法
+class ClsFather extends ClsAbs {
+
+    constructor(name: string) {
+        super(name);
+    }
+   
+    fn_DoWork(): void {  //重写并实现抽象方法
+        console.log(`父亲${this.name}在工作`);
+    }
+}
+
+let f: ClsFather = new ClsFather('zrx')
+f.fn_DoWork() //父亲zrx在工作
+....
+
+---
+
+== 把"类名"赋值给另一个变量后, 如何让后者不失去"类型"的身份功能?
+
+class类名, 是可以直接当做"类型"来用的. 但是如果你把它赋值给另一个变量(比如叫Cls2)后, Cls2却会失去"类型"的作用, 变成了一个value值.
+
+[source, typescript]
+....
+class ClsPerson {
+    name:string
+
+    constructor(name: string) {
+        this.name = name;
+    }
+}
+let p1:ClsPerson = new ClsPerson('zzr') //ok, 类名, 可以作为类型来用
+
+
+let Cls2 = ClsPerson
+let p2:Cls2 = new Cls2('zzr') //但是把类名赋给另一个变量后, 另一个变量则不能当做类型来用! -->报错 error TS2749: 'Cls2' refers to a value, but is being used as a type here.
+....
+
+报错的原因是, Cls2仅仅是复制了 ClsPerson 到一个变量声明空间，因此你无法把 Cls2 当作一个类型声明使用。 解决办法是, 使用 import 关键字. 如果你在使用 namespace 或者 modules，使用 import 是你唯一能用的方式：
+
+[source, typescript]
+....
+namespace NS { //命名空间(即内部模块)
+    export class ClsPerson { //导出命名空间中的class类
+        name: string
+
+        constructor(name: string) {
+            this.name = name;
+        }
+    }
+}
+
+import Cls2 = NS.ClsPerson // 注意, 这里import的写法和导入外部模块不同! "引入外部模块"用的是 import...from..., 而这里"引入内部模块",用的是 import... = ...
+let p2:Cls2 = new Cls2('zzr') //ok!
+....
+
+这个 import 技巧，仅适合于类型和变量。
+
+
+---
+
+
+

@@ -1,0 +1,354 @@
+
+= python 文件和目录访问
+:toc:
+
+---
+
+== 增 / 拷贝
+
+==== 创建单级目录 -> os.mkdir(path)
+
+[source, python]
+....
+os.mkdir('f:\zzz')  # 在f盘下, 创建一个叫zzz的文件夹
+....
+
+---
+
+==== c拷贝"类文件"中的内容到另一"类文件"中 --> shutil.copyfileobj(fsrc, fdst[, length])
+
+length参数是chunks缓存的长度.
+
+[source, python]
+....
+import shutil
+
+f_origin = open('e:/古诗1.txt','r',encoding='utf-8')
+f_target = open('e:/古诗9.txt','w',encoding='utf-8')
+shutil.copyfileobj(f_origin,f_target)
+# 古诗1.txt中的内容, 已经拷贝到了古诗9.txt中
+....
+
+
+---
+
+
+==== 拷贝文件内容到另一个文件中 -> shutil.copyfile(src, dst, *, follow_symlinks=True)
+
+拷贝文件内容到另一个文件中, 只拷贝内容, 不拷贝文件的元信息(no metadata).
+
+[source, python]
+....
+import shutil
+
+shutil.copyfile('e:/古诗2.txt','e:/古诗10.txt')
+# 将古诗2.txt的内容, 拷到古诗10.txt中. 如果目标不存在, 会自动新建这个txt文件, 再拷贝入.
+....
+
+可以看出, 这个方法更简单, 连文件对象都不用你创建了, 直接输入path即可.
+
+
+---
+
+==== 一次性创建多层级嵌套目录 -> os.makedirs(path)
+
+[source, python]
+....
+os.makedirs(r'd:\zzz\bbb\ccc')
+....
+
+---
+
+== 删
+
+
+==== 删除单级空目录  -> os.rmdir(path)
+
+[source, python]
+....
+os.rmdir(r'f:\zzz\aaa\bbb\xxx')
+#  删除单级空目录，若目录不为空, 则无法删除，报错.   此处删除了xxx文件夹
+....
+
+---
+
+==== 一次性删除多层级目录 -> os.removedirs(path)
+
+[source, python]
+....
+os.removedirs(r'd:\zzz\bbb\ccc')
+# 递归删除目录, 本处一次性删除从zzz到ccc的三层目录
+....
+
+---
+
+==== 删除文件 -> os.remove(文件地址)
+
+[source, python]
+....
+os.remove('d:\\临时文件.txt')
+# 删除指定文件. 注意, 删除的是文件, 而不是文件夹
+....
+
+---
+
+== 改 / 移动
+
+==== 重命名文件/目录 -> os.rename(path)
+
+[source, python]
+....
+os.rename(r'f:\zzz\aaa\bbb\ccc',r'f:\zzz\aaa\bbb\xxx')
+# 重命名文件/目录.  本处将最里层的ccc文件夹, 改名为xxx.
+....
+
+注意! 改名时,文件夹里面不能有嵌套的子文件夹,否则报错
+
+---
+
+==== 从当前所在目录, 转到另一目录下 --> os.chdir()
+
+Change the current working directory to path.
+
+[source, python]
+....
+import os
+print(os.getcwd()) # C:\Users\Administrator\PycharmProjects\untitled2
+
+os.chdir('e:/') # 转到e盘下
+print(os.getcwd()) #e:\
+....
+
+
+---
+
+== 查 / 判断 / 解析路径
+
+==== 查看当前运行的py文件所在的目录 -> os.getcwd()
+
+获取当前目录(即当前这个正在编辑的python文件, 所在的目录)
+
+[source, python]
+....
+import os
+print(os.getcwd()) # C:\Users\Administrator\PycharmProjects\untitled2
+....
+
+---
+
+==== 获得绝对路径 -> os.path.abspath(path)
+
+[source, python]
+....
+import os
+
+当前目录 = os.getcwd()
+print(os.path.abspath(当前目录)) # C:\Users\Administrator\PycharmProjects\sanguo
+....
+
+---
+
+==== 查看目录下的内容(不包括子目录内的内容)  -> os.listdir(path)
+
+列出指定目录下的所有文件和子目录(仅子目录, 不包括子目录里面的东西)，包括隐藏文件，并以列表list方式打印.
+
+比如, 目录结构如下:
+....
+|-- undefined
+    |-- directoryList.md
+    |-- index.py <-- 我们运行此文件
+    |-- py1.py
+    |-- father
+    |   |-- py3.py
+    |   |-- py4.py
+    |   |-- son
+    |       |-- py5.py
+    |       |-- py6.py
+    |-- monther
+        |-- py7.py
+        |-- py8.py
+....
+
+[source, python]
+....
+# index.py
+import os
+
+pathCurrent = os.getcwd()
+print(os.listdir(pathCurrent))
+
+''' 打印
+['directoryList.md', 'father', 'index.py', 'monther', 'py1.py']
+'''
+....
+
+
+---
+
+==== 遍历所有目录层级  --> os.walk(path)
+
+
+os.listdir() 只能返回特定的某一个目录下的内容.  +
+要想得到父目录下的所有子孙目录的内容, 用os.walk() 方法, 它能在目录树中游走.
+
+os.walk() 方法, 返回的是一个生成器对象 generator object.  生成器对象中的每一个元素, 是一个三元tupple (dir_path, dirnames, filenames)
+
+
+|===
+|变量名 |说明
+
+|dir_path
+|是一个string，代表目录的路径(是一个绝对路径)
+
+|dirnames
+|是一个list，包含了dir_path下所有子目录的名字
+
+|filenames
+|是一个list，包含了非目录文件的名字. 这些名字不包含路径信息 ,如果需要得到全路径, 需要使用 os.path.join(dir_path, name)
+|===
+
+[source, python]
+....
+import os
+
+pathCurrent = os.getcwd()
+print(os.walk(pathCurrent)) # <generator object walk at 0x000002881497EA20>
+
+for i in os.walk(pathCurrent):
+    print(i)
+
+'''打印
+('C:\\Users\\mvpri\\PycharmProjects\\untitled\\grandFather', ['father', 'monther'], ['directoryList.md', 'index.py', 'py1.py'])
+('C:\\Users\\mvpri\\PycharmProjects\\untitled\\grandFather\\father', ['son'], ['py3.py', 'py4.py'])
+('C:\\Users\\mvpri\\PycharmProjects\\untitled\\grandFather\\father\\son', [], ['py5.py', 'py6.py']) # <--没有子目录, 所以第二个元素就是一个空列表
+('C:\\Users\\mvpri\\PycharmProjects\\untitled\\grandFather\\monther', [], ['py7.py', 'py8.py'])
+'''
+....
+
+
+==== 获取文件/目录的信息 -> os.stat(path)
+
+[source, python]
+....
+import os
+当前目录 = os.getcwd()
+print(os.stat(当前目录))
+
+#打印:
+os.stat_result(st_mode=16895, #权限模式
+st_ino=53198770598331386, #inode number
+st_dev=1414098190, #device
+st_nlink=1, #number of hard links
+st_uid=0, #所有用户的user id
+st_gid=0, #所有用户的group id
+st_size=4096, #文件的大小，以位为单位
+st_atime=1510036355, #文件最后访问时间
+st_mtime=1510036355, #文件最后修改时间
+st_ctime=1505262913) #文件创建时间
+....
+
+---
+
+==== 获取文件的大小 -> os.path.getsize()
+
+[source, python]
+....
+print(os.path.getsize('f:\名言.txt')) # 459
+print(os.path.getsize('f:\downloads')) # 0  如果是目录,大小就返回0
+....
+
+---
+
+==== 判断 是目录, 还是文件? -> os.path.isdir(dirPath), os.path.isfile(filePath)
+
+[source, python]
+....
+import os
+print(os.path.isdir('f:\downloads'))  # True  <--判断指定对象是否为目录
+
+print(os.path.isfile('f:\名言.txt'))  # True <--判断指定对象是否为文件
+....
+
+---
+
+==== 判断 目录/文件 是否存在 -> os.path.exists(path)
+
+[source, python]
+....
+print(os.path.exists('f:\名言.txt')) # True
+....
+
+
+---
+
+
+
+== 分解路径 / 连接路径
+
+===== 分解出: 路径+文件名 -> os.path.split(path)
+
+将一个路径, 解析出 "前面的路径"部分, 和"最终的目录或文件名"部分. +
+返回值是一个元组, 有两个元素, 一个是路径, 另一个是目录或文件的名字.
+
+[source, python]
+....
+import os
+
+path = 'e:/a/b/c/谈判是什么.epub'
+print(os.path.split(path)) # ('e:/a/b/c', '谈判是什么.epub')
+....
+
+如果目录下没有文件, 则输出路径和为空文件名.
+
+[source, python]
+....
+import os
+
+path = 'e:/a/b/c/'
+print(os.path.split(path)) # ('e:/a/b/c', '')  # 空文件
+
+path2 = 'e:/a/b/c'
+print(os.path.split(path2)) # ('e:/a/b', 'c')  # 注意! 实际上，该函数的分割并不智能，它仅仅是以 "PATH" 中最后一个 '/' 作为分隔符，分隔后，将索引[0]视为目录（路径），将索引[1]视为文件名.
+....
+
+---
+
+==== 只获取"前面路径部分", 不包括最后的文件名或目录名 -> os.path.dirname(path)
+
+[source, python]
+....
+import os
+
+当前目录 = os.getcwd()
+print(os.path.abspath(当前目录)) # C:\Users\Administrator\PycharmProjects\sanguo
+
+print(os.path.dirname(当前目录))  # C:\Users\Administrator\PycharmProjects
+....
+
+---
+
+==== 只获取"文件名"或"目录名", 不包括前面的路径部分 -> os.path.basename(path)
+
+[source, python]
+....
+import os
+
+当前目录 = os.getcwd()
+print(os.path.abspath(当前目录)) # 获取绝对路径   C:\Users\Administrator\PycharmProjects\sanguo
+
+print(os.path.basename(当前目录))  # sanguo  <--返回目录名/文件名. 注意,其实它不是真正的返回文件名,而是返回了最后一个\之后的内容
+....
+
+---
+
+==== 连接路径和目录/文件名 -> os.path.join(路径,文件名)
+
+[source, python]
+....
+目录2 = r'f:\zzz2\aaa2'
+文件2 = r'100.txt'
+print(os.path.join(目录2,文件2))  # f:\zzz2\aaa2\100.txt
+....
+
+
+---

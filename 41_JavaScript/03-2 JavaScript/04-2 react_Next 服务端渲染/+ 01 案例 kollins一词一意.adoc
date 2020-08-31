@@ -1,0 +1,342 @@
+
+= 案例: kollins 一词一意
+:toc:
+---
+
+== 案例: kollins 一词一意 (只有单个查词功能, 尚未加入kollins单词数组的切片查询功能)
+
+项目目录结构如下:
+....
+|-- 01_myLearn
+    |-- 辞典kollins
+    |   |-- 柯林斯选.txt //从柯林斯中选出的句子, 保存在这个txt文件中
+
+
+
+|-- next_projs
+    |-- package.json
+    |-- server.js //node.js服务器代码
+
+    |-- pages
+    |   |-- index.jsx //react首页组件
+
+    |-- src
+    |   |-- myFunc.js //这个文件没有使用, 本来想作为react首页组件的函数模块的
+
+    |-- static
+        |-- +arr所有柯林斯单词.json
+        |-- +json所有柯林斯单词.json //本案例载入的是这个json文件
+....
+
+
+前端react代码如下:
+[source, typescript]
+....
+import React from 'react';
+import ReactDOM from 'react-dom';
+import axios from 'axios'
+
+export default class Cpn_Index extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            url_jsonKollins: './static/+json所有柯林斯单词.json', //kollins json路径
+            objJson_kollins: {}, //存放从json中读取到的kollins object
+            word_currentFind: '', //当前查找的词头
+            word_name: '', //词头
+            word_ciGeng: '', //词根
+            word_yinBiao: '', //音标
+            word_ArrDef: [], //释例数组, 已经过扁平化一维处理.
+
+            arr_selectedDef: [], //存放选出的释义与例句内容
+            str_文本框: '',
+        }
+    }
+
+    render() {
+        return (
+            <React.Fragment>
+                <p>柯林斯查词页面</p>
+
+                <input type="text"
+                       onChange={(event) => {
+                           this.fn_update_wordCurrentFind(event) //双向绑定
+                       }}/>
+                <input type="button"
+                       value={'查找单词'}
+                       onClick={() => {
+                           this.fn_查找单词并更新state中对应的内容(this.state.word_currentFind)
+                       }}/>
+                <hr/>
+
+                <p>当前查找的单词: {this.state.word_currentFind}</p>
+                <hr/>
+
+
+                {/*单词的详细内容*/}
+                <div>
+                    <p>词头: {this.state.word_name}</p>
+                    <p>音标: {this.state.word_yinBiao}</p>
+                    <p>词根: {this.state.word_ciGeng}</p>
+                    {/*<p>所有释例: {this.state.word_ArrDef}</p>*/}
+
+
+                    {/*所有释例*/}
+                    {/*下面, 用css样式, 给div元素设置固定高度, 并显示滚动条*/}
+                    <div style={{height: "300px", border: "1px solid", overflow: "auto"}}>所有释例:
+                        {this.state.word_ArrDef.map((strItem, index, arr) => {
+                            return (<p key={index}
+                                       onClick={(event) => {
+                                           this.fn_获取元素的文本内容并更新ArrSelectedDef(event) //点击本tag元素, 就获取本元素的纯文本内容
+                                       }}>{strItem}</p>)
+                        })}
+                    </div>
+                </div>
+                <hr/>
+
+
+                {/*选出的释义与例句内容*/}
+                <div style={{height: "200px", border: "1px solid", overflow: "auto"}}> 选出的释义与例句内容:
+                    {this.state.arr_selectedDef
+                        .map((item, index, arr) => {
+                            return (<p key={index}
+                                       onClick={() => {
+                                           this.fn_删除本元素(arr, index)
+                                       }}>{item}</p>)
+                        })}
+                </div>
+
+                <input type="button"
+                       value={'添加到下面的文本框中'}
+                       onClick={() => {
+                           this.fn_把选出的句子添加到文本框中(this.state.arr_selectedDef)
+                       }}/>
+
+
+                {/*多行文本框, 专门用来存放选出的句子的string, 表单会提交这个文本框中的值, 到后端, 来fs保存到文件中.
+                 action="#" 表示 本表单提交给本页自己.
+                */}
+                <form action="#"
+                      method="get"
+                      onSubmit={(event) => {
+                          this.fn提交表单(event)
+                      }}>
+
+                    {/*多行文本框, 存放已选出来的句子*/}
+                    <textarea rows="10" cols="50"
+                              name={'area_StrSelected'}
+                              value={this.state.str_文本框}
+                              onChange={(event) => {
+                                  this.fn_双向绑定多行文本框(event) //让这个多行文本框, 可以被手动修改. 否则, 你无法修改里面的内容.
+                              }}/>
+
+                    {/*按钮:清空文本框*/}
+                    <input type="button"
+                           value={'清空'}
+                           onClick={() => {
+                               this.fn_清空textarea中的值()
+                           }}/>
+
+                    {/*按钮:保存文本框中的值到电脑文件*/}
+                    <input type="submit" value="让服务器保存文件到电脑上"/>
+
+                </form>
+
+            </React.Fragment>
+        )
+    }
+
+    //---------------
+
+    //ajax请求推荐放在ComponentDidMount()中
+    componentDidMount() {
+        axios.get(this.state.url_jsonKollins)
+            .then(res => {
+                this.setState({objJson_kollins: res.data})
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
+    //---------------
+
+    //双向绑定到state中的word_currentFind属性上
+    fn_update_wordCurrentFind = (event) => {
+        this.setState({word_currentFind: event.target.value})
+    }
+
+    //---------------
+
+    //在柯林斯obj中查找单词(key)对应的value, 并更新state对象中的单词信息字段
+    fn_查找单词并更新state中对应的内容 = (wordName) => {
+        // console.log(this.state.objJson_kollins[wordName]);
+        if (wordName in this.state.objJson_kollins) {
+            const obj_wordValue = this.state.objJson_kollins[wordName]
+
+            this.setState({
+                word_name: obj_wordValue.key词头,
+                word_ciGeng: obj_wordValue.key音标,
+                word_yinBiao: obj_wordValue.key词根,
+                word_ArrDef: this.fn_处理所有释例到一维数组(obj_wordValue.key所有释例),
+                arr_selectedDef: [], //重新查询单词时, 就将上一次选出的释义例句内容清空
+            })
+        }
+        else {
+            this.setState({word_currentFind: '你查找的单词不存在'})
+        }
+    }
+
+    //---------------
+
+    fn_处理所有释例到一维数组 = (arr所有释例) => {
+        let newArr = [] //存放"arr所有释例"在经过处理后的扁平化一维数组
+
+        arr所有释例.forEach((item单个释例, index, arr) => {
+            newArr.push(index + 1) //把编号也作为数组的一个item添加进去, 方便我们查看该单词到底有多少条释义.
+
+            let arr单个释例的释义与例句 = item单个释例.split('|') //str.split([separator[, limit]])方法, 使用指定的分隔符字符串将一个String对象分割成字符串数组. 返回一个字符串数组,不包括 separator 自身。
+            arr单个释例的释义与例句.forEach((item, index, arr) => {
+                newArr.push(item)
+            })
+            newArr.push('--------')
+        })
+
+        return newArr
+    }
+
+    //---------------
+
+    //点击任意html tag元素,就获取该元素的纯文本内容, 并添加到state对象中的arr_selectedDef属性中, 并同步更新str_selected属性的值
+    fn_获取元素的文本内容并更新ArrSelectedDef = (event) => {
+        // console.log(event.target.innerText);
+        let newArr = [...this.state.arr_selectedDef] //先深拷贝一份
+        // 注意!! state对象中的属性,不能直接修改, 必须先深拷贝一份,对深拷贝进行修改后, 再用setState()方法替换回去
+        newArr.push(event.target.innerText)
+        this.setState({arr_selectedDef: newArr})
+    }
+
+    //----------------------------------------
+
+    //将arr_selectedDef转换成str_selected
+    fn_将arr_selectedDef转换成str_selected = (arr_selectedDef) => {
+        let str_selected = ''
+        if (arr_selectedDef.length !== 0) {
+            arr_selectedDef.map(item => {
+                str_selected += item + '\r\n'
+                console.log('-->', str_selected);
+            })
+        }
+        console.log(str_selected);
+        return str_selected
+    }
+
+    //----------------------------------------
+
+    fn_清空textarea中的值 = () => {
+        this.setState({str_文本框: ''})
+    }
+
+    //----------------------------------------
+
+    fn_把选出的句子添加到文本框中 = (arr_selectedDef) => {
+        this.setState({str_文本框: this.fn_将arr_selectedDef转换成str_selected(arr_selectedDef)})
+    }
+
+    //----------------------------------------
+
+    //下面这个函数的作用是: 点击哪个已选出的句子(即arr_selectedDef中的某元素), 就删除该句子(在arr_selectedDef数组中删除该元素).
+    fn_删除本元素 = (arr, index) => {
+        let arrNew = [...arr] //先深拷贝一份, 因为不能直接修改state中的属性.
+        arrNew.splice(index, 1)//删除数组中指定索引处的元素. arrayObject.splice(index,howmany,item1,.....,itemX)
+        this.setState({arr_selectedDef: arrNew})
+    }
+
+    //----------------------------------------
+
+    fn提交表单 = (event) => {
+        // event.preventDefault() //阻止表单的默认提交行为, 即刷新页面
+        /*
+        注意!!! 如果你想node.js服务器, 接收到你提交的表单数据的话, 就一定不要写上面一句,
+        即不要阻止掉表单提交的默认动作, 否则node.js服务器是接收不到你提交的数据的!
+        */
+        console.log(`已提交:${this.state.str_文本框}`)
+    }
+
+    //----------------------------------------
+
+    fn_双向绑定多行文本框 = (event) => {
+        this.setState({str_文本框: event.target.value})
+    }
+
+}
+....
+
+
+后端node.js服务器代码如下:
+[source, typescript]
+....
+const {createServer} = require('http')
+const {parse} = require('url')
+const next = require('next')
+const url = require('url')
+const fs = require('fs')
+
+
+const dev = process.env.NODE_ENV !== 'production'
+const app = next({dev})
+const handle = app.getRequestHandler()
+
+app.prepare().then(() => {
+    createServer((req, res) => {
+        // Be sure to pass `true` as the second argument to `url.parse`.
+        // This tells it to parse the query portion of the URL.
+        const parsedUrl = parse(req.url, true)
+        const {pathname, query} = parsedUrl
+
+        if (pathname === '/') { //对前端访问根路径"/",进行监控, 并拿到前端get请求发来的数据
+            console.log('哈哈哈');
+            app.render(req, res, '/', query)
+            let objQuery = url.parse(req.url, true).query //获取发送给"/"这个url地址的 GET请求内容
+            console.log(objQuery);
+            /*
+            注意, 由于这里没有用express,而是node.js, 所以我们获取get请求的内容时,
+            不能用express的req.query, 而要用node.js的获取get请求的方法, 即: url.parse(req.url, true).query
+             */
+
+            //react中多行文本框的数据, 在get请求的area_StrSelected字段中.
+            console.log(objQuery.area_StrSelected);
+
+            fn_写入文件('../01_myLearn/辞典kollins/柯林斯选.txt',objQuery.area_StrSelected+'\r\n---------------------\r\n\r\n')
+
+        }
+
+        else if (pathname === '/Cpn_Daughter') {
+            app.render(req, res, '/Cpn_Daughter', query)
+            console.log(url.parse(req.url, true).query); //获取发送给本pathname的 GET请求内容
+        }
+
+        else {
+            handle(req, res, parsedUrl)
+        }
+    }).listen(3000, err => {
+        if (err) {
+            throw err
+        }
+        console.log('> Ready on http://localhost:3000')
+    })
+})
+
+//----------------------------------------
+
+function fn_写入文件(pathFile, strContent) {
+    fs.promises.writeFile(pathFile, strContent, {encoding: 'utf8', flag: 'a'})
+    /*
+    (1) writeFile()的回调函数,只有一个参数err, 而不像readFile()方法有两个参数err和data.
+    (2) flag: 'a' 表示, 文件不存在, 则自动创建; 文件存在, 则追加内容.
+     */
+        .catch((err) => {
+            console.log(err);
+        })
+}
+....

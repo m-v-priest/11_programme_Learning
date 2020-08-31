@@ -1,0 +1,31 @@
+
+= typescript 获取json
+:toc:
+
+---
+
+= 用 fetch() 来获取json
+
+在node.js中, 要想使用fetch(), 必须安装 node-fetch模块. +
+官网 https://github.com/bitinn/node-fetch
+
+
+要在 typescript中使用, 还要安装 @types/node-fetch 模块. +
+官方案例: https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/node-fetch/node-fetch-tests.ts
+
+
+
+
+
+
+
+---
+
+== 用 axios() 来获取json
+
+
+
+
+
+
+

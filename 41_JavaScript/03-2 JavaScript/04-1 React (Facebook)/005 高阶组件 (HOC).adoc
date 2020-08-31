@@ -1,0 +1,93 @@
+
+= 高阶组件 (HOC) -> 是一个fn函数
+:toc:
+---
+
+正如高阶函数一样, **高阶组件也是一个函数, 它吃进去(参数接收)一个组件, 吐出来(返回)一个新组件.**
+
+高阶组件就是接受一个组件作为参数，在函数中对组件做一系列的处理，随后返回一个新的组件作为返回值。
+
+换言之, **高阶组件是将组件转换为另一个组件。**
+
+下面的例子, Cpn_fnHOC 是个高阶组件(即函数), 它接收一个Cpn_Old组件作为参数, 目的是给old组件内部(返回)的div元素, 增添两个新的html tag属性: newAttr3, 和 newAttr4. 并返回这个升级了功能后的Cpn_Old组件.
+
+[source, typescript]
+....
+//Cpn_fnHOC 高阶组件(函数)
+
+import React from 'react';
+import Cpn_Old from './Cpn_Old'
+import {objCss} from './css.js'
+
+/*
+高阶组件是一个函数, 它接收一个组件, 返回一个新组件.
+注意, 接收组件时, 实参不要写成 <Cpn_Old> 会报错! 直要写 Cpn_Old 就行了.
+另外, 既然高阶组件是一个函数，我们就可以向里面传递我们需要的参数, 比如本例的 objNewAttr参数
+ */
+let Cpn_fnHOC = (Cpn_Old, objNewAttr = {newAttr3: 'attr3_value', newAttr4: 'attr4_value'}) => {
+
+    return class extends React.Component { //高阶组件, 返回的值 必须也是一个组件
+        render() {
+            return (
+                <Cpn_Old {...objNewAttr}/> //父组件给子组件传值, 相当于扩展了子组件的props对象中的属性数量 <--高阶组件还可以扩展原组件的props属性
+
+            )
+        }
+    }
+}
+
+export default Cpn_fnHOC(Cpn_Old)
+....
+
+
+[source, typescript]
+....
+//要被升级的 Cpn_Old组件
+
+import React from 'react';
+import {objCss} from './css.js'
+
+export default class Cpn_Old extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            attr1: 'attr1_value',
+            attr2: 'attr2_value'
+        }
+    }
+
+    static fn_CpnOld的静态方法() {
+        console.log('我是CpnOld的静态方法');
+    }
+
+    render() {
+        return (
+            <React.Fragment>
+                <div {...this.state} {...this.props}>Cpn_Old</div>
+                {/*将state对象中的属性, 作为div标签的tag元素属性*/}
+                <input type="button"
+                       value='执行CpnOld的静态方法'
+                       onClick={Cpn_Old.fn_CpnOld的静态方法}/>
+            </React.Fragment>
+        )
+    }
+}
+....
+
+之后, 升级了功能后的Cpn_Old, 返回的jsx代码就会如下, 注意它最终有4个attr属性:
+[source, html]
+....
+<div attr1="attr1_value" attr2="attr2_value" newattr3="attr3_value" newattr4="attr4_value">Cpn_Old</div>
+....
+
+这样, "原始组件(又叫被包装组件 WrappedComponent)"就可以一层层地作为参数被"高阶组件"调用，原始组件就具备了高阶组件对它的修饰。----这很像"decorator装饰器"功能.
+
+高阶组件可以读取、修改或删除WrappedComponent实例中的state，如果需要的话，也可以增加state。
+
+
+
+
+
+---
+
+

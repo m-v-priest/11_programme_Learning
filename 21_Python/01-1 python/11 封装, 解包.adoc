@@ -1,0 +1,110 @@
+
+= 封装 / 解包
+:toc:
+---
+
+
+== 封装
+
+
+---
+
+
+== 解包
+
+==== 解包list, tuple
+用多重赋值, list可以直接拆包
+
+[source, python]
+....
+listA = [
+    [1,2,3,4],
+    [5,6,7,8],
+    [9,10,11,12]
+]
+
+a,b,c = listA
+print(a)  # [1, 2, 3, 4]
+print(b) # [5, 6, 7, 8]
+print(c) # [9, 10, 11, 12]
+....
+
+---
+
+有嵌套的解包, 也能工作：
+[source, python]
+....
+a, (b, c) = 1, (2, 3)
+print(a) # 1
+print((b,c)) #(2, 3)
+....
+
+---
+
+==== 解包的接收方, 带*星号者, 是list类型
+
+用带有*星号的变量, 接收的被解包出来的不定数量的变量, 永远都是list类型.
+
+[source, python]
+....
+a, *middle, c = [1,2,3,4,5]
+print(a) # 1
+print(middle) # [2, 3, 4]   <-- 记住: 用带有*星号的变量, 接收的被解包出来的不定数量的变量, 永远都是list类型.
+print(c) # 5
+....
+
+
+星号表达式也能用在列表的开始部分. 比如，你有一个公司前 8 个月销售数据的序列， 但是你想看下最近一个月数据和前面 7 个月的平均值的对比:
+
+[source, python]
+....
+*list_前7月, 本月 = [10, 8, 7, 1, 9, 5, 10, 3]
+前7月平均 = sum(list_前7月)/len(list_前7月)
+print(前7月平均) # 7.142857142857143
+....
+
+
+在解包元组中, 用*星号变量(list类型)来接收
+
+[source, python]
+....
+listData = [
+    ('zzr', 19, 'female'),
+    ('wyy', 23),
+]
+
+for name, *listRest in listData:
+    print(listRest)
+''' 打印
+[19, 'female']
+[23]
+'''
+....
+
+在分割字符串中, 用上*星号变量来接收
+[source, python]
+....
+strPath = 'c:/windows/system/abc/123.txt'
+hardDisk, *list_middlePath, fileName = strPath.split('/') # str.split()返回list of strings, 返回的list中不包含分割符。
+
+print(hardDisk)  # c:
+print(list_middlePath)  # ['windows', 'system', 'abc']
+print(fileName)  # 123.txt
+....
+
+解包时如果不需要某个变量, 可以将他存在(两个下划线)"__"名字的变量中, 作为废弃变量.
+
+[source, python]
+....
+file_name = 'abc.txt'
+文件名, __, 扩展名 = file_name.partition('.') # str.partition()返回的是tuple
+....
+
+为什么要使用双下划线“__”,而非单下划线“_”来保存废弃变量呢?  因为“_”常用在作为 gettext() 函数 的别名，也被用在交互式命令行中, 记录最后一次操作的值。
+
+str.partition(分隔符), 用来根据指定的分隔符, 将字符串进行分割。 返回一个3元的元组，第一个为分隔符左边的子串，第二个为分隔符本身，第三个为分隔符右边的子串。
+
+
+实际上，这种解压赋值可以用在任何可迭代对象上面，而不仅仅是列表或者元组。 包括字符串，文件对象，迭代器和生成器。
+
+---

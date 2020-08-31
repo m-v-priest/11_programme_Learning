@@ -1,0 +1,402 @@
+
+= Chance 库
+:toc:
+---
+
+== 官方帮助网址
+https://chancejs.com/
+
+安装
+....
+yarn add chance
+yarn add @types/chance
+....
+
+用法:
+[source, typescript]
+....
+const Chance = require("chance"); //导入模块
+let chance = new Chance() //生成实例
+
+console.log(chance.string()); //生成随机字符串(任意长度, 任意字符)
+....
+
+---
+== 生成随机数据
+
+==== 随机 bool布尔值
+
+|===
+|功能 |说明
+
+|chance.bool()
+|返回一个随机bool值, true和false的概率是50%.
+
+|chance.bool({ likelihood: 20 })
+|在100次返回结果中, 将返回true的概率控制在20%左右. 即返回false的概率就是控制在80%左右.
+
+|===
+
+
+---
+
+==== 随机 int整数
+
+|===
+|功能 |说明
+
+|chance.integer()
+|随机取整数, 无论正负.  +
+数值区间在 range: -9,007,199,254,740,991 to 9007199254740991
+
+例如 +
+-871643748499456 +
+5198585339576320
+
+|chance.integer({ min: -20, max: 20 })
+|在[-20,20]之间随机取整数
+
+|chance.natural()
+|随机取正数(不包括负数)
+
+|chance.natural({min: 1, max: 20})
+|随机取正数, 区间在[1-20]之间
+
+|chance.prime()
+|获取随机的质数, 默认范围在0-10000之间.
+
+|chance.prime({min: 1, max: 20})
+|获取[1-20]区间内的质数
+
+|===
+
+---
+
+==== 随机 float浮点数
+
+|===
+|功能 |说明
+
+|chance.floating()
+|生成随机浮点数, 无论正负数. 一共16位数字: 小数点前12位, 小数点后最多4位数. +
+换言之, 如果生成的是82383854.2000, 那么将最终返回82383854.2。
+
+例如 +
+-744101924306.944
+532629750074.5728
+
+|chance.floating({ min: 0, max: 100 })
+|在[0-100]之间随机取浮点数, 小数点后最多保留4位.
+
+例如 +
+65.4483 +
+15.4984
+
+|chance.floating({ fixed: 7 })
+|小数点后最多保留7位数.
+
+|===
+
+
+---
+
+
+==== 随机 string字符串
+
+
+
+|===
+|功能 |说明
+
+|chance.string()
+|生成随机字符串, 默认长度在 5-20个字符之间. +
+字符从下面范围中取: +
+ 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()[]'
+
+例如 +
+2WQ5Mck$o$YuIW6ks!N +
+]zvZ3
+
+|chance.string({ length: 5 })
+|随机生成只5个字符长度的字符串.
+
+|chance.string({ pool: 'abcde' })
+|在指定的"字符池"中, 取出字符, 拼接成随机字符串.
+
+例如 +
+aadbeeebbdae +
+cbbcddeae +
+bcecabddbaeddd +
+
+|===
+
+---
+
+==== 随机 word单词
+
+|===
+|功能 |说明
+
+|chance.word()
+|生成一个无意义的"伪单词", 默认由1-3个音节组成.
+
+例如 +
+ikcij +
+hi +
+udo
+
+|chance.word({ syllables: 5 })
+|指定这个伪单词, 有5个音节组成.
+
+|chance.word({ length: 10})
+|指定这个伪单词, 由10个字母组成.
+
+|===
+
+---
+
+==== 随机 sentence句子
+
+|===
+|功能 |说明
+
+|chance.sentence()
+|生成一个由无意义单词组成的随机句子. 这个句子默认由12-18个单词组成.
+
+|chance.sentence({ words: 5 })
+|指定这个句子只由5个单词组成.
+
+|===
+
+---
+
+==== 随机 paragraph段落
+
+|===
+|功能 |说明
+
+|chance.paragraph()
+|生成一个由随机字符组成(无意义)单词的 随机段落. 默认的句子在3-7句之间.
+
+例如 +
+Lih zoasfak jumefze duokfa....
+
+|chance.paragraph({ sentences: 10 })
+|让一个段落中, 有10个句子 (即,有10个句号.)
+
+|===
+
+---
+
+== 随机个人信息
+
+---
+
+==== 随机 first name名字(非姓)
+
+|===
+|功能 |说明
+
+|chance.first()
+|随机名字(非姓). 例如 Dorothy, Eric, Nelle
+
+|chance.first({ gender: "female" })
+|可以指定某性别的名字. 例如 Elizabeth, Mayme, Lilly
+
+|===
+
+---
+
+==== 随机 last name姓
+
+|===
+|功能 |说明
+
+|chance.last()
+|随机的姓. 例如 Clark, Peeters, McGee
+
+|chance.last({nationality: "jp"})
+|可以指定某个国家中人的姓. 本例会输出 Yamazaki, Kikuchi, Kato等
+
+|===
+
+---
+
+==== 随机 完整的姓名name
+
+|===
+|功能 |说明
+
+|chance.name()
+|随机的完整姓名. 例如 Dennis Douglas, Jon Dixon
+
+|chance.name({ gender: 'female' })
+|指定性别. 如 Emma Stephens, Victoria Reid
+
+|chance.name({ middle_initial: true })
+|带有中间名. 如 Maria X. Nunez, Austin D. Peters
+
+|chance.name({ prefix: true })
+|带有前缀, 如 Mr. Devin Harvey, Mrs. Eugenia Munoz, Dr. Phillip Andrews
+
+|chance.name({ suffix: true })
+|带有后缀. 如 Alberta Stanley J.D.
+
+
+|===
+
+
+---
+
+==== 随机 gender性别
+
+|===
+|功能 |说明
+
+|chance.gender()
+|随机性别. Male 或 Female
+
+|chance.gender({extraGenders: ['未知', '反']})
+|如果有除了Male 和 Female外的其他性别, 你可以自添加上去. 本例, 就有4个性别了: Male/Female/未知/反
+
+|===
+
+---
+
+==== 随机 birthday生日
+
+|===
+|功能 |说明
+
+|chance.birthday() //1975-01-16T18:21:49.836Z
+|随机出生日期. 默认返回的就是一个 JavaScript Date object
+
+|chance.birthday({ string: true }) // 5/12/1990
+|另一种显示方式: MM/DD/YYYY format.
+
+|chance.birthday({ type: 'child' }) //2006-08-03T20:04:51.031Z
+|可以指定某年龄层的人的出生日期. Can also specify the type, same types as with age.
+
+|let year = chance.year({ min: 1450, max: 1500 }); +
+ chance.birthday({ year: year });
+
+ 或写成一行也行: +
+ chance.birthday({ year: chance.year({ min: 1450, max: 1500 }) }); //1460-02-04T11:00:52.292Z
+
+|在1450-1500年之间的出生日期
+
+
+|===
+
+---
+
+
+==== 随机 age年龄
+
+|===
+|功能 |说明
+
+|chance.age()
+|随机年龄. 默认区间在[0-120]岁之间.
+
+|chance.age({type: 'child'})
+|可以加上参数(是个枚举类型), 来指定年龄段. Allowed types are: child, teen, adult, seni资深
+
+|===
+
+
+---
+
+== 其他 随机
+
+---
+
+==== 正态分布 normal distribution
+
+统计学里面，正态分布（normal distribution）最常见。男女身高、寿命、血压、考试成绩、测量误差等等，都属于正态分布。
+
+https://chancejs.com/miscellaneous/normal.html
+
+---
+
+
+==== 随机 GUID值
+
+GUID，Globally Unique Identifier 全局唯一标识符. GUID 是微软对UUID这个标准的实现。
+
+|===
+|功能 |说明
+
+|chance.guid()
+|随机生成生成一个guid值. 默认使用版本5.  形如: 20314d47-eb26-5917-987b-1fcf82c626cf
+
+|chance.guid({version: 5})
+|c7ca0ca0-88ee-508c-ac11-2d1c8c2be8ea
+
+|===
+
+---
+
+
+==== 随机 color颜色
+
+|===
+|功能 |说明
+
+|chance.color()
+|随机颜色. Colors have four base types: hex, shorthex, rgb, 0x
+
+例如 +
+BlanchedAlmond +
+rgb(182,21,131) +
+#d26 +
+#f5cfd5 +
+rgba(159,92,206,0.3985)
+
+|chance.color({format: 'hex'})
+|#2e7fa4
+
+|chance.color({grayscale: true})
+|仅生成灰度颜色.
+
+例如 +
+#666 +
+rgba(181,181,181,0.0506) +
+#a2a2a2 +
+rgb(219,219,219)
+
+|chance.color({casing: 'upper'})
+|颜色表示法, 用大写字母.
+例如 +
+Teal +
+RGBA(22,163,172,0.9161) +
+0X6824E5 +
+#A05
+
+
+|===
+
+---
+
+
+==== 在数组中随机选择元素
+
+
+|===
+|功能 |说明
+
+|chance.pickone(arrPerson)
+|从数组中, 随机选择一个元素
+
+|chance.pickset(['aa','bb','cc','dd','ee'],3) //随机选择3个元素, 并把它们作为一个数组返回
+|从数组中, 随机选择n个元素, 并把它们作为一个新数组返回.
+
+如果不给出第二个参数, 就默认返回只有一个(随机选出的)元素的数组.
+
+|chance.shuffle(array)
+|对一个数组中的元素进行乱序, 并返回新数组.
+
+|===
+
+---
+

@@ -1,0 +1,562 @@
+
+= express
+:toc:
+---
+
+== 安装模块
+
+[source, typescript]
+....
+yarn add express
+yarn add @types/express
+yarn add express-generator //express脚手架生成工具
+....
+
+可以安装supervisor, 来实时监控代码的修改, 帮我们热更新.
+
+然后, 你把你的express服务器代码, 写在某个js文件中. 要运行该服务器js文件时, 执行命令:
+....
+supervisor js文件名.js
+....
+即可.
+
+---
+
+== 第一个例子
+express模块使用三步骤:
+
+
+|===
+|步骤|代码
+
+|1.创建服务器对象
+|let obj_server = express()
+
+|2.监听端口
+
+|obj_server.listen(8888)
+
+|3.前端请求什么页面, 后端服务器就返回什么内容(使用send()方法)
+|obj_server.use('/a.html', function (req, res) { +
+     res.send({name:'zzr',age:18}) //express支持直接写入页面一个obj对象. +
+     res.end() +
+ }
+|===
+
+例如
+[source, typescript]
+....
+const express = require('express')
+
+let obj_server = express() //创建服务器对象,并监听3000端口
+obj_server.listen(3000)
+
+//下面, 当用户请求'/'即根目录时, 会执行一个回调函数
+//obj_server.use('/', function (req, res) //这个根目录访问必须关掉, 否则访问任何页面, 都会返回这个"欢迎访问xx主页"这句话
+// {
+//     console.log(req.url);
+//     res.send('欢迎访问xx主页')
+//     res.end()
+// })
+
+//注意: 要想使用 req.url, 必须使用 get()方法, 不能使用use()与post()方法, 后两种会接收不到req.url的值.
+obj_server.get('/a/b/name=zzr&age=19', function (req, res) {
+    console.log(req.url); // --> /a/b/name=zzr&age=19
+    res.send(`当前在${req.url}页面`) // 当前在/a/b/name=zzr&age=19页面
+    res.end()
+})
+....
+
+express模块中的  req 和res 参数, 比node.js 原生的reqeust和response参数, 添加了一些新功能. 也就是说, 原生的 res.write()命令, express模块依然有. 原生没有的, express也有, 比如 res.send()
+
+新的res.sned() 比 原生的res.write(), 多出有什么新功能呢?
+原生的不支持输出一个JavaScript对象(即 json对象)到页面上, 而res.send()支持.
+
+---
+
+==== 关于 res.send() 和 res.end()
+
+一般情况下, 不写res.end(), 会导致服务器一直在等待响应, 即浏览器的菊花一直在转.
+
+但是, 有时直接 res.send(), 并没有加end()也没事. 这是为什么?
+
+简单说就是: +
+-> 如果服务端没有数据传回客户端, 就可以直接用red.end()返回. +
+-> 如果有数据返回(比如返回json数据), 可以使用res.send() 和 red.json(), 此时可以不写res.end()了, 因为在前面两个方法中默认会返回。
+
+
+**res.send()** +
+**res.send() will send the HTTP response.** Its syntax is,
+
+[source, typescript]
+....
+res.send([body])
+....
+
+The body parameter can be a Buffer object, a String, an object, or an Array. For example:
+
+[source, typescript]
+....
+res.send(new Buffer('whoop'));
+res.send({ some: 'json' });
+res.send('<p>some html</p>');
+res.status(404).send('Sorry, we cannot find that!');
+res.status(500).send({ error: 'something blew up' });
+....
+
+See this for more info. http://expressjs.com/en/4x/api.html#res.send
+
+**res.end()** +
+**res.end() will end the response process. **This method actually comes from Node core, specifically the response.end() method of http.ServerResponse. **It is used to quickly end the response without any data. **For example:
+
+[source, typescript]
+....
+res.end();
+res.status(404).end();
+....
+
+Read this for more info. http://expressjs.com/en/4x/api.html#res.end
+
+
+---
+
+== 接收 get 和 post 请求
+
+express模块中有三种方法, 能接收前端发来的get或post请求:
+
+
+|===
+|方法|说明
+
+|get('/', function(req, res){}
+|后端接收前端发送的get请求
+
+|post()('/', function(req, res){}
+|后端接收前端发送的post请求
+
+
+|use()('/', function(req, res){}
+|后端接收前端发送的get或post请求, 都能接收
+|===
+
+
+总结:
+
+|===
+|拿到表单 |方法
+
+|拿到get请求发来的表单数据
+|req.query //拿到get请求中的数据
+
+|拿到post请求发来的表单数据
+|(1) 安装body-parser模块 +
+(2) 开启对"两种表单数据编码方式"的解析支持: +
+app.use(bodyParser.urlencoded({ extended: false })) +
+app.use(bodyParser.json()) +
+(3) req.body //拿到post请求中的数据
+
+|===
+
+
+
+---
+
+==== 拿到get请求发来的表单数据 -> req.query
+
+前端html中的表单如下:
+[source, html]
+....
+<form action='http://localhost:3000/DoGet' method="get">
+    用户名：<input type='text' name="userName" value='zzr'><br/>
+    密码：<input type='password' name="passWord" value="abc"/><br/>
+    <input type="submit" value='提交'>
+</form>
+....
+这个html, 点击了提交按钮后, 就把表单数据, 提交到了后端的 http://localhost:3000/DoGet?userName=zzr&passWord=abc 这个url地址上. 后端服务器, 只要监听此url地址, 就能通过 req.query 拿到表单中的数据.
+
+
+后端express代码如下:
+[source, typescript]
+....
+const express = require('express');
+
+let server = express();
+server.listen(3000);
+
+server.get('/', (req, res) => {
+    res.send('hello')
+    res.end()
+})
+
+server.get('/DoGet', (req, res) => { //1.使用get方法, 来获取get请求; 2. 对前端表单的提交地址(/DoGet), 进行监听
+        console.log(req.query) //{ userName: 'zzr', passWord: 'abc' } <--通过req.query, 来拿到get请求提交的数据，拿到的格式是json.
+    res.end()
+    }
+)
+....
+
+---
+
+==== 拿到post请求发来的表单数据 -> req.body
+
+express要接收post请求, 需要安装 body-parser模块 https://github.com/expressjs/body-parser
+
+....
+yarn add body-parser
+....
+
+前端html页面, 把表单中的method方法改成"post".
+[source, html]
+....
+<form action='http://localhost:3000/DoPost' method="post">
+</form>
+....
+
+后端express代码如下:
+[source, typescript]
+....
+const express = require('express');
+const bodyParser = require('body-parser'); //要解析post请求, 必须导入body-parser模块
+
+let app = express();
+app.listen(3000);
+
+//下面必须开启对post请求发送的表单时, 几种常见编码类型的 解析支持
+app.use(bodyParser.urlencoded({extended: false})) // parse application/x-www-form-urlencoded
+// 表单数据发送时, 有几种编码类型,比如: application/json 和 application/x-www-form-urlencoded.
+// 默认地，表单数据会编码为 “application/x-www-form-urlencoded”.
+
+app.use(bodyParser.json()) // parse application/json
+
+
+ app.get('/', (req, res) => {
+     res.send('hello')
+     res.end()
+ })
+
+
+//要接收post请求, 必须把get()方法 改成post或use()方法!
+app.post('/DoPost', (req, res) => {
+        console.log(req.body) //用req.body,来获取post提交的数据 --> [Object: null prototype] { userName: 'zzr', passWord: 'abc' }
+        //发现拿到的值, 还不是干净版的json对象, 所以我们还需进一步用JSON.stringify()来把它转成json字符串.
+        console.log(JSON.stringify(req.body)); //{"userName":"zzr","passWord":"abc"}
+
+        res.end()
+    }
+)
+....
+
+---
+
+==== 案例: 前端用户登录, 后端来判断 userName和password 是否正确
+
+前端代码:
+[source, html]
+....
+<form action='http://localhost:3000/login' method="get">
+    用户名：<input type='text' name="userName" ><br/>
+    密码：<input type='password' name="password" /><br/>
+    <input type="submit" value='提交'>
+</form>
+....
+
+
+后端代码:
+[source, typescript]
+....
+const express = require('express');
+
+let app = express();
+app.listen(3000);
+
+//假设我们将用户的真实账号信息,放在下面的obj里.
+let obj_UserDatabase = {
+    'zzr': {password: '123'},
+    'wyy': {password: '456'}
+}
+
+//由于前端会把登录表单中的数据, 提交到 http://localhost:3000/login?userName=wyy&password=456 这个url地址, 所以我们后端就来监视 /login 这个url路径
+app.use('/login', (req, res) => {
+        console.log(req.query);
+        let userName = req.query.userName
+        let password = req.query.password
+        fn判断用户输入的登录信息是否正确(req, res, userName, password)
+        res.end()
+    }
+)
+
+function fn判断用户输入的登录信息是否正确(req, res, userName, password) {
+    if (userName === undefined || password === undefined) {
+        res.send('请输入用户名或密码')
+    }
+    else {
+        if (userName in obj_UserDatabase) { //如果某属性存在于某obj对象身上, 即用户名存在于数据库中的话
+            if (password === obj_UserDatabase[userName].password) { //再判断该用户的密码, 是否与数据库中的记录匹配
+                res.send(`欢迎登录 ${userName}`)
+            }
+            else {
+                res.send('密码错误!')
+            }
+        }
+        else {
+            res.send('用户名错误, 不存在此用户名')
+        }
+    }
+}
+....
+
+---
+
+== 获取json数据
+
+
+
+
+---
+
+== req.params -> 能获取url路径上的各层级的名字
+[source, typescript]
+....
+let express = require("express")
+
+let app = express();
+
+app.get("/", (req, res) => {
+    res.send("this is index page")
+})
+//注意, 使用express的get方法, 不需要像node.js原生那样, 写 res.writeHead(200, {"content-type": "text/html; charset=utf-8"}); 这句话!! 写了反而会出错!
+
+app.get("/zzr", (req, res) => {
+    res.send("this is zzr page")
+})
+
+app.get("/person/:personId", (req, res) => {
+    res.send(`person的编号是: ${req.params.personId}`)
+}) //比如, 访问地址 "http://127.0.0.1:8000/person/156", 页面就渲染出 "person的编号是: 156"
+
+app.listen(8000)
+....
+
+上例最后一句 app.get("/person/:personId", (req, res) => {}) +
+其实, 冒号:后面的变量名(personId), 就代表着 /后面的内容. 你可以用一个变量名(写在冒号:后面), 来代表"/"符号后面的内容. 然后想在express中拿到该路径层级上的字符串内容时, 就使用 "req.params.变量名"  就行了.
+
+[source, typescript]
+....
+let express = require("express")
+
+let app = express();
+
+app.get("/person/:part1/:part2", (req, res) => {
+    console.log(req.params); //比如你访问的url是 "http://127.0.0.1:8000/person/123/456" , 则, 本处会打印出 { part1: '123', part2: '456' }. 可以看出, req.params是个obj对象.
+
+    console.log(req.params.part1); //123
+    console.log(req.params.part2); //456
+})
+
+app.listen(8000)
+....
+
+---
+
+== app.set(name,value) -> 设置"模版文件夹" 和 "模版引擎"
+
+app.set(name,value) -> 把名字为name的项的值设为value，用于设置参数.
+
+
+|===
+|进行配置 |说明
+
+|app.set('views', path.join(__dirname, 'views'))
+|设置"模版文件夹"的路径(因为views目录, 就是用来存放模板引擎文件的).
+
+"__dirname"是node.js中的全局变量，表示"当前的被执行的文件的路径"
+
+|app.set('view engine', 'ejs')
+|设置"模版引擎"，这里我们使用ejs
+
+|===
+
+---
+
+== app.use([path], function) -> use方法能让我们来使用中间件
+
+
+express依赖于connect，因此有大量的中间件. 可以通过app.use()来使用这些中间件. path参数可以不填，默认为'/'.
+
+app.use([path,] callback [, callback...]) +
+将指定的中间件函数或多个函数, 挂载在指定的路径上: 换句话说, **当所请求的路径的根部同路径匹配时，将执行中间件函数。**
+
+[source, typescript]
+....
+let express = require("express")
+var routes = require('../../routes/index.js');
+var users = require('../../routes/users.js');
+
+let app = express();
+
+app.get("/", (req, res) => {
+    res.send("this is index page")
+})
+
+app.use(express.static('../public'))
+
+app.use('/', routes);  //当用户访问url "/"时，就调用routes，即routes目录下的index.js文件，其中.js后缀省略
+app.use('/users', users); // 当用户访问url "/users"时，就调用routes目录下users.js文件
+
+app.listen(8000)
+....
+
+---
+
+====  app.use(express.static(静态目录地址)) -> 指定"静态目录"是哪个
+
+所谓"静态资源文件", 就是那些对不同的用户来说，内容都不会变化的文件。比如不管是张三李四还是王五, 访问谷歌，他们所接收到的看到的图片、css文件和前端javascript文件, 都是一样的，我们称这类文件为静态资源文件。
+
+相应的，会对于不同用户做出不同反应的, 就是动态文件了. 张三李四王五登录谷歌，会分别对他们显示"你好张三"、"你好李四"、"你好王五"，那么负责动态逻辑的文件, 就是动态文件了.  +
+根据你是用的技术不同，动态文件可能是.jsp文件、php文件, 或者node.js服务器端的js文件。
+
+
+静态目录如何设置呢? 如下:
+[source, typescript]
+....
+app.use(express.static(path.join(__dirname, 'public')));
+....
+
+|===
+|方法|说明
+
+|app.use()
+|app.use()接收一个函数, 比如express.static()函数, 能指定你要使用哪个目录作为静态目录?
+
+|express.static( )
+|是用来处理静态请求的. 比如 app.use(express.static(path.join(__dirname, 'public'))); 就是将public目录, 设定为是"静态目录".
+
+注意, 现在你访问public里面的静态资源时, 就不需要再带上public这一层路径了, 可以直接访问里面的文件, 比如: 我们的public目录中有images子目录, 要访问它里面的图片, 就不要写成 http://localhost:3000/public/images/face.jpg, 而只要写 http://localhost:3000/images/face.jpg 就行了!
+|===
+
+
+现在, 我们的项目目录结构如下:
+....
+|-- undefined
+    |-- app.js
+    |-- bin //webpack出口
+
+    |-- myStatic //静态目录1
+    |   |-- json.json
+
+    |-- public //静态目录2
+    |   |-- index.html
+    |   |-- images
+    |   |   |-- face.jpg //图片
+    |   |-- javascripts
+    |   |-- stylesheets
+    |       |-- style.css
+
+    |-- routes //路由
+    |-- src //webpack入口, 存放后端js源文件
+        |-- Cpn_Father.jsx
+....
+
+
+[source, typescript]
+....
+const express = require('express');
+
+let app = express();
+app.listen(3000);
+
+app.use(express.static('./public')); //将public文件夹, 设为静态目录。
+
+app.use(express.static('./myStatic')); //将myStatic文件夹, 也设为静态资源目录 <--如果你的静态资源存放在多个目录下面，你可以多次调用 express.myStatic 中间件
+
+app.use('/', (req, res) => {
+        res.send('index page')
+        res.end()
+    }
+)
+....
+
+只要指定了静态目录, 此时,当前端访问了 http://127.0.0.1:8000/ ,后面没有输入任何具体页面, express就会去静态目录下查找 是否具有名叫index.html的页面. 如果有, 就把它返回给你.
+
+如果你想把所有离散的静态目录, 在用url访问它们时, 都集中在一个虚拟的目录路径下, 可以用这个语句设置:
+....
+app.use('/虚拟目录名', express.static('./public'));
+....
+现在, 在访问public中的图片时, 就可以用这个路径来获取了: +
+http://localhost:3000/fakeDir/images/face.jpg +
+注意到, fakeDir就是我们虚拟出来的目录. 在url的显示效果上, 所有静态资源都"存在"与这个虚拟目录下. 相当于而我们"美化"了url输出一样.
+
+
+
+
+---
+
+== 使用 ejs模板引擎
+
+目录结构如下:
+....
+- views目录(里面放ejs文件) //views目录就是专门用来放模板引擎文件的!
+- index.js //我们的express代码就写在这里
+....
+
+index.js 的内容如下:
+[source, typescript]
+....
+let express = require("express")
+let ejs = require("ejs")
+
+let app = express();
+app.set("view engine", "ejs") //设置模板引擎为ejs
+app.use(express.static("./public")) //设置静态目录
+
+
+app.get("/", (req, res) => {
+    res.render("index.ejs", ejsData)
+    /*(1) res.render(ejs文件路径, 真实数据), 该方法能把"真实数据",绑定到ejs文件中去.
+    (2) ejs会自动到views目录中去寻找ejs文件, 所以你发现这里的"index.ejs"可以不带路径.
+    (3) res.render()会自动帮你读取文件, 所以这里就不需要你再使用fs模块了!
+     */
+})
+
+app.listen(8000)
+
+
+//---------------
+
+let ejsData = { //这个就是用来替换ejs文件中所有的变量占位符的"真实数据".
+    arrPerson:
+        [
+            {name: "zzr", age: 35, sex: "female"},
+            {name: "wyy", age: 16, sex: "female"},
+            {name: "mwq", age: 27, sex: "female"},
+            {name: "hr", age: 47, sex: "female"}
+        ]
+}
+....
+
+index.ejs 模板引擎文件内容如下:
+[source, typescript]
+....
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+</head>
+<body>
+
+<ul>
+    <% for(let i = 0;i < arrPerson.length; i++){
+    if (arrPerson[i].age >= 30){
+    %>
+        <li><%= `name:${arrPerson[i].name}, age:${arrPerson[i].age}` %></li>
+    <% }
+    } %>
+</ul>
+
+</body>
+</html>
+....
+
+---
+
+

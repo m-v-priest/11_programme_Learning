@@ -1,0 +1,171 @@
+
+= 英语单词音频合并
+:toc:
+
+---
+
+== 使用 pydub库, 可以剪辑音频
+
+
+|===
+|安装步骤 |说明
+
+|1. 安装ffmpeg软件, 安装其static 版本
+|https://ffmpeg.zeranoe.com/builds/ +
+
+下载后, 解压, 把里面的 bin 文件夹路径, 加入win系统的环境变量PATH中.
+
+然后在cmd中, 进行验证, 输入: ffmpeg -version
+
+|2. (可选)更新python的 pip
+|python -m pip install --upgrade pip
+
+|3. 安装 pydub库
+|pip install pydub +
+
+官方文档:  +
+https://github.com/jiaaro/pydub
+
+|4. 预先处理音频源文件, 安装 *Bigasoft Audio Converter* 软件来操作
+|注意, 由于有些wav文件制作时不规范, 导致pydub库无法读取识别, 或者会有爆音现象. 所以你必须先把 原始的 .wav文件, 再重新用规范的软件转一遍格式. +
+比如, 我已经亲测可行, 用 *Bigasoft Audio Converter* 软件, 把原始wav文件再重新转一遍wav格式的文件. 即可修正原始文件的错误.
+|===
+
+---
+
+== pydub库 的用法
+
+[source,python]
+....
+# 注意! 单词表txt文件, 不能有空行! 否则本脚本无法执行.
+
+import os, pydub, copy, shutil
+from pydub import AudioSegment
+
+
+path_Father = r'E:\+\software\Lingoes韦氏142000个单词语音库高清版本\Lingoes韦氏142000个单词语音库高清版本\Lingoes English\voice'
+path_单词表txt = r'E:\ttt\wordList.txt'
+
+path_Son = r'E:\ttt\仅单词表音频的子集目录'  # 注意! 该目录你要先手动创建!
+path_Des = r'E:\ttt\+子集总音频.mp3'  # 即destination, 最终导出的合并后的单一总音频目录
+
+path_子集单词表txt = r'E:\ttt\+子集单词表.txt'
+
+
+# 创建无声的Audiosegment，可以作为一个占位符间隔默声来用.
+def fn_creatSilent(secondDuration):  # 输入你要持续多少秒的静音?
+    objSound_silent = AudioSegment.silent(duration=secondDuration)  # 默认值：1000（1秒）静默的长度
+    return objSound_silent
+
+
+# 根据单词表txt, 将所有单词词头, 放入一个list中
+def fn_获取单词名list(path_单词表txt):  # 输入单词表txt的路径
+    list_WordName = []
+    with open(path_单词表txt, 'r', encoding='utf-8') as fRead:
+        for line in fRead:
+            line = line.strip()
+            list_WordName.append(line)
+    return list_WordName
+
+
+# 根据单词表list, 来获取每个单词音频文件在几十万音频单词的总目录中的绝对路径, 返回一个list, 里面就是每个单词音频文件的绝对路径
+def fn_getWordAbsFatherPath(list_WordName):
+    list_WordAbsFatherPath = []
+    for wordName in list_WordName:
+        ini首字母 = wordName[0]  # 获取每个单词的首字母
+        path_单个音频绝对路径 = os.path.join(path_Father, ini首字母, wordName + '.wav')  # os.path.join(path1[,path2[,……]]) 能连接路径
+        list_WordAbsFatherPath.append(path_单个音频绝对路径)
+    return list_WordAbsFatherPath
+
+
+# 将单词表的音频, 备份到另一目录"仅单词表音频的子集目录"中存放, 因为总目录中十几万文件太多了! 我们只需要提取单词表中的几千单词,来处理. 所以单独把它们拷出来, 到新的目录中来操作.
+def fn_copyToDirSon(list_WordAbsFatherPath):
+    for i in list_WordAbsFatherPath:
+        try:
+            (路径, 文件名) = os.path.split(i)
+            shutil.copyfile(i, os.path.join(path_Son, 文件名))
+        except FileNotFoundError:  # txt单词表中, 有可能有些单词名, 在wav音频包中不存在. 找不到该音频, 那就忽略它.
+            print('{} 不存在'.format(文件名))
+
+
+# 获取拷贝出来后的, 在音频子集目录中的, 所有文件的绝对路径
+def fn_getAllAbs_inSonDir():
+    list_abs = []  # 用来存放所有的子集音频文件的绝对路径
+    list_wordName = os.listdir(path_Son)  # 返回list, 里面只有文件名和扩展名本身, 如 ['abrasive.wav', 'abuzz.wav', ...]
+
+    list_纯wordName = fn_去掉扩展名(list_wordName)  # 只含有文件名, 不包括扩展名.
+
+    # 将所有存在wav的单词名,先打印出来看看, 可以用这个来制作最终mp3的对照字幕
+    # for i in list_wordName:
+    #     print(i)
+
+    # 将子集音频的所有单词名,写入txt文件中
+    fn_saveToTxt(list_纯wordName)
+
+    # 将子集中音频文件的文件名, 和路径连接起来, 形成每个音频文件的绝对路径
+    for i in list_wordName:
+        list_abs.append(os.path.join(path_Son, i))
+    return list_abs
+
+
+# 将含有扩展名的文件名, 去掉扩展名
+def fn_去掉扩展名(list_wordName):
+    list_无扩展名 = []
+    for i in list_wordName:
+        list_无扩展名.append(i.split('.')[0])
+    return list_无扩展名
+
+
+# 将子集音频中的所有wav文件, 把它们的文件名, 存到txt里.
+def fn_saveToTxt(list_wordName):
+    with open(path_子集单词表txt, 'a') as f:
+        for i in list_wordName:
+            f.write(i + '\n')
+
+
+# 根据单词表list, 来获取每个单词音频文件"仅单词表音频的子集目录"中的绝对路径, 返回一个list, 里面就是每个单词音频文件的绝对路径
+# def fn_getWordAbsSonPath(list_WordName):
+#     list_WordAbsSonPath = []
+#     for wordName in list_WordName:
+#         path_单个音频绝对路径 = os.path.join(path_Son, wordName + '.wav')  # os.path.join(path1[,path2[,……]]) 能连接路径
+#         list_WordAbsSonPath.append(path_单个音频绝对路径)
+#     return list_WordAbsSonPath
+
+
+# 合并音频,返回合并后的一个总音频文件
+def fn_合并音频(list_WordAbsSonPath, num_每个音频重复播放的数量):  # 输入每个音频你想重复播放几次?
+    objAudio_emptyAndAll = AudioSegment.empty()  # 创建一个空AudioSegment对象, 后面会把所有的单词音频,全部连接在这个空音频上, 就变成最终的完整单词总音频文件.
+
+    for path单个音频的绝对路径 in list_WordAbsSonPath:
+        objAudio = AudioSegment.from_wav(path单个音频的绝对路径)  # 封装成AudioSegment对象
+        # objAudio_emptyAndAll += objAudio*num_每个音频重复播放的数量 + objAudio_1秒静音 # 将每个音频重复播放2次. 但这里我们不用它, 因为重复两次时, 第一次和第二次之间的间隔,我们没法控制. 所以,我们还是用笨办法, 如下
+        objAudio_emptyAndAll += objAudio + objAudio_半秒静音 + objAudio + objAudio_1秒静音  # 将每个音频重复播放2次
+
+    return objAudio_emptyAndAll
+
+
+# ------ 以上是函数, 下面正式操作
+
+
+list_WordName = fn_获取单词名list(path_单词表txt=path_单词表txt)
+list_WordAbsFatherPath = fn_getWordAbsFatherPath(list_WordName)
+
+fn_copyToDirSon(list_WordAbsFatherPath)
+# list_WordAbsSonPath = fn_getWordAbsSonPath(list_WordName)
+
+list_WavAbsPath_inDirSon = fn_getAllAbs_inSonDir()  # 得到子集目录中的所有音频文件的绝对路径
+
+objAudio_1秒静音 = fn_creatSilent(1000)
+objAudio_半秒静音 = fn_creatSilent(800)
+objAudio_emptyAndAll = fn_合并音频(list_WavAbsPath_inDirSon, 2)
+objAudio_emptyAndAll.export(path_Des, format='mp3')  # 将Audio对象保存到电脑上,指定为mp3格式
+print('所有音频, 已合并完毕!')
+
+
+....
+
+
+---
+
+
+

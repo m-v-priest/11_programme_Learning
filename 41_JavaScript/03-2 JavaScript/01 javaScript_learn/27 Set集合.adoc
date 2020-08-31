@@ -1,0 +1,213 @@
+
+# Set集合
+:toc:
+
+== Set集合, 只有value, 没有key
+Set 类型，这是一种无重复值的有序列表。*既然它不包含重复值, 即value不会重复. 这意味着那么也就不需要key了*, 因为key本来就是为了不重复而存在的, 既然value已经不重复了, 就可以把value当做key来用, 因此, set数据的value即是key, 两者是一致的.
+
+//-------------------------
+
+== 用 new Set() 来创建 set对象
+Set 使用 new Set() 来创建. Set() 是一个构造函数
+
+
+由于set没有键key, 所以它无法像数组那样用索引来直接访问某个值。如果你想这么做，最好的选择是将 Set 转换为数组。
+[source, typescript]
+....
+let s = new Set(['zzr', 'wyy', 'mwq']);
+let arrS = [...s] //解包set, 可以将其变成真正的数组
+console.log(Object.prototype.toString.call(arrS)); //[object Array]
+....
+
+//-------------------------
+
+== 可以使用数组, 来初始化一个 Set
+[source, typescript]
+....
+let list1 = [1, 2, 3, 4, 5, 4, 3, 2, 1]
+let set1 = new Set(list1) //注意, 不要错写成set(list1)这种形式, 因为这里set是构造器用法, 而不是转换函数用法
+console.log(set1) //Set { 1, 2, 3, 4, 5 }
+....
+
+
+*Set 构造函数, 实际上可以接收任意可迭代对象作为参数。* 能使用数组, 是因为arr默认就是可迭代的 (Set 与 Map 本身也是可迭代的)。 Set 构造函数会使用迭代器来提取参数中的值。
+
+//-------------------------
+
+
+== insSet.keys() 返回key的遍历器
+set类型没有key, 所以遍历key, 就相当于是在遍历value.
+
+
+//-------------------------
+
+
+
+== insSet.values() 返回value的遍历器
+[source, typescript]
+....
+let s = new Set(['red', 'green', 'blue']);
+console.log(s.keys()); //SetIterator { 'red', 'green', 'blue' }
+console.log(s.values()); //SetIterator { 'red', 'green', 'blue' }
+....
+
+
+也可以不用values方法，直接用for...of循环遍历 Set的value值。
+[source, typescript]
+....
+let s = new Set(['zzr', 'wyy', 'mwq']);
+for (let v of s) {
+    console.log(v);
+}
+/*
+zzr
+wyy
+mwq
+ */
+....
+
+//-------------------------
+
+
+== insSet.entries() 返回kv对的遍历器
+[source, typescript]
+....
+let s = new Set(['zzr', 'wyy', 'mwq']);
+for (let i of s.entries()) {
+    console.log(i);
+}
+/*
+[ 'zzr', 'zzr' ]
+[ 'wyy', 'wyy' ]
+[ 'mwq', 'mwq' ]
+ */
+....
+
+entries() 方法返回一个新的迭代器对象 ，这个对象的元素是类似 [value, value] 形式的数组，value 是集合对象中的每个元素. +
+由于集合对象不像 Map 对象那样拥有 key，然而，为了与 Map 对象的 API 形式保持一致，故使得每一个 entry 的 key 和 value 都拥有相同的值，因而最终返回一个 [value, value] 形式的数组。
+
+//-------------------------
+
+
+== insSet.forEach() 使用回调函数遍历每个成员
+
+[source, typescript]
+....
+let s = new Set(['zzr', 'wyy', 'mwq']);
+s.forEach((item) => {
+    console.log(item);
+})
+/*
+zzr
+wyy
+mwq
+ */
+....
+
+
+====
+mySet.forEach(function callback(value1, value2, Set) {
+    //your iterator
+}[, thisArg])
+====
+fnCallback的三个参数： +
+• 元素的值value +
+• 元素的索引 key <-- 由于set类型, 不存在key, 所以这个位置的参数, 仍然要写成value的值 +
+• 将要遍历的集合对象, 即目标 Set 自身 +
+forEach函数对每个Set对象的元素执行一次回调；但它不会返回任何值。
+
+[source, typescript]
+....
+let s = new Set([1,2,2,3,3,3]);
+let list1 = []
+
+s.forEach(function (item) {
+    list1.push(item*2)
+})
+console.log(list1); //[ 2, 4, 6 ]
+....
+
+
+
+
+//-------------------------
+
+== insSet.add(newItem) 增添元素
+ size 属性还能查看其中包含有多少项.
+
+[source, typescript]
+....
+let set1 = new Set()
+set1.add(5)  // set对象的add()方法
+set1.add('5')
+set1.add('a')
+
+console.log(set1) //Set { 5, '5', 'a' }
+console.log(set1.size) //3   <-- set对象的size属性
+....
+
+//-------------------------
+
+== Set 不会使用强制类型转换
+Set 不会使用强制类型转换, 来判断值是否重复。这意味着 Set 可以同时包含数值 5 与 字符串 "5" ，将它们都作为相互独立的itme.
+
+
+不会进行强制类型转换, 也意味着, 你还可以向 Set 添加多个object对象，它们不会被视为同一项, 因为Set不会将它们自动转换成字符串  "[object Object]", 所以每一个obj对象都是独立不相同的.
+
+[source, typescript]
+....
+let set1 = new Set()
+let key1 = {}
+let key2 = {}
+
+set1.add(key1)
+set1.add(key2)
+
+console.log(set1) //Set { {}, {} }
+console.log(set1.size) //2
+....
+
+
+//-------------------------
+
+== insSet.delete(item) 删除元素
+
+可以使用 delete() 方法, 来移除"单个值". +
+或调用 clear() 方法来将 "所有的值"从 Set 中移除。
+
+[source, typescript]
+....
+let set1 = new Set([1, 2, 3, 4, 5])
+set1.delete(4) //Set { 1, 2, 3, 5 } <--delete() 方法来移除单个值，注意, 是"单个"值
+console.log(set1)
+
+set1.clear() //clear() 方法清空所有值。
+console.log(set1) //Set {}
+....
+
+//-------------------------
+
+== 并集（Union）、交集（Intersect）和差集（Difference）
+
+[source, typescript]
+....
+let a = new Set([1, 2, 3])
+let b = new Set([4, 2, 3])
+
+//并集
+let union = new Set([...a, ...b]) //并集
+
+
+//交集
+let intersection = new Set([...a].filter(item => b.has(item)))  //从a集合中,过滤出b集合存在的元素,即a和b的交集.
+
+
+//差集
+let difference = new Set([...a].filter(item => !b.has(item))) //从a集合中,过滤出b集合中不存在的元素,即a和b的差集.
+
+console.log(union); //Set { 1, 2, 3, 4 }
+console.log(intersection); //Set { 2, 3 }
+console.log(difference); //Set { 1 }
+....
+
+

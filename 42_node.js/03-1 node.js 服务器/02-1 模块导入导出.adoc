@@ -1,0 +1,148 @@
+
+= 模块导入/导出
+:toc:
+
+---
+
+== 模块
+
+
+|===
+|Header 1 |Header 2
+
+|模块文件
+|只要js文件含有import或者export, 它就会被当成一个模块。
+
+|非模块文件
+|如果一个文件不带有顶级的import或者export声明，那么它的内容被视为全局可见的
+|===
+
+
+模块使用"模块加载器"去导入其它的模块。最有名的两个是:
+
+
+|===
+|模块加载器类型|用在...上
+
+|CommonJS
+|后端 Node.js
+
+|Require.js
+|前端 web - ES6
+|===
+
+
+---
+
+== 后端node.js 使用的 CommonJS模块规范
+
+导出单个模块
+[source, typescript]
+....
+moudel.exports = 函数名或者变量名；
+....
+
+导入
+[source, typescript]
+....
+require('user.js')  //当然, 扩展名".js"可以省略 require('user');
+....
+
+导出多个模块
+[source, typescript]
+....
+var showForm = () =>{}  //箭头函数
+var subForm = function(){}
+
+module.exports.showForm = showForm;
+module.exports.subForm = subForm;
+
+//可简写
+module.exports = {
+  showForm: showForm,
+  subForm: subForm
+}
+
+//键值同名可以只写一个
+module.exports = {
+  showForm,
+  subForm
+}
+....
+
+---
+
+==== 导出模块 -> module.exports.某对象
+
+CommonJS规范规定，**每个模块内部，module变量代表当前模块。这个变量是一个对象，它的exports属性（即module.exports）是对外的接口。 加载某个模块，其实是加载该模块的module.exports属性。**
+
+导出的写法:
+[source, typescript]
+....
+//module1.js
+
+module.exports.objZzr = {name:'zzr',age:19} //把所有的导出变量, 都挂靠在exports对象上
+module.exports.myFn = function(arg) {...}
+
+console.log(module); //module是个对象, 代表当前模块。
+....
+
+导入模块的写法:
+[source, typescript]
+....
+let myModule = require('./module1.js') //导入模块, 并新建一个myModule变量, 来指针指向模块文件(module1.js)中的exports对象.
+
+console.log(myModule.obj);
+myModule.fnMy()
+....
+
+也可以在导入时, 直接解包:
+[source, typescript]
+....
+let {obj, fnMy} = require('./module1.js')  //直接解包出"导入的模块"中暴露出来的各个变量
+
+console.log(obj);
+fnMy()
+....
+
+---
+
+==== 导出模块 -> exports.某对象
+
+**为了方便，Node为每个模块提供一个exports变量，指向module.exports。这等同在每个模块头部，有一行这样的命令:**
+[source, typescript]
+....
+var exports = module.exports;
+....
+
+**于是我们可以直接在 exports 对象上添加方法**，表示对外输出的接口，**如同在module.exports上添加一样。  注意，不能直接将exports变量指向一个值，因为这样等于切断了exports与module.exports的联系。**
+
+
+---
+
+== 前端ES6 使用的 Require.js模块规范
+
+**node.js 的CommonJS 模块就是对象, 模块所导出的各个变量, 都挂靠在这个对象(module.exports)上. **其他文件在导入它时, 必须查找module.exports对象上所挂靠的属性。
+
+**而前端ES6的模块方案, ES6 模块不是对象. **而是可以直接导出所暴露出去的变量, 而不需要把这些变量挂靠在某个对象身上. 因此, ES6的模块效率, 要比 CommonJS 模块的加载方式高。当然，**这也导致了没法引用 ES6 模块本身，因为它不是对象。**
+
+
+
+
+
+
+
+
+
+
+
+http://es6.ruanyifeng.com/#docs/module
+
+
+
+
+
+
+
+
+

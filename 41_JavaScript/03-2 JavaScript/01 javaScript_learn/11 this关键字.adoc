@@ -1,0 +1,127 @@
+
+= this
+:toc:
+
+== this 关键字，会被自动定义在所有函数的作用域中
+
+*this 不是变量，不是属性，不能为其赋值，它始终指向调用它的对象.* 所以找到调用this的对象，就知道this到底指向谁了. +
+最重要的是要分析"调用栈"（就是为了到达当前执行位置, 所调用的所有函数）。我们所关心的 *"调用位置", 就处在当前正在执行的函数的前一个调用中。*
+
+---
+
+==== 注意 "调用栈"和"调用位置" 的区别
+
+image::img_javaScript/函数调用栈.svg[]
+
+
+JavaScript新手经常犯的一个错误, 就是将一个方法从对象中拿出来，然后再调用，希望方法中的 this 是原来的对象（比如在回调中传入这个方法）。如果不做特殊处理的话，一般会丢失原来的对象。
+
+
+//--------------------------
+
+---
+
+== func.call(this所绑定的对象, arg1, arg2, ...)
+
+js中, *函数的本质其实是 func.call(this所绑定的对象, arg1, arg2, ...)*
+
+when a function of an object was called , the object will be passed to the execution context as 'this' value . +
+也就是说，当一个函数被调用时，拥有它的object会作为this传入。 在global下，就是window or global，其他时候就是相应的object。 也可以看到，call和apply就是利用这一点实现更改this 值的。
+
+[source, typescript]
+....
+interface ItfPerson {
+    name: string
+    fnTalk: () => void
+}
+
+let zzr: ItfPerson = {
+    name: 'zzr',
+    fnTalk(){ //zzr中有个说话方法
+        console.log(`i am ${this.name}`);
+    }
+}
+
+let wyy = { //注意, wyy中没有说话方法
+    name: 'wyy'
+}
+
+zzr.fnTalk() //i am zzr
+zzr.fnTalk.call(wyy) //i am wyy <--将zzr的说话方法中的this, 改换成wyy对象, 即, 现在改成由wyy来调用这个说话方法. 这样, 相当于wyy对象就有了说话方法.
+....
+
+call 和 apply 都是为了改变某个函数运行时的 context 即上下文而存在的，换句话说，*就是为了改变函数体内部 this 的指向。*  +
+call 和 apply二者的作用完全一样，只是接受参数的方式不太一样。
+
+
+
+//--------------------------
+
+---
+
+== func.apply(thisArg, [argsArray])
+即: *Function.apply(由本对象来调用函数,[参数的集合])*
+
+|===
+|参数 |说明
+
+|thisArg
+|会代替func里this对象
+
+|argsArray
+|即传给函数的参数, 要放在一个数组中传入.  +
+(巧记: apply --> arrary, 两者都是a开头, 所以apply接收的参数是array数组)
+
+|===
+
+
+//--------------------------
+
+---
+
+== 一个obj对象的方法, 要访问本obj中的属性时, 必须要加this来引用该属性
+
+[source, typescript]
+....
+let objZzr = {
+    name: 'zzr',
+
+    fnGetName: function () {
+        console.log(this.name); //要访问本对象中的属性, 必须加this
+    },
+
+    fnGetThis() {
+        console.log(this);
+    }
+}
+
+objZzr.fnGetName() //zzr
+
+objZzr.fnGetThis() //可以发现, this就是objZzr本身!
+/*
+{ name: 'zzr',
+  fnGetName: [Function: fnGetName],
+  fnGetThis: [Function: fnGetThis] }
+ */
+....
+
+上面可以发现, *打印出的this就是objZzr本身! 所以,  这就解释了,为什么访问本对象的属性时, 前面要加this. 因为只有加了this, 访问到的才是objZzr中的name, 如果不加this, 就会去访问全局环境中的name了!* 如果全局变量中并没有name存在, 就会报错提示, 说找不到(全局中的)name了.
+
+
+下面来试验, 如果不加this, 并且全局中的确有一个name属性, 会打印出什么?
+[source, typescript]
+....
+let name2 = 'god' //全局的name属性
+
+let objZzr = {
+    name2: 'zzr',
+    fnGetName: function () {
+        console.log(name2); //前面没有用this来约束, 本例就会访问到全局中的name2变量了. 这里你换成箭头函数的写法, 结果也是一样!
+        console.trace() //打印出本函数的调用栈, Object.<anonymous>  --> Object.fnGetName
+    }
+}
+
+objZzr.fnGetName() //god
+....
+
+

@@ -1,0 +1,873 @@
+
+= AsciiDoc格式, 扩展名是 .adoc
+:toc:
+
+---
+
+== AsciidocFX 软件
+
+下载地址 +
+https://github.com/asciidocfx/AsciidocFX/releases
+
+---
+
+== 文章中的目录
+紧跟在第一级标题后的下一行, 写上 #:toc:# 属性. 注意, 该属性上面不能有空行!
+```
+= 一级标题(即本adoc的唯一文件大标题)
+:toc:
+```
+
+<br> <--可见 html标签在adoc中无效!
+
+---
+
+== 画"目录结构图" -> 安装 mddir模块
+
+方法:
+....
+npm install mddir -g  //先全局安装mddir模块
+cd X:\mywork   //进入你的工程目录下
+mddir  //直接运行mddir命令
+....
+打开你的工程根目录, 会看到一个名为 directoryList.md的文件，里面就是你项目的"目录结构图".
+
+---
+
+== 插入图片
+#image::# 图片地址 #[]# +
+注意:
+- 双冒号::后, 和中括号[]前, 不能有空格! 必须紧密连着图片地址写!
+- 中括号[]中, 可以设置图片的显示宽高值
+
+```
+image::01 程序学习 (前端, ui)/03-2 JavaScript/01 javaScript_learn/img_javaScript/arr_copyWithin.svg[20,20]
+```
+---
+
+== 页面内链接(锚点)
+
+```
+链接：<<本锚点名字, 点我跳转>>
+锚点：[[本锚点名字]]
+```
+
+---
+
+== 高亮(黄色底) (github中无效, 但hexo博客中有效!)
+高亮部分用 ### 号包围即可
+```
+i am #zzr高亮了# hello
+```
+效果: +
+i am #zzr高亮了# hello
+
+---
+
+== 高亮再试验 -> 10.1.1. Quoted text attributes
+
+官网见 http://asciidoc.org/userguide.html
+
+....
+[red]#Obvious# and [big red yellow-background]*very obvious*.
+[underline]#Underline text#, [overline]#overline text# and
+[blue line-through]*bold blue and line-through*.
+....
+
+效果
+
+[red]#Obvious# and [big red yellow-background]*very obvious*.
+[underline]#Underline text#, [overline]#overline text# and
+[blue line-through]*bold blue and line-through*.
+
+---
+
+== 嵌入html
+把html代码, 用两个\++++包裹起来即可. 例如:
+
+....
+++++
+<p>
+朝辞<b>白帝</b>彩云间，<u style="background-color:rgb(255,255,0)">千里江陵一日还</u>。<u>下划线</u>
+两岸猿声啼不住，<span style="font-weight: bolder;">轻舟已过万重山</span>。
+</p>
+++++
+....
+
+==== 下划线u, 换行br, 样式css -> 有效;  加粗b -> 无效
+
+上面例子的显示效果:
+
+++++
+<p>
+朝辞<b>白帝</b>彩云间，<u style="background-color:rgb(255,255,0)">千里江陵一日还</u>。 <u>下划线</u>
+两岸猿声啼不住，<span style="font-weight: bolder;">轻舟已过万重山</span>。
+</p>
+++++
+
+
+|===
+|是否有效 |tag
+
+|有效的
+|下划线<u>, 换行<br/> +
+css背景色样式 <tag style="background-color:rgb(255,255,0)">
+
+|无效的
+|加粗<b>, 即使用css样式来加粗,也无效
+|===
+
+
+---
+
+==== pre代码块 -> 有效
+
+pre代码块有效, 但是代码里如果出现"<"或">"符号时, 需要对它们进行转义! 否则<pre>会错乱.
+
+写法:
+....
+++++
+<pre>
+for (var i=0;i&lt;cars.length;i++){
+    console.log(123)
+}
+</pre>
+++++
+....
+
+效果:
+
+++++
+<pre>
+for (var i=0;i&lt;cars.length;i++){
+    console.log(123)
+}
+</pre>
+++++
+
+
+常用的转义:
+|===
+|特殊符号 |必须被转义成符号实体
+
+|<
+|\&lt;
+
+|>
+|\&gt;
+
+|&
+|\&amp;
+
+|"
+|\&quot;
+
+|'
+|\&apos;
+|===
+
+完整的实体符号, 见: http://www.w3school.com.cn/tags/html_ref_entities.html
+
+
+---
+
+
+==== img图像 -> 有效
+
+写法:
+....
+++++
+<img src="https://www.google.cn/landing/cnexp/google-search.png" alt="" width="200">
+++++
+....
+
+效果
+++++
+<img src="https://www.google.cn/landing/cnexp/google-search.png" alt="" width="200">
+++++
+
+---
+
+==== form表格 -> 有效
+
+写法:
+....
+++++
+<table border="1">
+    <tr>
+        <td>row 1, cell 1</td>
+        <td>row 1, cell 2</td>
+    </tr>
+    <tr>
+        <td>row 2, cell 1</td>
+        <td>row 2, cell 2</td>
+    </tr>
+</table>
+++++
+....
+
+效果
+++++
+<table border="1">
+    <tr>
+        <td>row 1, cell 1</td>
+        <td>row 1, cell 2</td>
+    </tr>
+    <tr>
+        <td>row 2, cell 1</td>
+        <td>row 2, cell 2</td>
+    </tr>
+</table>
+++++
+
+
+---
+
+==== form表单 -> 有效
+
+写法:
+....
+++++
+<form action="form_action.asp" method="get">
+  First name: <input type="text" name="fname"/> <br/>
+  Last name: <input type="text" name="lname"/> <br/>
+  <textarea rows="3" cols="20"></textarea> <br/>
+  <input type="submit" value="Submit" />
+</form>
+++++
+....
+
+效果
+++++
+<form action="form_action.asp" method="get">
+  First name: <input type="text" name="fname"/> <br/>
+  Last name: <input type="text" name="lname"/> <br/>
+  <textarea rows="3" cols="20"></textarea> <br/>
+  <input type="submit" value="Submit" />
+</form>
+++++
+
+---
+
+
+==== ul列表 -> 有效
+
+写法:
+....
+++++
+<ul>
+<li>Coffee</li>
+<li>Milk</li>
+</ul>
+++++
+....
+
+效果:
+
+++++
+<ul>
+<li>Coffee</li>
+<li>Milk</li>
+</ul>
+++++
+
+---
+
+==== css背景色 -> 有效. 但github中无效
+
+....
+++++
+<pre>
+function fn() {
+    let arr = []
+    for(let i =0;i&lt;10;i++) {
+     <span style="background:#900000; color:#FFF">arr.push(parseInt(Math.random()*100));</span>
+    }
+    return arr
+}
+</pre>
+++++
+....
+
+效果
+++++
+<pre>
+function fn() {
+    let arr = []
+    for(let i =0;i&lt;10;i++) {
+     <span style="background:#900000; color:#FFF">arr.push(parseInt(Math.random()*100));</span>
+    }
+    return arr
+}
+</pre>
+++++
+
+
+---
+
+== 单词代码块
+用两个 ` ` 包裹起来即可
+```
+i like `zzr`
+```
+效果 +
+i like `zzr`
+
+---
+
+== 程序代码块(无色)
+有两种方法: +
+1. 写在两个 ```中 (不推荐使用!! 会有bug)  +
+2. 写在两个(四点号) ....中 (推荐使用! 不会有问题)
+
+效果:
+....
+arrP.sort((a: Itf_Person, b: Itf_Person) => { //海客谈瀛洲，烟涛微茫信难求；越人语天姥，云霞明灭或可睹。天姥连天向天横，势拔五岳掩赤城。天台四万八千丈，对此欲倒东南倾。(四万 一作：一万)我欲因之梦吴越，一夜飞度镜湖月。(度 通：渡)湖月照我影，送我至剡溪。谢公宿处今尚在，渌水荡漾清猿啼。
+    let nameA = a.name.toLowerCase()
+    let nameB = b.name.toLowerCase()
+    if (nameA < nameB) {
+        return -1
+    }
+    if (nameA > nameB) {
+        return 1
+    } else return 0
+})
+....
+
+---
+
+==== 程序代码块(有色)
+
+为了让代码块有颜色, 就要加上程序名字了.
+```
+[source, 程序名字(比如typescript)]
+----
+代码内容
+----
+```
+
+效果
+
+[source, javascript]
+----
+arrP.sort((a: Itf_Person, b: Itf_Person) => { //海客谈瀛洲，烟涛微茫信难求；越人语天姥，云霞明灭或可睹。天姥连天向天横，势拔五岳掩赤城。天台四万八千丈，对此欲倒东南倾。(四万 一作：一万)我欲因之梦吴越，一夜飞度镜湖月。(度 通：渡)湖月照我影，送我至剡溪。谢公宿处今尚在，渌水荡漾清猿啼。
+    let nameA = a.name.toLowerCase()
+    let nameB = b.name.toLowerCase()
+    if (nameA < nameB) {
+        return -1
+    }
+    if (nameA > nameB) {
+        return 1
+    } else return 0
+})
+----
+
+---
+
+==== 代码块内不换行(github中天生就不换行)
+要加上 #%nowrap# 属性. +
+nowrap 会增加（css 样式 white-space:nowrap 和 word-wrap: normal）到 <PRE> 元素上。
+
+```
+[source%nowrap, javascript]
+----
+代码内容
+----
+```
+
+效果: +
+
+[source%nowrap, javascript]
+----
+arrP.sort((a: Itf_Person, b: Itf_Person) => { //海客谈瀛洲，烟涛微茫信难求；越人语天姥，云霞明灭或可睹。天姥连天向天横，势拔五岳掩赤城。天台四万八千丈，对此欲倒东南倾。(四万 一作：一万)我欲因之梦吴越，一夜飞度镜湖月。(度 通：渡)湖月照我影，送我至剡溪。谢公宿处今尚在，渌水荡漾清猿啼。
+    let nameA = a.name.toLowerCase()
+    let nameB = b.name.toLowerCase()
+    if (nameA < nameB) {
+        return -1
+    }
+    if (nameA > nameB) {
+        return 1
+    } else return 0
+})
+----
+
+---
+
+==== 全局的代码块都不自动换行
+在文档头部写上 #:prewrap!:# 属性
+```
+:prewrap!:
+
+[source, java]
+----
+代码内容
+----
+```
+
+---
+
+==== 给代码块加个自有的小标题(写在代码块外面)
+
+```
+.名字
+----
+代码内容
+----
+```
+
+效果: +
+
+.fn_getAllDoc_fromRealm.ts
+----
+code....
+----
+
+---
+
+==== 把代码块的小标题(写在代码块里面) (github中会丢失代码块的底色, 变成白色)
+把代码块的四个横线-, 改成四个星号*即可.
+
+```
+.名字
+****
+代码内容
+****
+```
+
+效果: +
+
+.fn_getAllDoc_fromRealm.ts
+****
+code....
+****
+
+---
+
+== 案例文本块(里面支持字体加粗, 列表, 和分隔线!) (github中会丢失代码块的底色, 变成白色)
+写在上下4个等号= 里面即可.
+
+```
+====
+案例内容 +
+line1 +
+line2
+
+- item1
+- item2
+
+--- //分隔线
+
+_斜体_
+*加粗*
+====
+```
+
+效果: +
+
+====
+案例内容 +
+line1 +
+line2
+
+- item1
+- item2
+
+--- //分隔线
+
+_斜体_
+*加粗*
+====
+
+---
+
+==== 案例文本块里面, 还可以使用上代码块
+....
+.案例名字
+====
+zzr的代码是:
+```
+code zzr...
+```
+
+wyy的代码是:
+```
+code wyy...
+```
+====
+....
+
+效果 +
+
+.案例名字
+====
+zzr的代码是:
+```
+code zzr...
+```
+
+wyy的代码是:
+```
+code wyy...
+```
+====
+
+
+例子2:
+....
+[NOTE]
+====
+An admonition block may contain complex content.
+
+.A list
+- one
+- two
+- three
+
+Another paragraph.
+====
+....
+
+效果: +
+
+[NOTE]
+====
+An admonition block may contain complex content.
+
+.A list
+- one
+- two
+- three
+
+Another paragraph.
+====
+
+---
+
+== 表格
+```
+|===
+|Header 1 |Header 2 |Header 3
+
+|Column 1, row 1
+|Column 2, row 1
+|Column 3, row 1
+
+|Column 1, row 2
+|Column 2, row 2
+|Column 3, row 2
+
+|Column 1, row 3
+|Column 2, row 3
+|Column 3, row 3
+|===
+```
+效果 +
+
+|===
+|Header 1 |Header 2 |Header 3
+
+|Column 1, row 1
+|Column 2, row 1
+|Column 3, row 1
+
+|Column 1, row 2
+|Column 2, row 2
+|Column 3, row 2
+
+|Column 1, row 3
+|Column 2, row 3
+|Column 3, row 3
+|===
+
+---
+
+== 特殊段落 (github中效果如同单行两列的表格)
+主要是为了引起读者注意.
+
+有5种特殊段落的标签(注意点: 1.标签必须大写, 2.标签后面必须跟着冒号, *冒号前还必须有一个空格* , 才会生效!):
+
+- NOTE 注释
+- TIP 提示
+- WARNING 警告
+- IMPORTANT 重要
+- CAUTION 注意
+
+```
+NOTE: 这是注释... +
+朝辞白帝彩云间 +
+千里江陵一日还 +
+
+TIP: 这是提示...
+
+WARNING: 警告内容如下...
+
+IMPORTANT: 重要公告! ...
+
+CAUTION: 注意!! ...
+
+```
+效果: +
+
+NOTE: 这是注释... +
+朝辞白帝彩云间 +
+千里江陵一日还 +
+
+TIP: 这是提示...
+
+WARNING: 警告内容如下...
+
+IMPORTANT: 重要公告! ...
+
+CAUTION: 注意!! ...
+
+---
+
+==== 使用 caption 参数, 可以定义这些特殊段落的标题
+```
+[caption ='杜甫的诗']
+NOTE: 安得广厦千万间，大庇天下寒士俱欢颜，风雨不动安如山。 +
+呜呼！何时眼前突兀见此屋，吾庐独破受冻死亦足！
+```
+效果: +
+[caption ='杜甫的诗']
+NOTE: 安得广厦千万间，大庇天下寒士俱欢颜，风雨不动安如山。 +
+呜呼！何时眼前突兀见此屋，吾庐独破受冻死亦足！
+
+---
+
+== 列表
+```
+- item1
+- item2 //一级列表和二级列表, 使用不同的符号即可!
+* item2-1
+* item2-2
+- item3
+```
+效果: +
+
+- item1
+- item2
+* item2-1
+* item2-2
+- item3
+
+---
+
+==== 列表中, 如何支持空行?
+
+默认, 列表中不支持空行
+
+- item1
+
+something... //会变成这样, 缩进丢了
+
+- item 2
+
+如果你想支持空行, 就用 + 号, 来对空行换行
+
+```
+- item1
++
+something... //上面用 + 号来对空行换行后, 缩进就能保持了!
+
+- item 2
+```
+
+效果如下:
+
+- item1
++
+something... //item1 和 something 之间, 有一个空行(由+号来换行). 缩进就能保持了!
+
+- item 2
+
+---
+
+==== 从2级列表往下, 可以叠加*号表示
+```
+- 1
+* 1-1
+** 1-1-1
+*** 1-1-1-1
+**** 1-1-1-1-1
+```
+效果: +
+
+- 1
+* 1-1
+** 1-1-1
+*** 1-1-1-1
+**** 1-1-1-1-1
+
+---
+
+==== 数字列表
+```
+1. zzr
+2. wyy
+3. mwq
+```
+效果: +
+
+1. zzr
+2. wyy
+3. mwq
+
+---
+
+==== 给列表加上自有的小标题
+在列表小标题后加上两个冒号 #::# 即可
+```
+列表小标题list name::
+- item1
+- item2
+```
+
+列表小标题list name::
+- item1
+- item2
+
+---
+
+== 换行(硬回车)
+方法1: 敲两个回车
+```
+行1
+
+行2
+```
+
+方法2: 输入加号（+）后再换行. 注意: +号前必须有一个空格!
+```
+行1 +
+行2
+```
+
+方法3: 在第一行添加 #[%hardbreaks]# 属性, 该属性下面的每一行, 都会自动添加一个换行标记(比如<br>)
+```
+[%hardbreaks]
+行1
+行2
+```
+
+---
+
+== 在整篇文章中, 都保留换行
+将 #:hardbreaks:# 属性添加到文档头部即可
+```
+:hardbreaks:
+第一行
+第二行
+
+第三行
+...
+```
+
+---
+
+== 水平线
+有5种方法:
+```
+'''
+---
+- - -
+***
+* * *
+```
+
+---
+
+== 标题
+
+```
+= 文档标题 (0级) =
+== 段落标题 (1级) ==
+=== 段落标题 (2级) ===
+==== 段落标题 (3级) ====
+===== 段落标题 (4级) =====
+```
+
+---
+
+== 粗体字
+用*号包围即可
+```
+*粗体内容*
+```
+
+---
+
+== 斜体 (github中有效)
+
+对文字两边都用一个下划线_包围即可
+
+```
+_斜体效果_
+```
+
+---
+
+== 大号字体
+
+....
+[big]#大号#
+....
+
+效果: +
+[big]#大号#
+
+---
+
+== 有色字体
+....
+[red]#有色字体#
+....
+
+效果 +
+[red]#有色字体#
+
+---
+
+
+== 删除线 (github中无效)
+在 #[.line-through]# 后, 用两个 ### 号包裹住要被删除的文本内容
+```
+[.line-through]#被删除文本#
+
+
+白日依山尽,[.line-through]#被删除文本,# 黄河入海流
+```
+效果: +
+白日依山尽,[.line-through]#被删除文本,# 黄河入海流
+
+
+---
+
+== 箭头
+```
+->
+=>
+<-
+<=
+```
+效果: +
+-> +
+=> +
+<- +
+<=
+
+---
+
+== 注释
+犹如程序一样, 被注释的内容, 不会渲染在页面上.
+```
+// 单行注释
+```
+
+```
+////
+块注释
+////
+```
+
+---

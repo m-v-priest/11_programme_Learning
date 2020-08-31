@@ -1,0 +1,121 @@
+
+= typescript 异常处理
+:toc:
+
+---
+
+== Error 类
+
+JavaScript 有一个 Error 类，用于处理异常。你可以通过 throw 关键字来抛出一个错误。然后通过 try/catch 块来捕获此错误：
+
+[source, typescript]
+....
+try {
+    throw new Error('Something bad happened');
+} catch (e) {
+    console.log(e);
+}
+....
+
+JavaScript 初学者可能有时候仅仅是抛出一个原始字符串：
+[source, typescript]
+....
+try {
+  throw 'Something bad happened';
+} catch (e) {
+  console.log(e);
+}
+....
+
+不要这么做! 使用 Error 对象的基本好处是，它能自动跟踪堆栈的属性构建以及生成位置。 +
+原始字符串会导致极差的调试体验，并且在分析日志时，将会变得错综复杂。
+
+---
+
+
+==== 你并不需要"用 throw 来抛出错误"的情况: 在node.js中, 回调函数的第一个参数会自动处理err错误.
+
+除非你想用以非常通用（try/catch）的方式处理错误，否则不要抛出错误。
+
+传递一个 Error 对象是没问题的，这种方式在 Node.js 回调函数中非常常见，它用第一个参数作为错误对象进行回调处理。
+
+[source, typescript]
+....
+function fn (fnCallback: (e: Error)) {
+    fn异步操作(function () {
+        if (出错) {
+            fnCallback(new Error('报错信息')); //如果出错, 就执行回调函数, 传入一个错误对象.
+        } else {
+            fnCallback();
+        }
+    })
+}
+....
+
+
+---
+
+==== 如何优雅的捕获错误 -> 把每个任务, 都各自用一个try...catch来处理
+
+下面是糟糕的写法:
+[source, typescript]
+....
+try {
+  const res1 = fnRunTask1(); //糟糕的写法: 把多个任务(调用多个函数), 都写在同一个try语句块里面了!
+  const res2 = fnRunTask2();
+} catch (e) {
+  console.log('Error:', e);
+}
+....
+
+请问, 上例中, 如果捕获到错误, 这个错误e, 到底是fnRunTask1()造成的, 还是fnRunTask2()造成的? 你就很难弄清.
+
+所以, 应该每个任务, 都各自用一个try...catch来处理:
+[source, typescript]
+....
+try {
+    const res1 = fnRunTask1();
+} catch (e) {
+    console.log('Error:', e);
+}
+
+try {
+    const res2 = fnRunTask2();
+} catch (e) {
+    console.log('Error:', e);
+}
+....
+
+---
+
+==== 自定义一个返回{error?:string}对象 的函数.
+
+如果你的函数想返回一个报错提示, 比如, 一旦出错, 就返回一个obj对象, 该对象里面有一个error属性, 那么可以这样写:
+
+[source, typescript]
+....
+function fn年龄验证(age: number): { error?: string } { //返回值的类型是 { error?: string }
+    if (age <= 15 || age >= 40) {
+        return {error: 'no way'}
+    } else {
+        return {}
+    }
+}
+
+console.log(fn年龄验证(42)); //{ error: 'no way' }
+....
+
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
