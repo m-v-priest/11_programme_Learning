@@ -593,7 +593,181 @@ Another paragraph.
 
 ---
 
-==== 控制表格的列宽 -> cols 属性
+==== 整张表格宽度 => 设置整张表占页面的宽度 -> width属性
+
+使用 width参数, 就能设置整张表, 占页面总宽的宽度百分比, 是多少.  +
+比如设成 width="40%", 意思就是 整张表的宽度, 就设成是页面宽度的40%.
+```
+[width="40%"]
+|===
+...
+|===
+```
+
+[width="40%"]
+|===
+|Column 1 |Column 2
+|1        |Item 1
+|2        |Item 2
+|3        |Item 3
+|===
+
+---
+
+==== 边框线 => 表格边框线的显示或隐藏 -> [frame="all/ends/none/sides"]
+
+....
+[frame="ends"] //让表格的左右 不显示边框线
+↓
+....
+
+[frame="ends"]
+|===
+|Header 1 |Header 2
+
+|Column 1, row 1
+|Column 2, row 1
+
+|Column 1, row 2
+|Column 2, row 2
+
+|Column 1, row 3
+|Column 2, row 3
+|===
+
+....
+[frame="sides"] //让表格的上下 不显示边框线
+↓
+....
+
+[frame="sides"]
+|===
+|Header 1 |Header 2
+
+|Column 1, row 1
+|Column 2, row 1
+
+|Column 1, row 2
+|Column 2, row 2
+
+|Column 1, row 3
+|Column 2, row 3
+|===
+
+
+....
+[frame="none"] //让表格的四周 都不显示边框线
+↓
+....
+
+[frame="none"]
+|===
+|Header 1 |Header 2
+
+|Column 1, row 1
+|Column 2, row 1
+
+|Column 1, row 2
+|Column 2, row 2
+
+|Column 1, row 3
+|Column 2, row 3
+|===
+
+
+---
+
+
+==== 行间隔颜色 => 让行有间隔颜色 -> [stripes="even/odd/all/hover"]
+
+在表格上面加如下代码
+....
+[stripes="even/odd/all/hover"]
+// hover值,表示 : 只在鼠标移到目标行的上方时, 改行才显示背景色
+// all值 : 则所有行全部有默认背景色(灰色).
+....
+
+[stripes="even"]
+|===
+|Header 1 |Header 2
+
+|Column 1, row 1
+|Column 2, row 1
+
+|Column 1, row 2
+|Column 2, row 2
+
+|Column 1, row 3
+|Column 2, row 3
+
+|Column 1, row 4
+|Column 2, row 4
+
+|Column 1, row 5
+|Column 2, row 5
+
+|Column 1, row 6
+|Column 2, row 6
+|===
+
+
+
+
+
+---
+
+==== 子表格 => 表格单元格中, 再插入一个表格 <- 将子表格的列的间隔符, 用"!"表示即可.
+
+....
+[cols="1,2a"]
+|===
+| Col 1 | Col 2
+
+| Cell 1.1
+| Cell 1.2
+
+| Cell 2.1
+| Cell 2.2
+
+[cols="2,1"]
+!===
+! Col1 ! Col2
+
+! C11
+! C12
+
+!===
+
+|===
+....
+
+
+[cols="1,2a"]
+|===
+| Col 1 | Col 2
+
+| Cell 1.1
+| Cell 1.2
+
+| Cell 2.1
+| Cell 2.2
+
+[cols="2,1"]
+!===
+! Col1 ! Col2
+
+! C11
+! C12
+
+!===
+
+|===
+
+
+---
+
+
+==== 列宽 => 控制表格的列宽 -> cols 属性
 
 可以用 cols 属性, 它有两个功能：1.设置表格的列数, 及 2. 设置"列"之间相对的宽度。
 
@@ -649,7 +823,7 @@ Empowers developers to easily create real, automated tests.
 
 ---
 
-==== 让表格的列, 根据里面文字内容的长度, 来设成自动列宽 -> [options="autowidth"]
+==== 列宽 => 让表格的列, 根据里面文字内容的长度, 来设成自动列宽 -> [options="autowidth"]
 
 加上下面的参数即可
 ```
@@ -671,7 +845,7 @@ Empowers developers to easily create real, automated tests.
 
 ---
 
-==== 在表格中, 再使用列表
+==== 自动序号 => 在表格中, 再使用列表序号
 
 在cols属性中, 在想使用"列表"的单元格位置处, 在数字后面再填个"a"即可.
 ```
@@ -696,28 +870,8 @@ http://getfirefox.com[Get Firefox]!
 
 ---
 
-==== 设置整张表占页面的宽度 -> width属性
 
-使用 width参数, 就能设置整张表, 占页面总宽的宽度百分比, 是多少.  +
-比如设成 width="40%", 意思就是 整张表的宽度, 就设成是页面宽度的40%.
-```
-[width="40%"]
-|===
-...
-|===
-```
-
-[width="40%"]
-|===
-|Column 1 |Column 2
-|1        |Item 1
-|2        |Item 2
-|3        |Item 3
-|===
-
----
-
-==== 单元格中内容的对齐(左对齐, 居中, 右对齐) -> [cols="<,^,>"]
+==== 内容对齐 => 单元格中内容的对齐(左对齐, 居中, 右对齐) -> [cols="<,^,>"]
 
 在cols属性的值中, "<"代表左对齐, "^"代表居中对齐, ">"代表右对齐
 
@@ -760,6 +914,9 @@ row 1
 |Cell in column 2, row 2
 |Cell in column 3, row 2
 |===
+
+
+
 
 
 ---
