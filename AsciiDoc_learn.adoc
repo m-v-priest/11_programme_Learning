@@ -113,7 +113,7 @@ i am #zzr高亮了# hello
 </p>
 ++++
 
-
+[options="autowidth"]
 |===
 |是否有效 |tag
 
@@ -155,6 +155,8 @@ for (var i=0;i&lt;cars.length;i++){
 
 
 常用的转义:
+
+[options="autowidth"]
 |===
 |特殊符号 |必须被转义成符号实体
 
@@ -555,6 +557,7 @@ Another paragraph.
 == 表格
 
 ```
+[options="autowidth"]
 |===
 |Header 1 |Header 2 |Header 3
 
@@ -574,6 +577,7 @@ Another paragraph.
 
 效果 +
 
+[options="autowidth"]
 |===
 |Header 1 |Header 2 |Header 3
 
@@ -614,6 +618,250 @@ Another paragraph.
 
 ---
 
+==== 合并列 ->  2+|
+
+该内容的官方文档 https://docs.asciidoctor.org/asciidoc/latest/tables/span-cells/
+
+原本的单元格, 是先写 "|",再在后面写单元格中的文字内容的. +
+为了让某行的某两列合并, 就在第一列的"|"前面, 写上比如 "2+" ,意思是将2列合并. 同理, 如果是想合并3列, 就写成"3+".
+
+....
+[options="autowidth"]
+|===
+|Header 1 |Header 2 |Header 3
+
+|Column 1, row 2
+|Column 2, row 2
+|Column 3, row 2
+
+2+|注意, 本行这两列合并了  //注意这里!
+|Column 3, row 1
+
+|Column 1, row 3
+|Column 2, row 3
+|Column 3, row 3
+|===
+....
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2 |Header 3
+
+|Column 1, row 2
+|Column 2, row 2
+|Column 3, row 2
+
+2+|注意, 本行这两列合并了
+|Column 3, row 1
+
+|Column 1, row 3
+|Column 2, row 3
+|Column 3, row 3
+|===
+
+现在, 我们来合并3列:
+
+....
+[options="autowidth"]
+|===
+|Header 1 |Header 2 |Header 3 |Header 4
+
+|Column 1, row 1
+|Column 2, row 1
+|Column 3, row 1
+|Column 4, row 1
+
+|Column 1, row 2
+|Column 2, row 2
+|Column 3, row 2
+|Column 4, row 2
+
+|Column 1, row 3
+3+| 本3列合并了
+
+|Column 1, row 4
+|Column 2, row 4
+|Column 3, row 4
+|Column 4, row 4
+|===
+....
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2 |Header 3 |Header 4
+
+|Column 1, row 1
+|Column 2, row 1
+|Column 3, row 1
+|Column 4, row 1
+
+|Column 1, row 2
+|Column 2, row 2
+|Column 3, row 2
+|Column 4, row 2
+
+|Column 1, row 3
+3+| 本3列合并了
+
+|Column 1, row 4
+|Column 2, row 4
+|Column 3, row 4
+|Column 4, row 4
+|===
+
+---
+
+==== 合并行 -> .2+|
+
+在要合并n行的的第一行单元格处, 写 ".n+", 后面保留"|"
+
+....
+[options="autowidth"]
+|===
+|Header 1 |Header 2 |Header 3
+
+|Column 1, row 1
+|Column 2, row 1
+|Column 3, row 1
+
+.2+| 注意: 本2行合并了   // 注意这里
+|Column 2, row 2
+|Column 3, row 2
+
+
+|Column 2, row 3
+|Column 3, row 3
+|===
+....
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2 |Header 3
+
+|Column 1, row 1
+|Column 2, row 1
+|Column 3, row 1
+
+.2+| 注意: 本2行合并了
+|Column 2, row 2
+|Column 3, row 2
+
+
+|Column 2, row 3
+|Column 3, row 3
+|===
+
+下面, 我们来合并3行:
+
+....
+[options="autowidth"]
+|===
+|Header 1 |Header 2 |Header 3 |Header 4
+
+|Column 1, row 1
+|Column 2, row 1
+|Column 3, row 1
+|Column 4, row 1
+
+|Column 1, row 2
+|Column 2, row 2
+|Column 3, row 2
+.3+| 注意: 本3行合并了
+
+|Column 1, row 3
+|Column 2, row 3
+|Column 3, row 3
+
+
+|Column 1, row 4
+|Column 2, row 4
+|Column 3, row 4
+
+|===
+....
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2 |Header 3 |Header 4
+
+|Column 1, row 1
+|Column 2, row 1
+|Column 3, row 1
+|Column 4, row 1
+
+|Column 1, row 2
+|Column 2, row 2
+|Column 3, row 2
+.3+| 注意: 本3行合并了
+
+|Column 1, row 3
+|Column 2, row 3
+|Column 3, row 3
+
+
+|Column 1, row 4
+|Column 2, row 4
+|Column 3, row 4
+
+|===
+
+---
+
+==== 同时合并n列和m行 -> n.m+
+
+同时合并n列和m行, 就是把这些单元格合并成一个大矩形, 那就在该矩形左上角第一个单元格处, 写 "n.m+|"
+
+如, 我们了合并 2列3行:
+
+....
+
+|===
+|Header 1 |Header 2 |Header 3 |Header 4
+
+|Column 1, row 1
+|Column 2, row 1
+|Column 3, row 1
+|Column 4, row 1
+
+|Column 1, row 2
+2.3+| 注意: 2列3行的单元格, 已经合并
+|Column 4, row 2
+
+|Column 1, row 3
+|Column 4, row 3
+
+|Column 1, row 4
+|Column 4, row 4
+|===
+....
+
+
+
+|===
+|Header 1 |Header 2 |Header 3 |Header 4
+
+|Column 1, row 1
+|Column 2, row 1
+|Column 3, row 1
+|Column 4, row 1
+
+|Column 1, row 2
+2.3+| 注意: 2列3行的单元格, 已经合并
+|Column 4, row 2
+
+|Column 1, row 3
+|Column 4, row 3
+
+|Column 1, row 4
+|Column 4, row 4
+|===
+
+
+
+
+
+---
+
 ==== 边框线 => 表格边框线的显示或隐藏 -> [frame="all/ends/none/sides"]
 
 ....
@@ -621,7 +869,7 @@ Another paragraph.
 ↓
 ....
 
-[frame="ends"]
+[frame="ends", options="autowidth"]
 |===
 |Header 1 |Header 2
 
@@ -640,7 +888,7 @@ Another paragraph.
 ↓
 ....
 
-[frame="sides"]
+[frame="sides", options="autowidth"]
 |===
 |Header 1 |Header 2
 
@@ -660,7 +908,7 @@ Another paragraph.
 ↓
 ....
 
-[frame="none"]
+[frame="none", options="autowidth"]
 |===
 |Header 1 |Header 2
 
@@ -687,7 +935,7 @@ Another paragraph.
 // all值 : 则所有行全部有默认背景色(灰色).
 ....
 
-[stripes="even"]
+[stripes="even", options="autowidth"]
 |===
 |Header 1 |Header 2
 
