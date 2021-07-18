@@ -1,0 +1,57 @@
+
+=  TeX Live
+:toc:
+
+---
+
+== TeX Live 官网
+
+https://tug.org/texlive/
+
+或者下载ISO镜像 :
+
+- HK镜像 -> https://mirror-hk.koddos.net/CTAN/systems/texlive/Images/
+- 清华镜像 -> https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/Images/
+- 中科大镜像 -> https://mirrors.ustc.edu.cn/CTAN/systems/texlive/Images/
+
+命名为 texlive.iso 的那个文件，就是当时最新版本的 texlive 的镜像了。 iso 文件用 Daemon tool lite 打开.
+
+https://www.daemon-tools.cc/chn/products/dtLite
+
+---
+
+
+==== iso镜像 安装流程
+
+https://zhuanlan.zhihu.com/p/41855480
+
+- 用管理员模式（右键-->Run as Administrator）运行install-tl-windows.bat文件
+- 进入第一个框框后点击Advanced
+
+
+简易教程
+
+https://liam.page/2014/09/08/latex-introduction/
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
