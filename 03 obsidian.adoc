@@ -18,35 +18,6 @@ https://www.latex-project.org/
 
 image:img_adoc,md,other/img_obsidian/obsidian 21.png[]
 
-[cols="1a,3a"]
-|===
-|Header 1 |Header 2
-
-|TEX
-|70年代末开发的, 命令行格式的, 排版软件 (包括数学公式功能)
-
-|LATEX
-|80年代初开发的, 对TEX的拓展. 但LATEX并不是单独的程序.
-
-|TEX发行版 : TEXLive (推荐安装!)
-|一个TEX发行版就是, 才是真正的软件.
-
-- TeX Live 趋向于命令行.
-- 有一个团队在负责.
-
-|TEX发行版 : MiKTeX
-|- MiKTeX 倾向于图形界面
-- 是一个个人项目.
-
-|Lyx
-|是一个编辑软件，Lyx = Word面孔 + LaTeX核心。
-|===
-
-TeX 的源代码是后缀为 .tex 的纯文本文件。可以用任意纯文本编辑器打开修改.
-
-
-
-
 ---
 
 ==== 画流程图 -> Mermaid 脚本非语言

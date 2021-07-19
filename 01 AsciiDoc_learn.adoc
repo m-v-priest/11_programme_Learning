@@ -454,6 +454,36 @@ code....
 
 ---
 
+== ★ 插入 latex 代码 -> 用 stem:[] 包围 LaTex 语法
+
+asciidoctor 通过 mathjax 实现 LaTex 字体的显示，方法和 markdown 差不多，区别是:
+
+- markdown（不同差距实现方法不同）使用 $$ 或者 $``$ 包围 LaTex 语法，
+- asciidoctor 使用 stem:[] 包围 LaTex 语法。
+
+如:
+
+[cols="1a,1a"]
+|===
+|源码 |渲染后
+
+|
+....
+stem:[E = mc^2]
+....
+|stem:[E = mc^2]
+
+|....
+stem:[c = \sqrt{a^{2}+b_{xy}^{2}+e^{x}}]
+....
+|stem:[c = \sqrt{a^{2}+b_{xy}^{2}+e^{x}}]
+|===
+
+
+
+---
+
+
 == 案例文本块(里面支持字体加粗, 列表, 和分隔线!) (github中会丢失代码块的底色, 变成白色)
 写在上下4个等号= 里面即可.
 

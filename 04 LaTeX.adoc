@@ -23,35 +23,414 @@ https://www.daemon-tools.cc/chn/products/dtLite
 
 ==== iso镜像 安装流程
 
-https://zhuanlan.zhihu.com/p/41855480
+[cols="1a"]
+|===
+|Header 1
 
-- 用管理员模式（右键-->Run as Administrator）运行install-tl-windows.bat文件
-- 进入第一个框框后点击Advanced
 
+|用管理员模式（右键-->Run as Administrator）运行install-tl-windows.bat文件
 
-简易教程
+|进入第一个框后点击左下角 Advanced
 
-https://liam.page/2014/09/08/latex-introduction/
+|修改N. of collections选项 :
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_01.png[]
+
+- 去掉除中英文外的其他语言包
+- 去掉Texworks(比较老的编辑器，没有代码自动补全, 不推荐)
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_02.png[]
+
+|安装很慢. 完成后, 打开 terminal , 分别输入: +
+tex -v +
+latex -v +
+xelatex -v +
+pdflatex -v
+
+如果能看到安装的TeX的环境信息, 就表示安装成功.
+|===
+
 
 ---
 
+==== jetbrain中 配置 latex (亲测可行)
+
+- 安装插件 TeXiFy IDEA
+
+- 中文支持需要使用 XeLaTeX +
+File → Settings → Languages & Frameworks → TeXiFy 进行参数修改
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_05.png[]
+
+- Run菜单 → Edit Configurations → Compiler设为 XeLaTeX
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_06.png[]
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_07.png[]
+
+- 可以新建 tex文件.  +
+注意: TeX 涉及到的文件（包括 .tex, .jpg 等各类文件）都不要包含中文名字。否则，在编译时可能出错.
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_09.png[]
+
+- 写好 tex 文件后, 右键 run就行了. 输出的pdf 在 项目的out文件夹下
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_08.png[]
+
+- LaTeX 渲染默认不显示中文, 要显示中文, 需要在tex文件中, 在导言区添加下面一行代码，也就是添加ctex包.
+
+....
+\usepackage{ctex}
+....
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_10.png[]
 
 
 
 
 
+---
+
+==== vscode中 配置 latex (有问题)
+
+- 安装 插件 LaTeX Workshop
+
+- 按 ctrl + shift + A, 输入"json"来查找相关命令.
+- 选 "首选项:打开设置(json)"
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_03.png[]
+
+- 把下面的代码, 粘贴入 setting.json 文件中.  +
+注意 : json文件中都是键值对, 每个键值对要用逗号","隔开! 别忘了写.
+
+....
+// ======================== LaTeX 设置 BEGIN  ========================
+        // bibtex 格式
+        "latex-workshop.bibtex-format.tab": "tab",
+
+        // 自动编译，全部关闭，当且仅当你认为有需要的时候才会去做编译
+        "latex-workshop.latex.autoBuild.run": "never",
+        "latex-workshop.latex.autoBuild.cleanAndRetry.enabled": false,
+
+        // 设置 latex-workshop 的 PDF　预览程序，external　指的是外部程序
+        "latex-workshop.view.pdf.viewer": "external",
+        "latex-workshop.view.pdf.ref.viewer": "external",
+        "latex-workshop.view.pdf.external.viewer.command": "C:/Users/Administrator/AppData/Local/SumatraPDF/SumatraPDF.exe", // 注意修改路径
+        "latex-workshop.view.pdf.external.viewer.args": [
+            "%PDF%"
+        ],
+
+        // 配置正向、反向搜索：.tex -> .pdf
+        "latex-workshop.view.pdf.external.synctex.command": "C:/Users/Administrator/AppData/Local/SumatraPDF/SumatraPDF.exe", // 注意修改路径
+        "latex-workshop.view.pdf.external.synctex.args": [
+            // 正向搜索
+            "-forward-search",
+            "%TEX%",
+            "%LINE%",
+            "-reuse-instance",
+            // 反向搜索
+            "-inverse-search",
+            "\"C:/Users/Administrator/AppData/Local/Programs/Microsoft VS Code/Code.exe\" \"C:/Users/Administrator/AppData/Local/Programs/Microsoft VS Code/resources/app/out/cli.js\" -gr %f:%l",
+            "%PDF%"
+        ],
+
+        // 这是一些独立的编译选项，可以作为工具被编译方案调用
+        "latex-workshop.latex.tools": [
+            {
+                // Windows 原生安装 TeX Live 2020 的编译选项
+                "name": "Windows XeLaTeX",
+                "command": "xelatex",
+                "args": [
+                    "-synctex=1",
+                    "-interaction=nonstopmode",
+                    "-file-line-error",
+                    "-pdf",
+                    "%DOCFILE%"
+                ]
+            },
+            {
+                // Windows Biber 编译
+                "name": "Windows Biber",
+                "command": "biber",
+                "args": [
+                    "%DOCFILE%"
+                ]
+            },
+            {
+                // WSL XeLaTeX 编译一般的含有中文字符的文档
+                "name": "WSL XeLaTeX",
+                "command": "wsl",
+                "args": [
+                    "/usr/local/texlive/2020/bin/x86_64-linux/xelatex",
+                    "-synctex=1",
+                    "-interaction=nonstopmode",
+                    "-file-line-error",
+                    "-pdf",
+                    //"-output-directory=%OUTDIR%",
+                    //"-aux-directory=%OUTDIR%",
+                    "%DOCFILE%"
+                ]
+            },
+            {
+                // WSL biber / bibtex 编译带有 citation 标记项目的文档
+                "name": "WSL Biber",
+                "command": "wsl",
+                "args": [
+                    "/usr/local/texlive/2020/bin/x86_64-linux/biber",
+                    "%DOCFILE%"
+                ]
+            },
+            {
+                // macOS 或者 Linux 的简单编译
+                // 两种操作系统的操作方式相同
+                "name": "macOS / Linux XeLaTeX",
+                "commmand": "xelatex",
+                "args": [
+                    "-synctex=1",
+                    "-interaction=nonstopmode",
+                    "-file-line-error",
+                    "-pdf",
+                    "%DOCFILE%"
+                ]
+            },
+            {
+                // macOS 或者 Linux 的索引编译
+                // 两种操作系统的操作方式相同
+                "name": "macOS / Linux Biber",
+                "command": "biber",
+                "args": [
+                    "%DOCFILE%"
+                ]
+            }
+        ],
+
+        // 这是一些编译方案，会出现在 GUI 菜单里
+        "latex-workshop.latex.recipes": [
+            {
+                // 1.1 Windows 编译简单的小文档，这个选项不太常用，因为绝大多数文章都需要有参考文献索引
+                "name": "Windows XeLaTeX 简单编译",
+                "tools": [
+                    "Windows XeLaTeX"
+                ]
+            },
+            {
+                // 1.2 Windows 编译带有索引的论文，需要进行四次编译；-> 符号只是一种标记而已，没有程序上的意义
+                "name": "Windows xe->bib->xe->xe 复杂编译",
+                "tools": [
+                    "Windows XeLaTeX",
+                    "Windows Biber",
+                    "Windows XeLaTeX",
+                    "Windows XeLaTeX"
+                ]
+            },
+            {
+                // 2.1  WSL 编译简单的小文档，这个选项不太常用，因为我绝大多数文章都需要有引用。
+                "name": "XeLaTeX 简单编译",
+                "tools": [
+                    "WSL XeLaTeX"
+                ]
+            },
+            {
+                // 2.2 带有 citation 索引的文档，需要进行四次编译；-> 符号只是一种标记而已，没有程序上的意义
+                "name": "xe->bib->xe->xe 复杂编译",
+                "tools": [
+                    "WSL XeLaTeX",
+                    "WSL Biber",
+                    "WSL XeLaTeX",
+                    "WSL XeLaTeX"
+                ]
+            },
+            {
+                // 3.1 macOS 简单 小文档
+                "name": "macOS XeLaTeX 简单编译",
+                "tools": [
+                    "macOS XeLaTeX"
+                ]
+            },
+            {
+                // 3.2 macOS 四次编译
+                "name": "macOS xe->bib->xe->xe 复杂编译",
+                "tools": [
+                    "macOS / Linux XeLaTeX",
+                    "macOS / Linux Biber",
+                    "macOS / Linux XeLaTeX",
+                    "macOS / Linux XeLaTeX"
+                ]
+            }
+        ],
+
+        // 清空中间文件
+        "latex-workshop.latex.clean.fileTypes": [
+            "*.aux",
+            "*.bbl",
+            "*.blg",
+            "*.idx",
+            "*.ind",
+            "*.lof",
+            "*.lot",
+            "*.out",
+            "*.toc",
+            "*.acn",
+            "*.acr",
+            "*.alg",
+            "*.glg",
+            "*.glo",
+            "*.gls",
+            "*.ist",
+            "*.fls",
+            "*.log",
+            "*.fdb_latexmk",
+            "*.bcf",
+            "*.run.xml",
+            "*.synctex.gz"
+        ]
+    // ======================== LaTeX 设置 END ========================
+....
+
+注意: 这段配置代码里, 有3个地方需要我们修改:  前两个是填入你自己的 acrobat pdf 程序的路径地址, 后一个是你自己的 vscode 的程序路径地址.
+image:/img_adoc,md,other/img_LaTeX/LaTeX_04.png[]
+
+- 重启 vscode
 
 
 
 
+---
+
+==== 在线 latex编辑器 -> overleaf
+
+https://www.overleaf.com/ +
+qq - t
 
 
 
 
+---
+
+== 简易教程
+
+https://liam.page/2014/09/08/latex-introduction/
 
 
+---
+
+== ----- -----
 
 
+---
+
+== tex 文件基本格式的说明
 
 
+....
+\documentclass{article}
 
+% 这里是导言区
+
+\begin{document}
+
+Hello, world!
+
+\end{document}
+....
+
+
+[cols="1a,2a"]
+|===
+|Header 1 |说明
+
+|....
+\documentclass{article}
+....
+|- 以反斜杠 \ 开头的, 叫做"控制序列", 它们不会被渲染.
+- TeX 对控制序列的大小写是敏感的。
+- {} 或 [] 中的是参数.
+
+- 这里的控制序列是 documentclass.它后面紧跟着的 {article} 代表这个控制序列有一个必要的参数，该参数的值为 article。这个控制序列的作用，就是调用名为 article 的文档类.
+- 文档类，即是 TeX 系统预设的（或是用户自定的）一些格式的集合。不同的文档类在输出效果上会有差别。
+
+|注释 : 以 % 开头
+|- 若要输出 % 字符本身，需要在 % 前加上反斜杠 \ 进行转义（escape）。 +
+如:  20\%
+
+
+|从 \documentclass{article} 开始到 \begin{document} 之前的部分, 被称为"导言区"。
+|- 可以将"导言区"理解为是对整篇文档进行设置的区域——在"导言区"出现的控制序列，往往会影响整篇文档的格式。 +
+比如，我们通常在导言区设置页面大小、页眉页脚样式、章节标题样式等等。
+
+
+|
+....
+\begin{document}
+...
+\end{document}
+....
+|- 控制序列 begin 总是与 end 成对出现。 +
+这两个控制序列以及他们中间的内容, 被称为"环境"；它们之后的第一个必要参数, 总是一致的，被称为"环境名"。
+- 只有在 document 环境中的内容，才会被渲染.  +
+在 \end{document} 之后插入任何内容都是无效的。
+
+|===
+
+---
+
+== 插入数学公式
+
+为了使用 AMS-LaTeX 提供的数学功能，我们需要在导言区加载 amsmath 宏包：
+
+....
+\documentclass{article}
+\usepackage{amsmath} % 载入 amsmath 宏包
+
+
+\begin{document}
+
+$E=mc^2$
+\[E=mc^2\]
+
+
+\end{document}
+....
+
+[cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|....
+$ ... $
+....
+|可以插入行内公式. +
+行内模式 (inline) 是在前文后, 直接插入公式.
+
+|....
+\[...\]
+....
+|可以插入行间公式. +
+行间模式 (display), 是数学公式独立成行，并自动居中。
+|===
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_11.png[]
+
+==== 上标^ , 下标_
+
+[cols="1a,1a" options="autowidth"]
+|===
+|源码 |渲染后
+
+|上标
+....
+x^2
+....
+
+....
+z = r\cdot e^{2\pi i}
+....
+|stem:[x^2] +
+
+stem:[z = r\cdot e^{2\pi i}]
+
+|下标
+....
+y_3
+|stem:[y_3]
+|===
