@@ -2,6 +2,7 @@
 =  TeX Live
 :toc:
 
+
 ---
 
 == TeX Live 官网
@@ -302,7 +303,12 @@ image:/img_adoc,md,other/img_LaTeX/LaTeX_04.png[]
 https://www.overleaf.com/ +
 qq - t
 
+---
 
+== latex 编辑器
+
+- http://texstudio.sourceforge.net/
+- http://latexlive.com/
 
 
 ---
@@ -376,6 +382,9 @@ Hello, world!
 
 == 插入数学公式
 
+==== 行内公式 $ ... $, 行间公式 \[ ... \ ]
+asciidoc 中插入 latex 代码 → 用 stem:[] 包围 LaTex 语法.
+
 为了使用 AMS-LaTeX 提供的数学功能，我们需要在导言区加载 amsmath 宏包：
 
 ....
@@ -413,6 +422,10 @@ image:/img_adoc,md,other/img_LaTeX/LaTeX_11.png[]
 
 ==== 上标^ , 下标_
 
+- 上标，用 ^ 来实现
+- 下标, 用 _
+- 它们默认只作用于之后的一个字符，如果想对连续的几个字符起作用，就将这些字符用花括号 {} 括起来.
+
 [cols="1a,1a" options="autowidth"]
 |===
 |源码 |渲染后
@@ -433,4 +446,47 @@ stem:[z = r\cdot e^{2\pi i}]
 ....
 y_3
 |stem:[y_3]
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_12.png[]
 |===
+
+
+
+---
+
+==== 根式(square root) -> \sqrt{} , 分式(fraction) -> \frac{分子}{分母}
+
+....
+\sqrt{x}
+\frac{1}{2}
+....
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_13.png[]
+
+但你会发现, 行内公式, 和行间公式, 分式的渲染字体大小, 不同.
+....
+aaa  $\frac{1}{2}$ bbb
+%行内渲染
+
+\[ \frac{1}{2}. \]
+%行间渲染
+
+$ \dfrac{1}{2}. $
+%用 \dfrac, 来强制将"行内模式"分式的字体大小, 同"行间模式"保持一致.
+
+\[ \tfrac{1}{2}. \]
+%用 \tfrac, 可将"行间模式"的字体大小, 强制同"行内模式"保持一致.
+....
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_14.png[]
+
+---
+
+==== 繁分式(complex fraction) -> \cfrac
+
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_15.png[]
+
+
+
+---
