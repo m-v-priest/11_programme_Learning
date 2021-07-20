@@ -5,6 +5,23 @@
 
 ---
 
+
+== 数学软件工具
+
+==== geogebra
+
+https://www.geogebra.org/
+
+
+
+---
+
+== ----- -----
+
+
+---
+
+
 == TeX Live 官网
 
 https://tug.org/texlive/
@@ -68,6 +85,7 @@ image:/img_adoc,md,other/img_LaTeX/LaTeX_05.png[]
 image:/img_adoc,md,other/img_LaTeX/LaTeX_06.png[]
 
 image:/img_adoc,md,other/img_LaTeX/LaTeX_07.png[]
+
 
 - 可以新建 tex文件.  +
 注意: TeX 涉及到的文件（包括 .tex, .jpg 等各类文件）都不要包含中文名字。否则，在编译时可能出错.
@@ -307,15 +325,41 @@ qq - t
 
 == latex 编辑器
 
-- http://texstudio.sourceforge.net/
-- http://latexlive.com/
+==== texstudio
+
+官网下载地址 +
+http://texstudio.sourceforge.net/
+
+设置修改:
+
+[cols="1a,3a"]
+|===
+|Header 1 |Header 2
+
+|设置中文
+|options -> general -> language -> zh-cn
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_17.png[]
+
+|将默认编辑器修改为 xelatex
+|options -> build -> default compiler
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_18.png[]
+
+|设置 utf8 编码
+|options -> editor -> default font encoding
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_19.png[]
+
+|===
 
 
----
 
-== 简易教程
 
-https://liam.page/2014/09/08/latex-introduction/
+==== 在线编辑器 latexlive
+
+http://latexlive.com/
+
 
 
 ---
@@ -326,6 +370,8 @@ https://liam.page/2014/09/08/latex-introduction/
 ---
 
 == tex 文件基本格式的说明
+
+tex文件要保存为 uft-8 编码.
 
 
 ....
@@ -364,6 +410,7 @@ Hello, world!
 |- 可以将"导言区"理解为是对整篇文档进行设置的区域——在"导言区"出现的控制序列，往往会影响整篇文档的格式。 +
 比如，我们通常在导言区设置页面大小、页眉页脚样式、章节标题样式等等。
 
+- 修改页面边距, 详见下面.
 
 |
 ....
@@ -380,7 +427,140 @@ Hello, world!
 
 ---
 
-== 插入数学公式
+==== ★ ①命令 -> 以反斜线\开头, ②参数 -> 放在{}内
+
+latex的命令, 以反斜线\ 开头. 有的可以带参数.
+
+命令(宏)的格式为:
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|无参数
+|\command
+
+|有n个参数
+|如果命令的参数不止一个字符(不包括空格), 就必须用花括号{}括起来.
+
+\command(arg~1~)(arg~2~)...(arg~n~)
+
+|有可选参数 -> 放中括号[]里面
+|\command[(arg~opt~)](arg~1~)(arg~2~)...(arg~n~)
+|===
+
+---
+
+==== ★ 环境
+
+latex 环境(environment)的一般格式是:
+....
+\begin{环境名}
+环境内容
+\end{环境名}
+....
+
+有的环境, 可带"参数"或"可选参数"
+....
+\begin{环境名}[可选参数]其他参数
+环境内容
+\end{环境名}
+....
+
+
+
+
+
+---
+
+==== 修改页面边距 -> 使用 geometry 宏包
+
+设置页边距，推荐使用 geometry 宏包
+
+把下面的代码放在 \begin{document} 前面.
+
+比如我希望，将纸张的长度设置为 20cm、宽度设置为 15cm, 左边距 1cm、右边距 2cm、上边距 3cm、下边距 4cm，可以在导言区加上这样几行：
+
+....
+\usepackage{geometry}
+\geometry{papersize={20cm,15cm}}
+\geometry{left=1cm,right=2cm,top=3cm,bottom=4cm}
+
+....
+
+
+又比如 :
+....
+\usepackage{geometry}
+\geometry{a4paper,left=0.5cm,right=0.5cm,top=0.5cm,bottom=0.5cm}
+....
+
+
+---
+
+
+==== 修改字体大小 -> \documentclass[12pt]{article}
+
+
+[cols="1a,1a" options="autowidth"]
+|===
+|Header 1|
+
+|全局模式 修改字体大小
+|\documentclass[12pt]{article}
+
+|局部模式 修改字体大小
+|设置字体大小的命令, 从小到大为：
+\tiny +
+\scriptsize +
+\footnotesize +
+\small +
+\normalsize +
+\large +
+\Large +
+\LARGE +
+\huge +
+\Huge +
+|===
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_16.png[]
+
+---
+
+==== ★ 支持中文渲染 -> \documentclass [UTF8]{ctexart}
+
+
+....
+\documentclass [UTF8]{ctexart}
+....
+
+
+---
+
+== ----- -----
+
+
+---
+
+
+== ★★ 插入数学公式 -> 最常用的宏包就是 amsmath 宏包
+
+当然, 除了 amsmath 宏包外, 还有其它对数学功能进行扩充的宏包, 比如 mathtools宏包.
+
+---
+
+==== 保留字符, 即需要转义的字符 ->  # $ % & ~ _ ^ \ { }
+
+以下几个字符: # $ % & ~ _ ^ \ { } 有特殊意义，需要表示这些字符时，需要转义，即在每个字符前加上\.
+
+
+注意 : 反斜杠\ 的转义要写成: \textbackslash
+
+
+
+
+
+---
 
 ==== 行内公式 $ ... $, 行间公式 \[ ... \ ]
 asciidoc 中插入 latex 代码 → 用 stem:[] 包围 LaTex 语法.
@@ -401,7 +581,9 @@ $E=mc^2$
 \end{document}
 ....
 
-[cols="1a,1a"]
+
+
+[cols="1a,1a" options="autowidth"]
 |===
 |Header 1 |Header 2
 
@@ -420,10 +602,73 @@ $ ... $
 
 image:/img_adoc,md,other/img_LaTeX/LaTeX_11.png[]
 
+---
+
+==== 其实有三种方式, 来输入行间公式
+
+[cols="1a,1a" options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|
+....
+\[ a+b \]
+....
+|行间公式 displayed (常用)
+
+|....
+\( a+b \)
+....
+|命令格式 (不常用)
+
+|....
+\begin{math}
+a+b
+\end{math}
+....
+|环境格式 (不常用)
+|===
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_20.png[]
+
+---
+
+==== 在数学模式中, 使用中英文 -> \text 命令
+
+使用amsmath 宏包, 数学模式中, 不能直接输入英文和中文, 只能输入数学相关的语言符号. 如果你想输入文字, 则要使用 amsmath 提供的 \text 命令. +
+另外, 在数学公式中, 空格(包括单个换行)也是不起作用的.
+
+....
+$ \text{被减数} - \text{减数} = \text{差} $
+....
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_21.png[]
+
+---
+
+==== 不等号 -> \neq, 恒等于 -> \equiv
+
+[cols="1a,1a" options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|....
+$ x \neq y $
+
+$ z \equiv z $
+
+....
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_39.png[]
+
+|===
+
+
+---
+
 ==== 上标^ , 下标_
 
-- 上标，用 ^ 来实现
-- 下标, 用 _
+- 上标(一般在原符号的"右上方")，用 ^ 来实现
+- 下标(一般在原符号的"右下方", 有时也在"正上方"和"正下方"), 用 _
 - 它们默认只作用于之后的一个字符，如果想对连续的几个字符起作用，就将这些字符用花括号 {} 括起来.
 
 [cols="1a,1a" options="autowidth"]
@@ -448,20 +693,111 @@ y_3
 |stem:[y_3]
 
 image:/img_adoc,md,other/img_LaTeX/LaTeX_12.png[]
+
+
+| 上下标可以同时使用, 先写上标或先写下标, 次序并不重要, 两者互不影响.
+....
+$ A_i^k $
+
+$ A^k_i $
+....
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_22.png[]
+
+|嵌套使用上下标时, 则外层一定要使用分组(花括号).
+....
+$ K_{n_i} $
+
+$ K_{n^i} $
+
+
+$ K^{n_i} $
+
+$ K^{n^i} $
+....
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_23.png[]
+
+|连续嵌套
+....
+$ K^{3^{3^{\cdot^{\cdot^{\cdot^3}}}}} $
+....
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_24.png[]
+
+|撇号上标 :
+
+- 撇号'直接就是上标了.
+- 它可以与下标同时使用.
+- 撇号可以连续使用(而普通的上标则不能连续使用)
+- 撇号直接就是上标了, 所以它不能与上标混用
+
+....
+$ a' $
+
+$ a'_0 $
+
+$ a_0' $
+
+$ a_0'' $
+....
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_25.png[]
+
 |===
 
 
 
 ---
 
+==== 上水平线 -> \overline,  下水平线 -> \underline
+
+[cols="1a,1a" options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|....
+$ \overline{x+y} $
+
+$ \underline{a+b} $
+....
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_38.png[]
+
+|===
+
+---
+
+==== 重音符号
+
+[cols="1a,1a" options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|....
+$ \hat{x} $
+
+$ \bar{x} $
+
+$ \tilde{x} $
+....
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_40.png[]
+
+|===
+
+
+---
+
 ==== 根式(square root) -> \sqrt{} , 分式(fraction) -> \frac{分子}{分母}
 
-....
+
+[cols="1a,1a" options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|....
 \sqrt{x}
+
 \frac{1}{2}
 ....
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_13.png[]
 
-image:/img_adoc,md,other/img_LaTeX/LaTeX_13.png[]
+|===
 
 但你会发现, 行内公式, 和行间公式, 分式的渲染字体大小, 不同.
 ....
@@ -487,6 +823,353 @@ image:/img_adoc,md,other/img_LaTeX/LaTeX_14.png[]
 
 image:/img_adoc,md,other/img_LaTeX/LaTeX_15.png[]
 
+---
+
+==== 极限 -> \lim
+
+[cols="1a,1a" options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|....
+$ \lim_{x \to \infty} x^2_22 $
+
+$ \lim_{x \to \infty} x^2_{22} $
+....
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_26.png[]
+
+|要让 lim的下标在正下方, 可以用  \lim\limits
+....
+$ \lim\limits_{x \to 0} \frac{a^x}{b+c} $
+
+$ \lim_{x \to 0} \frac{a^x}{b+c} $
+....
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_34.png[]
+
+|===
+
+---
+
+==== 求和 ->  \sum
+
+[cols="1a,1a" options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|....
+$ \sum_{n=1}^{20} n^{2} $
+....
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_28.png[]
+
+|===
 
 
 ---
+
+==== 积分(integral) -> \int
+
+[cols="1a,1a" options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|....
+$ \int_{1}^{5}x\mathrm{d}x $
+
+$ \int_{1}^{5}xdx $
+....
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_27.png[]
+
+|===
+
+
+\mathrm{...} +
+可以将括号内的字母, 由数学斜体变为正体. +
+比如微分符号d、二项式系数C、等于号上的def、自然常数e、虚数单位i，一般打这些特殊符号的时候, 会将这些字母写在 \mathrm{...} 中，而不是直接打这个字母本身.
+
+---
+
+==== 乘积(product) -> \prod
+
+[cols="1a,1a" options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|....
+$ \prod_{j=1}^{3} y_{j} $
+....
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_29.png[]
+
+|===
+
+
+---
+
+==== 省略号(...) -> \ldots点位于基线上，\cdots点设置为居中，\vdots使其垂直，\ddots对角线排列
+
+[cols="1a,1a" options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|基线上 -> \ldots
+|Column 2, row 1
+
+|居中 -> \cdots
+|Column 2, row 2
+
+|垂直 -> \vdots
+|Column 2, row 3
+
+|对角线 -> \ddots +
+....
+diagonal (a.)斜线的；对角线的
+=> dia-, 穿过。-gon, 弯，角
+....
+
+....
+$ x_1,x_2,\ldots,x_5 $
+
+$ x_1,x_2,\cdots,x_5 $
+
+$ x_1,x_2,\vdots,x_5 $
+
+$ x_1,x_2,\ddots,x_5 $
+....
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_30.png[]
+|===
+
+---
+
+==== 矩阵 -> \begin{bmatrix}
+
+采用矩阵"环境", 实现矩阵排列. 常用的矩阵环境有 matrix、bmatrix、vmatrix、pmatrix ，其区别为在于外面的括号不同：
+
+下列代码中，&用于分隔列，\用于分隔行. +
+即 : 采用“&”分割各个对齐单元，使用“\\”换行。
+
+[cols="1a,1a" options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|....
+$ \begin{matrix}
+	a & b \\
+	c & d
+\end{matrix} $
+
+
+$ \begin{bmatrix}
+	a & b \\
+	c & d
+\end{bmatrix} $
+
+
+$ \begin{vmatrix}
+	a & b \\
+	c & d
+\end{vmatrix} $
+
+
+$ \begin{pmatrix}
+	a & b \\
+	c & d
+\end{pmatrix} $
+....
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_31.png[]
+
+|....
+$ \begin{bmatrix}
+	1 & 2 & \cdots \\
+	3 & 4 & \cdots \\
+	\vdots & \vdots & \ddots \\
+\end{bmatrix} $
+....
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_32.png[]
+
+|===
+
+---
+
+==== 向量(vector quantity) -> \vec 表示向量，\overrightarrow 表示箭头向右的向量，\overleftarrow 表示箭头向左的向量
+
+[cols="1a,1a" options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|....
+$ \vec{a} $
+
+$ \overleftarrow{AB} $
+
+$ \overrightarrow{DE} $
+....
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_37.png[]
+
+|===
+
+
+
+---
+
+==== 公式组合 ->通 过cases环境实, 现公式的组合
+
+- &分隔公式和条件，
+- 还可以通过 \lim\limits,  来让x→0 位于lim的正下方, 而非默认在lim符号的右下方显示.
+
+....
+\[
+D(x) = \begin{cases}
+	\lim\limits_{x \to 0} \frac{a^x}{b+c}, & x<3 \\
+	\pi, & x=3 \\
+	\int_a^{3b} x_{ij} + e^2dx , & x>3 \\
+\end{cases}
+\]
+....
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_35.png[]
+
+---
+
+==== 拆分单个公式 -> 通过split环境
+
+....
+\[
+\begin{split}
+	\cos 2x & = \cos^{2}x - \sin^{2}x \\
+	& = 2 \cos^{2}x -1
+\end{split}
+\]
+....
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_36.png[]
+
+---
+
+==== 其他符号
+
+==== 角∠ 的符号 -> \angle
+
+stem:[ \angle ]
+
+==== 角度度数的符号° -> 通过上标输入 ^\circ
+
+stem:[ 90^\circ ]
+
+====  π -> \pi
+stem:[ \pi ]
+
+=== 反斜杠\ -> \textbackslash
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_41.png[]
+
+
+---
+
+==== 希腊字母 -> \读音
+
+通过反斜杠\ 加上其字母读音实现. +
+读音首字母大写, 即可输入其大写形式.
+
+[cols="1a,1a" options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|....
+$
+\alpha \\
+\beta \\
+\gamma \\
+\delta \\
+\epsilon \\
+\varepsilon \\
+\zeta \\
+\eta \\
+\theta \\
+\vartheta \\
+$
+....
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_33.png[]
+
+|===
+
+---
+
+==== 给公式加个边框 -> \boxed{}
+
+[cols="1a,1a" options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|....
+$ \boxed{E=mc^2} $
+....
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_42.png[]
+
+|===
+
+
+---
+
+== ----- -----
+
+---
+
+== TeX 家族介绍
+
+
+[cols="1a,1a"]
+|===
+|引擎 |建立在引擎基础上的程序
+
+|TeX
+
+- 是一种排版引擎.  +
+- 同时也是该引擎使用的标记语言（Markup Language）的名称。
+- TeX 系统生成的文件是 dvi 格式.
+- 不支持中日韩等字符.
+
+|LaTeX
+
+- 在TeX的基础上, 升级功能后的一个可执行文件.
+- 事实上, 每一个LaTeX 命令最后都会被转换解释成几个甚至上百个TeX 命令。
+
+
+
+|pdfTeX
+
+- pdfTeX 是对 TeX 引擎的扩展。二者最主要的差别就是 pdfTeX 直接输出 pdf 格式文档，而 TeX 引擎只能输出 dvi 格式的文档。
+
+|pdfLaTeX
+
+- pdfLaTeX 这个程序的主要工作, 依旧是将 LaTeX 格式的文档进行解释，不过此次是将解释之后的结果交付给 pdfTeX 引擎处理。
+
+
+|XeTeX
+
+- 在 XeTeX 出现之前，为了让 TeX 系统支持中文, 国人曾使用CJK 等手段.
+- 不同于 CJK 等方式使用 TeX 和 pdfTeX 这两个不直接支持 Unicode 字符的引擎，XeTeX 引擎直接支持 Unicode 字符。也就是说现在不使用 CJK 也能排版中日韩文的文档了，并且这种方式要比之前的方式更加优秀。
+- 使用 XeTeX 引擎需使用 UTF-8 编码。
+
+|XeLaTeX
+
+- XeLaTeX 和 XeTeX 的关系, 与 pdfLaTeX 和 pdfTeX 的关系类似.
+
+
+|LuaTeX
+
+- 是一个正在开发完善的 TeX 引擎，相对它的前辈们还相当的不完善.
+
+|
+|===
+
+---
+
+== TeX Live , MiKTeX (->CTeX )
+
+这些都是被称为「发行」的软件合集。他们包括了上述各种引擎的可执行程序，以及一些文档类、模板、字体文件、辅助程序等等。
+
+
+---
+
+226
+
+https://www.jianshu.com/p/22117d964baf
