@@ -71,6 +71,14 @@ pdflatex -v
 
 ---
 
+==== 安装 SumatraPDF
+
+官网
+
+https://www.sumatrapdfreader.org/downloadafter
+
+---
+
 ==== jetbrain中 配置 latex (亲测可行)
 
 - 安装插件 TeXiFy IDEA
@@ -312,6 +320,23 @@ image:/img_adoc,md,other/img_LaTeX/LaTeX_04.png[]
 - 重启 vscode
 
 
+---
+
+==== latex 代码格式化 -> 要安装 latexindent
+
+官网下载
+
+https://github.com/cmhughes/latexindent.pl
+
+https://ctan.org/tex-archive/support/latexindent
+
+
+
+
+
+
+
+
 
 
 ---
@@ -350,6 +375,9 @@ image:/img_adoc,md,other/img_LaTeX/LaTeX_18.png[]
 |options -> editor -> default font encoding
 
 image:/img_adoc,md,other/img_LaTeX/LaTeX_19.png[]
+
+|options -> editor -> show line numbers
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_53.png[]
 
 |===
 
@@ -549,6 +577,57 @@ image:/img_adoc,md,other/img_LaTeX/LaTeX_16.png[]
 
 ---
 
+==== 数学公式中输入文本 -> \text{}
+
+[cols="1a,1a" options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|....
+$ y = x^2 (\text{三次函数}) $
+
+$ \sqrt[3]{\text{二次函数}} $
+....
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_44.png[]
+
+|===
+
+---
+
+==== 数学公式中插入空格 -> \quad
+
+\quad、1em、em、m 代表当前字体下接近字符‘M’的宽度（approximately the width of an "M" in the current font）.
+
+[cols="1a,1a" options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|....
+$ a \quad b $
+
+$ a \qquad b $
+
+$ a \: b $
+
+$ a \; b $
+
+$ a \, b $
+
+$ ab $
+
+$ a \! b $
+....
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_45.png[]
+
+|===
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_46.webp[]
+
+
+
+
+---
+
 ==== 保留字符, 即需要转义的字符 ->  # $ % & ~ _ ^ \ { }
 
 以下几个字符: # $ % & ~ _ ^ \ { } 有特殊意义，需要表示这些字符时，需要转义，即在每个字符前加上\.
@@ -662,6 +741,8 @@ $ z \equiv z $
 
 |===
 
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_50.webp[]
 
 ---
 
@@ -783,7 +864,7 @@ $ \tilde{x} $
 
 ---
 
-==== 根式(square root) -> \sqrt{} , 分式(fraction) -> \frac{分子}{分母}
+==== 开方, 根式(square root) -> \sqrt{} , 分式(fraction) -> \frac{分子}{分母}
 
 
 [cols="1a,1a" options="autowidth"]
@@ -800,6 +881,12 @@ $ \tilde{x} $
 |===
 
 但你会发现, 行内公式, 和行间公式, 分式的渲染字体大小, 不同.
+
+但你可以用 :
+
+- \dfrac{分子}{分母} : 把字号设置为"独立公式"中的大小；
+- \tfrac{分子}{分母} : 把字号设置为"行间公式"中的大小。
+
 ....
 aaa  $\frac{1}{2}$ bbb
 %行内渲染
@@ -816,12 +903,74 @@ $ \dfrac{1}{2}. $
 
 image:/img_adoc,md,other/img_LaTeX/LaTeX_14.png[]
 
+[cols="1a,1a" options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|\sqrt[开方次数，默认为2]{开方公式}
+
+....
+$ \sqrt[3]{x+y} $
+....
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_43.png[]
+
+|===
+
+
+
 ---
 
 ==== 繁分式(complex fraction) -> \cfrac
 
+- 分数用 \frac{分子}{分母} 表示
+- \cfrac{分子}{分母} 用于连分数表示 (这样相较于\frac不会产生字体自动缩小的问题)
 
 image:/img_adoc,md,other/img_LaTeX/LaTeX_15.png[]
+
+---
+==== 让括号自动大小 -> 用\left( 和 \right) 括起来.
+
+自动模式下要用 \left 和 \right 命令后面跟上所需分隔符，用来创建自动匹配高度的 (圆括号)，[方括号] 和 {花括号} 等分隔符.
+
+....
+$ f(x,y,z) = 3y^2z (3+\frac{7x+5}{1+y^2}) $
+
+
+$ f(x,y,z) = 3y^2z \left( 3+\frac{7x+5}{1+y^2} \right) $
+
+$ f(x,y,z) = 3y^2z \left[ 3+\frac{7x+5}{1+y^2} \right] $
+
+$ f(x,y,z) = 3y^2z \left\{ 3+\frac{7x+5}{1+y^2} \right\} $
+% 注意: 大括号需要转义 \{ , \}
+....
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_52.png[]
+
+
+
+....
+$ f([
+\frac{1+\{x,y\}}
+{(\frac{x}{y} + \frac{y}{x})(u+1)}
++a
+]^\frac{3}{2}
+) $
+
+
+
+$ f\left(
+\left[
+\frac{1+\{x,y\}}
+{\left(\frac{x}{y} + \frac{y}{x}\right)(u+1)}
++a
+\right]^\frac{3}{2} \right) $
+% 要让括号适应每一层的大小, 就需要每一层都用上 \left 和 \right
+....
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_54.png[]
+
+
+
 
 ---
 
@@ -1057,14 +1206,23 @@ stem:[ 90^\circ ]
 ====  π -> \pi
 stem:[ \pi ]
 
-=== 反斜杠\ -> \textbackslash
+==== 反斜杠\ -> \textbackslash
 
 image:/img_adoc,md,other/img_LaTeX/LaTeX_41.png[]
 
+image:/img_adoc,md,other/img_LaTeX/LaTeX_51.webp[]
 
+image:/img_adoc,md,other/img_LaTeX/LaTeX_48.webp[]
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_49.webp[]
+
+
+
+
++
 ---
 
-==== 希腊字母 -> \读音
+==== ★ 希腊字母 -> \读音
 
 通过反斜杠\ 加上其字母读音实现. +
 读音首字母大写, 即可输入其大写形式.
@@ -1090,6 +1248,8 @@ $
 |image:/img_adoc,md,other/img_LaTeX/LaTeX_33.png[]
 
 |===
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_47.webp[]
 
 ---
 
@@ -1173,3 +1333,4 @@ $ \boxed{E=mc^2} $
 226
 
 https://www.jianshu.com/p/22117d964baf
+
