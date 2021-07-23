@@ -19,6 +19,36 @@ https://www.geogebra.org/
 == ----- -----
 
 
+
+---
+
+== ★ latex 最常用命令 (我都用到的)
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|乘号
+|\times
+
+|分数
+|\frac{分子}{分母}
+
+|不等号 ≠
+|\ne
+
+|空格
+|\quad
+
+|换行
+|\\
+
+|===
+
+
+
+
+
 ---
 
 
