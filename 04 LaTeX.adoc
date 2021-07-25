@@ -12,6 +12,7 @@
 
 https://www.geogebra.org/
 
+==== matlab <- 可做方程
 
 
 ---
@@ -22,27 +23,84 @@ https://www.geogebra.org/
 
 ---
 
-== ★ latex 最常用命令 (我都用到的)
+== ★ latex 最常用命令 (我都用到的) -> "\stem:[公式]"
 
-[options="autowidth"]
+符号查询 http://latexlive.com/
+
+asciidoc中, 输入 latex公式:
+
+- 单行用 "\stem:[公式]",
+- 多行用
+....
+\begin{align*}
+多行公式
+...
+\end{align*}
+....
+
+STEM 的意思是: Science , Technology, Engineering, Mathematics 四门学科的首字母的缩写.
+
+
+[options="autowidth" cols="1a,1a"]
 |===
 |Header 1 |Header 2
 
-|乘号
+|乘号 stem:[\times]
 |\times
 
-|分数
+|分数 stem:[\frac{1}{2}]
 |\frac{分子}{分母}
+
+|平方根 stem:[\sqrt{x}]
+|\sqrt{x}
+
+|立方根 stem:[\sqrt[根指数3]{x}]
+|\sqrt[3]{x}
 
 |不等号 ≠
 |\ne
+
+|同时正负号 stem:[\pm]
+|\pm
 
 |空格
 |\quad
 
 |换行
-|\\
+|\\ +
+或 +
+\\[行距]   例如：\\[5pt]
 
+| 循环小数头上的点号 stem:[\dot{x}]
+| \dot{num}
+
+|因为 stem:[\because]
+|\because
+
+|所以 stem:[\therefore]
+|\therefore
+
+|省略号 stem:[\cdots]
+|\cdots
+
+|多行公式
+|- &符号就是"对齐的位置"
+- \\ 作用是换行
+- markdown中, 同时修改多列, 按 -> Shift+Ctrl 竖列选择
+....
+\begin{align*}
+& 行1 \\
+& 行2 \\
+\end{align*}
+....
+
+|方程组
+|....
+\begin{cases}
+x+y = 22 \\
+a+b = 0
+\end{cases}
+....
 |===
 
 
@@ -592,6 +650,17 @@ image:/img_adoc,md,other/img_LaTeX/LaTeX_16.png[]
 \documentclass [UTF8]{ctexart}
 ....
 
+---
+
+==== ★ 取消首行的缩进 -> \setlength{\parindent}{0pt}
+
+是全局的操作。比如：若放在第一段的段首，则下面所有的段落都会按照这个格式缩进。
+....
+\setlength{\parindent}{0pt}
+....
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_55.png[]
+
 
 ---
 
@@ -1118,6 +1187,24 @@ $ x_1,x_2,\ddots,x_5 $
 
 ---
 
+==== 水平大括号 -> \underbrace{a,b,c..., n}_{n个数}
+
+命令\overbrace 和\underbrace 在表达式的上、下方给出一水平的大括号。
+
+....
+\underbrace{x_1,x_2,x_3..., x_n}_{n个}
+% 水平大括号在下方
+
+\overbrace{...}^{n个}
+% 水平大括号在上方
+....
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_56.png[]
+
+
+
+---
+
 ==== 矩阵 -> \begin{bmatrix}
 
 采用矩阵"环境", 实现矩阵排列. 常用的矩阵环境有 matrix、bmatrix、vmatrix、pmatrix ，其区别为在于外面的括号不同：
@@ -1363,4 +1450,6 @@ $ \boxed{E=mc^2} $
 226
 
 https://www.jianshu.com/p/22117d964baf
+
+https://www.cnblogs.com/bubcs/p/12736151.html
 

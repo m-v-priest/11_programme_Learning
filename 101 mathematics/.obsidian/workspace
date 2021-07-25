@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "未命名.md",
+            "file": "101 生活_一元一次方程.md",
             "mode": "source"
           }
         },
@@ -21,7 +21,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "未命名.md",
+            "file": "101 生活_一元一次方程.md",
             "mode": "preview"
           }
         },
@@ -65,7 +65,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 170
+    "width": 170,
+    "collapsed": true
   },
   "right": {
     "id": "3221257596e40e6e",
@@ -81,14 +82,14 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "未命名.md",
+                "file": "101 生活_一元一次方程.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
                 "showSearch": false,
                 "searchQuery": "",
-                "backlinkCollapsed": false,
-                "unlinkedCollapsed": true
+                "backlinkCollapsed": true,
+                "unlinkedCollapsed": false
               }
             }
           }
@@ -101,6 +102,11 @@
   },
   "active": "3358c5613acea817",
   "lastOpenFiles": [
-    "未命名.md"
+    "101 生活_一元一次方程.md",
+    "未命名.md",
+    "未命名 1.md",
+    "11_基本概念.md",
+    "11_概念.md",
+    "单项式.md"
   ]
 }
