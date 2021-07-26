@@ -34,6 +34,18 @@
 
 |===
 
+---
+
+
+==== 修改 所安装插件 的参数
+
+比如, 你要修改 markdown preview 插件的显示字号: +
+"查看" -> "命令面板"(ctrl + shift + A) ->  搜索 "settings.json" -> 打开它 -> 搜索 关键词"preview", 就能设置字号了 :
+
+image:img_adoc,md,other/md_16.png[]
+
+
+
 
 ---
 
@@ -43,7 +55,7 @@
 
 ---
 
-==== 同时修改多列 -> Alt+Shift   竖列选择
+==== 同时修改多列 -> Alt+Shift 竖列选择
 
 
 
@@ -300,6 +312,14 @@ image:./img_adoc,md,other/md_08.png[]
 
 ---
 
+==== 插入本地图片
+
+假设图片目录(img_math),就在当前所编辑文件, 同一个父目录下, 则, 用下面的方式即可引入图片. 注意, 中括号[] 不能省略!
+
+![](img_math/math_1.png)
+
+---
+
 ==== 图片
 
 图片语法格式如下：
@@ -347,7 +367,7 @@ image:./img_adoc,md,other/md_10.png[]
 image:./img_adoc,md,other/md_11.png[]
 
 
-表格的对齐方式
+====  ---- 表格的对齐方式
 
 对表格的第二行进行设置:
 |===
@@ -364,6 +384,10 @@ image:./img_adoc,md,other/md_11.png[]
 |===
 
 image:./img_adoc,md,other/md_12.png[]
+
+==== ---- 表格的单元格内进行换行 -> <br/>
+
+只能用 html代码来进行换行 <br/>
 
 
 ---
