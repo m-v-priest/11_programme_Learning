@@ -14,6 +14,28 @@ image:img_geogebra/geogebra_06.png[]
 
 image:img_geogebra/geogebra_07.png[]
 
+---
+
+== 在字符串中引用变量 <- 类似于 python中的 字符串的 .format()方法
+
+即相当于 python 中 字符串中引用变量的方法 :
+....
+info_3 = "the name is {} \n, the age is {}".format(name ,age)
+....
+
+image:img_geogebra/geogebra_21.png[]
+
+
+---
+
+== 关闭跟踪
+
+只清除本次的跟踪 -> ctrl + F
+
+关闭跟踪 : 用右键点击原来跟踪的点或者线，然后选择里面的“取消跟踪”.
+
+image:img_geogebra/geogebra_20.png[]
+
 
 ---
 
@@ -40,7 +62,7 @@ image:img_geogebra/geogebra_12.png[]
 
 == 点
 
-==== 绘制"点" -> 点名(x坐标,y坐标)
+==== 绘制"点" -> 点名大写=(x坐标,y坐标)
 
 ....
 P=(3,2)
@@ -64,6 +86,24 @@ image:img_geogebra/geogebra_09.png[]
 如： +circle c: (x-2)\^2+(y-1)^2=16 +
 f(x)=3*x+2
 |===
+
+---
+
+==== 获取某点的坐标 -> x(某点的变量名), y((某点的变量名)
+
+这个类似于编程中的 x()函数, 功能是获取某点的x坐标.
+
+....
+S=(x(A), slope)
+
+//创建一个S变量, 它是一个点.
+x(A)给出点Ａ的ｘ轴坐标; y(A)给出点A的y坐标.
+slope也是个变量, 它是某条函数曲线的某点处的斜率. 可以用 : "变量名slope=Slope[切线]" 来获得.
+....
+
+image:img_geogebra/geogebra_19.png[]
+
+
 
 
 
@@ -284,9 +324,15 @@ image:img_geogebra/geogebra_17.png[]
 == 获得函数的斜率函数 -> slope=Slope[切线t]
 
 ....
+f(x)=x^2 / 2 + 1
 
+//然后, 在函数f上新建一个点A,
+绘制通过A点的函数f的切线t,
+
+slope=Slope[t] // 创建切线t的斜率, 赋给变量slope.
 ....
 
+image:img_geogebra/geogebra_18.png[]
 
 
 ---
@@ -315,13 +361,28 @@ image:img_geogebra/geogebra_14.png[]
 
 ---
 
+== ----- -----
+
+---
+
+== 矢量
+
+==== 创建矢量 -> 矢量变量名=Vector[点1,点2]
+
+....
+u=Vector[A,B]
+// 矢量方向是从A到B. 并且, 将这个新建的矢量变量赋给 u.
+....
+
+image:img_geogebra/geogebra_22.png[]
 
 
 
+---
 
 入门
 
-23
+30
 
 
 
