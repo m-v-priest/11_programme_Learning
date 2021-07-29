@@ -19,6 +19,58 @@ https://github.com/asciidocfx/AsciidocFX/releases
 
 ---
 
+== ★ 嵌入块引用 -> :<name>: <value>
+
+....
+:刘备: 蜀国皇帝刘玄德 //相当于kv键值对, 这行内容渲染后不可见
+
+我是{刘备}  //会替换{}中的内容为之前定义的value值
+....
+
+:刘备: 蜀国皇帝刘玄德
+
+我是{刘备}
+
+
+
+官方文档是这样介绍的
+
+https://asciidoc.org/asciidoc.css-embedded.html#X18
+
+....
+
+28.1. Setting configuration entries
+Attribute entries promote clarity and eliminate repetition
+
+URLs and file names in AsciiDoc macros are often quite long -- they break paragraph flow and readability suffers. The problem is compounded by redundancy if the same name is used repeatedly. Attribute entries can be used to make your documents easier to read and write, here are some examples:
+
+
+:1:         http://freshmeat.net/projects/asciidoc/
+:homepage:  http://asciidoc.org[AsciiDoc home page]
+:new:       image:./images/smallnew.png[]
+:footnote1: footnote:[A meaningless latin term]
+
+Using previously defined attributes: See the {1}[Freshmeat summary]
+or the {homepage} for something new {new}. Lorem ispum {footnote1}.
+
+
+Note:
+
+The attribute entry definition must precede it’s usage.
+属性条的目定义, 必须先于它的使用。
+
+You are not limited to URLs or file names, entire macro calls or arbitrary lines of text can be abbreviated.
+您不受URL或文件名的限制，可以缩写整个宏调用或任意文本行。
+
+
+Shared attributes entries could be grouped into a separate file and included in multiple documents.
+共享属性条目可以分组到单独的文件中，并包括在多个文档中。
+
+....
+
+
+---
+
 == 文章中的目录
 紧跟在第一级标题后的下一行, 写上 #:toc:# 属性. 注意, 该属性上面不能有空行!
 ```
@@ -1559,3 +1611,6 @@ _斜体效果_
 ```
 
 ---
+
+
+

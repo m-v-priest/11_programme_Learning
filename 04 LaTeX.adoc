@@ -121,6 +121,9 @@ a+b = 0
 \bar{x}
 ....
 
+|希腊字母 stem:[\Delta]
+|\Delta
+
 |===
 
 
