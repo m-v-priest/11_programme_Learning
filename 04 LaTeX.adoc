@@ -112,6 +112,15 @@ x+y = 22 \\
 a+b = 0
 \end{cases}
 ....
+
+|平均数 stem:[\overline{x}]
+|\overline  或 \bar
+....
+\overline{x}
+
+\bar{x}
+....
+
 |===
 
 

@@ -4,6 +4,16 @@
 
 ---
 
+== 官方文档, 指令查询
+
+https://wiki.geogebra.org/en/Manual
+
+---
+
+== ----- -----
+
+---
+
 == 修改 x 和 y 轴的名字 -> 右键 - 绘图区
 
 比如, 你要把 x 轴改成 变量名是 time,  y 轴改成 变量名是elevation :
@@ -55,8 +65,56 @@ f(x)=a*x^2
 
 image:img_geogebra/geogebra_12.png[]
 
+把图形隐藏掉的好处是什么? 比如你多个"点"在同一个坐标处, 你不想某一个"点"被移动, 就可以暂时把它隐藏起来(相当于锁定功能).
+
+---
+
+== 平移 -> 新对象= Translate [原对象, 某向量]
+
+平移后的新对象名称 A'= Translate [原对象A,向量v]，可建立将原对象以向量 v 为基准，所建立的新平移后对象。
+
+....
+A'= Translate[A,v]
+//将点A, 以向量v的长度和方向, 平移到新的点A'
+....
+
+image:img_geogebra/geogebra_34.png[]
+
+....
+newLine = Translate[oldLine, vOld]
+//将直线oldLine, 以向量vOld的长度和方向, 平移到新的直线位置newLine处.
+....
+
+image:img_geogebra/geogebra_35.png[]
 
 
+....
+newTriangle = Translate[oldTriangle, vOld]
+//将三角形oldTriangle, 以向量vOld的长度和方向, 平移到新的三角形位置newTriangle处.
+....
+
+image:img_geogebra/geogebra_36.png[]
+
+---
+
+== 旋转 -> 新变量 = rotate[被旋转对象, 旋转角度, 旋转中心点]
+
+....
+line2 = rotate[line1, angle, pointA]
+\\ 将line1, 以pointA为旋转中心, 逆时针旋转angle角度, 得到的新line赋给新变量 line2.
+....
+
+image:img_geogebra/geogebra_37.png[]
+
+....
+newTriangle= rotate[oldTriangle, angle, pointA]
+\\ 将三角形oldTriangle, 以pointA为旋转中心, 逆时针旋转angle角度, 得到的新三角形赋值给新变量 newTriangle.
+....
+
+image:img_geogebra/geogebra_38.png[]
+
+
+== ----- -----
 
 ---
 
@@ -89,6 +147,18 @@ f(x)=3*x+2
 
 ---
 
+==== 以某一点为基础, 创建另一个点 -> 新点 = 老点+(x坐标的位移值, y坐标的位移值)
+
+....
+B=A+(0,3)
+// B点的坐标是A点坐标的(x+0,y+3), 即B点是从A点向上平移3个单位.
+....
+
+image:img_geogebra/geogebra_27.png[]
+
+
+---
+
 ==== 获取某点的坐标 -> x(某点的变量名), y((某点的变量名)
 
 这个类似于编程中的 x()函数, 功能是获取某点的x坐标.
@@ -103,8 +173,31 @@ slope也是个变量, 它是某条函数曲线的某点处的斜率. 可以用 :
 
 image:img_geogebra/geogebra_19.png[]
 
+---
 
+== 交点 -> A=Intersect[a, b]
 
+....
+A=Intersect[a, b]
+//创建直线 a、b 的交点, 赋值给变量A
+....
+
+---
+
+== 中心点 -> C=Midpoint[A, B]
+
+....
+C=Midpoint[A, B]
+//创建点 A、B 之中点, 赋值给变量C
+
+或
+C=Midpoint[s]
+//创建直线s的中点, 赋值给变量C
+....
+
+---
+
+== ----- -----
 
 
 ---
@@ -146,6 +239,102 @@ Line[A,B]
 ....
 命令, 来创建经过这两点的直线.
 
+
+
+
+---
+
+== 切线 -> 先选点, 再选圆
+
+
+
+依次选择点和圆, 就能做切线.  +
+比如下例, 先选中B点, 再选中圆.
+
+image:img_geogebra/geogebra_10.png[]
+
+
+---
+
+== 射线 -> 新变量名=Ray[起点,点2]
+
+....
+b=Ray[A,B]
+// 起点 A 通过 B 点的射线。
+
+或
+c=Ray[A,v]
+// 起点 A 且方向为 v 向量方向射线。
+....
+
+---
+
+== 垂直线 -> 新变量名 = PerpendicularLine[通过的某点, 某直线]
+
+Perpendicular : n. / v.  ~ (to sth) 垂直的；成直角的 +
+-> per-,整个的，-pend,悬挂，词源同depend,pendulum.引申词义垂直的。 +
+- Are the lines perpendicular to each other? 这些直线相互垂直吗？
+
+....
+L=PerpendicularLine[C,a]
+\\ 通过点C, 且垂直于 a 的直线。
+
+或
+L=PerpendicularLine[C,u]
+\\通过点C,  且垂直于向量 u 的直线。
+....
+
+image:img_geogebra/geogebra_24.png[]
+
+
+---
+
+== 中垂线 -> 新变量名==LineBisector[某线段]
+
+....
+L=LineBisector[A,B]
+\\ 创建线段 AB 的中垂线, 赋值给变量 L
+
+L=LineBisector[s]
+\\s 线段的中垂线
+....
+
+image:img_geogebra/geogebra_26.png[]
+
+---
+
+
+== 平行线 -> 新变量名=line[通过某点,平行于某直线]
+
+....
+L=line[C,a]
+//通过 C 点, 且平行于 a 直线的直线
+....
+
+image:img_geogebra/geogebra_25.png[]
+
+---
+
+== ----- -----
+
+---
+
+
+
+== 角度
+
+....
+α=Angle[A,B,C]
+//以 B 为顶点，线段BA 和 线段BC 为两边的夹角.
+注意 A、C 二点的点选顺序，是采用"逆时针"方向的有向角观念。
+....
+
+image:img_geogebra/geogebra_33.png[]
+
+---
+
+== ----- -----
+
 ---
 
 == 多边形
@@ -153,6 +342,20 @@ Line[A,B]
 依次点击多边形的所有顶点，就构成了一个多边形。
 
 image:img_geogebra/geogebra_08.png[]
+
+
+---
+
+== 经过某几个点的多边形 -> 新变量名 = Polygon[点1,点2,边数n]
+
+....
+Poly1=Polygon[A,B,n],n≧3
+\\ 创建出包括点 A、B 的正 n 边形
+....
+
+image:img_geogebra/geogebra_28.png[]
+
+
 
 ---
 
@@ -167,20 +370,64 @@ d=Circle[D,C] //这里中括号[], 写成小括号() 也行.
 
 image:img_geogebra/geogebra_11.png[]
 
+---
+
+==== 创建圆
+
+....
+c=Circle[M,r]
+\\ 圆心M, 且半径为 r 的圆。
+
+c=Circle[M,s]
+\\ 圆心M, 且半径为 s 的长度的圆，其中s 为一已知线段。
+
+c=Circle[M,A]
+\\ 圆心M, 通过点 A 的圆。
+
+c=Circle[A,B,C]
+\\通过三点 A、B、C 的圆。
+....
+
+---
+
+== 扇形 -> 新变量名=CircularSector[圆心, 起点, 终点]
+
+....
+c=CircularSector[M,A,B]
+
+\\ 圆心为M，起点为A, 终点为B的扇形，
+注意 : A、B 两点点选的顺序，是采用"逆时针"方向的.
+....
+
+image:img_geogebra/geogebra_29.png[]
+
+image:img_geogebra/geogebra_30.png[]
 
 
 
 
 ---
 
-== 切线 -> 先选点, 再选圆
+== 圆弧 ->  newName = CircularArc[圆心, 起点, 终点]
 
+....
+c=CircularArc[M,A,B]
+\\ 圆心为M，起点为A、终点为B 的圆弧，注意 A、B 两点的点选的顺序，是采用"逆时针"方向的有向角观念。
+....
 
+image:img_geogebra/geogebra_31.png[]
 
-依次选择点和圆, 就能做切线.  +
-比如下例, 先选中B点, 再选中圆.
+---
 
-image:img_geogebra/geogebra_10.png[]
+== 圆弧 ->  newName = CircumcircularArc[点1,点2,点3]
+....
+c=CircumCircularArc[A,B,C]
+\\依序通过 A、B、C 三点的圆弧。
+....
+
+image:img_geogebra/geogebra_32.png[]
+
+---
 
 == ----- -----
 
@@ -365,7 +612,7 @@ image:img_geogebra/geogebra_14.png[]
 
 ---
 
-== 矢量
+== 矢量,向量
 
 ==== 创建矢量 -> 矢量变量名=Vector[点1,点2]
 
@@ -376,13 +623,42 @@ u=Vector[A,B]
 
 image:img_geogebra/geogebra_22.png[]
 
+---
+
+==== 创建矢量 -> 矢量变量名=Vector[某点]
+
+....
+a=Vector[A]
+// 创建原点到 A 点的向量
+....
+
+image:img_geogebra/geogebra_23.png[]
+
+---
+
+== 集合
+
+==== 创建集合 -> SET={2,5,8,3,4}
+
+....
+SET={2,5,8,3,4}
+\\建立名为 SET 集合，内含五个数
+....
+
+---
+
+==== 选取某集合中的第item项元素
+
+....
+a=Element[SET,3]
+\\撷取 SET 集合中的第3个元素
+....
+
 
 
 ---
 
-入门
+使用入门
 
-30
-
-
+41
 
