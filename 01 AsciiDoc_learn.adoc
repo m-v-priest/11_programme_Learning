@@ -17,6 +17,96 @@ https://asciidoctor.org/docs/user-manual/#cols-format
 下载地址 +
 https://github.com/asciidocfx/AsciidocFX/releases
 
+
+
+---
+
+== ★ 插入 latex 代码
+
+
+官方文档
+https://webcache.googleusercontent.com/search?q=cache:aB1APK9SnygJ:https://docs.asciidoctor.org/asciidoc/latest/stem/stem/+&cd=1&hl=en&ct=clnk&gl=sg
+
+==== 单行用 stem:[] 包围 LaTex 语法, 多行则包在 "反斜杠(\)begin{align*} 和 "\end{align*}" 里面.
+
+asciidoctor 通过 mathjax 实现 LaTex 字体的显示，方法和 markdown 差不多，区别是:
+
+- markdown（不同差距实现方法不同）使用 $$ 或者 $``$ 包围 LaTex 语法，
+- asciidoctor 使用 stem:[] 包围 LaTex 语法。
+- 多行的话, 包在  反斜杠(\)begin{align*} 和 \end{align*} 里面
+....
+\begin{align*}
+latex多行公式
+...
+\end{align*}
+....
+
+如:
+
+[cols="1a,1a"]
+|===
+|源码 |渲染后
+
+|
+....
+stem:[E = mc^2]
+....
+|stem:[E = mc^2]
+
+|....
+stem:[c = \sqrt{a^{2}+b_{xy}^{2}+e^{x}}]
+....
+|stem:[c = \sqrt{a^{2}+b_{xy}^{2}+e^{x}}]
+
+|
+....
+\begin{cases}
+x+y = 22 \\
+1200x : 2000y = 1:2
+\end{cases}
+
+\begin{cases}
+x = 22-y \\
+\frac{1200x}{2000y} = \frac{1}{2}
+\end{cases}
+....
+|\begin{cases}
+x+y = 22 \\
+1200x : 2000y = 1:2
+\end{cases}
+
+\begin{cases}
+x = 22-y \\
+\frac{1200x}{2000y} = \frac{1}{2}
+\end{cases}
+
+|
+....
+\begin{align*}
+& 2*1200x = 2000y \\
+& 2*1200(22-y) = 2000y \\
+& y = 12 \\
+& ∵ x + y = 22 \\
+& x +12 =22 \\
+& x =10
+\end{align*}
+....
+|\begin{align*}
+& 2*1200x = 2000y \\
+& 2*1200(22-y) = 2000y \\
+& y = 12 \\
+& ∵ x + y = 22 \\
+& x +12 =22 \\
+& x =10
+\end{align*}
+|===
+
+注意: adoc中用latex时, +-×÷符号的前后, 最好要有空格, 否则可能会渲染出错!
+
+---
+
+== ----- -----
+
 ---
 
 == ★ 自定义代换 -> :<name>: <value>
@@ -608,7 +698,31 @@ function fn() {
 
 ---
 
-== 专业术语解释 -> 术语::
+== ★ 举例
+
+....
+.标题
+====
+例如：
+====
+....
+
+效果:
+
+.标题
+====
+例如：
+====
+
+
+image:img_adoc,md,other/img_adoc/adoc_02.png[]
+
+
+
+---
+
+
+== ★ 专业术语解释 -> 术语::
 
 ....
 术语1::
@@ -760,85 +874,6 @@ code....
 ****
 
 ---
-
-== ★ 插入 latex 代码 -> 单行用 stem:[] 包围 LaTex 语法, 多行则包在 "反斜杠(\)begin{align*} 和 "\end{align*}" 里面.
-
-asciidoctor 通过 mathjax 实现 LaTex 字体的显示，方法和 markdown 差不多，区别是:
-
-- markdown（不同差距实现方法不同）使用 $$ 或者 $``$ 包围 LaTex 语法，
-- asciidoctor 使用 stem:[] 包围 LaTex 语法。
-- 多行的话, 包在  反斜杠(\)begin{align*} 和 \end{align*} 里面
-....
-\begin{align*}
-latex多行公式
-...
-\end{align*}
-....
-
-如:
-
-[cols="1a,1a"]
-|===
-|源码 |渲染后
-
-|
-....
-stem:[E = mc^2]
-....
-|stem:[E = mc^2]
-
-|....
-stem:[c = \sqrt{a^{2}+b_{xy}^{2}+e^{x}}]
-....
-|stem:[c = \sqrt{a^{2}+b_{xy}^{2}+e^{x}}]
-
-|
-....
-\begin{cases}
-x+y = 22 \\
-1200x : 2000y = 1:2
-\end{cases}
-
-\begin{cases}
-x = 22-y \\
-\frac{1200x}{2000y} = \frac{1}{2}
-\end{cases}
-....
-|\begin{cases}
-x+y = 22 \\
-1200x : 2000y = 1:2
-\end{cases}
-
-\begin{cases}
-x = 22-y \\
-\frac{1200x}{2000y} = \frac{1}{2}
-\end{cases}
-
-|
-....
-\begin{align*}
-& 2*1200x = 2000y \\
-& 2*1200(22-y) = 2000y \\
-& y = 12 \\
-& ∵ x + y = 22 \\
-& x +12 =22 \\
-& x =10
-\end{align*}
-....
-|\begin{align*}
-& 2*1200x = 2000y \\
-& 2*1200(22-y) = 2000y \\
-& y = 12 \\
-& ∵ x + y = 22 \\
-& x +12 =22 \\
-& x =10
-\end{align*}
-|===
-
-
-
----
-
 
 == 案例文本块(里面支持字体加粗, 列表, 和分隔线!) (github中会丢失代码块的底色, 变成白色)
 写在上下4个等号= 里面即可.
