@@ -67,6 +67,9 @@ STEM 的意思是: Science , Technology, Engineering, Mathematics 四门学科�
 |不等号 ≠
 |\ne
 
+|约等号 stem:[ \approx ]
+|\approx
+
 |同时正负号 stem:[\pm]
 |\pm
 
