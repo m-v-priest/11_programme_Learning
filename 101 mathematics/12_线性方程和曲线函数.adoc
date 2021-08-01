@@ -355,6 +355,8 @@ b = -1
 
 image:img_math/math_5.png[]
 
+image:img_math/math_13.png[]
+
 
 .标题
 ====
