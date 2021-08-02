@@ -609,6 +609,7 @@ stem:[ax^2 +bx +c =0 \quad (a \ne 0)  ]
 \end{align}
 
 
+[options="autowidth"]
 |===
 |stem:[ \Delta = b^2-4ac ] |方程 stem:[ax^2+bx+c=0 \quad (a ≠ 0)] 根的情况
 
@@ -616,6 +617,9 @@ stem:[ax^2 +bx +c =0 \quad (a \ne 0)  ]
 |有两个不等的实数根 : +
 stem:[ x_1 = \frac{-b+\sqrt{b^2-4ac}}{2a}] +
 stem:[ x_2= \frac{-b-\sqrt{b^2-4ac}}{2a} ]
+
+这个就是 一元二次方程 stem:[a x^2 + bx +c =0] 的求根公式. +
+求根公式表达了用"配方法"来解一般的一元二次方程的结果.
 
 |stem:[ \Delta=0 ]
 |有两个相等的实数根 : +
@@ -626,24 +630,99 @@ stem:[ x_1= x_2 = -\frac{b}{2a} ]
 
 |===
 
+.标题
+====
+例如：
+\begin{align}
+5x^2 -3x = x+1 \\
+5x^2 -4x -1 = 0 \\
+a = 5 , \quad b=-4, \quad c=-1 \\
+\Delta = b^2 -4ac = 16+4*5*1 = 36 > 0 \\
+所以, 方程有两个不等的实数根: \\
+x = \frac{-b \pm \sqrt{b^2-4ac}}{2a} \\
+= \frac{-(-4) \pm \sqrt{(-4)^2 - 4*(5)(-1)}} {2*5} \\
+= \frac{4 \pm 6}{10} \\
+即: x_1 = 1 , \quad x_2 = -\frac{1}{5}
+\end{align}
+====
+
+.标题
+====
+例如：
+\begin{align}
+2x^2 - 2\sqrt{2}x +1 =0 \\
+a = 2; \quad b= -2\sqrt{2}; \quad c=1 \\
+\Delta = b^2 -4ac = (-2\sqrt{2})^2  - 4*2*1 = 0 \\
+所以方程有两个相等的实数根: \\
+x_1 = x_2 = - \frac{b}{2a} = - \frac{-2\sqrt{2}}{2*2} = \frac{\sqrt{2}}{2}
+\end{align}
+====
+
+---
+
+==== ---- 一元二次方程的根, 与系数的关系
 
 
 
 
 
+---
+
+==== 解一元二次方程: 3. 因式分解法 ->
+
+因式分解法:: 先因式分解, 把方程化为两个"一次式"的乘积等于0的形式, 再使这两个一次式分别等于0, 从而实现降次. 这种解"一元二次方程"的方法, 叫做"因式分解法".
+
+.标题
+====
+\begin{align}
+5x^2 - 2x - \frac{1}{4} = x^2 - 2x + \frac{3}{4} \\
+4x^2 - 1 = 0 \\
+(2x+1)(2x-1)=0  <- 因式分解 \\
+x_1 = -\frac{1}{2}, \quad x_2 = \frac{1}{2}
+\end{align}
+====
+
+总结:
+
+[cols="1a,3a"]
+|===
+|Header 1 |Header 2
+
+|配方法
+|先配方, 再降次
+
+|公式法
+|通过配方法, 可以推导出求根公式.
+
+|因式分解法
+|先将方程一边, 化为两个一次因式相乘, 另一边为0. 再分别使各一次因式等于0.
+|===
+
+- 配方法, 公式法:  适用于所有一元二次方程
+- 因式分解法: 在解某些一元二次方程时, 比较简便.
+- 总之, 解一元二次方程的基本思路就是 : 将二次方程, 化为一次方程, 即"降次".
+
+
+
+
+
+
+
+
+
+
+---
 
 
 
 http://www.dzkbw.com/books/rjb/shuxue/
 
-https://mp.weixin.qq.com/s/BZrPeOmX5EDFmSt1CwDMQA
-
-
-90
 
 
 
+https://mp.weixin.qq.com/s?__biz=MzU3NTg3MTYyMQ==&mid=100005926&idx=2&sn=8e3fc1eb16794e0c6dbe540a6c1158bb&scene=19#wechat_redirect
 
+12
 
 
 

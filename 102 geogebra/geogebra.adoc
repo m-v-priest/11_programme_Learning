@@ -9,7 +9,104 @@
 https://wiki.geogebra.org/en/Manual
 
 https://wiki.geogebra.org/en/Category:Version_5.0
+
+http://www.dstang.com/books_dstang/geogebra_commands.html
+
+
 ---
+
+
+== 指令的提示 -> shift
+
+输入指令的前几个字母后，按shift键, 就会给出指令提示.
+
+image:img_geogebra/geogebra_41.png[]
+
+---
+
+== 修改"已经输入的对象"的指令行的内容 -> Alt+单击对象
+
+---
+
+== 将自定义设计的对象,保存为工具模板
+
+比如, 你设计了一个等腰直角三角形的建模公式, 只需输入两个参数, 一个是直角定点坐标, 一个是腰长, 就能在笛卡尔坐标上输出该等腰三角形的图形.  +
+你想把它变成一个工具(相当于变成office中的"宏"功能), 以后每次只要点击该工具按钮, 输入这两个参数, 就能自动画出该等腰直角三角形.
+
+方法流程:
+
+[cols="1a,2a"]
+|===
+|流程步骤 |Header 2
+
+|先以此执行以下命令, 建立一个等腰直角三角形
+|
+....
+A=(2,3)
+k=5
+B=A+(k,0)
+C=B+(0,k)
+poly_1=Polygon[A,B,C]
+....
+
+image:img_geogebra/geogebra_42.png[]
+
+可以看出, 这个三角形的建立过程, 其实只建立在两个基础参数上: A点, 和 k值.
+
+|点菜单 tools -> creat new tool
+|
+image:img_geogebra/geogebra_43.png[]
+
+在 output objects 中, 点击下拉三角形, 选中你刚刚创建的等腰直角三角形对象.
+
+image:img_geogebra/geogebra_44.png[]
+
+在 input objects 中, 会自动出现你选中的"等腰三角形"的多个基础输入参数. 其上下顺序, 就是参数顺序. 你可以随意调节其顺序.
+
+image:img_geogebra/geogebra_45.png[]
+
+在 name & icon中, 可以输入你这个"宏"的名称, 及指令代码. 还可以更换该"宏"工具按钮的图标
+
+image:img_geogebra/geogebra_46.png[]
+
+然后点击 finish.
+
+
+|现在, 在功能按钮列的最后一格, 就会出现此等腰三角形的功能按钮。点击它, 输入基础参数后, 就能自动输出图形.
+|
+image:img_geogebra/geogebra_47.png[]
+
+
+|因为你刚才定义了你这个三角形的"指令代码"也是 myTriangle, 所以你可以通过指令, 来输出该三角形图形
+|比如, 你输入指令: myTriangle(A, 4) +
+意思就是输入两个参数: A点和 腰长4, 来创建图像.
+
+image:img_geogebra/geogebra_49.png[]
+
+
+|如果你想更新编辑该"宏", 就选菜单 tools -> manage tools
+|image:img_geogebra/geogebra_48.png[]
+
+|注意: 你在某个文件中自定义的"宏",只和该文件捆绑.  +
+如果你想将"宏"用于其他新文件, 就要先把该"宏"保存下来. +
+选菜单 tools -> manage tools -> save as -> 存成 ggt 格式.
+
+|image:img_geogebra/geogebra_50.png[]
+
+|在新的文件中, 载入你的"宏":
+
+1. 就把 ggt文件直接拖进软件中来. 或用菜单 open 也能打开. +
+open 菜单可以打开 ggb, ggt文件.
+2. 然后, 选 tools -> customize toolbar, 就能看到你的"宏", 把它 insert 到工具栏中即可.
+|image:img_geogebra/geogebra_51.png[]
+|===
+
+
+
+
+
+
+
 
 == ----- -----
 
@@ -646,6 +743,11 @@ a=Vector[A]
 
 image:img_geogebra/geogebra_23.png[]
 
+
+---
+
+== ----- -----
+
 ---
 
 == 集合
@@ -659,7 +761,7 @@ SET={2,5,8,3,4}
 
 ---
 
-==== 选取某集合中的第item项元素
+==== 选取某集合中的第item项元素 -> 新变量 = Element[SET,item_number]
 
 ....
 a=Element[SET,3]
@@ -670,14 +772,43 @@ a=Element[SET,3]
 
 == Sequence序列 -> Sequence(表达式,变量,初值，终值,增量)
 
+Sequence()命令, 类似于编程语言中的 for循环命令.
+
+即类似于:
+
+[source, python]
+----
+//python
+for num in range(1,10):
+    ...
+----
+
 Sequence( <Expression>, <Variable>, <Start Value>, <End Value>, <Increment>)
 
 ....
 Sequence(n^2,n,1.10,0.2)
 
+newName=sequence[2n,n,1,5]
+//创建一个{2,4,6,8,10}的序列, 赋值给变量 newName. +
+即变数 n 由 1 到 5，依序代入 2n 这个表达式, 所求出的值 组成的集合.
+
 Sequence((a,sin(a)),a,1,5,pi/6)
 #描 a= 1到5, 以pi/6为增量, 所有sin(a)点. 注意不要用 x 作为变量! 否则会把所有的函数图给直接画出来的.
+
+sequence[(i,i+1),i,1,5]
+//该序列, 包含5个point, 分别是: {(1,2)(2,3)(3,4)(4,5)(5,6)}.
 ....
+
+
+....
+sequence[segment[(i,i),(i,i+1)],i,1,5]
+//该序列包含5条线段.
+....
+
+image:img_geogebra/geogebra_40.png[]
+
+
+
 
 ---
 
@@ -715,11 +846,90 @@ list拥有的方法 :
 |
 |===
 
+---
+
+
+== ----- -----
+
+---
+
+== Computer Algebra System, 简称 CAS 运算区
+
+==== ① = 表方程; ② := 才能设置变量
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|=
+|用于方程式. +
+比如, 输入“a=2”, 并不会把2 这个值指定给变量a，
+而是表示一个 a=2 的方程式。
+
+|:=
+|用于设定变量
+
+image:img_geogebra/geogebra_52.png[]
+|===
+
+---
+
+==== 乘法 必须写成 a*b, 而不能只写 ab
+
+乘号必须用 * , 而不能省略不写, 如, 写成ab是错的, 必须写成 a*b
+
+image:img_geogebra/geogebra_53.png[]
 
 
 ---
 
-使用入门
+==== 输入命令后, 不同的回车方式, 有不同的运算方式.
 
-41
+[options="autowidth"]
+|===
+|Header 1 |输入 sqrt(75)
+
+|Enter
+|执行“代数”运算，得到 stem:[ 5 \sqrt{3} ]
+
+|Ctrl+Enter
+|执行“数值”运算，得到8.66
+
+|Alt+Enter
+|检查输入但不执行任何运算，得到 stem:[\sqrt{75} ]
+|===
+
+
+image:img_geogebra/geogebra_54.png[]
+
+---
+
+==== 不显示输出 -> 在命令后, 加上分号;
+
+如果在输入的结尾加上分号，则该储存格不会显示输出，例如：“a:=5;”
+
+image:img_geogebra/geogebra_55.png[]
+
+---
+
+==== 撷取上个储存格的"输入" -> 按 "=" 键
+
+---
+
+==== 撷取上个储存格的"输出" -> 按空格键
+
+---
+
+==== 撷取上个储存格的"输出", 并加上括号( ) -> 按")"键
+
+---
+
+====
+
+---
+
+使用手册
+
+30
+
 
