@@ -1,0 +1,616 @@
+
+= 二次函数(抛物线)
+:toc:
+---
+
+
+== 一元二次方程 quadratic equation in one unknown -> stem:[ ax^2 + bx + c = 0 \quad (a \ne 0) ]
+
+一元二次方程:: 即: 只有一个未知数(一元)x, 且x的最高次方是2. +
+形如  stem:[ x^2+2x-4=0 ]
+
+....
+quadratic  /kwɒˈdrætɪk/
+a. ( mathematics 数 ) involving an unknown quantity that is multiplied by itself once only 平方的；二次方的
+-> quadr-,四，-atic,形容词后缀。用于数学名词平方。
+....
+
+一元二次方程的一般形式是 :
+\begin{align}
+\boxed{ax^2 + bx + c = 0 \quad (a \ne 0)}
+\end{align}
+
+- stem:[ax^2]  : 是二次项
+- a : 是二次项的系数
+- bx : 是一次项
+- b : 是一次项的系数
+- c : 是常数项
+
+.
+
+根 root:: 使方程左右两边相等的未知数的值, 就是这个一元二次方程的解. 一元二次方程的解, 也叫做一元二次方程的"根".
+
+---
+
+==== 解一元二次方程: 1. 配方法
+
+配方法:: 配方是为了将次, 把一个一元二次方程, 转化为两个一元一次方程来解.
+
+.标题
+====
+例如：
+
+\begin{align}
+& 2x^2 - 3x = -1 \\
+& x^2 - \frac{3x}{2} = -\frac{1}{2} \\
+& x^2 -  \frac{3}{2}x + (\frac{3}{4})^2 = -\frac{1}{2} +(\frac{3}{4})^2  \\
+& 上面进行配方, 目的是为了把x未知数的次数, 从二次降维成一次. \\
+& (x-\frac{3}{4})^2 = \frac{1}{16} \\
+& 现在, 就已经降级成一元一次方程了 \\
+& x-\frac{3}{4} = \pm\frac{1}{4} \\
+& x_1 = 1, \quad x_2 = \frac{1}{2}
+\end{align}
+====
+
+一般地, 对于方程 stem:[ x^2 = p ]
+
+[options="autowidth"]
+|===
+| stem:[ x^2 = p ] |root根
+
+|p>0
+|方程有两个不等的实数根 :  +
+stem:[ x_1=\sqrt{p} ] +
+stem:[ x_2=-\sqrt{p} ]
+
+|p=0
+|有两个相等的实数根 :  +
+stem:[ x_1= x_2= 0 ]
+
+|p<0
+|无实数根
+|===
+
+---
+
+==== 解一元二次方程: 2. 公式法 -> 根的判别式: stem:[\Delta = b^2-4ac]
+
+任何一个一元二次方程, 都可以写成一般形式:
+
+stem:[ax^2 +bx +c =0 \quad (a \ne 0)  ]
+
+我们继续用配方法来算下去:
+
+\begin{align}
+& ax^2 + bx + c =0 \\
+& ax^2 + bx = -c  \\
+& x^2 + \frac{b}{a}x = -\frac{c}{a} \\
+& 下面进行配方 \\
+& x^2 + \frac{b}{a}x + (\frac{b}{2a})^2= -\frac{c}{a} + (\frac{b} {2a})^2 \\
+& ... = \frac{b^2} {4a^2} - \frac{c*4a}{a*4a} \\
+& (x+\frac{b}{2a})^2 = \frac{b^2 -4ac}{4a^2} \quad ①
+\end{align}
+
+因为 stem:[a \ne 0], 所以 stem:[4a^2 > 0] , 那么等号右边的整体是大于, 等于, 还是小于0呢? 这就要看分子 stem:[b^2-4ac] 的情况了: 它有三种情况:
+
+[options="autowidth"]
+|===
+|情况 |Header 2
+
+|情况1 +
+若 stem:[b^2-4ac >0]
+|\begin{align}
+& 这时, \frac{b^2 -4ac} {4a^2} >0 \\
+& 则, 由①得: \\
+& (x+\frac{b}{2a})^2 = \frac{b^2-4ac} {4a^2}  \\
+& x+\frac{b}{2a} = \pm\frac{\sqrt{b^2 -4ac}}{2a}\\
+& x  = -\frac{b}{2a}\pm\frac{\sqrt{b^2 -4ac}}{2a}\\
+& 所以, 方程有两个不等的实数根: \\
+& x_1 = \frac{-b+\sqrt{b^2-4ac}}{2a} \\
+& x_2= \frac{-b-\sqrt{b^2-4ac}}{2a}
+\end{align}
+
+|情况2 +
+若 stem:[b^2-4ac =0]
+|\begin{align}
+& 这时, \frac{b^2-4ac} {4a^2} =0 \\
+& 则, 由①得: \\[7px]
+& (x+\frac{b}{2a})^2 = \frac{b^2-4ac} {4a^2}  \\
+& ... = 0 \\
+& 所以, 方程有两个相等的实数根 : \\
+& x_1= x_2 = -\frac{b}{2a}
+\end{align}
+
+
+|情况3 +
+若 stem:[b^2-4ac <0]
+|\begin{align}
+& 这时, \frac{b^2-4ac} {4a^2} <0 \\
+& 则, 由①得: \\
+& (x+\frac{b}{2a})^2 = \frac{b^2-4ac} {4a^2}  \\
+& ... < 0
+\end{align}
+
+等号左边是平方, 平方的值不可能小于0, 所以 x 取任何实数都做不到. 所以此方程无解.
+
+|===
+
+所以, 一般地, 式子 stem:[b^2-4ac] 就叫做一元二次方程 stem:[ax^2+bx+c=0] 的根的判别式. 通常用希腊字母 Δ 表示它. 即:
+
+\begin{align}
+\boxed{\Delta = b^2-4ac}
+\end{align}
+
+
+[options="autowidth"]
+|===
+|stem:[ \Delta = b^2-4ac ] |方程 stem:[ax^2+bx+c=0 \quad (a ≠ 0)] 根的情况
+
+|stem:[ \Delta>0 ]
+|有两个不等的实数根 : +
+stem:[ x_1 = \frac{-b+\sqrt{b^2-4ac}}{2a}] +
+stem:[ x_2= \frac{-b-\sqrt{b^2-4ac}}{2a} ]
+
+这个就是 一元二次方程 stem:[a x^2 + bx +c =0] 的求根公式. +
+求根公式表达了用"配方法"来解一般的一元二次方程的结果.
+
+|stem:[ \Delta=0 ]
+|有两个相等的实数根 : +
+stem:[ x_1= x_2 = -\frac{b}{2a} ]
+
+|stem:[ \Delta<0 ]
+|无实数根
+
+|===
+
+.标题
+====
+例如：
+\begin{align}
+5x^2 -3x = x+1 \\
+5x^2 -4x -1 = 0 \\
+a = 5 , \quad b=-4, \quad c=-1 \\
+\Delta = b^2 -4ac = 16+4*5*1 = 36 > 0 \\
+所以, 方程有两个不等的实数根: \\
+x = \frac{-b \pm \sqrt{b^2-4ac}}{2a} \\
+= \frac{-(-4) \pm \sqrt{(-4)^2 - 4*(5)(-1)}} {2*5} \\
+= \frac{4 \pm 6}{10} \\
+即: x_1 = 1 , \quad x_2 = -\frac{1}{5}
+\end{align}
+====
+
+.标题
+====
+例如：
+\begin{align}
+2x^2 - 2\sqrt{2}x +1 =0 \\
+a = 2; \quad b= -2\sqrt{2}; \quad c=1 \\
+\Delta = b^2 -4ac = (-2\sqrt{2})^2  - 4*2*1 = 0 \\
+所以方程有两个相等的实数根: \\
+x_1 = x_2 = - \frac{b}{2a} = - \frac{-2\sqrt{2}}{2*2} = \frac{\sqrt{2}}{2}
+\end{align}
+====
+
+
+
+---
+
+==== 解一元二次方程: 3. 因式分解法 ->
+
+因式分解法:: 先因式分解, 把方程化为两个"一次式"的乘积等于0的形式, 再使这两个一次式分别等于0, 从而实现降次. 这种解"一元二次方程"的方法, 叫做"因式分解法".
+
+.标题
+====
+\begin{align}
+5x^2 - 2x - \frac{1}{4} = x^2 - 2x + \frac{3}{4} \\
+4x^2 - 1 = 0 \\
+(2x+1)(2x-1)=0  <- 因式分解 \\
+x_1 = -\frac{1}{2}, \quad x_2 = \frac{1}{2}
+\end{align}
+====
+
+总结:
+
+[cols="1a,3a"]
+|===
+|Header 1 |Header 2
+
+|配方法
+|先配方, 再降次
+
+|公式法
+|通过配方法, 可以推导出求根公式.
+
+|因式分解法
+|先将方程一边, 化为两个一次因式相乘, 另一边为0. 再分别使各一次因式等于0.
+|===
+
+- 配方法, 公式法:  适用于所有一元二次方程
+- 因式分解法: 在解某些一元二次方程时, 比较简便.
+- 总之, 解一元二次方程的基本思路就是 : 将二次方程, 化为一次方程, 即"降次".
+
+
+---
+
+==== ---- 一元二次方程的根, 与系数的关系
+
+求根公式
+stem:[ x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}] 反映了"根"与"系数"之间的联系.
+
+那么, 思考一下, 一元二次方程的根与系数之间, 还存在其它的关联方式吗? 有的. 推导如下:
+
+
+.从因式分解法为出发, 会得到这个结果:
+====
+因式分解法的最后, 会得到 stem:[(x-x_1)(x-x_2)=0 ], 即 它的两根出 stem:[ x_1] 和 stem:[ x_2].
+
+我们把该方程的等号左边展开 :
+\begin{align}
+(x-x_1)(x-x_2) = 0 \\
+x^2 - x*x_2 - x*x_1 +x_1x_2 = 0 \\
+x^2 - (x_1+x_2)x + x_1x_2 = 0 \\
+\end{align}
+
+即: 这个方程:
+
+[options="autowidth"]
+|===
+|Header 1 |系数为
+
+|二次项:  stem:[x^2 ]
+|1
+
+|一次项 : stem:[-(x_1+x_2)x ]
+|stem:[ -(x_1+x_2)], 令其 = p
+
+|常数项 : stem:[ x_1 * x_2]
+|stem:[ x_1 * x_2], 令其 = q
+|===
+
+'''
+
+p和 q 具体等于什么? 其实你只要把两个根(stem:[ x_1, x_2])具体的值代进去, 就能知道了.
+
+stem:[ x_1, x_2]具体的值, 可以通过"公式法"知道, 即:
+
+stem:[ x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}]
+
+所以:
+
+\begin{align}
+x_1+x_2 =  \frac{-b + \sqrt{b^2-4ac}}{2a} +\frac{-b - \sqrt{b^2-4ac}}{2a} \\
+= \frac{-2b}{2a} = -\frac{b}{a}
+\end{align}
+
+
+\begin{align}
+x_1 * x_2 =  \frac{-b + \sqrt{b^2-4ac}}{2a} * \frac{-b - \sqrt{b^2-4ac}}{2a} \\
+= \frac{(-b)^2 -(b^2 - 4ac)} {4a^2} = \frac{c}{a}
+\end{align}
+====
+
+因此:
+
+stem:[ x_1 + x_2 = -\frac{b}{a}]
+
+stem:[ x_1 * x_2 = \frac{c}{a}]
+
+这就是方程(stem:[ax^2 + bx + c = 0 \quad (a \ne 0) ])的两个"根" stem:[ x_1, x_2], 与 该方程的"系数" a, b, c 之间的另一种联系.
+
+
+.标题
+====
+例如：
+
+\begin{align}
+3x^2 +7x -9 = 0 \\
+因为 x_1 + x_2 = -\frac{b}{a}, \quad x_1 x_2 = \frac{c}{a} \\
+所以 x_1 + x_2 = -\frac{7}{3}, \quad x_1 x_2 = \frac{-9}{3}
+\end{align}
+====
+
+
+---
+
+==== 生活中的问题, 可用一元二次方程进行建模
+
+.标题
+====
+例如：某人换了一种流感, 经过两轮传染后, 共有121人中招. 问该案例中, 每轮传染中, 平均一人会传给几个人(设为x)?
+
+分析:
+
+- 刚开始 : 1人中招(0号病人)
+- 第一轮传染 : 0号病人传染给x个人, 即第一轮受害者. 即 1*x
+- 第二轮传染 : ① 第一轮受害者中的每个人, 都分别再次传染给x人, 即第二轮受害者.  ②别忘了0号病人依然会自己再传染给x 个人. 即 x*x + 1*x
+
+所以:
+\begin{align}
+[1] + [1*x] + [(1+x)*x] = 121  \\
+1 + x + x + x^2 = 121 \\
+x^2 + 2x - 120 = 0 \\
+(x-10)(x+12) = 0 \\
+x = 10
+\end{align}
+
+即, 平均一人传染给 10个人.
+====
+
+.标题
+====
+例如：有两种药品, 成本如下:
+
+[options="autowidth"]
+|===
+|成本(ton/元) |A药 | B药
+
+|两年前
+|5000
+|6000
+
+|现在
+|3000
+|3600
+|===
+
+那么哪种药的成本的"年平均下降率"更大?
+
+设: 某药的"年平均下降率"为 x . 比如A药, 一年后成本为 5000(1-x)元; 两年后成本为 stem:[5000(1-x)^2 ]元.
+
+[options="autowidth"]
+|===
+|Header 1 |年平均下降率 = x
+
+|A药
+|\begin{align}
+5000(1-x)^2 = 3000 \\
+x_1 \approx 0.23, \quad x_2 \approx 1.77 \\
+取x_1 的结果.
+\end{align}
+
+|B药
+|\begin{align}
+6000(1-x)^2 = 3600
+\end{align}
+|===
+
+====
+
+---
+
+== ----- -----
+
+---
+
+== 二次函数 quadratic function -> stem:[y =  ax^2 + bx + c]
+
+\begin{align}
+\boxed{
+    y = f(x) = ax^2 + bx + c \quad (a, b, c 是常数, a \ne 0)
+}
+\end{align}
+
+叫做 : y 是 x 的函数. +
+a 是"二次项系数"; b是"一次项系数"; c是"常数项".
+
+---
+
+== 抛物线 -> stem:[ y= x^2 ]
+
+实际上, 二次函数的图像, 都是抛物线. 它们的开口或者向上, 或者向下.
+
+[cols="1a,4a"]
+|===
+| |抛物线 stem:[ y= x^2 ]
+
+|对称轴
+|y轴
+
+|顶点
+|抛物线stem:[ y= x^2 ] 与它的对称轴的交点(0,0), 叫做该抛物线的"顶点". 它是 stem:[ y= x^2 ] 的最低点.  +
+(不同开口方向的抛物线, 顶点可能是它的"最低点", 也可能是它的"最高点".)
+|===
+
+image:img_math/math_19.png[]
+
+image:img_math/math_20.png[]
+
+对于 stem:[ y=ax^2 ] 一般地:
+
+- 当 a>0, 抛物线开口向上. a越大, 抛物线的开口越小.
+- 当 a<0, 抛物线开口向下. a越小, 抛物线的开口越小.
+
+换言之就是 : |a|越大, 抛物线的开口越小.
+
+---
+
+== stem:[ y=a(x - horizontal)^2 + vertical ]
+
+==== stem:[ y=a(x - horizontal)^2 + vertical ] 的参数, 与图形变化的对应规律
+
+.标题
+====
+例如：
+image:img_math/math_21.png[]
+
+从上图可以看出 :
+
+- stem:[y=2x^2 +1 ], 是把 stem:[y=2x^2 ] 沿着 y轴 "向上"平移1个单位的长度.
+- stem:[y=2x^2 -1 ], 是把 stem:[y=2x^2 ] 沿着 y轴 "向下"平移1个单位的长度.
+====
+
+.标题
+====
+例如：
+image:img_math/math_22.png[]
+
+从上图可以看出,  stem:[ y = a(x-h)^2 + k ] 的规律 :
+
+-  因为 a<0, 所以函数图开口向下.
+- stem:[y=-\frac{1}{2}(x+1)^2] 是把 stem:[y=-\frac{1}{2} x^2] 沿x轴"向左"平移1个单位的结果.
+- stem:[y=-\frac{1}{2}(x-1)^2] 是把 stem:[y=-\frac{1}{2} x^2] 沿x轴"向右"平移1个单位的结果.
+====
+
+.标题
+====
+例如：
+image:img_math/math_23.png[]
+
+stem:[y=-\frac{1}{2}(x+1)^2 -1] 的图像是怎么得来的?
+
+- 把 stem:[y=-\frac{1}{2}x^2 ] "向下"平移一个单位, 得到 stem:[y=-\frac{1}{2}x^2 -1 ]
+- 再把 stem:[y=-\frac{1}{2}x^2 ] "向左"平移一个单位, 得到 stem:[y=-\frac{1}{2}(x+1)^2 -1]
+
+====
+
+从上面, 可以看出, 抛物线
+\begin{align}
+\boxed{
+    y=a(x - horizontal)^2 + vertical
+}
+\end{align}
+ 与
+\begin{align}
+y=ax^2
+\end{align}
+的形状相同. 只是位置不同而已. +
+在x轴上"水平移动"的距离, 由 horizontal 的值来决定. +
+在y轴上"上下移动"的距离, 由 vertical 的值来决定.
+
+- 当 a > 0 , 图像开口向上; a<0 时, 开口向下.
+- *对称轴是 x = horizontal*
+- *顶点是 (horizontal, vertical)*
+
+.标题
+====
+例如：
+\begin{align}
+y = -\frac{1}{2} (x+1)^2 - 3 \\
+y = -\frac{1}{2} (x-(-1))^2 - 3 <- 以符合 y=a(x - horizontal)^2 + vertical
+\end{align}
+
+- stem:[a = -\frac{1}{2} <0], 所以图像开口向下
+- 对称轴是 x = horizontal = -1
+- 顶点是 (horizontal, vertical), 即 (-1,-3)
+
+image:img_math/math_24.png[]
+
+====
+
+.标题
+====
+例如：
+
+image:img_math/math_25.png[]
+
+image:img_math/math_26.png[]
+
+从二次函数
+\begin{align}
+ y=a(x - horizontal)^2 + vertical
+\end{align}
+的图像(如上图) 可以看出:
+
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|a>0 时
+|- 图像开口向上
+- 当 x < horizontal 时, y值随x的增大, 而减小.
+- 当 x > horizontal 时, y值随x的增大, 而增大.
+
+|a<0 时
+|- 图像开口向下
+- 当 x < horizontal 时, y值随x的增大, 而增大.
+- 当 x > horizontal 时, y值随x的增大, 而减小.
+|===
+
+====
+
+---
+
+
+
+==== 生活中的应用
+
+.标题
+====
+例如：
+有这样一个抛物线, 那么它与y轴的交点坐标是什么?
+
+image:img_math/math_27.png[]
+
+解: 根据抛物线公式 :
+
+include::01_基础公式与参数.adoc[tag=抛物线]
+
+顶点已知, 是(1,3),  即 horizontal=1, vertical=3, 代入进公式中, +
+所以该抛物线公式就是 : stem:[y=a(x-1)^2+3 \quad (0 \le x \le 3)]
+
+由于该抛物线经过点(3,0), 所以也代入进公式中, 就能求得a:
+\begin{align}
+y=a(x-1)^2+3 \\
+0 = a(3-1)^2 +3 \\
+a = -\frac{3}{4}
+\end{align}
+
+现在, 把 a, horizontal, vertical 的具体数值, 都代入进抛物线公式中, 就得到:
+\begin{align}
+y=a(x−horizontal)^2+vertical \\
+y = -\frac{3}{4} (x-1)^2 + 3 \quad (0 \le x \le 3)
+\end{align}
+
+该抛物线和y轴的交点坐标是什么呢? 就是x=0 时, y的值. 即:
+\begin{align}
+y = -\frac{3}{4} (0-1)^2 + 3 \\
+y= 2.25
+\end{align}
+
+====
+
+---
+
+== 二次函数 quadratic function -> stem:[y =  ax^2 + bx + c] 的参数, 与图形变化的对应规律
+
+.标题
+====
+例如：
+画出 stem:[y=\frac{1}{2} x^2 - 6x +21] 的图像, 并思考其"参数"如何使图像变化的性质规律.
+
+先配方, 把x未知数的次数,从二次降维成一次. 即: +
+二次函数 stem:[ y = ax^2 +bx +c ] 可以通过配方, 化成
+\begin{align}
+ y=a(x−horizontal)^2 + vertical
+\end{align}
+的形式, 即:
+
+
+
+
+
+
+可得:
+\begin{align}
+y=\frac{1}{2} x^2 - 6x +21 \\
+=\frac{1}{2} (x- 6)^2 +3
+\end{align}
+====
+
+
+
+
+
+---
+http://www.dzkbw.com/books/rjb/shuxue/
+
+
+
+https://mp.weixin.qq.com/s?__biz=MzU3NTg3MTYyMQ==&mid=100005926&idx=3&sn=e0609f5b01b7409413b6110c85339fc8&scene=19#wechat_redirect
+
+
+
+
+37
+
+

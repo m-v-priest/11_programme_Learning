@@ -130,6 +130,8 @@ a+b = 0
 |希腊字母 stem:[\Delta]
 |\Delta
 
+|水平大括号 -> \underbrace{a,b,c..., n}_{n个数}
+|stem:[ \underbrace{a,b,c..., n}_{n个数}]
 |===
 
 
@@ -1216,7 +1218,7 @@ $ x_1,x_2,\ddots,x_5 $
 
 ---
 
-==== 水平大括号 -> \underbrace{a,b,c..., n}_{n个数}
+==== ★ 水平大括号 -> \underbrace{a,b,c..., n}_{n个数}
 
 命令\overbrace 和\underbrace 在表达式的上、下方给出一水平的大括号。
 

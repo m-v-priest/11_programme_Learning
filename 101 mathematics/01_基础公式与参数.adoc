@@ -1,0 +1,35 @@
+
+= 基础公式与参数
+:toc:
+---
+
+== 抛物线 -> stem:[y=a(x - horizontal)^2 + vertical ]
+
+//tag::抛物线[]
+
+\begin{align}
+\boxed{
+ y=a(x - horizontal)^2 + vertical
+}
+\end{align}
+
+- 当 a > 0 , 图像开口向上; a<0 时, 开口向下.
+- *对称轴是 x = horizontal*
+- *顶点是 (horizontal, vertical)*
+
+//end::抛物线[]
+
+---
+
+== 配方法
+
+对一元二次函数, 做配方法:
+
+\begin{align}
+y = ax^2 + bx + c \\
+x^2 + \frac{b}{a}x = -\frac{c}{a} \\
+下面进行配方 \\
+x^2 + \frac{b}{a}x + (\frac{b}{2a})^2= -\frac{c}{a} + (\frac{b} {2a})^2 \\
+... = \frac{b^2} {4a^2} - \frac{c*4a}{a*4a} \\
+(x+\frac{b}{2a})^2 = \frac{b^2 -4ac}{4a^2}
+\end{align}
