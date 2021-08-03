@@ -21,15 +21,30 @@
 
 ---
 
-== 配方法
+== 一元二次函数的"配方法"
+
+//tag::一元二次_配方法[]
 
 对一元二次函数, 做配方法:
 
 \begin{align}
 y = ax^2 + bx + c \\
-x^2 + \frac{b}{a}x = -\frac{c}{a} \\
-下面进行配方 \\
-x^2 + \frac{b}{a}x + (\frac{b}{2a})^2= -\frac{c}{a} + (\frac{b} {2a})^2 \\
-... = \frac{b^2} {4a^2} - \frac{c*4a}{a*4a} \\
-(x+\frac{b}{2a})^2 = \frac{b^2 -4ac}{4a^2}
+= a(x^2 + \frac{b}{a} x) + c \\
+= a[x^2 + \frac{b}{a} x + (\frac{b}{2a})^2] - a (\frac{b}{2a})^2 + c \\
+上一步即加上"一次项系数"一半的平方 \\
+=a (x + \frac{b}{2a})^2 - \frac{a b^2} {4a^2} + \frac{4ac}{4a} \\
+=a (x + \frac{b}{2a})^2 + \frac{4ac - b^2} {4a}
 \end{align}
+
+所以,
+\begin{align}
+\boxed{
+    y = ax^2 + bx + c \\
+    =a (x + \frac{b}{2a})^2 + \frac{4ac - b^2} {4a}
+}
+\end{align}
+
+//end::一元二次_配方法[]
+
+---
+

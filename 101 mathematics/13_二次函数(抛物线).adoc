@@ -583,22 +583,112 @@ y= 2.25
 \begin{align}
  y=a(x−horizontal)^2 + vertical
 \end{align}
-的形式, 即:
+的形式, 推导过程即:
+
+include::01_基础公式与参数.adoc[tag=一元二次_配方法]
 
 
-
-
-
-
-可得:
+套用到下例上:
 \begin{align}
 y=\frac{1}{2} x^2 - 6x +21 \\
-=\frac{1}{2} (x- 6)^2 +3
+a = 1/2, \quad b= -6, \quad c=21 \\
+= \frac{1}{2} (x + \frac{-6} {2*\frac{1}{2}})^2 + \frac{4* \frac{1}{2}*21 - (-6)^2} {4* \frac{1}{2}} \\
+= \frac{1}{2} (x-6)^2 + \frac{42-36}{2} \\
+=\frac{1}{2} (x- 6)^2 +3 \\
+所以, 由配方法可知, 该抛物线的顶点是 (6,3)
 \end{align}
+
+
+
+这个stem:[ \frac{1}{2} (x- 6)^2 +3 ] 的图像, 可以通过两步完成:  +
+把 stem:[ \frac{1}{2} x^2 ] 的图像, "向右"平移 6 个单位, 再"向上"平移 3个单位.
+
+image:img_math/math_28.png[]
+
+
 ====
 
 
+所以, 从下面的公式
 
+\begin{align}
+\boxed{
+    y = ax^2 + bx + c \\
+    =a (x + \frac{b}{2a})^2 + \frac{4ac - b^2} {4a}
+}
+\end{align}
+
+可以看出 :
+
+[cols="1a,1a" options="autowidth"]
+|===
+|stem:[ y = ax^2 + bx + c ]|Header 2
+
+|对称轴
+|stem:[ x = -\frac{b}{2a} ]
+
+|顶点
+|stem:[ (-\frac{b}{2a},  \frac{4ac - b^2} {4a} ) ]
+|===
+
+并且:
+
+[cols="1a,1a" options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|如果 a>0
+|- 图像开口向上
+- 当 stem:[ x< -\frac{b}{2a}] 时, y随 x的增大, 而减小.
+- 当 stem:[ x> -\frac{b}{2a}] 时, y随 x的增大, 而增大.
+
+|如果 a<0
+|- 图像开口向下
+- 当 stem:[ x< -\frac{b}{2a}] 时, y随 x的增大, 而增大.
+- 当 stem:[ x> -\frac{b}{2a}] 时, y随 x的增大, 而减小.
+|===
+
+image:img_math/math_29.png[]
+
+---
+
+==== 由几个点的坐标, 可以确定二次函数 stem:[ y= ax^2 + bx +c ]? -> 三个点的坐标 a, b, c
+
+[cols="1a,3a"]
+|===
+|Header 1 |Header 2
+
+|对于一次函数 stem:[ y= kx +b  ]
+|只要求出 k, b 两个值 (给方程代入两个点的坐标(两点的连线不与坐标轴平行), 就能算出 k 和 b), 就能得到该具体的一次方程.
+
+|对于二次函数 stem:[ y= ax^2 + bx +c  ]
+|需要求出 a, b, c 三个值后 (给方程代入三个点的坐标(三点不在同一条直线上), 即可算出 a, b, c), 就能得到该具体的二次方程.
+|===
+
+.标题
+====
+例如： 一个二次函数的图像, 经过三个点: (-1,10), (1,4), (2,7), 那么这个二次函数的具体解析式是什么?
+
+将这三个点的坐标, 代入二次函数公式 stem:[ y= ax^2 + bx +c ], 我们先来算出 a, b, c的值是什么?
+
+\begin{cases}
+1^2 * a - 1 * b  + c =10 \\
+1^2 *a + 1*b +c = 4 \\
+a*2^2 + b*2 + c = 7
+\end{cases}
+
+\begin{cases}
+a = 2 \\
+b = -3 \\
+c = 5
+\end{cases}
+
+所以, 这个二次函数的解析式是 : stem:[ y = 2x^2 -3x +5  ]
+====
+
+---
+
+==== 生活中的应用
 
 
 ---
@@ -611,6 +701,6 @@ https://mp.weixin.qq.com/s?__biz=MzU3NTg3MTYyMQ==&mid=100005926&idx=3&sn=e0609f5
 
 
 
-37
+43
 
 
