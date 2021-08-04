@@ -35,6 +35,69 @@ c = \pm\sqrt{5} \\
 
 ---
 
+== 三角函数
+
+image:img_math/math_42.jpg[200,200]
+
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|\begin{align}
+sin A = \frac{\angle A 的对边} {斜边}= \frac{a}{c}
+\end{align}
+|
+
+|\begin{align}
+cos A = \frac{\angle A 的邻边} {斜边}= \frac{b}{c}
+\end{align}
+|
+
+|\begin{align}
+tan A = \frac{\angle A 的对边} {\angle A 的邻边}= \frac{a}{b}
+\end{align}
+|
+|===
+
+.标题
+====
+例如：如图, 你的飞船F在距离地球表面343 km 的轨道上飞行. 此时, 你的正下方地表(P点), 与你能看到的地球表面最远点(Q点)之间, 即 PQ 的距离是多少?
+
+image:img_math/math_42.png[]
+
+地球半径 = 6400 km
+
+
+
+
+
+
+====
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+
+
+
+
+https://mp.weixin.qq.com/s/8TpbmlJE04OfFHPXDgjdwQ
+
+75
+
+
+
 
 
 

@@ -3,9 +3,35 @@
 :toc:
 ---
 
+
+== 一次函数_性质 -> f(x)=kx+b（k，b是常数，k≠0）
+
+[options="autowidth" cols="1a,1a"]
+|===
+|Linear function 一次函数|  f(x)=kx+b（k，b是常数，k≠0）
+
+|斜率 k
+|
+- k>0 时，直线过一、三象限. y随x的增大, 而增大
+- k<0 时，直线过二、四象限. y随x的增大, 而减小
+
+
+|图形与y轴的截距 b
+|
+- 当x=0时，b为函数在y轴上的交点
+- b=0时，直线过原点O（0，0）. 是正比例函数的图象
+|===
+
+image:img_math/math_30.png[]
+
+
+
+---
+
+
 == 抛物线 -> stem:[y=a(x - horizontal)^2 + vertical ]
 
-//tag::抛物线[]
+//tag::抛物线_性质[]
 
 \begin{align}
 \boxed{
@@ -17,7 +43,7 @@
 - *对称轴是 x = horizontal*
 - *顶点是 (horizontal, vertical)*
 
-//end::抛物线[]
+//end::抛物线_性质[]
 
 ---
 
@@ -47,4 +73,101 @@ y = ax^2 + bx + c \\
 //end::一元二次_配方法[]
 
 ---
+
+== 一元二次函数_性质
+
+//tag::一元二次_性质[]
+
+[cols="1a,1a" options="autowidth"]
+|===
+|Quadratic function 一元二次函数|stem:[ y = ax^2 + bx + c ] （a≠0; a, b, c为常数)
+
+|对称轴
+|stem:[ x = -\frac{b}{2a} ]
+
+|顶点
+|stem:[ (-\frac{b}{2a},  \frac{4ac - b^2} {4a} ) ]
+
+|抛物线的开口方向和大小
+|二次项系数a, 决定抛物线的开口方向和大小。
+
+- 当 a>0时，抛物线开口向上；此时函数图形有"最小值", 最小值处的坐标, 就是顶点坐标 stem:[ (-\frac{b}{2a},  \frac{4ac - b^2} {4a} ) ].
+- 当 a<0时，抛物线开口向下；此时函数图形有"最大值", 最大值处的坐标, 就是顶点坐标.
+
+image:img_math/math_32.png[]
+
+- \|a\|越小，则抛物线的开口越大；
+- \|a\|越大，则抛物线的开口越小
+
+image:img_math/math_33.png[]
+
+|对称轴在y轴上
+|当 b=0 时，抛物线的对称轴是y轴
+
+image:img_math/math_31.png[]
+
+|对称轴的位置
+|一次项系数b, 和二次项系数a, 共同决定"对称轴"的位置:
+
+- 当a与b 同号时（即ab>0），对称轴在y轴"左侧"
+- 当a与b 异号时（即ab<0），对称轴在y轴"右侧"
+- （可巧记为：左同右异）
+
+image:img_math/math_34.png[]
+
+|抛物线与y轴交点
+|常数项c, 决定抛物线与y轴交点。抛物线与y轴交于(0, c）
+
+|抛物线与x轴交点的个数, 由stem:[ \Delta ]来判定
+|stem:[ \Delta = b^2 - 4ac]
+
+- 当 stem:[ \Delta>0 ]时，抛物线与x轴有 2个交点。
+- 当 stem:[ \Delta =0 ]时，抛物线与x轴有 1个交点。
+- 当 stem:[ \Delta<0 ]时，抛物线与x轴 没有交点。
+
+|===
+
+image:img_math/math_29.png[]
+
+
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|一般式:  stem:[ y = ax^2 + bx + c ]
+|Column 2, row 1
+
+|顶点式: stem:[y=a(x-h)^2 +k ]
+|此时顶点为（h, k)
+
+- stem:[ h = -
+frac{b}{2a}]
+- stem:[ k =
+frac{4ac - b^2}{4a}]
+
+|交点式 : stem:[ y=a(x - x_1)(x- x_2)]
+|函数图像与x轴, 相交于stem:[(x_1, 0) ] 和stem:[(x_2, 0) ]  两点。
+|===
+
+
+
+
+//end::一元二次_性质[]
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

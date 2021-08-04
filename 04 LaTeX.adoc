@@ -132,6 +132,9 @@ a+b = 0
 
 |水平大括号 -> \underbrace{a,b,c..., n}_{n个数}
 |stem:[ \underbrace{a,b,c..., n}_{n个数}]
+
+|角度 stem:[ \angle ]
+|\angle
 |===
 
 
