@@ -199,6 +199,23 @@ A \subsetneqq B \quad (或 B \supsetneqq A)
 \mid
 \end{align}
 |\mid
+
+
+|交集 stem:[ \cap ]
+|\cap <- 帽子
+
+|并集 stem:[ \cup ]
+|\cup <- 杯子
+
+|补集
+\begin{align}
+\complement_UA
+\end{align}
+|\complement_UA  +
+表示集合A 在全集U 中的补集
+
+|全称量词 stem:[ \forall ]
+| \forall
 |===
 
 
