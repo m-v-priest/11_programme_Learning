@@ -135,8 +135,71 @@ a+b = 0
 
 |角度 stem:[ \angle ]
 |\angle
-|===
 
+|集合中的属于 stem:[\in ]
+|\in
+
+|集合中的不属于 stem:[\notin ]
+|\notin
+
+|星号 stem:[ \ast ]
+| \ast
+
+|空集
+\begin{align}
+\varnothing
+\end{align}
+
+|\varnothing
+
+|包含于 stem:[  \subseteq ]
+| \subseteq <- sub set eq
+
+stem:[A  \subseteq  B ] 读作"A包含于B" (或"B包含A"),  意思是 "A是B的子集".
+
+|包含 stem:[\supseteq ]
+|\supseteq < sup set equate
+
+|不包含于
+\begin{align}
+\nsubseteq
+\end{align}
+|\nsubseteq <- not sub set equate
+
+|不包含
+\begin{align}
+\nsupseteq
+\end{align}
+|\nsupseteq <- not sup set equate
+
+
+|真包含于
+\begin{align}
+\subsetneqq
+\end{align}
+|\subsetneqq <- sub set not equate equate <- 有两条横线, 所以要两个 eq, 即eqq
+
+如果集合A 是集合B 的子集, 并且集合B中 至少有一个元素不属于A, 那么集合A 就称为集合B 的"真子集".
+
+记作:
+\begin{align}
+A \subsetneqq B \quad (或 B \supsetneqq A)
+\end{align}
+
+读作 "A真包含于B" (或 "B真包含A")
+
+|真包含
+\begin{align}
+\supsetneqq
+\end{align}
+|\supsetneqq <- sup set not equate equate
+
+|竖线
+\begin{align}
+\mid
+\end{align}
+|\mid
+|===
 
 
 

@@ -589,6 +589,11 @@ image:img_geogebra/geogebra_04.png[]
 
 ==== 只在特定"定义域"上显示函数图 -> Function[解析式,x起始值,x终止值]
 
+官方文档  +
+https://wiki.geogebra.org/s/zh/index.php?title=If_%E6%8C%87%E4%BB%A4&variant=zh-hans
+
+
+
 如 : 我们 让 x^2 的图像, 只显示 定义域在(1,3) 段上的部分
 
 ....
@@ -608,6 +613,12 @@ f(x)=If[ x<=3 && x>=1 ,x^2]
 ....
 
 image:img_geogebra/geogebra_02.png[]
+
+
+也可以写成下面的形式, 限定定义域为  (x>0 && x<2):
+....
+f(x) = sin(x - 3), (x>0 && x<2)
+....
 
 
 ---

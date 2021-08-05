@@ -12,15 +12,6 @@ https://asciidoctor.org/docs/user-manual/#cols-format
 
 ---
 
-== AsciidocFX 软件
-
-下载地址 +
-https://github.com/asciidocfx/AsciidocFX/releases
-
-
-
----
-
 == ★ 插入 latex 代码
 
 
@@ -1965,6 +1956,28 @@ _斜体效果_
 ```
 
 ---
+== ----- -----
+
+---
+
+== 其他资源
+
+==== AsciidocFX 软件
+
+下载地址 +
+https://github.com/asciidocfx/AsciidocFX/releases
+
+---
+
+==== 用思维导图(xMind)导出 svg,  是无损矢量的
+
+你想插入思维导图图片, 就用 xMind 软件, 导出svg 即可. asciidoc 支持插入 svg 无损格式图片.
+
+---
+
+==== 画字符图
+
+https://asciiflow.com/#/
 
 
-
+---
