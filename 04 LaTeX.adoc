@@ -216,6 +216,22 @@ A \subsetneqq B \quad (或 B \supsetneqq A)
 
 |全称量词 stem:[ \forall ]
 | \forall
+
+|存在量词 stem:[\exists ]
+|\exists
+
+|命题的否定 stem:[\neg ]
+|\neg
+
+|能推导出结论 stem:[ \Rightarrow  ]
+|\Rightarrow
+
+|推导不出结论
+\begin{align}
+\nRightarrow
+\end{align}
+|\nRightarrow
+
 |===
 
 
