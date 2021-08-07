@@ -232,6 +232,9 @@ A \subsetneqq B \quad (或 B \supsetneqq A)
 \end{align}
 |\nRightarrow
 
+
+|无穷大 stem:[ \infty ]
+|\infty
 |===
 
 
