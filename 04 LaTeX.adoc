@@ -235,6 +235,9 @@ A \subsetneqq B \quad (或 B \supsetneqq A)
 
 |无穷大 stem:[ \infty ]
 |\infty
+
+|近似值的精度 stem:[ \epsilon ]
+|\epsilon
 |===
 
 
