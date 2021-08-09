@@ -10,6 +10,9 @@
 https://asciidoctor.org/docs/user-manual/#cols-format
 
 
+各种块的写法, 可见下面
+https://asciidoctor.cn/docs/asciidoc-syntax-quick-reference/index.html#block-id-role-and-options
+
 ---
 
 == ★ 插入 latex 代码
@@ -918,7 +921,7 @@ code....
 
 ---
 
-==== 把代码块的小标题(写在代码块里面) (github中会丢失代码块的底色, 变成白色)
+==== ★★ 把代码块的小标题(写在代码块里面) (github中会丢失代码块的底色, 变成白色)
 把代码块的四个横线-, 改成四个星号*即可.
 
 ```

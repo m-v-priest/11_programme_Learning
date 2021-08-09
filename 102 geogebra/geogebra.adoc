@@ -657,6 +657,12 @@ R=Root[ f ]
 
 image:img_geogebra/geogebra_15.png[]
 
+....
+root[x^2 - x - 6]
+//能获得 该函数的根, 即该函数与x轴的交点的坐标值
+....
+
+
 ---
 
 == 获得函数f 的"极值" -> E=Extremum[ f ]

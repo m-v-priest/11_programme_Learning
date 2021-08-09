@@ -1,0 +1,92 @@
+
+= 指数函数, 对数函数, 幂函数
+:toc:
+---
+
+== 有理指数幂 运算法则
+
+[options="autowidth" cols="1a,1a"]
+|===
+|运算法则 |Header 2
+
+|整数指数幂
+|
+\begin{align}
+\boxed{
+a^m a^n = a^{m+n} \\
+(a^m) ^n = a^{m n} \\
+(ab)^m = a^m b^m
+}
+\end{align}
+
+|二次根式
+|
+\begin{align}
+\boxed{
+(\sqrt{a})^2 = a \\
+\sqrt{a} \sqrt{b} = \sqrt{ab} \\
+\frac{\sqrt{a}} {\sqrt{b}}= \sqrt{\frac{a} {b}}
+}
+\end{align}
+
+
+|根式
+|
+\begin{align}
+\boxed{
+(\sqrt[n]{a})^n = a \\
+\sqrt[n]{a^n} =a <-  当 n 为奇数时 \\
+\sqrt[n]{a^n} = \|a\| <- 当 n 为偶数时
+}
+\end{align}
+
+
+.标题
+====
+例如：
+\begin{align}
+\sqrt[7]{(-2)^7} = -2
+\end{align}
+====
+
+|分数指数幂
+|如果n是正整数, 那么:
+
+当
+\begin{align}
+\sqrt[n]{a}
+\end{align} 有意义时, 则:
+
+\begin{align}
+\boxed{
+a^{\frac{1}{n}} = \sqrt[n]{a} \\
+a^{\frac{m} {n}} = (\sqrt[n]{a})^m = \sqrt[n]{a^m} \\
+a^{-s} = \frac{1} {a^s}
+}
+\end{align}
+
+.标题
+====
+例如：
+\begin{align}
+4^\frac{1} {2} = \sqrt{4} \\
+(-27)^\frac{1} {3} = \sqrt[3]{-27} \\
+5^\frac{3} {4} = (5^3 )^\frac{1} {4} = (5^\frac{1} {4})^3
+\end{align}
+====
+
+|===
+
+
+
+
+
+
+
+
+---
+
+https://mp.weixin.qq.com/s/sfK-dws_jgjdiFON2ILP6A
+
+
+6

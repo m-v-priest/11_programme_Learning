@@ -823,6 +823,120 @@ stem:[\frac{90}{30+v} = \frac{60}{30-v} ] +
 
 
 ---
+== ----- -----
+
+---
+
+
+== 不等式
+
+==== 不等式的性质
+
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|\begin{align}
+如果 a>b,  \\
+那么 a \pm c > b \pm c
+\end{align}
+|不等式两边加上(或减去)同一个数(或式子), 不等号的方向不变
+
+|\begin{align}
+如果 a>b, c>0 \\
+那么 ac>bc \\
+(或 \frac{a} {c}> \frac{b} {c})
+\end{align}
+|不等式两边乘以(或除以)同一个正数, 不等号的方向不变
+
+.标题
+====
+例如：
+\begin{align}
+& \frac{2} {3} x > 50 \\
+& \frac{2} {3}x * \frac{3}{2}  > 50* \frac{3}{2} \\
+& x > 75
+\end{align}
+====
+
+|\begin{align}
+如果 a>b, c<0 \\
+那么 ac <bc \\
+(或 \frac{a} {c} < \frac{b} {c})
+\end{align}
+|不等式两边乘以(或除以)同一个负数, 不等号的方向要改变
+
+.标题
+====
+例如：
+\begin{align}
+-4x > 3 \\
+x < - \frac{3}{4}
+\end{align}
+====
+
+|===
+
+
+---
+
+== 绝对值
+
+==== 绝对值的性质
+
+
+
+
+---
+
+==== 数轴上两点之间的距离 -> stem:[ AB = \|a-b\|]
+
+一般地, 如果实数a,b 在数轴上对应的点, 分别为A, B, 即 A(a), B(b), 则线段AB的长为:
+\begin{align}
+AB = \|a-b\| \quad (或 \|b-a\| 也是一样)
+\end{align}
+
+image:img_math/math_79.png[]
+
+这就是数轴上两点之间的距离.
+
+比如图上的例子,  stem:[AB = \| b-a \| =\| 2-(-1) \| =3]
+
+---
+
+==== 中点坐标公式 -> stem:[ midP = \frac{a+b}  {2}]
+
+如果线段AB的中点M 对应的数为 x, 则由 AM=BM 可知: stem:[\|b-x\| = \|x-a\| ]
+
+image:img_math/math_80.png[]
+
+所以 stem:[ x = \frac{a+b} {2}] 这就是数轴上的"中点坐标公式".
+
+.标题
+====
+例如：数轴上, A点在3的位置, B点在x的位置, AB线段的中点到原点的距离, 不大于5. 问x (即B点)的取值范围是多少?
+
+image:img_math/math_81.png[]
+
+根据中点公式 : AB的中点就是 stem:[ \frac{3+x} {2} ]
+
+\begin{align}
+& | \frac{3+x} {2}| \le 5 \\
+& |3+x| \le 10 \\
+& -10 \le 3+x \le 10 <- 比 -10大, 就是-8, -5 ...这个区间 \\
+& -13 \le x \le 7
+\end{align}
+
+====
+
+
+2019高一数学b版, 缺少页数 68-73 页
+
+
+
+
+
+
 
 
 
