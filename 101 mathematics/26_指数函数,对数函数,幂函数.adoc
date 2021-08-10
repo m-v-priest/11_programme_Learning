@@ -301,21 +301,155 @@ stem:[ \log_{10}Y ] 可简写成 stem:[lg Y ]
 
 后续如果没有指出对数的底, 则默认指的就是"常用对数". 例如,"100(原Y)的对数是2(原x)", 就是指"100的常用对数是2".
 
-|自然对数
+|自然对数  stem:[log_eY ]
 |以无理数 e = 2.71828... 为底的对数, 叫做"自然对数". e叫做"自然常数". +
 自然对数 stem:[log_eY ] 通常简写为 stem:[ln N ]
 |===
 
+.标题
+====
+例如：
+\begin{align}
+\lg 10 \\
+& 即原指数函数是 : 10^x  = 10 \\
+& x = 1 \\
+\\
+\lg 0.01 \\
+& 即原指数函数是 : 10^x = \frac{1}{10^2} \\
+& x= -2 \\
+\\
+\ln e^5 \\
+& 即原指数函数是 :  e^x = e^5 \\
+& x=5
+\end{align}
+====
+
+.标题
+====
+例如：已知 stem:[ \log_4a = \log_{25}b = \sqrt{3}] , 求 stem:[ \lg(ab)]的值.
+
+因为
+\begin{align}
+& \log_4a =\sqrt{3} <- 原指数是\sqrt{3} \\
+& 即: 4^{\sqrt{3}} = a \\
+\\
+& \log_{25}b =\sqrt{3} <- 原指数是\sqrt{3} \\
+& 即: 25^{\sqrt{3}} = b \\
+\\
+& ab = 4^{\sqrt{3}}  25^{\sqrt{3}} \\
+& = (4*25)^{\sqrt{3}}  = 10^{2 \sqrt{3}} \\
+\\
+& 所以 \lg(ab) = \lg 10^{2 \sqrt{3}} \\
+& 即,原指数方程是 : 10^x = 10^{2 \sqrt{3}} \\
+& x= 2 \sqrt{3}
+\end{align}
+
+====
 
 
+.标题
+====
+例如：历史地震的计算公式为:
+\begin{align}
+里氏震级 M= \lg \frac{被测地震的最大振幅 A}{标准地震的振幅 A_0}
+\end{align}
+
+所以, 7.8级地震就是:
+\begin{align}
+原指数 7.8 = \lg \frac{A_{7.8}}{A_0} \\
+即 10^{7.8} = \frac{A_{7.8}}{A_0} \\
+A_{7.8} = 10^{7.8} A_0
+\end{align}
+
+8.0级地震就是:
+\begin{align}
+原指数 8.0 = \lg \frac{A_{8.0}}{A_0} \\
+即 10^{8.0} = \frac{A_{8.0}}{A_0} \\
+A_{8.0} = 10^{8.0} A_0
+\end{align}
+
+所以, 8级比上7.8级地震, 威力相差倍数就是:
+\begin{align}
+\frac{A_{8.0}}{A_{7.8}}
+= \frac{10^{8.0} A_0}{10^{7.8} A_0}
+= \frac{10^{8.0}} {10^{7.8}}
+\approx 1.58
+\end{align}
+====
+
+---
+
+==== 对数的运算法则
+
+\begin{align}
+& 一般地, 设 : \\
+& a^{x_1} = Y_1 > 0, & ① \\
+& a^{x_2} = Y_2 > 0, \\
+& 则: \\
+& \log_a Y_1 = x_1, & ② \\
+& \log_a Y_2 = x_2 \\
+\\
+& a^{x_1 + x_2} = a^{x_1} a^{x_2}  = Y_1 Y_2 <- 把 ①继续算下去\\
+& 即头尾就是:  a^{x_1 + x_2} = Y_1 Y_2 \\
+& log_a (Y_1 Y_2) = x_1 + x_2 <- 原指数 \\
+& 把②代入进来, 即得: \\
+& log_a (Y_1 Y_2) = log_a Y_1 + log_a Y_2
+\end{align}
+
+即:
+\begin{align}
+\boxed{
+log_a Y_1 + log_a Y_2  = log_a (Y_1 Y_2)  = x_1 + x_2 <- 即两个原指数相加
+}
+\end{align}
 
 
+.标题
+====
+例如：
+\begin{align}
+log_6 3 + log_6 2 = log_6 (3*2) = 1
+\end{align}
+====
 
+可以继续推导出有:
 
+\begin{align}
+\boxed{
+log_a (Y_1 * Y_2 * ... * Y_k) = log_a Y_1 +  log_a Y_2 + ... + log_a Y_k
+}
+\end{align}
 
+特别的, 当"正因数"全部相等时, 可得:
+\begin{align}
+\boxed{
+log_a Y^k = k * log_aY \quad (k 是正整数)
+}
+\end{align}
 
+.标题
+====
+例如：
+\begin{align}
+lg 0.001
+= lg 10^{-3}
+= -3* lg 10
+\end{align}
+====
 
+进一步, 由上面两个结论可知:
 
+\begin{align}
+log_a{\frac{M}{N}} = log_a (MN^{-1}) = log_aM + log_a N^{-1}
+=  log_aM - log_a N
+\end{align}
+
+即:
+\begin{align}
+\boxed{
+log_a{\frac{M}{N}}  =   log_aM - log_a N \quad (其中 a>0 且 a \ne 1, M>0, N>0, a \in R)
+}
+\end{align}
 
 ---
 
