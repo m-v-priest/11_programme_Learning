@@ -381,6 +381,18 @@ A_{8.0} = 10^{8.0} A_0
 
 ==== 对数的运算法则
 
+[cols="1a,2a"]
+|===
+|Header 1 |Header 2
+
+|\begin{align}
+\boxed{
+log_a Y_1 + log_a Y_2  \\
+= log_a (Y_1 Y_2)  \\
+= x_1 + x_2 <- 即两个原指数相加
+}
+\end{align}
+|
 \begin{align}
 & 一般地, 设 : \\
 & a^{x_1} = Y_1 > 0, & ① \\
@@ -399,61 +411,179 @@ A_{8.0} = 10^{8.0} A_0
 即:
 \begin{align}
 \boxed{
-log_a Y_1 + log_a Y_2  = log_a (Y_1 Y_2)  = x_1 + x_2 <- 即两个原指数相加
+log_a Y_1 + log_a Y_2  \\
+= log_a (Y_1 Y_2)  \\
+= x_1 + x_2 <- 即两个原指数相加
 }
 \end{align}
 
 
-.标题
-====
+
 例如：
 \begin{align}
 log_6 3 + log_6 2 = log_6 (3*2) = 1
 \end{align}
-====
 
-可以继续推导出有:
+.标题
+====
+例如： 计算器诞生前, 人们花了大量精力, 求出一些常用对数的近似值, 列成表格供查询使用. 这样, 人们就可以根据公式, 来求出另一些对数的值. 如:
+
+由 stem:[ lg 3 \approx 0.4771, \quad lg 5 \approx 0.699 ] 可得出: +
+stem:[  lg 15 = lg(3*5) = lg 3 + lg5   \approx  0.4771 + 0.699 \approx  1.1761]
+
+那么还能不能借助 lg 3, lg 5, 来求比如 stem:[ log_3 5 ] 的值呢?
 
 \begin{align}
-\boxed{
-log_a (Y_1 * Y_2 * ... * Y_k) = log_a Y_1 +  log_a Y_2 + ... + log_a Y_k
+& log_3 5 的值就是原"指数方程"中的指数 :  即 3^x = 5 \\
+& 从而 lg 3^x = lg 5 \\
+&  x lg 3 = lg 5 \\
+& x = \frac{lg 5} {lg 3} \\
+& 也就是说  log_3 5 = \frac{lg 5} {lg 3}
+\approx \frac{0.669} {0.4771}
+\approx 1.4651
+\end{align}
+
+所以, 一般地, 我们有"换底公式":
+\begin{align}
+\boxed{ log_a b = \frac{log_c b} {log_c a} \\
+其中 a>0, 且 a \ne 1, \\
+b>0, \\
+c>0 且 c \ne 1
 }
 \end{align}
 
-特别的, 当"正因数"全部相等时, 可得:
+====
+
+
+|可以继续推导出有:
+
+\begin{align}
+\boxed{
+log_a (Y_1 * Y_2 * ... * Y_k) \\
+= log_a Y_1 +  log_a Y_2 + ... + log_a Y_k
+}
+\end{align}
+|\begin{align}
+& lg 4 + lg 25
+= lg(4*25)
+= lg 100 \\
+& 即 10^x=100 \\
+& x = 2
+\end{align}
+
+
+|特别的, 当"正因数"全部相等时, 可得:
 \begin{align}
 \boxed{
 log_a Y^k = k * log_aY \quad (k 是正整数)
 }
 \end{align}
+|
 
-.标题
-====
-例如：
 \begin{align}
 lg 0.001
 = lg 10^{-3}
 = -3* lg 10
 \end{align}
-====
 
+|\begin{align}
+\boxed{
+log_a{\frac{M}{N}}  =   log_aM - log_a N \quad \\
+(其中 a>0 且 a \ne 1, M>0, N>0, a \in R)
+}
+\end{align}
+|
 进一步, 由上面两个结论可知:
 
 \begin{align}
-log_a{\frac{M}{N}} = log_a (MN^{-1}) = log_aM + log_a N^{-1}
-=  log_aM - log_a N
+& log_a{\frac{M}{N}} \\
+& = log_a (MN^{-1}) \\
+& = log_aM + log_a N^{-1} \\
+& =  log_aM - log_a N
 \end{align}
 
 即:
 \begin{align}
 \boxed{
-log_a{\frac{M}{N}}  =   log_aM - log_a N \quad (其中 a>0 且 a \ne 1, M>0, N>0, a \in R)
+log_a{\frac{M}{N}}  =   log_aM - log_a N \quad \\
+(其中 a>0 且 a \ne 1, M>0, N>0, a \in R)
 }
 \end{align}
+
+image:img_math/math_88.png[]
+
+image:img_math/math_89.png[]
+
+|换底公式 +
+\begin{align}
+\boxed{ \log_a b = \frac{\log_c b} {\log_c a}
+=  \frac{\ln b} {\ln a} \\
+其中 a>0, 且 a \ne 1, \\
+b>0, \\
+c>0 且 c \ne 1
+}
+\end{align}
+|计算器在计算任意"对数"的值时, 就是使用"换底公式"先转化为"常用对数"或"自然数", 来计算的.
+
+image:img_math/math_90.png[]
+
+|\begin{align}
+\boxed{
+\log_{a^t} b^s = \frac{s}{t} \log_a b
+}
+\end{align}
+|image:img_math/math_91.png[]
+
+|===
+
+---
+
+==== 对数函数的性质, 与图像 -> stem:[ x = log_a Y ]
+
+对数函数是
+\begin{align}
+\boxed{
+x = log_a Y
+}
+\end{align}
+
+
+- a 是 原常数, stem:[  a>0 且 a \ne 1]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ---
 
 https://mp.weixin.qq.com/s/sfK-dws_jgjdiFON2ILP6A
 
 
-21
+25
