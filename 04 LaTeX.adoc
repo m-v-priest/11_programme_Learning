@@ -238,7 +238,19 @@ A \subsetneqq B \quad (或 B \supsetneqq A)
 
 |近似值的精度 stem:[ \epsilon ]
 |\epsilon
+
+|\begin{align}
+\log_{2}{8}
+\end{align}
+|\log_{原常数a}{原Y}  +
+\log_{2}{8}
+
+|\begin{align}
+\lg_8
+\end{align}
+|\lg_原Y
 |===
+
 
 
 
