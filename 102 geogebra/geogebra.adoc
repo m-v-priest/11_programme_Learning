@@ -642,6 +642,17 @@ if(x<0, x, x>=0&&x<2, x^2, x>2, sinx)
 
 image:img_geogebra/geogebra_03.png[]
 
+
+---
+
+== 对数函数 stem:[log_a Y ]
+
+要在geogebra中 输入 stem:[x= log_{1/2} Y ], 就是:
+....
+log_{1/2}Y
+....
+
+
 ---
 
 == 获得多项式f的根 -> R=Root[ f函数 ]

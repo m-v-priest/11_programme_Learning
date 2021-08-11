@@ -550,7 +550,9 @@ x = log_a Y
 
 - a 是 原常数, stem:[  a>0 且 a \ne 1]
 
+我们先来看这两个对数函数的图像: stem:[ y = \log_2 x] 和 stem:[ y= \log_{\frac{1}{2}} x]
 
+image:img_math/math_92.png[]
 
 
 
