@@ -240,10 +240,12 @@ A \subsetneqq B \quad (或 B \supsetneqq A)
 |\epsilon
 
 |\begin{align}
-\log_{2}{8}
+\log_{2}{8} \\
+\log_{2^{-1}} x
 \end{align}
 |\log_{原常数a}{原Y}  +
-\log_{2}{8}
+\log_{2}{8} +
+\log_{2^{-1}} x
 
 |\begin{align}
 \lg_8
