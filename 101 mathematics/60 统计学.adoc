@@ -3,6 +3,107 @@
 :toc:
 ---
 
+== 平均数 -> stem:[  \overline{x} = \frac{1}{n} (x_1 + x_2 + ... + x_n)]
+
+\begin{align}
+\overline{x} = \frac{1}{n} (x_1 + x_2 + ... + x_n)
+\end{align}
+
+这一公式一般简记为:
+
+\begin{align}
+\boxed{
+\overline{x} =  \frac{1}{n} \sum_{i=1}^{n} x_i
+}
+\end{align}
+
+其中:
+
+- stem:[  \Sigma] : 表示"求和"（总和符号）
+- i : 表示求和的范围. 其"最小值"写在 Σ 的下面, "最大值"写在 Σ 的上面.
+
+例如:
+
+\begin{align}
+& \sum_{i=1}^{100} i = 1 + 2 + ... + 100 = 5050 \\
+& \sum_{i=5}^{10} i = 5 + 6 + ... + 10 \\
+& \sum_{i=3}^{8} x_i = x_3 + x_4 + ... + x_8 \\
+& \sum_{i=1}^{20} iX = X + 2X + ... + 20X
+\end{align}
+
+求和符号 Σ 具有下列性质:
+
+\begin{align}
+\boxed{
+\sum_{i=1}^{n} (x_i + y_i) = \sum_{i=1}^{n} x_i + \sum_{i=1}^{n} y_i
+}
+\end{align}
+
+\begin{align}
+\boxed{
+\sum_{i=1}^{n} (k x_i) = k \sum_{i=1}^{n} x_i
+}
+\end{align}
+
+\begin{align}
+\boxed{
+\sum_{i=1}^{n} t = n t
+}
+\end{align}
+
+.标题
+====
+例如：
+\begin{align}
+& \frac{1}{n} \sum_{i=1}^{n} (ax_i + b) \\
+& =  \frac{1}{n} [\sum_{i=1}^{n}(ax_i) + \sum_{i=1}^{n} b ] \\
+& =  \frac{1}{n} [a\sum_{i=1}^{n} x_i + nb ] \\
+& = a (\frac{1}{n}  \sum_{i=1}^{n} x_i) + b \\
+& = a \overline{x} + b
+\end{align}
+====
+
+.标题
+====
+例如：对一群人做统计, 按年龄, 分为两层:  +
+第一层中有m个人, 分别是 stem:[ x_1, x_2, ..., x_m ], 平均数是 stem:[ \overline{x} ], 方差为 stem:[ s^2 ], +
+第二层中有n个人, 分别是 stem:[ y_1, y_2, ..., y_n ], 平均数是 stem:[ \overline{y} ], 方差为 stem:[ t^2 ],
+
+则:
+
+该群人的总平均数就是:
+\begin{align}
+\frac{\sum_{i=1}^{m} x_i + \sum_{i=1}^{n} y_i} {m+n} \\ = \frac{m * \overline{x} + n *  \overline{y}} {m+n}
+\end{align}
+
+根据方差公式:
+\begin{align}
+\boxed{
+    s^2 = \frac{1}{n} [(x_1-
+\overline{x})^2 + (x_2-
+\overline{x})^2 + ... + (x_n-
+\overline{x})^2] \\
+s^2 = \frac{1}{n} \sum_{i=1}^{n} (x_i - \overline{x})^2
+}
+\end{align}
+
+该群人的总的方差就是:
+
+??
+
+====
+
+
+平均数, 会受每一个数的影响, 尤其是最大值, 最小值. 很多情况下, 为了避免过于极端的值对结果影响太大等, 会去掉最低值和最高值后, 再来计算"平均数". (去掉一个最低分, 去掉一个最高分)
+
+
+
+
+
+
+
+---
+
 == 加权平均数  weighted average
 
 加权平均数:: 一般地, 若n个数stem:[ x_1, x_2, ...,x_n] 的"权"分别是 stem:[w_1, w_2, ... w_n], 则: +
@@ -227,6 +328,14 @@ image:img_math/math_17.png[]
 }
 \end{align}
 
+也即:
+
+\begin{align}
+\boxed{
+s^2 = \frac{1}{n} \sum_{i=1}^{n} (x_i - \overline{x})^2
+}
+\end{align}
+
 #来衡量这组数据的波动大小, 并把它叫做这组数据的"方差" 记作 stem:[ s^2].#
 
 - 当数据分布比较分散(即数据在"平均数"附近波动较大)时, 各个数据与"平均数的差"的平方和, 就较大, 方差就越大.
@@ -325,6 +434,7 @@ image:img_math/math_18.png[]
 
 
 
+高二
 
-
+86
 

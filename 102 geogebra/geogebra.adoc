@@ -952,9 +952,20 @@ image:img_geogebra/geogebra_55.png[]
 
 ---
 
-====
+== ----- -----
 
 ---
+
+== 随机数 -> randombetween (min, max)
+
+从 min - max 中取随机数, 包括 min 和 max 两个数本身.
+....
+= randombetween (1,5)
+// 会从1-5 这 5个数中, 来取随机数
+....
+
+---
+
 
 使用手册
 

@@ -127,6 +127,12 @@ a+b = 0
 \bar{x}
 ....
 
+|累加 stem:[  \sum_{n}^{i=1} ]
+|
+....
+\sum_{n}^{i=1}
+....
+
 |希腊字母 stem:[\Delta]
 |\Delta
 
