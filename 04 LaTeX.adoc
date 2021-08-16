@@ -133,8 +133,11 @@ a+b = 0
 \sum_{n}^{i=1}
 ....
 
-|希腊字母 stem:[\Delta]
+|希腊字母 stem:[\Delta ]
 |\Delta
+
+|stem:[\Omega ]
+|\Omega
 
 |水平大括号 -> \underbrace{a,b,c..., n}_{n个数}
 |stem:[ \underbrace{a,b,c..., n}_{n个数}]
