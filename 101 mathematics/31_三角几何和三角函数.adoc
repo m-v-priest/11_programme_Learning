@@ -190,13 +190,46 @@ image:img_math/math_105.png[]
 S = \{\beta \mid \beta = \alpha + k * 360°, k \in Z\}
 \end{align}
 
+---
+
+== 弧度制
+
+[cols="1a,4a"]
+|===
+|Header 1 |Header 2
+
+|1弧度
+|1弧度:: 如果 AB弧, 长度等于半径r, 则该弧所对应的圆心角, 就是 1弧度, 记为: 1 rad.  +
+弧度用 rad 表示.
+
+image:img_math/math_106.svg[230,230]
+
+\begin{align}
+\end{align}
+
+\begin{align}
+即: 若 \widehat{AB} 的长 = 半径 r, 则\widehat{AB} 所对的圆心角, 就是"1弧度"的角.
+\end{align}
+
+|Column 1, row 2
+|image:img_math/math_107.svg[300,300]
+
+设 圆心角 stem:[ \alpha = n°] , 半径 OA = r, 则:
+\begin{align}
+\widehat{AB} = \frac{2\pi r}{360°} * n° \\
+即: \frac{\widehat{AB}}{r} = n° * \frac{\pi}{180°}
+\end{align}
+
+这表明: "弧长"比"半径"的值, 只与"圆心角"的角度数有关.
+
+|===
 
 
 
 
+---
 
-
-
+9
 
 
 

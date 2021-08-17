@@ -267,8 +267,12 @@ A \subsetneqq B \quad (或 B \supsetneqq A)
 \end{align}
 |\overrightarrow{AB}  <- 即 over right arrow
 
-|
-|
+|弧长
+\begin{align}
+\widehat{AB}
+\end{align}
+
+|\widehat{B}
 
 |===
 
