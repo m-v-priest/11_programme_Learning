@@ -260,6 +260,16 @@ A \subsetneqq B \quad (或 B \supsetneqq A)
 \lg_8
 \end{align}
 |\lg_原Y
+
+|向量
+\begin{align}
+\overrightarrow{AB}
+\end{align}
+|\overrightarrow{AB}  <- 即 over right arrow
+
+|
+|
+
 |===
 
 

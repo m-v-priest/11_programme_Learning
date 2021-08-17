@@ -175,6 +175,29 @@ BC = BD + DC =  40 \sqrt{3} + \sqrt{3} * 120  \\
 \end{align}
 ====
 
+---
+
+== 角度 -> "逆时针转"为正的角度, "顺时针转"为负数角度
+
+image:img_math/math_104.png[]
+
+image:img_math/math_105.png[]
+
+角 stem:[ \alpha + k * 360° (k \in Z)], 与 角α 的终边相同. k * 360° 的意思就是旋转了若干周. +
+即: 任意两个终边相同的角, 它们的差一定是 360° 的整数倍. +
+因此, 所有与 stem:[ \alpha] 终边相同的角 组成一个集合, 这个集合可以记为:
+\begin{align}
+S = \{\beta \mid \beta = \alpha + k * 360°, k \in Z\}
+\end{align}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -187,13 +210,6 @@ BC = BD + DC =  40 \sqrt{3} + \sqrt{3} * 120  \\
 
 ---
 
-
-
-
-
-https://mp.weixin.qq.com/s/8TpbmlJE04OfFHPXDgjdwQ
-
-76
 
 
 
