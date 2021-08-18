@@ -211,18 +211,50 @@ image:img_math/math_106.svg[230,230]
 即: 若 \widehat{AB} 的长 = 半径 r, 则\widehat{AB} 所对的圆心角, 就是"1弧度"的角.
 \end{align}
 
-|Column 1, row 2
+|弧度制
 |image:img_math/math_107.svg[300,300]
 
 设 圆心角 stem:[ \alpha = n°] , 半径 OA = r, 则:
 \begin{align}
-\widehat{AB} = \frac{2\pi r}{360°} * n° \\
+弧长 \widehat{AB} = \frac{2\pi r}{360°} * n° \\
 即: \frac{\widehat{AB}}{r} = n° * \frac{\pi}{180°}
 \end{align}
 
 这表明: "弧长"比"半径"的值, 只与"圆心角"的角度数有关.
 
+
+弧度制 radian measure :: 指用"弧长"与"半径"之比, 来度量对应圆心角角度的方式。 #当圆弧的长 = r 时, 该圆弧所对的圆心角, 叫做"1弧度"的角。#
+
 |===
+
+
+[options="autowidth"]
+|===
+|弧长 |该弧长对应的圆心角的度数(弧度数)
+
+|r
+|1 rad
+
+image:img_math/math_108.svg[]
+
+|圆周长stem:[ 2\pi r]
+|stem:[ 2\pi ]
+
+
+image:img_math/math_109.png[]
+
+|半圆周长(180°)= stem:[ \pi r]
+|stem:[ 1 \pi] rad
+
+|
+|
+
+|===
+
+
+
+
+
 
 
 
