@@ -440,6 +440,13 @@ image:img_geogebra/geogebra_39.png[]
 
 image:img_geogebra/geogebra_33.png[]
 
+
+---
+
+== 弧度
+
+"选项"菜单 -> 高级 -> 可以设定角的单位.
+
 ---
 
 == ----- -----

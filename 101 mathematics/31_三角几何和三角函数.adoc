@@ -194,6 +194,32 @@ S = \{\beta \mid \beta = \alpha + k * 360°, k \in Z\}
 
 == 弧度制
 
+弧度制是一种角度的度量制度. 角度制不够吗? 为什么还要弄个弧度制？ 因为它能够让很多公式变得简单。
+
+image:img_math/math_110.png[500,500]
+
+
+[cols="1a,4a"]
+|===
+|Header 1 |Header 2
+
+|角度
+|角度是这么度量的：当没有旋转时，角的大小记作 0°  ，当旋转了1/4 时，记作 90° ，旋转一周记作 360°.  +
+<- 这种计量方法是古巴比伦人发明的.
+
+|弧度
+|弧度是这么度量的：当没有旋转时，角的大小记作 0  ，旋转了 1/4 时，记作stem:[  \frac{1}{2} \pi] ，旋转一周记作 stem:[ 2 \pi ]. 所以1° 对应 stem:[  \frac{2 \pi}{360}] rad. +
+<- 这种计量方法包含了圆周率 stem:[ \pi ] ，这是圆的本质特征，所以它会是更好的计量方法。
+
+
+|===
+
+
+
+
+
+
+
 [cols="1a,4a"]
 |===
 |Header 1 |Header 2
@@ -223,7 +249,7 @@ image:img_math/math_106.svg[230,230]
 这表明: "弧长"比"半径"的值, 只与"圆心角"的角度数有关.
 
 
-弧度制 radian measure :: 指用"弧长"与"半径"之比, 来度量对应圆心角角度的方式。 #当圆弧的长 = r 时, 该圆弧所对的圆心角, 叫做"1弧度"的角。#
+弧度制 radian measure :: 指用"弧长"与"半径"之比, 来度量对应"圆心角"角度的方式。 #当圆弧的长 = r 时, 该圆弧所对的圆心角, 叫做"1弧度"的角。#
 
 |===
 
@@ -237,23 +263,111 @@ image:img_math/math_106.svg[230,230]
 
 image:img_math/math_108.svg[]
 
-|圆周长stem:[ 2\pi r]
-|stem:[ 2\pi ]
-
+|两种计量角度的对应关系:  +
+"角度" 对应 "弧度"
+|\begin{align}
+& \because r = 1 rad <- 弧长r 对应 1弧度 \\
+& \therefore   2 \pi r(=360°) = 2 \pi (rad) <- 圆周长  对应360度, 对应   2 \pi 弧度 \\
+& 1° = \frac{ 2 \pi }{360°} rad = \frac{\pi}{180°} rad <- 1°的弧长对应的\\
+& 30° = \frac{\pi * 30°}{180°} rad  = \frac{\pi}{6} \\
+& 45°  = \frac{\pi * 45°}{180°} rad  = \frac{\pi}{4} \\
+& 60°  = \frac{\pi *60°}{180°} rad  = \frac{\pi}{3} \\
+& 90°  = \frac{\pi *90°}{180°} rad  = \frac{\pi}{2} \\
+& 180°  = \frac{\pi *180°}{180°} rad  = \pi \\
+\end{align}
 
 image:img_math/math_109.png[]
 
-|半圆周长(180°)= stem:[ \pi r]
-|stem:[ 1 \pi] rad
-
-|
-|
+因为 stem:[ 60° = \frac{\pi}{3} rad \approx 1.05 rad > 1 rad ],  +
+所以 stem:[  1 rad < 60°] <- 1弧度的角, 小于传统计数的60°.
 
 |===
 
 
 
 
+以后, rad 可以省略不写, 如:
+
+[options="autowidth"]
+|===
+|Header 1 |表示的意思
+
+|stem:[  \alpha = 2  ]
+|stem:[ \alpha ] 是一个 2 rad 的角
+
+|stem:[ \sin \frac{\pi}{3} ]
+|弧度是 stem:[\frac{\pi}{3}], 这个角的正弦
+|===
+
+
+"弧度"与"角度"之间的换算 :
+
+根据公式 :
+\begin{align}
+\boxed{
+360° = 2 \pi (rad) <- 角度与弧度的换算关系\\
+1° = \frac{2 \pi (rad)}{360°} <- 1角度,对应 ?弧度\\
+或: \pi (rad ) =  \frac{360°}{2} <- \pi 弧度,对应?角度 \\
+即: 1 (rad) =  \frac{360°}{2 \pi} \approx 57.3°
+}
+\end{align}
+
+.标题
+====
+例如：stem:[  \frac{8 \pi}{5}] 弧度, 对应多少角度?
+
+思考:
+\begin{align}
+& \because  \pi (rad ) =  \frac{360°}{2} \\
+& \therefore \frac{8 \pi}{5} (rad)
+= \frac{8}{5} *\frac{360°}{2}
+= 288°
+\end{align}
+====
+
+---
+
+== ----- -----
+
+---
+
+== 三角函数
+
+image:img_math/math_111.svg[300,300]
+
+\begin{align}
+正弦 \sin \alpha = \frac{y}{r}, \quad
+余弦 \cos \alpha = \frac{x}{r}, \quad \\
+正切 \tan \alpha = \frac{y}{x}
+\end{align}
+
+钝角的 sin, 就等于它的补角的 sin, 即 : stem:[  \sin \alpha=sin(180－\alpha)]
+
+---
+
+==== sin , cos, tan 的正负号
+从 stem:[ \sin \alpha = \frac{y}{r}  ] 可以看出 : 半径r 永远是 >0 的, 所以 stem:[ sin \alpha ] 的正负号, 就只取决于 y 的正负号.  即:
+
+- 当角 stem:[ \alpha ] 的终边(即y) 在 第 1,2 象限时, y值为正, 所以 stem:[ sin \alpha > 0 ]
+- 当 y 在 第 3,4 象限时, 为负值, 此时就 stem:[ sin \alpha < 0 ]
+
+下图中, 阴影为负
+
+image:img_math/math_112.png[]
+
+.标题
+====
+例如：
+\begin{align}
+& \tan \frac{10 \pi}{3} 的正负号为何? \\
+& 由 \frac{10 \pi}{3} = 2 \pi + \frac{4 \pi}{3}, 可知它是 第3象限 的角. \\
+& 所以 \tan \frac{10 \pi}{3} > 0
+\end{align}
+====
+
+---
+
+==== 单位圆 与 三角函数
 
 
 
@@ -261,7 +375,7 @@ image:img_math/math_109.png[]
 
 ---
 
-9
+18
 
 
 
