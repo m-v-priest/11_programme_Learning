@@ -592,6 +592,64 @@ image:img_math/math_118.png[]
 
 == 诱导公式
 
+[options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|\begin{align}
+sin(-x) = - sin( x)
+\end{align}
+
+|image:img_math/math_119.png[]
+
+sin x 是 奇函数. 从上图可以看出, sin(x) 和 sin(-x) 对应的y值, 是相反数, 正负符号相反. 所以:
+\begin{align}
+\boxed{
+sin(x) = - sin(- x)
+}
+\end{align}
+
+其实也可以从下图上能看出来:
+
+image:img_math/math_120.svg[350,350]
+
+即: stem:[ sin \alpha] 的y值, 和 stem:[  sin(- \alpha) ] 的y值, 是相反数.
+
+|\begin{align}
+cos (- \alpha) = cos (\alpha)
+\end{align}
+
+|image:img_math/math_120.png[]
+
+cos x 是 偶函数, 从图上可以看出 x值是相反数的两个点, 它们的y值是一样的 :
+\begin{align}
+\boxed{
+cos (x) = cos (-x)
+}
+\end{align}
+
+|\begin{align}
+tan(- \alpha) = - tan (\alpha)
+\end{align}
+
+|image:img_math/math_121.png[]
+
+tan x 是 奇函数, 所以, x值是相反数的两个点, 它们的y值也是相反数 :
+
+\begin{align}
+\boxed{
+tan (x) = - tan (-x)
+}
+\end{align}
+
+|===
+
+
+
+
+
+
+
 
 
 
@@ -601,7 +659,7 @@ image:img_math/math_118.png[]
 
 ---
 
-27
+29
 
 
 
