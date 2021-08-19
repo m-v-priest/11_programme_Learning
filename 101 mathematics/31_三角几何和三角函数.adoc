@@ -334,12 +334,41 @@ image:img_math/math_109.png[]
 == 三角函数
 
 image:img_math/math_111.svg[300,300]
-
 \begin{align}
+\boxed{
 正弦 \sin \alpha = \frac{y}{r}, \quad
 余弦 \cos \alpha = \frac{x}{r}, \quad \\
-正切 \tan \alpha = \frac{y}{x}
+正切 \tan \alpha = \frac{y}{x}, \quad <- "远边" 比 "近边"  \\
+余切 \cot \alpha = \frac{x}{y}, <- 是 tan 的倒数, 即: cot \alpha = \frac{1}{\tan \alpha} \\
+正割 \sec \alpha = \frac{r}{x}, <- 是 cos 的倒数, 即: sec \alpha = \frac{1}{\cos \alpha} \\
+余割 \csc \alpha = \frac{r}{y}, <- 是 sin 的倒数, 即: csc \alpha = \frac{1}{\sin \alpha}
+}
 \end{align}
+
+#可以看出: 三角函数的本质, 其实就是两条边的比值而已, 至于是哪两条变来比, 可以是任意两条!#
+
+另外,
+\begin{align}
+由于
+\tan^2 \alpha + 1 = \frac{\sin^2 \alpha}{\cos^2 \alpha} +1 \\
+= \frac{\sin^2 \alpha + \cos^2 \alpha}{\cos^2 \alpha} \\
+= \frac{1}{\cos^2 \alpha} = \sec^2 \alpha \\
+因此 :
+\boxed{
+\tan^2 \alpha + 1 = \sec^2 \alpha
+}
+\end{align}
+
+类似的, 还能得到:
+\begin{align}
+\boxed{
+\cot^2 \alpha + 1 = \csc^2 \alpha
+}
+\end{align}
+
+其实, 这些公式, 还包括其他的, 都可以从 "三角函数六边形记忆法" 来轻松记住.
+
+
 
 钝角的 sin, 就等于它的补角的 sin, 即 : stem:[  \sin \alpha=sin(180－\alpha)]
 
@@ -369,13 +398,210 @@ image:img_math/math_112.png[]
 
 ==== 单位圆 与 三角函数
 
+如果圆的半径r = 1, 则: 根据三角函数, 它构成的直角三角形的另两条边, 就会分别是 sin 和 cos.
+
+image:img_math/math_113.jpg[]
+
+那么根据勾股定理 :
+\begin{align}
+& \sin^2 \alpha + \cos^2 \alpha = 1 \\
+& \tan \alpha = \frac{sin \alpha }{cos \alpha}
+\end{align}
+
+.标题
+====
+例如： 已知 stem:[ sin \alpha = 4/5], 且 stem:[ \alpha] 是 第二象限角, 求角 stem:[ \alpha] 的 cos 和 tan.
+
+思考:
+\begin{align}
+& 根据公式   \sin^2 \alpha + \cos^2 \alpha = 1  \\
+& 代入即 :  (4/5)^2 +  \cos^2 \alpha = 1 \\
+& \cos^2 \alpha = 1- \frac{16}{25}
+= \frac{9}{25} \\
+& \cos \alpha = \pm \frac{3}{5} \\
+& 因为 已知  \alpha 是 第二象限角, 所以 \cos \alpha = -\frac{3}{5} \\
+& \\
+& \tan \alpha = \frac{\sin \alpha}{\cos \alpha}
+= \frac{\frac{4}{5}}{-\frac{3}{5}}
+= - \frac{4}{3}
+\end{align}
+====
+
+
+.标题
+====
+例如： 已知 stem:[ \tan \alpha = - \sqrt{5}], 且 stem:[ \alpha] 是 第二象限角, 求 角 stem:[ \alpha] 的 sin 和 cos.
+
+思考: 可以用方程组来做:
+\begin{cases}
+\sin^2 \alpha + \cos^2 \alpha = 1  \\
+\dfrac{\sin \alpha}{\cos \alpha} =  - \sqrt{5}
+\end{cases}
+
+image:img_math/math_113.png[]
+====
+
+image:img_math/math_114.png[]
+
+.标题
+====
+例如： 求证 stem:[\sin^4 \alpha -\cos^4 \alpha = 2 \sin^2 \alpha -1 ]
+
+思考:
+\begin{align}
+& \sin^4 \alpha -\cos^4 \\
+& = (\sin^2 \alpha +\cos^2 \alpha)(\sin^2 \alpha -\cos^2 \alpha ) \\
+& = 1 * (\sin^2 \alpha -\cos^2 \alpha ) \\
+& = \sin^2 \alpha -(1- \sin^2 \alpha ) \\
+& = 2 \sin^2 \alpha -1
+\end{align}
+====
+
+image:img_math/math_115.png[]
+
+从上面可以看出: 证明一个三角恒等式, 可以有几种方法:
+
+1. 从它的任意一边开始, 推导出它等于另一边 (即, 从等号的左边证明出右边, 或从右边证明出左边)
+1. 用作差法, 证明等式两边之差等于0.
+
+
+---
+
+image:img_math/math_116.png[]
+
+
+如上图, 半径 = 1, 则:
+[options="autowidth"]
+|===
+|Header 1 | 半径 r = OA = OB = 1
+
+|stem:[ \sin \alpha]
+|\begin{align}
+\frac{AC}{AO} = \frac{AC}{1} = AC
+\end{align}
+
+|stem:[ \cos \alpha]
+|\begin{align}
+\frac{OC}{OA} = \frac{OC}{1} = OC
+\end{align}
+
+
+|stem:[ \tan \alpha]
+|\begin{align}
+\frac{AE}{AO} = \frac{AE}{1} = AE
+\end{align}
+
+|stem:[ \cot \alpha]
+|\begin{align}
+\frac{AO}{AE} = \frac{FA}{AO} = \frac{FA}{1} = FA
+\end{align}
+
+|stem:[ \sec \alpha]
+|Column 2, row 5
+
+|stem:[ \csc \alpha]
+|Column 2, row 6
+|===
+
+
+
+---
+
+== Mnemonics in trigonometry 六边形记忆法 -> 上弦/中切/下割，左正/右余/1中间
+
+
+image:img_math/math_117.jpg[]
+
+人们借助 "六边形记忆法" Mnemonics in trigonometry (#图形结构为 :“上弦/中切/下割，左正/右余/1中间”#),  来记忆三角函数的基本关系: 图中:
+
+[cols="2a,1a"]
+|===
+|规律 |Header 2
+
+|规律1: 六边形对角线, 互为倒数（倒数关系）. 即: 对角线上, 两个函数的积为 1.
+
+image:img_math/math_118.png[]
+
+即:  +
+1 - 4 是倒数关系 +
+2 - 5 是倒数关系 +
+3 - 6 是倒数关系
+
+|即:
+\begin{align}
+\sin x = \frac{1}{\csc x } \\
+\cos x = \frac{1}{\sec x} \\
+\tan x = \frac{1}{\cot x}
+\end{align}
+
+|规律2: 三角形最高两端的平方之和, 等于低端平方（平方关系）
+
+即上图中就是:
+\begin{align*}
+⑥^2 + ①^2 = 0^2 \\
+⑤^2 + 0^2 = ④^2 \\
+0^2 + ②^2 = ③^2
+\end{align*}
+
+|即:
+\begin{align}
+\sin^2 \alpha + \cos^2 \alpha = 1 \\
+\tan^2 \alpha + 1^2 = \sec^2 \alpha \\
+1^2 + \cot^2 \alpha = \csc^2 \alpha
+\end{align}
+
+|规律3: 任意一点的值, 等于这一点顺时针的第一个值 与第二个值的比值.
+
+即上图中就是:
+\begin{align}
+⑥ = \frac{①}{②} \\
+① = \frac{②}{③}
+\end{align}
+
+|即:
+\begin{align}
+\sin x = \frac{cos x}{cot x} , \quad
+\cos x = \frac{cot x}{csc x} \\
+\tan x = \frac{sin x}{cos x}, \quad
+\cot x = \frac{csc x}{sec x} \\
+\sec x = \frac{tan x}{sin x}, \quad
+\csc x = \frac{sec x}{tan x}
+\end{align}
+
+|规律4: 任意一点的值, 等于紧挨着这一点的外围两个端点的值的积.
+
+即上图中就是:
+\begin{align}
+① = ⑥ * ② \\
+② = ① * ③
+\end{align}
+
+|即:
+\begin{align}
+\sin x = \cos x * \tan x, \quad
+\cos x = \sin x * \cot x \\
+\tan x = \sin x * \sec x, \quad
+\cot x = \cos x * \csc x \\
+\sec x = \csc x * \tan x, \quad
+\csc x = \cot x * \sec x
+\end{align}
+|===
+
+
+---
+
+== 诱导公式
+
+
+
+
 
 
 
 
 ---
 
-18
+27
 
 
 
