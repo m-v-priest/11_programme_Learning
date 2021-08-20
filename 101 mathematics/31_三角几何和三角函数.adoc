@@ -384,6 +384,8 @@ image:img_math/math_111.svg[300,300]
 
 image:img_math/math_112.png[]
 
+即: #永远以第一象限为尊. 正数为 : 横(sin), 竖(cos), 上坡正斜杠/ (tan).#
+
 .标题
 ====
 例如：
@@ -592,15 +594,71 @@ image:img_math/math_118.png[]
 
 == 诱导公式
 
-[options="autowidth"]
+“奇变偶不变,符号看象限”是记忆三角函数"诱导公式"的口诀。
+
+诱导公式的一般形式是:
+\begin{align}
+sin / cos /tan / cot (k *\frac{\pi}{2} \pm \alpha) = ?, \quad 其中 k \in Z
+\end{align}
+如何化简这个式子, 就是依据“奇变偶不变,符号看象限”这句口诀。
+
+[cols="1a,4a"]
 |===
 |Header 1 |Header 2
+
+|奇变,偶不变 ->
+|- 如果参数k 是奇数（的奇数倍），则: +
+-> 正弦（sin）变余弦（cos）， +
+-> 余弦（cos）变正弦（sin）， +
+-> 正切（tan）变余切（cot）， +
+-> 余切（cot）变正切（tan）， +
+即函数名, 变为原来的余函数。
+-  如果参数k 是偶数（的偶数倍），则: 保持与原式相同的函数名。
+
+|符号看象限 ->
+|假设stem:[ \alpha]为锐角，则根据 stem:[ k * \frac{\pi}{2} \pm \alpha] 所在象限，再判断三角比符号:
+
+- 如果原式为负，则最后转换的式子前面要加负号；
+- 如果原式为正，则最后转化的式子的就是正号。
+
+符号情况依据三角比的象限符号图确定，如下：
+
+image:img_math/math_112.png[]
+
+可以把这张图记为一句口诀，即“一全正，二正弦，三正切，四余弦”，含义是:
+
+- 在第一象限内，正弦、余弦、正切都为正；
+- 在第二象限内，只有"正弦"为正；
+- 在第三象限内，只有"正切"为正；
+- 在第四象限内，只有"余弦"为正。
+|===
+
+有了上述的知识基础，我们就可以化简任意一个三角诱导公式，例如：
+
+\begin{align}
+& sin (\frac{3 \pi}{2} - \alpha) = ? \\
+& (1). k = 3 是奇数（ \frac{\pi}{2}的奇数倍），所以函数名首先要变成 cos. \\
+& (2). 再把看 \alpha 成是锐角，则 \frac{3 \pi}{2} - \alpha 的终边落在第三象限，sin 值为负，化简后的式子中要添加负号。 \\
+& 于是最终就得到:  sin (\frac{3 \pi}{2} - \alpha) = - cos \alpha
+\end{align}
+
+image:img_math/math_125.svg[250,250]
+
+
+
+---
+
+
+[options="autowidth"]
+|===
+| |把 stem:[ \alpha] 看成锐角!
 
 |\begin{align}
 sin(-x) = - sin( x)
 \end{align}
 
-|image:img_math/math_119.png[]
+| stem:[ - \alpha] 在第4象限角, sin在第4象限, 就是负的.
+image:img_math/math_119.png[]
 
 sin x 是 奇函数. 从上图可以看出, sin(x) 和 sin(-x) 对应的y值, 是相反数, 正负符号相反. 所以:
 \begin{align}
@@ -615,11 +673,18 @@ image:img_math/math_120.svg[350,350]
 
 即: stem:[ sin \alpha] 的y值, 和 stem:[  sin(- \alpha) ] 的y值, 是相反数.
 
+例如:
+
+image:img_math/math_122.png[]
+
+
 |\begin{align}
 cos (- \alpha) = cos (\alpha)
 \end{align}
 
-|image:img_math/math_120.png[]
+|stem:[ - \alpha] 在第4象限角, cos在第4象限, 就是正的.
+
+image:img_math/math_120.png[]
 
 cos x 是 偶函数, 从图上可以看出 x值是相反数的两个点, 它们的y值是一样的 :
 \begin{align}
@@ -632,7 +697,9 @@ cos (x) = cos (-x)
 tan(- \alpha) = - tan (\alpha)
 \end{align}
 
-|image:img_math/math_121.png[]
+|stem:[ - \alpha] 在第4象限角, tan在第4象限, 就是负的.
+
+image:img_math/math_121.png[]
 
 tan x 是 奇函数, 所以, x值是相反数的两个点, 它们的y值也是相反数 :
 
@@ -642,7 +709,75 @@ tan (x) = - tan (-x)
 }
 \end{align}
 
+|\begin{align}
+sin (\pi - \alpha) = sin \alpha
+\end{align}
+|stem:[ \pi - \alpha] 是第2象限角, sin 在第2象限, 就是正的.
+
+
+image:img_math/math_123.svg[350,350]
+
+从图上可以看出,  角 stem:[ \alpha] 和 stem:[\pi - \alpha ] 的终边, 关于 y轴对称. 所以, AB = CD ,
+\begin{align}
+& f(\alpha) = sin (\alpha) = \frac{CD}{CO} \\
+& f(\alpha) = sin(\pi - \alpha) = \frac{AB}{AO} \\
+& 因为 AB = CD,  半径 r= AO = CO, \\
+& 所以 sin (\alpha) = sin (\pi - \alpha)
+\end{align}
+
+|\begin{align}
+cos(\pi - \alpha) = - cos (\alpha)
+\end{align}
+| stem:[ \pi - \alpha] 是第二象限角, cos 在第二象限, 就是负的.
+
+|\begin{align}
+tan(\pi - \alpha) = - tan (\alpha)
+\end{align}
+| stem:[ \pi - \alpha] 是第二象限角, tan 在第二象限, 就是负的.
+
+|\begin{align}
+sin(\pi + \alpha) = - sin (\alpha)
+\end{align}
+|stem:[ \pi + \alpha] 是第3象限角, sin 在第3象限, 就是负的.
+
+例如:
+\begin{align}
+& sin \frac{4\pi}{3}  \\
+& =  sin(\pi +  \frac{\pi}{3}) <- 是第3象限角, sin为负 \\
+& = - sin \frac{\pi}{3} = - \frac{\sqrt{3}}{2}
+\end{align}
+
+|\begin{align}
+cos(\pi + \alpha) = - cos (\alpha)
+\end{align}
+|stem:[ \pi + \alpha] 是第3象限角, cos 在第3象限, 就是负的.
+
+
+|\begin{align}
+tan(\pi + \alpha) =  tan (\alpha)
+\end{align}
+|stem:[ \pi + \alpha] 是第3象限角, tan 在第3象限, 就是正的.
+
+列如:
+\begin{align}
+& 化简 \frac{sin(2 \pi - \alpha) * tan (\pi + \alpha) * tan(- \pi - \alpha)}{cos (\pi - \alpha) * tan(3 \pi - \alpha)} \\
+& 2 \pi - \alpha 在第4象限, sin 为负. \\
+&  \pi + \alpha 在第3象限, tan 为正. \\
+& - \pi - \alpha 在第2象限(负角度用顺时针旋转考虑), tan 为负. \\
+&  \pi - \alpha 在第2象限, cos 为负. \\
+&  3\pi - \alpha  = \pi - \alpha 在第2象限, tan 为负. \\
+& 所以原式 =  \frac{- sin \alpha * tan \alpha * - tan \alpha}{- cos \alpha * - tan \alpha} \\
+& = \frac{- sin \alpha}{- cos \alpha} * tan \alpha \\
+& = tan \alpha * tan \alpha = tan^2 \alpha
+\end{align}
 |===
+
+
+
+
+
+
+
 
 
 
@@ -659,7 +794,7 @@ tan (x) = - tan (-x)
 
 ---
 
-29
+31
 
 
 
