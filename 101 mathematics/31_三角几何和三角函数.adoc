@@ -63,7 +63,7 @@ image:img_math/math_44.jpg[]
 ====
 例如： 你要制作一个框架, 规格如下图, 那么它转角处的弧长是多少呢?
 
-image:img_math/math_45.png[]
+image:img_math/math_45.png[350,350]
 
 已知 r = 900mm,  则 100°角, 对应的弧长就是:
 
@@ -145,7 +145,7 @@ stem:[ \angle \alpha ] 的角度怎么算? 用三角函数公式.
 例如：
 你的无人机, 飞过某建筑奇观, 在距离建筑为水平距离120m时, 看到建筑顶部的角度, 为仰角30° ; 看到底部的角度, 为俯角60°. 那么这个建筑整体有多高? (即求BC的长)
 
-image:img_math/math_46.png[]
+image:img_math/math_46.png[200,200]
 
 BC = BD + DC
 
@@ -333,7 +333,7 @@ image:img_math/math_109.png[]
 
 == 三角函数
 
-image:img_math/math_111.svg[300,300]
+image:img_math/math_111.svg[250,250]
 \begin{align}
 \boxed{
 正弦 \sin \alpha = \frac{y}{r}, \quad
@@ -402,7 +402,7 @@ image:img_math/math_112.png[]
 
 如果圆的半径r = 1, 则: 根据三角函数, 它构成的直角三角形的另两条边, 就会分别是 sin 和 cos.
 
-image:img_math/math_113.jpg[]
+image:img_math/math_113.jpg[300,300]
 
 那么根据勾股定理 :
 \begin{align}
@@ -512,7 +512,7 @@ image:img_math/math_116.png[]
 == Mnemonics in trigonometry 六边形记忆法 -> 上弦/中切/下割，左正/右余/1中间
 
 
-image:img_math/math_117.jpg[]
+image:img_math/math_117.jpg[500,500]
 
 人们借助 "六边形记忆法" Mnemonics in trigonometry (#图形结构为 :“上弦/中切/下割，左正/右余/1中间”#),  来记忆三角函数的基本关系: 图中:
 
@@ -592,7 +592,7 @@ image:img_math/math_118.png[]
 
 ---
 
-== 诱导公式
+== 诱导公式 -> stem:[  sin , cos , tan , cot (k *\frac{\pi}{2} \pm \alpha) = ?, \quad 其中 k \in Z] : k奇变偶不变,符号看象限(按原式的弧度角的正负号, 来决定最终式子的正负号)
 
 “奇变偶不变,符号看象限”是记忆三角函数"诱导公式"的口诀。
 
@@ -633,7 +633,11 @@ image:img_math/math_112.png[]
 - 在第四象限内，只有"余弦"为正。
 |===
 
-有了上述的知识基础，我们就可以化简任意一个三角诱导公式，例如：
+有了上述的知识基础，我们就可以化简任意一个三角诱导公式:
+
+.标题
+====
+例如：
 
 \begin{align}
 & sin (\frac{3 \pi}{2} - \alpha) = ? \\
@@ -643,8 +647,22 @@ image:img_math/math_112.png[]
 \end{align}
 
 image:img_math/math_125.svg[250,250]
+====
 
 
+.标题
+====
+例如： stem:[  sin(3 \pi + x) = ? ]
+
+首先把它化成标准式，如下:
+\begin{align}
+& sin(3 \pi + x)
+= sin( 6 * \frac{\pi}{2}  + x) \\
+& (1). k =6 , 是偶数, 根据“奇变偶不变”原则, 最终结果 就是依然保持 sin. \\
+& (2). 原式 3 \pi + x 是 第3象限角, sin就是负号. \\
+& 所以, 最终结果就是 : sin(3 \pi + x) = - sin (x)
+\end{align}
+====
 
 ---
 
@@ -709,6 +727,9 @@ tan (x) = - tan (-x)
 }
 \end{align}
 
+|------
+|------
+
 |\begin{align}
 sin (\pi - \alpha) = sin \alpha
 \end{align}
@@ -734,6 +755,9 @@ cos(\pi - \alpha) = - cos (\alpha)
 tan(\pi - \alpha) = - tan (\alpha)
 \end{align}
 | stem:[ \pi - \alpha] 是第二象限角, tan 在第二象限, 就是负的.
+
+|------
+|------
 
 |\begin{align}
 sin(\pi + \alpha) = - sin (\alpha)
@@ -770,9 +794,95 @@ tan(\pi + \alpha) =  tan (\alpha)
 & = \frac{- sin \alpha}{- cos \alpha} * tan \alpha \\
 & = tan \alpha * tan \alpha = tan^2 \alpha
 \end{align}
+
+|------
+|------
+
+|\begin{align}
+sin(\frac{\pi}{2} - \alpha) = cos \alpha
+\end{align}
+|image:img_math/math_126.svg[350,350]
+
+如图,
+\begin{align}
+& sin(\frac{\pi}{2} - \alpha)
+= \frac{DB}{OB} \\
+\\
+& cos \alpha = \frac{OC}{OB} \\
+& 因为 OC = DB, \\
+& 所以:  sin(\frac{\pi}{2} - \alpha) = cos \alpha
+\end{align}
+
+|\begin{align}
+cos(\frac{\pi}{2} - \alpha) = sin \alpha
+\end{align}
+|如上图,
+
+\begin{align}
+& cos(\frac{\pi}{2} - \alpha)
+= \frac{OD}{OB}
+\\
+& sin \alpha
+= \frac{BC}{OB} \\
+& 因为 OD = BC \\
+& 所以: cos(\frac{\pi}{2} - \alpha) = sin \alpha
+\end{align}
+
+|------
+|------
+
+|\begin{align}
+sin(\frac{\pi}{2} + \alpha) = cos \alpha
+\end{align}
+|\begin{align}
+& (1). k = 1 ,根据"奇变偶不变"原则, 原式的sin 最终要变成 cos. \\
+& (2). 原式 \frac{\pi}{2} + \alpha 是 第2象限角, 原式 sin为正号, 所以最终的式子也是正号. \\
+& 所以, 最终就是: sin(\frac{\pi}{2} + \alpha) = cos \alpha
+\end{align}
+
+|\begin{align}
+cos(\frac{\pi}{2} + \alpha) = - sin \alpha
+\end{align}
+|
+
+|------
+|------
+
+|\begin{align}
+sin(\frac{3 \pi}{2} + \alpha) = - cos \alpha
+\end{align}
+|
+
+|\begin{align}
+cos(\frac{3 \pi}{2} + \alpha) = sin \alpha
+\end{align}
+|
+
+|------
+|------
+
+|\begin{align}
+sin(\frac{3 \pi}{2} - \alpha) = - cos \alpha
+\end{align}
+|
+
+|\begin{align}
+cos(\frac{3 \pi}{2} - \alpha) = - sin \alpha
+\end{align}
+|
 |===
 
-
+.标题
+====
+例如：
+\begin{align}
+& sin 120° = sin (90° + 30°) \\
+& = sin(\frac{\pi}{2} + 30°) <- 因为按弧度制, 一圈 360°是 2\pi, 所以90° 就是 \frac{\pi}{2} \\
+& -> k 为奇数, 最终就变成cos. \\
+& -> 原式 \frac{\pi}{2} + 30° 是 第2象限角, 原式的sin在 第2象限 为正号. 所以最终式子也为正号. \\
+& = cos 30°
+\end{align}
+====
 
 
 
@@ -794,7 +904,7 @@ tan(\pi + \alpha) =  tan (\alpha)
 
 ---
 
-31
+32
 
 
 
