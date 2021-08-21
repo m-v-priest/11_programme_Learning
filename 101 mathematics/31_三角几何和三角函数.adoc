@@ -616,7 +616,7 @@ sin / cos /tan / cot (k *\frac{\pi}{2} \pm \alpha) = ?, \quad 其中 k \in Z
 -  如果参数k 是偶数（的偶数倍），则: 保持与原式相同的函数名。
 
 |符号看象限 ->
-|假设stem:[ \alpha]为锐角，则根据 stem:[ k * \frac{\pi}{2} \pm \alpha] 所在象限，再判断三角比符号:
+|假设stem:[ \alpha]为锐角，则根据 原式的 stem:[ k * \frac{\pi}{2} \pm \alpha] 所在象限，再判断三角比符号:
 
 - 如果原式为负，则最后转换的式子前面要加负号；
 - 如果原式为正，则最后转化的式子的就是正号。
@@ -632,6 +632,46 @@ image:img_math/math_112.png[]
 - 在第三象限内，只有"正切"为正；
 - 在第四象限内，只有"余弦"为正。
 |===
+
+常用诱导公式(部分)如下:
+
+image:img_math/math_127.gif[400,400]
+
+[cols="1a,4a"]
+|===
+|Header 1 |Header 2
+
+|奇变偶不变
+|#*我们观察以上所有公式的左边，有: 2kπ，π，0，π/2。分别是90°(= stem:[ \pi/2]) 的4k倍，2倍，0倍，1倍。*# +
+口诀中的"奇偶" 就是指的这些倍数关系:
+
+- 当它为奇的时候，正弦变余弦，余弦变正弦；
+- 当它为偶的时候则不会发生改变。
+
+比如：
+
+- stem:[ cos（270°- α）=﹣sin α]，其中的270°是90°的奇数倍（3倍），则cos要变成sin。
+- stem:[sin（180° + α）=﹣sin α]，其中的180°是90°的偶数倍（2倍），则sin不需要改变。
+
+|符号看象限
+|我们把 α 看成是一个锐角，看原式中的角度是在第几象限，是正是负. 则最终式子的"正负号"就与此相同。
+
+#*并且可以看到, 无论原式中的 stem:[ \alpha] 前面的符号为正为负, 最终式子中的 stem:[ \alpha] 都为正号.*#
+
+比如：
+
+- stem:[cos（270°-α）=﹣sinα] +
+α为锐角（第一象限角），270°－α为第三象限角，第三象限的余弦（cos）为负，所以等式右边有负号。
+
+- stem:[sin（180°+α）=﹣sinα] +
+α为锐角（第一象限角），180°＋α为第三象限角，第三象限的正弦（sin）为负，所以等式右边有负号。
+|===
+
+
+
+
+
+
 
 有了上述的知识基础，我们就可以化简任意一个三角诱导公式:
 
@@ -880,7 +920,117 @@ cos(\frac{3 \pi}{2} - \alpha) = - sin \alpha
 & = sin(\frac{\pi}{2} + 30°) <- 因为按弧度制, 一圈 360°是 2\pi, 所以90° 就是 \frac{\pi}{2} \\
 & -> k 为奇数, 最终就变成cos. \\
 & -> 原式 \frac{\pi}{2} + 30° 是 第2象限角, 原式的sin在 第2象限 为正号. 所以最终式子也为正号. \\
-& = cos 30°
+& = cos 30° = \frac{\sqrt{3}}{2}
+\end{align}
+====
+
+
+.标题
+====
+例如：
+\begin{align}
+& cos(-\frac{19 \pi}{4}) \\
+& = cos(\frac{19 \pi}{4}) <- 因为 cos 是偶函数, 所以 cos(-x) = cos(x), 即x值是相反数的, 它们的y值相同. 从偶函数的图形上就可以看出来.\\
+& = cos( \frac{16 \pi}{4} + \frac{3\pi}{4}) \\
+& = cos(4 \pi + (\frac{\pi}{2} +\frac{\pi}{4})) <- 化成"诱导公式"的标准式 sin...(k \frac{\pi}{2} + \alpha) \\
+& (1). \frac{\pi}{2}  前的k=1, 奇变偶不变, 所以cos要变成sin \\
+& (2). \frac{\pi}{2} +\frac{\pi}{4} 在 第2象限, cos 是 负号 \\
+& 所以最终 = - sin \frac{\pi}{4}
+= - \frac{\sqrt{2}}{2}
+\end{align}
+====
+
+
+.标题
+====
+例如：
+image:img_math/math_128.png[]
+
+里面 stem:[ 90° 即 = \frac{\pi}{2}]
+====
+
+---
+
+== sin 的性质与图像
+
+image:img_math/math_130.svg[400,400]
+
+上图, 圆的半径 r = 1
+
+[cols="1a,3a"]
+|===
+|stem:[ \alpha] 或 x 是角度 |Header 2
+
+|角x 的"正弦线" ->
+|\begin{align}
+\overrightarrow{MP}
+\end{align}
+
+|f(x) = sin x 的定义域:
+|因为任意角, 都有正弦, 所以 f(x) = sin x 的定义域, 即x 的取值范围, 显然是 stem:[  x \in R]
+
+|f(x) = sin x 的值域:
+|从图中的正弦线可以看出: MP在y值上的高度, 最大也只能是1, 最小是0.  +
+所以, f(x) = sin x 的值域是: [-1, 1]
+
+|f(x) = sin x 的最大值 和 最小值:
+|x是角度. 可以看出:
+
+- 当它的角度是 stem:[ \pi/2]时, y值最大 = 1.
+- 当它的角度是 stem:[ 3\pi/2]时, y值最小 = -1.
+
+所以:
+\begin{align}
+& 当且仅当 x =  2 \pi k +\frac{\pi}{2}, k \in Z 时, 函数 f(x) = sin(x) 有最大值 y_{max} = 1 \\
+& 当且仅当 x =  2\pi k +\frac{3\pi}{2}, k \in Z 时, 函数 f(x) = sin(x) 有最小值 y_{min} = -1
+\end{align}
+
+|y=零点处
+|从图上可以看出, f(x) = sin(x), 要y值为零点, 则x 在stem:[ k *\pi] 处, 即 OP 就处在x坐标轴上.
+
+
+|周期性
+|从图上可知, 圆的一周为 stem:[ 2\pi]角度, 所以当 x角 stem:[ \pm 2\pi] 时, 即进入下一个圆周循环转动, y值就会重复出现.  +
+所以, sin 的最小正周期是 stem:[ 2\pi].  +
+stem:[ 2 \pi k] 都是它的周期.
+
+|单调性
+|image:img_math/math_131.svg[]
+从图上可以看出:
+
+- 当 x角 从stem:[- \pi/2 ] 变到 stem:[ \pi/2] 时, y值是递增的, 从 -1 变到 1
+- 当 x角 从stem:[\pi/2 ] 变到 stem:[ 3\pi/2] 时, y值是递减的, 从 1 变到 -1
+
+|===
+
+.标题
+====
+例如：
+\begin{align}
+& 比较 sin(-\frac{17 \pi}{4}) 和 sin(-\frac{23 \pi}{5}) 的大小 \\
+&   sin(-\frac{17 \pi}{4}) \\
+& = - sin(\frac{17 \pi}{4})  <- sin是奇函数, 所以 sin(-x) = - f(x) \\
+& = - sin( 4 \pi + \frac{ \pi}{4})  \\
+& = - sin( \frac{ \pi}{4})  \\
+& \\
+& sin(-\frac{23 \pi}{5}) \\
+& = - sin(\frac{23 \pi}{5})  <- sin是奇函数 \\
+& = - sin(4 \pi + \frac{3 \pi}{5}) \\
+& = - sin( \frac{3 \pi}{5}) \\
+& = - sin( \pi - \frac{2 \pi}{5}) \\
+& = - sin( 2 \frac{\pi}{2} - \frac{2 \pi}{5}) <- ① k=2, 奇变偶不变, 所以最终依然是 sin. ② \pi - \frac{2 \pi}{5} 在第2象限, sin为正号 \\
+& = - (+sin  \frac{2 \pi}{5})
+\end{align}
+
+又因为 stem:[ f(x) =  sin(x)] 是在定义域stem:[ \[ - \pi/2, \pi/2\]] 内递增的, 且:
+\begin{align}
+- \frac{\pi}{2} < \frac{\pi}{4} < \frac{2\pi}{5} < \frac{\pi}{2}
+\end{align}
+
+所以:
+\begin{align}
+& -\frac{\pi}{4} > -\frac{2\pi}{5} \\
+& sin(-\frac{17 \pi}{4}) > sin(-\frac{23 \pi}{5})
 \end{align}
 ====
 
@@ -894,17 +1044,9 @@ cos(\frac{3 \pi}{2} - \alpha) = - sin \alpha
 
 
 
-
-
-
-
-
-
-
-
 ---
 
-32
+38
 
 
 
