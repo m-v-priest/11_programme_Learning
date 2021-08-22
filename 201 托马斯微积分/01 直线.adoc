@@ -1,0 +1,117 @@
+
+= 直线
+:toc:
+---
+
+== 直线
+
+==== 斜率 -> stem:[  m = \frac{\Delta y}{\Delta x}]
+斜率 slope (数学中用 m 表示):: 每进行单位距离时, 高度的变化称为直线的"斜率".
+
+image:img_thomas_calculus/calculus_001.png[]
+
+\begin{align}
+\boxed{
+m = \frac{升高}{行进的距离} = \frac{\Delta y}{\Delta x} = \frac{y_2 - y_1}{x_2 - x_1}
+}
+\end{align}
+
+- 直线与 x轴的夹角小于90度，斜率为“正”. 正斜率表示匀速增加。
+- 直线与 x轴的夹角大于90度，斜率为“负”. 负斜率表示匀速减 (随着x的增加, y减小)。
+
+---
+
+==== 两条互相垂直的直线的斜率 -> stem:[  m_1 * m_2 = -1]
+
+两条互相垂直的直线 stem:[ L_1 ] 和 stem:[  L_2], 其斜率满足:
+\begin{align}
+m_1 * m_2 = -1
+\end{align}
+
+即: 每个斜率是另一个斜率的"负倒数":
+
+\begin{align}
+m_1 = \frac{1}{m_2}, \\
+m_2 = \frac{1}{m_1}
+\end{align}
+
+论证如下:
+
+image:img_thomas_calculus/calculus_002.png[]
+
+\begin{align}
+& L_1的斜率 m_1 = tan \phi_1 = \frac{a}{h} \\
+& L_2的斜率 m_2 = tan \phi_2 = - \frac{h}{a} \\
+& \therefore m_1 * m_2 = -1
+\end{align}
+
+
+---
+
+==== 直线的方程 : 点斜式 -> stem:[  y =  m(x - x_1) + y_1 ]
+
+只要我们知道两点信息: 1. 直线的斜率, 2. 直线上的任意一点P的坐标 (stem:[ P_1 (x_1, y_1) ]), 就能写出它的方程:
+\begin{align}
+& \because \frac{y - y_1}{x - x_1} = m \\
+& \therefore (y - y_1) = m(x - x_1) \\
+& y =  m(x - x_1) + y_1 <- 即 "点斜式"方程
+\end{align}
+
+点斜式:
+\begin{align}
+\boxed{
+y =  m(x - x_1) + y_1 \\
+m: 是直线的斜率 \\
+(x_1, x_2) : 是直线上的任意一点的坐标
+}
+\end{align}
+
+.标题
+====
+例如： 某直线过点(2,3), 且斜率是 stem:[ - 3/2 ], 该直线方程是什么?
+
+根据点斜式:
+\begin{align}
+& y =  m(x - x_1) + y_1  \\
+& y = -\frac{3}{2}(x-2) + 3 \\
+& y = -\frac{3}{2}x + 6
+\end{align}
+
+image:img_thomas_calculus/calculus_003.png[]
+====
+
+---
+
+== 直线的方程: 斜截式 -> stem:[ y = mx + y轴截距b  ]
+
+
+
+---
+
+
+
+
+
+4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
