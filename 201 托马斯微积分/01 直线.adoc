@@ -121,8 +121,68 @@ Ax +By = C \quad (A和B 不全为0)
 
 ---
 
-==
+== 绝对值函数 -> stem:[ y = |x| ]
 
+\begin{align}
+|x| = \begin{cases}
+-x, \quad x<0 \\
+x, \quad x \ge 0
+\end{cases}
+\end{align}
+
+图像是y轴以上的部分, 因为它是 f(x) = |x|, y值是>0 的.
+
+image:img_thomas_calculus/calculus_004.png[]
+
+可以看出, 绝对值函数是"偶函数", 图像关于y轴对称.
+
+---
+
+==== 绝对值的性质
+
+\begin{align}
+& |-a| = |a| \\
+& |ab| = |a| * |b| \\
+& |\frac{a}{b}| = \frac{|a|}{|b|} \\
+& |a+b| \le |a| + |b| <- 比如: |-2+1| \le |-2| + |1|
+\end{align}
+
+---
+
+== 位移图像 -> y = f(x+水平位移) + 垂直位移
+
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|\begin{align}
+y = f(x) + 垂直位移vertical
+\end{align}
+|- v > 0 : 图像"向上"移位 v 个单位. +
+- v < 0 : 图像"向下"移位 \|v\| 个单位. +
+
+image:img_thomas_calculus/calculus_005.png[300,300]
+
+|\begin{align}
+y = f(x + 水平位移horizontal)
+\end{align}
+|- h > 0 : 图像"向左"移位 h 个单位. +
+- h < 0 : 图像"向右"移位 \|h\| 个单位. +
+
+image:img_thomas_calculus/calculus_006.png[]
+|===
+
+---
+
+== 复合函数 -> stem:[  f(g(x))] <- 其实就是编程中的嵌套函数. 一个函数的输出值, 作为另一个函数的输入值
+
+\begin{align}
+f(g(x)) = (f \circ g)(x)
+\end{align}
+
+---
+
+== 指数函数
 
 
 
@@ -136,7 +196,7 @@ Ax +By = C \quad (A和B 不全为0)
 
 
 
-17
+29
 
 
 

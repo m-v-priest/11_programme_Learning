@@ -274,6 +274,11 @@ A \subsetneqq B \quad (或 B \supsetneqq A)
 
 |\widehat{B}
 
+|复合函数中间的圆圈 +
+\begin{align}
+f \circ  g
+\end{align}
+|\circ
 |===
 
 

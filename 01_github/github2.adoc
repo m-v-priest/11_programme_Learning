@@ -3,6 +3,26 @@
 :toc:
 ---
 
+== 下载时, 如何把远程库强制覆盖掉本地库中的内容?
+
+用 git pull origin master 拉去远程库的文件到本地时, 有时会报错:
+....
+Please commit your changes or stash them before you merge.
+....
+
+解决办法是: 直接完全覆盖本地修改即可:
+....
+git reset --hard
+git pull origin master
+....
+
+
+
+
+
+
+---
+
 == 上传到github时, 如何排除 node_modules目录? -> 创建 .gitignore文件
 
 在项目根目录, 新建一个 .gitignore 文件, 内容如下:
