@@ -82,7 +82,51 @@ image:img_thomas_calculus/calculus_003.png[]
 
 ---
 
-== 直线的方程: 斜截式 -> stem:[ y = mx + y轴截距b  ]
+==== 直线的方程: 斜截式 -> stem:[ y = mx + y轴截距b  ]
+
+斜截式:
+\begin{align}
+\boxed{
+y = mx + b \\
+m: 斜率 \\
+b : 是直线在y轴上的截距
+}
+\end{align}
+
+---
+
+==== 直线的方程: 一般线性方程 -> stem:[Ax +By = C  ]
+
+一般线性方程
+\begin{align}
+\boxed{
+Ax +By = C \quad (A和B 不全为0)
+}
+\end{align}
+
+.标题
+====
+例如： 直线 stem:[ 8x + 5y = 20] 的斜率和 y轴上的截距是多少?
+
+思考: 为了知道该直线的斜率和y轴截距, 我们先把它写成"斜截式" stem:[ y = mx + y轴截距b] :
+
+\begin{align}
+& 8x + 5y = 20 \\
+& 5y = 20 - 8x \\
+& y = -\frac{8}{5}x + 4 <- 斜截式 y = mx + y轴截距b
+\end{align}
+
+所以, 斜率就是 stem:[ m =  -8/5 ], y轴截距 stem:[ b=4]
+====
+
+---
+
+==
+
+
+
+
+
 
 
 
@@ -92,8 +136,7 @@ image:img_thomas_calculus/calculus_003.png[]
 
 
 
-4
-
+17
 
 
 
