@@ -133,6 +133,9 @@ a+b = 0
 \sum_{n}^{i=1}
 ....
 
+|极限 stem:[ \lim_{x \to \infty} ]
+|\lim_{x \to \infty}
+
 |希腊字母 stem:[\Delta ]
 |\Delta
 
