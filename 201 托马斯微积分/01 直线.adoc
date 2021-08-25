@@ -380,8 +380,31 @@ g(f(x)) = \frac{f的Y值}{3} = \frac{3x}{3} = x <- 即输出了 f 的x值
 ====
 
 
-求反函数
+求反函数的步骤: 把原函数的 fn_getY = x... (即输入x, 输出y), 转变成 fn_getX = y...(即输入y, 输出x) 即可.
 
+.标题
+====
+例如： stem:[ y = (\frac{1}{2})x +1 ] 的反函数是什么?
+
+\begin{align}
+& y = (\frac{1}{2})x +1 \\
+& 2y = x + 2 \\
+& x = 2y - 2 <- 这就是反函数形式了
+\end{align}
+
+如果你要把这个函数符合一般习惯, 可以用y 来代表x, 用x来代表y, 写成:
+stem:[ y = 2x -2  ]
+
+所以 stem:[ y = (\frac{1}{2})x +1 ] 的反函数就是 stem:[ f^{-1}(x) = 2x-2 ]
+
+image:img_thomas_calculus/calculus_013.png[]
+
+====
+
+
+---
+
+== 对数函数 -> stem:[ 原指数x = log_{原常数}原Y值 ]
 
 
 
