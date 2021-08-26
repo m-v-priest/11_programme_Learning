@@ -744,15 +744,122 @@ image:img_thomas_calculus/calculus_016.png[]
 
 ---
 
-==== 三角函数的图形变换
+==== 三角函数的图形变换 -> stem:[ f(x) = Y轴震荡幅度 * f(周期 *( x + 水平移位)) + 垂直移位 ]
 
 image:img_thomas_calculus/calculus_019.png[]
 
+.标题
+====
+例如：阿拉斯加某地的全年温度变化, 可由如下正弦函数表示:
 
+\begin{align}
+f(x) = A \sin [\frac{2\pi}{B} (x-C)] + D
+\end{align}
 
+其中:
 
+- |A| : 是幅度
+- |B| : 是周期
+- C : 是水平移位
+- D : 是垂直移位
 
+image:img_thomas_calculus/calculus_020.png[]
 
+====
+
+image:img_thomas_calculus/calculus_021.png[600,600]
+
+---
+
+==== 恒等式
+
+[options="autowidth"]
+|===
+|Header 1 |证明过程
+
+|\begin{align}
+\sin^2 \theta  + cos^2 \theta = 1
+\end{align}
+
+|image:img_thomas_calculus/calculus_022.png[400,400]
+
+从上图可以看出:
+\begin{align}
+\sin^2 \theta  + cos^2 \theta = 1 <- 根据毕达哥拉斯定理
+\end{align}
+
+|\begin{align}
+1 + \tan^2 \theta = \sec^2 \theta \\
+1 + \cot^2 \theta = \csc^2 \theta
+\end{align}
+|Column 2, row 2
+
+|和角公式 :
+\begin{align}
+\sin(A + B) = \sin A \cdot \cos B + \cos A \cdot \sin B \\
+\sin(A - B) = \sin A \cdot \cos B - \cos A \cdot \sin B \\
+\\
+\cos(A + B) = \cos A \cdot \cos B - \sin A \cdot \sin B \\
+\cos(A - B) = \cos A \cdot \cos B + \sin A \cdot \sin B \\
+\end{align}
+|
+
+|二倍角公式 :
+\begin{align}
+\sin 2 \theta & = 2 \cdot \sin \theta \cdot \cos \theta  \\
+\cos 2 \theta & = \cos^2 \theta - sin^2 \theta \\
+& = 1- 2 sin^2 \theta \\
+& = 2 cos^2 \theta -1 \\
+\\
+\tan 2 \theta &= \frac{2 \tan \theta}{1 - \tan^2 \theta} \\
+\cot 2 \theta &= \frac{\cot^2 \theta -1}{2 \cot \theta} \\
+\end{align}
+|
+
+|余弦定理 :
+\begin{align}
+c^2 = a^2 + b^2 - 2ab \cdot \cos \theta
+\end{align}
+
+|image:img_thomas_calculus/calculus_024.svg[400,400]
+
+从上图可知:
+\begin{align}
+据勾股定理, 可知: \\
+& (d+b)^2 + e^2 = c^2 \\
+来求 e : \\
+& \sin \theta = \frac{e}{a} \\
+& e = a \cdot \sin \theta \\
+来求 d : \\
+& \cos \theta = \frac{d}{a} \\
+& d =  a \cdot \cos \theta \\
+所以 B点坐标就是 (d, e), 即 ( a \cos \theta, a  \sin \theta) \\
+根据勾股定理, 有: \\
+& (\|d\|+b)^2 + e^2 = c^2 \\
+& (- a\cos \theta + b)^2 + (a \sin \theta)^2 = c^2 \\
+& a^2 \cos^2 \theta - 2ab \cos \theta  + b^2 + a^2 sin^2 \theta = c^2 \\
+&  a^2 \cos^2 \theta +  a^2 sin^2 \theta  -2ab \cos \theta  + b^2= c^2 \\
+&  a^2 (\cos^2 \theta +  sin^2 \theta) -2ab \cos \theta  + b^2= c^2 <- \cos^2 \theta +  sin^2 \theta = 1 \\
+&  a^2  + b^2 -2ab \cos \theta = c^2 <- 即 余弦定理\\
+\end{align}
+
+上面最后, 我们得到余弦定理是:
+\begin{align}
+a^2  + b^2 -2ab \cos \theta = c^2
+\end{align}
+
+可以看出: 若 stem:[  \theta = \frac{\pi}{2}], 即 90°直角时, stem:[ \cos \theta = 0 ], 于是余弦定理就会变成:
+\begin{align}
+& a^2  + b^2 -2ab \cos \theta = c^2 \\
+& a^2  + b^2 - 2ab * 0  = c^2 <-  \theta 为\frac{\pi}{2} 即 90°直角时 \\
+& 即 a^2  + b^2 = c^2 <- 可见, 余弦定理扩展了毕达哥拉斯定理
+\end{align}
+
+|===
+
+---
+
+==== 反三角函数
 
 
 
@@ -762,7 +869,7 @@ image:img_thomas_calculus/calculus_019.png[]
 
 
 
-54
+57
 
 
 

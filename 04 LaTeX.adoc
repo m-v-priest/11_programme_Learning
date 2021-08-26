@@ -51,6 +51,9 @@ STEM 的意思是: Science , Technology, Engineering, Mathematics 四门学科�
 |乘号 stem:[\times]
 |\times
 
+|乘号 stem:[A \cdot B]
+|A \cdot B
+
 |除号 stem:[\div]
 |\div
 
