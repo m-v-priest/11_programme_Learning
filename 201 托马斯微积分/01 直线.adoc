@@ -182,6 +182,10 @@ f(g(x)) = (f \circ g)(x)
 
 ---
 
+== ----- -----
+
+---
+
 == 指数函数(x在指数上) -> stem:[ f(x) = a^x ] <- 即 常数a 自己乘以自己 x 次
 
 image:img_thomas_calculus/calculus_007.png[]
@@ -397,14 +401,353 @@ stem:[ y = 2x -2  ]
 
 所以 stem:[ y = (\frac{1}{2})x +1 ] 的反函数就是 stem:[ f^{-1}(x) = 2x-2 ]
 
-image:img_thomas_calculus/calculus_013.png[]
+image:img_thomas_calculus/calculus_013.png[350,350]
 
 ====
 
 
 ---
 
-== 对数函数 -> stem:[ 原指数x = log_{原常数}原Y值 ]
+== 对数函数 -> stem:[ 原指数x = log_{原常数a}原Y值 ]
+
+[options="autowidth"]
+|===
+|对数函数|原函数
+
+|\begin{align}
+原指数x = log_{原常数a}原Y值
+\end{align}
+|\begin{align}
+y = a^x
+\end{align}
+
+2+|↑ +
+它们是互为"反函数"的关系, 关于 直线y=x 对称.
+|===
+
+image:img_thomas_calculus/calculus_014.png[300,300]
+
+\begin{align}
+\boxed{
+log_e x => 写作: ln x \\
+log_{10} x => 写作: lg x
+}
+\end{align}
+
+
+
+
+正因为:  stem:[ 原指数x = log_{原常数a}原Y值 ] , 所以就可以得到对数函数的性质:
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|\begin{align}
+& a^{log_a x} = x <-即原Y值 \\
+& (a > 0, a \ne 1, x>0)
+\end{align}
+
+|=> 翻译成原函数就是:
+\begin{align}
+a^{log_{原常数a} 原Y值} = a^{原指数X值} = 原Y值
+\end{align}
+
+|\begin{align}
+& log_a a^x = x <- 原指数X值 \\
+& (a > 0, a \ne 1, x>0)
+\end{align}
+
+|=> 翻译成原函数就是:
+\begin{align}
+log_{原常数a} 原Y值 = 原指数X值
+\end{align}
+
+|\begin{align}
+& e^{\ln x} = x <- 即原Y值 \\
+& (x>0)
+\end{align}
+
+|=> 翻译成原函数就是:
+\begin{align}
+e^{log_e 原Y值} =e^{原指数X值} = 原Y值
+\end{align}
+
+|\begin{align}
+& \ln e^x = x <- 原X值 \\
+& (x>0)
+\end{align}
+
+|=> 翻译成原函数就是:
+\begin{align}
+\log_e e^{原指数X} = log_e 原Y值 = 原X值
+\end{align}
+
+|乘积法则:
+\begin{align}
+& log_a (xy) = log_a x + log_a y \\
+& (x> 0, y>0)
+\end{align}
+|
+
+|商法则:
+\begin{align}
+& log_a(\frac{x}{y}) = log_a x - log_a y \\
+& (x> 0, y>0)
+\end{align}
+|
+
+|幂法则:
+\begin{align}
+& log_a (x^y) = y \log_a x  \\
+& (x> 0, y>0)
+\end{align}
+|
+|===
+
+.标题
+====
+例如：
+\begin{align}
+& \ln x = 3t + 5, 求x:  \\
+& log_e x = 3t+5  <- 即: log_e 原Y值 = 原X值 \\
+& e^{3t+5} = x <- log 的x, 即原函数的Y值
+\end{align}
+====
+
+.标题
+====
+例如：
+\begin{align}
+& e^{2x} = 10, 求x:  \\
+& \ln e^{2x} = \ln 10 <- 两边取对数 \\
+& \log_e e^{2x} = \ln 10 <- 左边即: log_e 原Y值 \\
+& 2x = \ln 10 \\
+& x = \frac{ln 10}{2}
+\end{align}
+====
+
+---
+
+==== "指数函数"和"自然指数函数", 可以互相转换 -> stem:[a^x = e^{x \ln a} ]
+
+每一个"指数函数", 都是"自然指数函数"的幂函数: 即:
+\begin{align}
+\boxed{
+a^x = e^{x \ln a} \\
+<- 即: 原常数^{原指数x} = e^{原指数x * (\ln 原常数)}
+}
+\end{align}
+
+即: #stem:[ a^x], 和 stem:[ e^x]的 stem:[ ln a] 次幂, 是同样的.#
+
+证明其实很简单:
+\begin{align}
+& x = e^{\ln x} <- 因为 e^{log_e x} = x \\
+& a^x = e^{\ln (a^x)} <- 两边用 a^x 来 替换 x \\
+& a^x = e^{x \ln a} \\
+& a^x = e^{(\ln a) x} <- 即, 每一个"指数函数", 都是"自然指数函数"的幂函数
+\end{align}
+
+.标题
+====
+例如： 把指数函数, 转换写成为 e的幂函数:
+
+(1)
+\begin{align}
+2^x = e^{x * ln 2} <- 原常数^{原指数x} = e^{原指数x * (\ln 原常数)}
+\end{align}
+
+(2)
+\begin{align}
+5^{-3x} = e^{-3x * (\ln 5)}
+\end{align}
+====
+
+---
+
+== 每个自然对数函数 stem:[ ln x] , 是对数函数 stem:[ log_a x] 的 stem:[ln a ]倍 -> stem:[ ln x = lon_a x * ln a]
+
+
+[options="autowidth"]
+|===
+|Header 1 |证明过程
+
+|\begin{align}
+\boxed{
+底变换公式(把常数a底, 换成e底) : \\
+ \log_a x = \frac{\ln x}{\ln a} = \frac{\log_e x}{\log_e a} \\
+(a>0, a \ne 1)
+}
+\end{align}
+
+|证明很简单:
+\begin{align}
+& a^{log_a x} = x \\
+& \ln a^{log_a x} = \ln x <- 两边取对数 \\
+& (log_a x)(\ln a) = \ln x <- 等式左边, 是因为根据公式:  \log_a x^y = y \log_a x \\
+& \log_a x = \frac{\ln x}{\ln a}, \quad (a>0, a \ne 1) <- 即"换底公式", 或 "底变换公式"
+\end{align}
+
+|\begin{align}
+\boxed{
+换底公式2 : \\
+log_a Y = \frac{log_c Y}{\log_c a}
+}
+\end{align}
+
+|\begin{align}
+& log_a Y = 原X \\
+& 即原函数是: a^x = y \\
+& a = \sqrt[x]{y} \\
+& log_c a = log_c \sqrt[x]{y} <-两边取对数 \\
+& log_c a = log_c y^{\frac{1}{x}}  \\
+& log_c a = \frac{1}{x} log_c y \\
+& x = \frac{log_c y}{log_c a} \\
+& log_a Y = \frac{log_c y}{log_c a} <- 等号左边因为: 原X =log_a Y
+\end{align}
+|===
+
+.标题
+====
+例如：你本金有 1000美元, 年复利率为 5.25%, 那么要多长时间, 你的本息总额才达到2500美元?
+
+即:
+\begin{align}
+& 1000 * (1+ 5.25\%)^t = 2500 \\
+& 1.0525^t = 2.5 \\
+& ln(1.0525^t) = ln 2.5 <- 两边取对数\\
+& t * ln(1.0525) = ln 2.5 \\
+& t = \frac{ ln 2.5}{ln(1.0525)}
+\approx 17.9 年
+\end{align}
+
+image:img_thomas_calculus/calculus_015.svg[300,300]
+
+====
+
+
+.标题
+====
+例如：
+放射性元素的半衰期, 可用如下公式表示. +
+其中, stem:[ y_0]是一开始所含有的放射性物质的数量, +
+t值 为该元素的半衰期.
+
+\begin{align}
+& y_0 * e^{-kt} = \frac{1}{2} y_0 \\
+&  e^{-kt}  = \frac{1}{2} \\
+& log_e  \frac{1}{2}  = - kt \\
+& t = \frac{ln \frac{1}{2}}{-k} \\
+& t = \frac{ln 2^{-1}} {-k} <- 根据公式 : log_a (x^y) = y \log_a x , 所以 ln 2^{-1} = - ln 2\\
+& 半衰期 t = \frac{ln 2}{k}
+\end{align}
+
+====
+
+---
+
+== ----- -----
+
+---
+
+== 三角函数
+
+==== "弧度"和"角度"之间的换算 -> 一圈 stem:[ 360° = 2 \pi 弧度]
+
+因为 圆的一圈 stem:[ 360° = 2 \pi 弧度], 所以:
+\begin{align}
+1° = \frac{2 \pi 弧度}{360}  = \frac{\pi 弧度}{180}
+\approx 0.02 弧度
+\end{align}
+
+因为
+\begin{align}
+& 360° = 2 \pi 弧度 \\
+& 1弧度 = \frac{360°}{2 \pi} = \frac{180°}{\pi} \approx 57.3°
+\end{align}
+
+所以, 传统的度数, 和弧度数的转换关系就是:
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|\begin{align}
+1° = \frac{\pi 弧度}{180}
+\end{align}
+
+|\begin{align}
+n° = n * \frac{\pi 弧度}{180}
+\end{align}
+
+|\begin{align}
+1弧度 = \frac{180°}{\pi}
+\end{align}
+
+|\begin{align}
+n弧度 = n*  \frac{180°}{\pi}
+\end{align}
+|===
+
+
+---
+
+==== 三角函数的值
+
+image:img_thomas_calculus/calculus_017.png[300,300]
+
+image:img_thomas_calculus/calculus_018.png[]
+
+image:img_thomas_calculus/calculus_019.jpg[]
+
+---
+
+==== 周期 -> 若 stem:[ f(x+p) = f(x)], 则 p 即周期.
+
+周期:: 如果存在正数p, 使得对每个x值, 有 stem:[ f
+(x+p) = f(x)], 即它们的y值相等, 则最小的这样的 p值, 就是 f 的"周期".
+
+image:img_thomas_calculus/calculus_016.png[]
+
+从函数图上可以看出:
+
+[options="autowidth"]
+|===
+|Header 1 |周期 | 即
+
+|sin, cos, sec, csc
+|stem:[ 2 \pi]
+|\begin{align}
+\sin(x + 2\pi) = \sin x \\
+\cos(x + 2\pi) = \cos x \\
+\sec(x + 2\pi) = \sec x \\
+\csc(x + 2\pi) = \csc x
+\end{align}
+
+|tan, cot
+|stem:[  \pi]
+|\begin{align}
+\tan(x+ \pi) = \tan x \\
+\cot(x+ \pi) = \cot x
+\end{align}
+|===
+
+为什么在研究周期性现象(如脑电波, 心跳, 电压电流, 气候和季节)中, 三角函数是如此重要呢? 因为 *#在我们数学建模中用到的每个周期函数, 都可以表达为"sin正弦" 和"cos余弦"的代数组合.# 一旦我们学会了 sin 和 cos 的 微积分, 就能对大多数周期现象的数学表征, 进行建模.*
+
+---
+
+==== 奇偶性
+
+从图上可知, 只有 cos 和 sec 是 偶函数, 关于 y轴对称.
+其他都是奇函数.
+
+---
+
+==== 三角函数的图形变换
+
+image:img_thomas_calculus/calculus_019.png[]
+
 
 
 
@@ -419,7 +762,7 @@ image:img_thomas_calculus/calculus_013.png[]
 
 
 
-38
+54
 
 
 
