@@ -1,305 +1,14 @@
 
+
 =  TeX Live
 :toc:
 
 
 ---
 
+== 官方文档 与 latex 安装
 
-== 数学软件工具
-
-==== geogebra
-
-https://www.geogebra.org/
-
-==== matlab <- 可做方程
-
-
----
-
-== ----- -----
-
-
-
----
-
-== ★ latex 最常用命令 (我都用到的) -> "\stem:[公式]"
-
-符号查询 http://latexlive.com/
-
-asciidoc中, 输入 latex公式:
-
-- 单行用 "\stem:[公式]",
-- 多行用
-....
-\begin{align*}
-多行公式
-...
-\end{align*}
-....
-
-STEM 的意思是: Science , Technology, Engineering, Mathematics 四门学科的首字母的缩写.
-
-
-[options="autowidth" cols="1a,1a"]
-|===
-|Header 1 |Header 2
-
-|消除符号,删除线 stem:[\cancel{x}]
-|\cancel{x}
-
-|乘号 stem:[\times]
-|\times
-
-|乘号 stem:[A \cdot B]
-|A \cdot B
-
-|除号 stem:[\div]
-|\div
-
-|分数 stem:[\frac{1}{2}]
-|\frac{分子}{分母} +
-注意 : \frac命令, 会令分数的高度自动压缩到一行的高度, 如果你想保持分数的数字不被缩小, 可以使用 \dfrac命令
-
-|平方根 stem:[\sqrt{x}]
-|\sqrt{x}
-
-|立方根 stem:[\sqrt[根指数3]{x}]
-|\sqrt[3]{x}
-
-|不等号 ≠
-|\ne
-
-|约等号 stem:[ \approx ]
-|\approx
-
-|同时正负号 stem:[\pm]
-|\pm
-
-| 大于等于 stem:[\ge ]
-|\ge
-
-|绝对值
-|\left 竖线  \right 竖线
-
-|空格
-|\quad
-
-|换行
-|\\ +
-或 +
-\\[行距]   例如：\\[5pt] +
-注意, \\和[尺寸]之间不能有空格!
-
-| 循环小数头上的点号 stem:[\dot{x}]
-| \dot{num}
-
-|因为 stem:[\because]
-|\because
-
-|所以 stem:[\therefore]
-|\therefore
-
-|省略号 stem:[\cdots]
-|\cdots
-
-|多行公式
-|- &符号就是"对齐的位置"
-- \\ 作用是换行
-- markdown中, 同时修改多列, 按 -> Shift+Ctrl 竖列选择
-....
-\begin{align*}
-& 行1 \\
-& 行2 \\
-\end{align*}
-....
-
-|方程组
-|....
-\begin{cases}
-x+y = 22 \\
-a+b = 0
-\end{cases}
-....
-
-|平均数 stem:[\overline{x}]
-|\overline  或 \bar
-....
-\overline{x}
-
-\bar{x}
-....
-
-|累加 stem:[  \sum_{n}^{i=1} ]
-|
-....
-\sum_{n}^{i=1}
-....
-
-|极限 stem:[ \lim_{x \to \infty} ]
-|\lim_{x \to \infty}
-
-|希腊字母 stem:[\Delta ]
-|\Delta
-
-|stem:[\Omega ]
-|\Omega
-
-|水平大括号 -> \underbrace{a,b,c..., n}_{n个数}
-|stem:[ \underbrace{a,b,c..., n}_{n个数}]
-
-|角度 stem:[ \angle ]
-|\angle
-
-|集合中的属于 stem:[\in ]
-|\in
-
-|集合中的不属于 stem:[\notin ]
-|\notin
-
-|星号 stem:[ \ast ]
-| \ast
-
-|空集
-\begin{align}
-\varnothing
-\end{align}
-
-|\varnothing
-
-|包含于 stem:[  \subseteq ]
-| \subseteq <- sub set eq
-
-stem:[A  \subseteq  B ] 读作"A包含于B" (或"B包含A"),  意思是 "A是B的子集".
-
-|包含 stem:[\supseteq ]
-|\supseteq < sup set equate
-
-|不包含于
-\begin{align}
-\nsubseteq
-\end{align}
-|\nsubseteq <- not sub set equate
-
-|不包含
-\begin{align}
-\nsupseteq
-\end{align}
-|\nsupseteq <- not sup set equate
-
-
-|真包含于
-\begin{align}
-\subsetneqq
-\end{align}
-|\subsetneqq <- sub set not equate equate <- 有两条横线, 所以要两个 eq, 即eqq
-
-如果集合A 是集合B 的子集, 并且集合B中 至少有一个元素不属于A, 那么集合A 就称为集合B 的"真子集".
-
-记作:
-\begin{align}
-A \subsetneqq B \quad (或 B \supsetneqq A)
-\end{align}
-
-读作 "A真包含于B" (或 "B真包含A")
-
-|真包含
-\begin{align}
-\supsetneqq
-\end{align}
-|\supsetneqq <- sup set not equate equate
-
-|竖线
-\begin{align}
-\mid
-\end{align}
-|\mid
-
-
-|交集 stem:[ \cap ]
-|\cap <- 帽子
-
-|并集 stem:[ \cup ]
-|\cup <- 杯子
-
-|补集
-\begin{align}
-\complement_UA
-\end{align}
-|\complement_UA  +
-表示集合A 在全集U 中的补集
-
-|全称量词 stem:[ \forall ]
-| \forall
-
-|存在量词 stem:[\exists ]
-|\exists
-
-|命题的否定 stem:[\neg ]
-|\neg
-
-|能推导出结论 stem:[ \Rightarrow  ]
-|\Rightarrow
-
-|推导不出结论
-\begin{align}
-\nRightarrow
-\end{align}
-|\nRightarrow
-
-
-|无穷大 stem:[ \infty ]
-|\infty
-
-|近似值的精度 stem:[ \epsilon ]
-|\epsilon
-
-|\begin{align}
-\log_{2}{8} \\
-\log_{2^{-1}} x
-\end{align}
-|\log_{原常数a}{原Y}  +
-\log_{2}{8} +
-\log_{2^{-1}} x
-
-|\begin{align}
-\lg_8
-\end{align}
-|\lg_原Y
-
-|向量
-\begin{align}
-\overrightarrow{AB}
-\end{align}
-|\overrightarrow{AB}  <- 即 over right arrow
-
-|弧长
-\begin{align}
-\widehat{AB}
-\end{align}
-
-|\widehat{B}
-
-|复合函数中间的圆圈 +
-\begin{align}
-f \circ  g
-\end{align}
-|\circ
-|===
-
-
-
-
-希腊字母
-
-
-
-
-
----
-
-
-== TeX Live 官网
+==== TeX Live 官网
 
 https://tug.org/texlive/
 
@@ -314,6 +23,7 @@ https://tug.org/texlive/
 https://www.daemon-tools.cc/chn/products/dtLite
 
 ---
+
 
 
 ==== iso镜像 安装流程
@@ -348,293 +58,59 @@ pdflatex -v
 
 ---
 
-==== 安装 SumatraPDF
-
-官网
-
-https://www.sumatrapdfreader.org/downloadafter
-
----
 
 ==== jetbrain中 配置 latex (亲测可行)
 
-- 安装插件 TeXiFy IDEA
+[options="autowidth"]
+|===
+|步骤 |Header 2
 
-- 中文支持需要使用 XeLaTeX +
+| 安装插件 TeXiFy IDEA
+|
+
+
+| 中文支持需要使用 XeLaTeX +
 File → Settings → Languages & Frameworks → TeXiFy 进行参数修改
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_05.png[]
 
-image:/img_adoc,md,other/img_LaTeX/LaTeX_05.png[]
-
-- Run菜单 → Edit Configurations → Compiler设为 XeLaTeX
-
+| Run菜单 → Edit Configurations → Compiler设为 XeLaTeX
+|
 image:/img_adoc,md,other/img_LaTeX/LaTeX_06.png[]
 
 image:/img_adoc,md,other/img_LaTeX/LaTeX_07.png[]
 
 
-- 可以新建 tex文件.  +
+| 可以新建 tex文件.  +
 注意: TeX 涉及到的文件（包括 .tex, .jpg 等各类文件）都不要包含中文名字。否则，在编译时可能出错.
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_09.png[]
 
-image:/img_adoc,md,other/img_LaTeX/LaTeX_09.png[]
+| 写好 tex 文件后, 右键 run就行了. 输出的pdf 在 项目的out文件夹下
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_08.png[]
 
-- 写好 tex 文件后, 右键 run就行了. 输出的pdf 在 项目的out文件夹下
+| LaTeX 渲染默认不显示中文, 要显示中文, 需要在tex文件中, 在导言区添加下面一行代码，也就是添加ctex包.
 
-image:/img_adoc,md,other/img_LaTeX/LaTeX_08.png[]
-
-- LaTeX 渲染默认不显示中文, 要显示中文, 需要在tex文件中, 在导言区添加下面一行代码，也就是添加ctex包.
-
-....
 \usepackage{ctex}
-....
 
-image:/img_adoc,md,other/img_LaTeX/LaTeX_10.png[]
+|image:/img_adoc,md,other/img_LaTeX/LaTeX_10.png[]
 
-
-
-
+|===
 
 ---
 
-==== vscode中 配置 latex (有问题)
+==== geogebra 数学绘图软件
 
-- 安装 插件 LaTeX Workshop
-
-- 按 ctrl + shift + A, 输入"json"来查找相关命令.
-- 选 "首选项:打开设置(json)"
-
-image:/img_adoc,md,other/img_LaTeX/LaTeX_03.png[]
-
-- 把下面的代码, 粘贴入 setting.json 文件中.  +
-注意 : json文件中都是键值对, 每个键值对要用逗号","隔开! 别忘了写.
-
-....
-// ======================== LaTeX 设置 BEGIN  ========================
-        // bibtex 格式
-        "latex-workshop.bibtex-format.tab": "tab",
-
-        // 自动编译，全部关闭，当且仅当你认为有需要的时候才会去做编译
-        "latex-workshop.latex.autoBuild.run": "never",
-        "latex-workshop.latex.autoBuild.cleanAndRetry.enabled": false,
-
-        // 设置 latex-workshop 的 PDF　预览程序，external　指的是外部程序
-        "latex-workshop.view.pdf.viewer": "external",
-        "latex-workshop.view.pdf.ref.viewer": "external",
-        "latex-workshop.view.pdf.external.viewer.command": "C:/Users/Administrator/AppData/Local/SumatraPDF/SumatraPDF.exe", // 注意修改路径
-        "latex-workshop.view.pdf.external.viewer.args": [
-            "%PDF%"
-        ],
-
-        // 配置正向、反向搜索：.tex -> .pdf
-        "latex-workshop.view.pdf.external.synctex.command": "C:/Users/Administrator/AppData/Local/SumatraPDF/SumatraPDF.exe", // 注意修改路径
-        "latex-workshop.view.pdf.external.synctex.args": [
-            // 正向搜索
-            "-forward-search",
-            "%TEX%",
-            "%LINE%",
-            "-reuse-instance",
-            // 反向搜索
-            "-inverse-search",
-            "\"C:/Users/Administrator/AppData/Local/Programs/Microsoft VS Code/Code.exe\" \"C:/Users/Administrator/AppData/Local/Programs/Microsoft VS Code/resources/app/out/cli.js\" -gr %f:%l",
-            "%PDF%"
-        ],
-
-        // 这是一些独立的编译选项，可以作为工具被编译方案调用
-        "latex-workshop.latex.tools": [
-            {
-                // Windows 原生安装 TeX Live 2020 的编译选项
-                "name": "Windows XeLaTeX",
-                "command": "xelatex",
-                "args": [
-                    "-synctex=1",
-                    "-interaction=nonstopmode",
-                    "-file-line-error",
-                    "-pdf",
-                    "%DOCFILE%"
-                ]
-            },
-            {
-                // Windows Biber 编译
-                "name": "Windows Biber",
-                "command": "biber",
-                "args": [
-                    "%DOCFILE%"
-                ]
-            },
-            {
-                // WSL XeLaTeX 编译一般的含有中文字符的文档
-                "name": "WSL XeLaTeX",
-                "command": "wsl",
-                "args": [
-                    "/usr/local/texlive/2020/bin/x86_64-linux/xelatex",
-                    "-synctex=1",
-                    "-interaction=nonstopmode",
-                    "-file-line-error",
-                    "-pdf",
-                    //"-output-directory=%OUTDIR%",
-                    //"-aux-directory=%OUTDIR%",
-                    "%DOCFILE%"
-                ]
-            },
-            {
-                // WSL biber / bibtex 编译带有 citation 标记项目的文档
-                "name": "WSL Biber",
-                "command": "wsl",
-                "args": [
-                    "/usr/local/texlive/2020/bin/x86_64-linux/biber",
-                    "%DOCFILE%"
-                ]
-            },
-            {
-                // macOS 或者 Linux 的简单编译
-                // 两种操作系统的操作方式相同
-                "name": "macOS / Linux XeLaTeX",
-                "commmand": "xelatex",
-                "args": [
-                    "-synctex=1",
-                    "-interaction=nonstopmode",
-                    "-file-line-error",
-                    "-pdf",
-                    "%DOCFILE%"
-                ]
-            },
-            {
-                // macOS 或者 Linux 的索引编译
-                // 两种操作系统的操作方式相同
-                "name": "macOS / Linux Biber",
-                "command": "biber",
-                "args": [
-                    "%DOCFILE%"
-                ]
-            }
-        ],
-
-        // 这是一些编译方案，会出现在 GUI 菜单里
-        "latex-workshop.latex.recipes": [
-            {
-                // 1.1 Windows 编译简单的小文档，这个选项不太常用，因为绝大多数文章都需要有参考文献索引
-                "name": "Windows XeLaTeX 简单编译",
-                "tools": [
-                    "Windows XeLaTeX"
-                ]
-            },
-            {
-                // 1.2 Windows 编译带有索引的论文，需要进行四次编译；-> 符号只是一种标记而已，没有程序上的意义
-                "name": "Windows xe->bib->xe->xe 复杂编译",
-                "tools": [
-                    "Windows XeLaTeX",
-                    "Windows Biber",
-                    "Windows XeLaTeX",
-                    "Windows XeLaTeX"
-                ]
-            },
-            {
-                // 2.1  WSL 编译简单的小文档，这个选项不太常用，因为我绝大多数文章都需要有引用。
-                "name": "XeLaTeX 简单编译",
-                "tools": [
-                    "WSL XeLaTeX"
-                ]
-            },
-            {
-                // 2.2 带有 citation 索引的文档，需要进行四次编译；-> 符号只是一种标记而已，没有程序上的意义
-                "name": "xe->bib->xe->xe 复杂编译",
-                "tools": [
-                    "WSL XeLaTeX",
-                    "WSL Biber",
-                    "WSL XeLaTeX",
-                    "WSL XeLaTeX"
-                ]
-            },
-            {
-                // 3.1 macOS 简单 小文档
-                "name": "macOS XeLaTeX 简单编译",
-                "tools": [
-                    "macOS XeLaTeX"
-                ]
-            },
-            {
-                // 3.2 macOS 四次编译
-                "name": "macOS xe->bib->xe->xe 复杂编译",
-                "tools": [
-                    "macOS / Linux XeLaTeX",
-                    "macOS / Linux Biber",
-                    "macOS / Linux XeLaTeX",
-                    "macOS / Linux XeLaTeX"
-                ]
-            }
-        ],
-
-        // 清空中间文件
-        "latex-workshop.latex.clean.fileTypes": [
-            "*.aux",
-            "*.bbl",
-            "*.blg",
-            "*.idx",
-            "*.ind",
-            "*.lof",
-            "*.lot",
-            "*.out",
-            "*.toc",
-            "*.acn",
-            "*.acr",
-            "*.alg",
-            "*.glg",
-            "*.glo",
-            "*.gls",
-            "*.ist",
-            "*.fls",
-            "*.log",
-            "*.fdb_latexmk",
-            "*.bcf",
-            "*.run.xml",
-            "*.synctex.gz"
-        ]
-    // ======================== LaTeX 设置 END ========================
-....
-
-注意: 这段配置代码里, 有3个地方需要我们修改:  前两个是填入你自己的 acrobat pdf 程序的路径地址, 后一个是你自己的 vscode 的程序路径地址.
-image:/img_adoc,md,other/img_LaTeX/LaTeX_04.png[]
-
-- 重启 vscode
-
+https://www.geogebra.org/
 
 ---
 
-==== latex 代码格式化 -> 要安装 latexindent
-
-官网下载
-
-https://github.com/cmhughes/latexindent.pl
-
-https://ctan.org/tex-archive/support/latexindent
-
-
-
-
-
-
-
-
-
-
----
-
-==== 在线 latex编辑器 -> overleaf
-
-https://www.overleaf.com/ +
-qq - t
-
----
-
-== latex 编辑器
-
-==== texstudio
+==== latex 编辑器 : texstudio
 
 官网下载地址 +
 http://texstudio.sourceforge.net/
 
 设置修改:
 
-[cols="1a,3a"]
+[options="autowidth"]
 |===
 |Header 1 |Header 2
 
@@ -658,928 +134,16 @@ image:/img_adoc,md,other/img_LaTeX/LaTeX_19.png[]
 
 |===
 
+---
 
-
-
-==== 在线编辑器 latexlive
+==== latex 在线编辑器 : latexlive
 
 http://latexlive.com/
 
-
-
----
-
-== ----- -----
-
-
----
-
-== tex 文件基本格式的说明
-
-tex文件要保存为 uft-8 编码.
-
-
-....
-\documentclass{article}
-
-% 这里是导言区
-
-\begin{document}
-
-Hello, world!
-
-\end{document}
-....
-
-
-[cols="1a,2a"]
-|===
-|Header 1 |说明
-
-|....
-\documentclass{article}
-....
-|- 以反斜杠 \ 开头的, 叫做"控制序列", 它们不会被渲染.
-- TeX 对控制序列的大小写是敏感的。
-- {} 或 [] 中的是参数.
-
-- 这里的控制序列是 documentclass.它后面紧跟着的 {article} 代表这个控制序列有一个必要的参数，该参数的值为 article。这个控制序列的作用，就是调用名为 article 的文档类.
-- 文档类，即是 TeX 系统预设的（或是用户自定的）一些格式的集合。不同的文档类在输出效果上会有差别。
-
-|注释 : 以 % 开头
-|- 若要输出 % 字符本身，需要在 % 前加上反斜杠 \ 进行转义（escape）。 +
-如:  20\%
-
-
-|从 \documentclass{article} 开始到 \begin{document} 之前的部分, 被称为"导言区"。
-|- 可以将"导言区"理解为是对整篇文档进行设置的区域——在"导言区"出现的控制序列，往往会影响整篇文档的格式。 +
-比如，我们通常在导言区设置页面大小、页眉页脚样式、章节标题样式等等。
-
-- 修改页面边距, 详见下面.
-
-|
-....
-\begin{document}
-...
-\end{document}
-....
-|- 控制序列 begin 总是与 end 成对出现。 +
-这两个控制序列以及他们中间的内容, 被称为"环境"；它们之后的第一个必要参数, 总是一致的，被称为"环境名"。
-- 只有在 document 环境中的内容，才会被渲染.  +
-在 \end{document} 之后插入任何内容都是无效的。
-
-|===
-
----
-
-==== ★ ①命令 -> 以反斜线\开头, ②参数 -> 放在{}内
-
-latex的命令, 以反斜线\ 开头. 有的可以带参数.
-
-命令(宏)的格式为:
-
-[options="autowidth"]
-|===
-|Header 1 |Header 2
-
-|无参数
-|\command
-
-|有n个参数
-|如果命令的参数不止一个字符(不包括空格), 就必须用花括号{}括起来.
-
-\command(arg~1~)(arg~2~)...(arg~n~)
-
-|有可选参数 -> 放中括号[]里面
-|\command[(arg~opt~)](arg~1~)(arg~2~)...(arg~n~)
-|===
-
----
-
-==== ★ 环境
-
-latex 环境(environment)的一般格式是:
-....
-\begin{环境名}
-环境内容
-\end{环境名}
-....
-
-有的环境, 可带"参数"或"可选参数"
-....
-\begin{环境名}[可选参数]其他参数
-环境内容
-\end{环境名}
-....
-
-
-
-
-
----
-
-==== 修改页面边距 -> 使用 geometry 宏包
-
-设置页边距，推荐使用 geometry 宏包
-
-把下面的代码放在 \begin{document} 前面.
-
-比如我希望，将纸张的长度设置为 20cm、宽度设置为 15cm, 左边距 1cm、右边距 2cm、上边距 3cm、下边距 4cm，可以在导言区加上这样几行：
-
-....
-\usepackage{geometry}
-\geometry{papersize={20cm,15cm}}
-\geometry{left=1cm,right=2cm,top=3cm,bottom=4cm}
-
-....
-
-
-又比如 :
-....
-\usepackage{geometry}
-\geometry{a4paper,left=0.5cm,right=0.5cm,top=0.5cm,bottom=0.5cm}
-....
-
-
 ---
 
 
-==== 修改字体大小 -> \documentclass[12pt]{article}
-
-
-[cols="1a,1a" options="autowidth"]
-|===
-|Header 1|
-
-|全局模式 修改字体大小
-|\documentclass[12pt]{article}
-
-|局部模式 修改字体大小
-|设置字体大小的命令, 从小到大为：
-\tiny +
-\scriptsize +
-\footnotesize +
-\small +
-\normalsize +
-\large +
-\Large +
-\LARGE +
-\huge +
-\Huge +
-|===
-
-image:/img_adoc,md,other/img_LaTeX/LaTeX_16.png[]
-
----
-
-==== ★ 支持中文渲染 -> \documentclass [UTF8]{ctexart}
-
-
-....
-\documentclass [UTF8]{ctexart}
-....
-
----
-
-==== ★ 取消首行的缩进 -> \setlength{\parindent}{0pt}
-
-是全局的操作。比如：若放在第一段的段首，则下面所有的段落都会按照这个格式缩进。
-....
-\setlength{\parindent}{0pt}
-....
-
-image:/img_adoc,md,other/img_LaTeX/LaTeX_55.png[]
-
-
----
-
-== ----- -----
-
-
----
-
-
-== ★★ 插入数学公式 -> 最常用的宏包就是 amsmath 宏包
-
-当然, 除了 amsmath 宏包外, 还有其它对数学功能进行扩充的宏包, 比如 mathtools宏包.
-
----
-
-==== 数学公式中输入文本 -> \text{}
-
-[cols="1a,1a" options="autowidth"]
-|===
-|Header 1 |Header 2
-
-|....
-$ y = x^2 (\text{三次函数}) $
-
-$ \sqrt[3]{\text{二次函数}} $
-....
-|image:/img_adoc,md,other/img_LaTeX/LaTeX_44.png[]
-
-|===
-
----
-
-==== 数学公式中插入空格 -> \quad
-
-\quad、1em、em、m 代表当前字体下接近字符‘M’的宽度（approximately the width of an "M" in the current font）.
-
-[cols="1a,1a" options="autowidth"]
-|===
-|Header 1 |Header 2
-
-|....
-$ a \quad b $
-
-$ a \qquad b $
-
-$ a \: b $
-
-$ a \; b $
-
-$ a \, b $
-
-$ ab $
-
-$ a \! b $
-....
-|image:/img_adoc,md,other/img_LaTeX/LaTeX_45.png[]
-
-|===
-
-image:/img_adoc,md,other/img_LaTeX/LaTeX_46.webp[]
-
-
-
-
----
-
-==== 保留字符, 即需要转义的字符 ->  # $ % & ~ _ ^ \ { }
-
-以下几个字符: # $ % & ~ _ ^ \ { } 有特殊意义，需要表示这些字符时，需要转义，即在每个字符前加上\.
-
-
-注意 : 反斜杠\ 的转义要写成: \textbackslash
-
-
-
-
-
----
-
-==== 行内公式 $ ... $, 行间公式 \[ ... \ ]
-asciidoc 中插入 latex 代码 → 用 stem:[] 包围 LaTex 语法.
-
-为了使用 AMS-LaTeX 提供的数学功能，我们需要在导言区加载 amsmath 宏包：
-
-....
-\documentclass{article}
-\usepackage{amsmath} % 载入 amsmath 宏包
-
-
-\begin{document}
-
-$E=mc^2$
-\[E=mc^2\]
-
-
-\end{document}
-....
-
-
-
-[cols="1a,1a" options="autowidth"]
-|===
-|Header 1 |Header 2
-
-|....
-$ ... $
-....
-|可以插入行内公式. +
-行内模式 (inline) 是在前文后, 直接插入公式.
-
-|....
-\[...\]
-....
-|可以插入行间公式. +
-行间模式 (display), 是数学公式独立成行，并自动居中。
-|===
-
-image:/img_adoc,md,other/img_LaTeX/LaTeX_11.png[]
-
----
-
-==== 其实有三种方式, 来输入行间公式
-
-[cols="1a,1a" options="autowidth"]
-|===
-|Header 1 |Header 2
-
-|
-....
-\[ a+b \]
-....
-|行间公式 displayed (常用)
-
-|....
-\( a+b \)
-....
-|命令格式 (不常用)
-
-|....
-\begin{math}
-a+b
-\end{math}
-....
-|环境格式 (不常用)
-|===
-
-image:/img_adoc,md,other/img_LaTeX/LaTeX_20.png[]
-
----
-
-==== 在数学模式中, 使用中英文 -> \text 命令
-
-使用amsmath 宏包, 数学模式中, 不能直接输入英文和中文, 只能输入数学相关的语言符号. 如果你想输入文字, 则要使用 amsmath 提供的 \text 命令. +
-另外, 在数学公式中, 空格(包括单个换行)也是不起作用的.
-
-....
-$ \text{被减数} - \text{减数} = \text{差} $
-....
-
-image:/img_adoc,md,other/img_LaTeX/LaTeX_21.png[]
-
----
-
-==== 不等号 -> \neq, 恒等于 -> \equiv
-
-[cols="1a,1a" options="autowidth"]
-|===
-|Header 1 |Header 2
-
-|....
-$ x \neq y $
-
-$ z \equiv z $
-
-....
-|image:/img_adoc,md,other/img_LaTeX/LaTeX_39.png[]
-
-|===
-
-
-image:/img_adoc,md,other/img_LaTeX/LaTeX_50.webp[]
-
----
-
-==== 上标^ , 下标_
-
-- 上标(一般在原符号的"右上方")，用 ^ 来实现
-- 下标(一般在原符号的"右下方", 有时也在"正上方"和"正下方"), 用 _
-- 它们默认只作用于之后的一个字符，如果想对连续的几个字符起作用，就将这些字符用花括号 {} 括起来.
-
-[cols="1a,1a" options="autowidth"]
-|===
-|源码 |渲染后
-
-|上标
-....
-x^2
-....
-
-....
-z = r\cdot e^{2\pi i}
-....
-|stem:[x^2] +
-
-stem:[z = r\cdot e^{2\pi i}]
-
-|下标
-....
-y_3
-|stem:[y_3]
-
-image:/img_adoc,md,other/img_LaTeX/LaTeX_12.png[]
-
-
-| 上下标可以同时使用, 先写上标或先写下标, 次序并不重要, 两者互不影响.
-....
-$ A_i^k $
-
-$ A^k_i $
-....
-|image:/img_adoc,md,other/img_LaTeX/LaTeX_22.png[]
-
-|嵌套使用上下标时, 则外层一定要使用分组(花括号).
-....
-$ K_{n_i} $
-
-$ K_{n^i} $
-
-
-$ K^{n_i} $
-
-$ K^{n^i} $
-....
-|image:/img_adoc,md,other/img_LaTeX/LaTeX_23.png[]
-
-|连续嵌套
-....
-$ K^{3^{3^{\cdot^{\cdot^{\cdot^3}}}}} $
-....
-|image:/img_adoc,md,other/img_LaTeX/LaTeX_24.png[]
-
-|撇号上标 :
-
-- 撇号'直接就是上标了.
-- 它可以与下标同时使用.
-- 撇号可以连续使用(而普通的上标则不能连续使用)
-- 撇号直接就是上标了, 所以它不能与上标混用
-
-....
-$ a' $
-
-$ a'_0 $
-
-$ a_0' $
-
-$ a_0'' $
-....
-|image:/img_adoc,md,other/img_LaTeX/LaTeX_25.png[]
-
-|===
-
-
-
----
-
-==== 上水平线 -> \overline,  下水平线 -> \underline
-
-[cols="1a,1a" options="autowidth"]
-|===
-|Header 1 |Header 2
-
-|....
-$ \overline{x+y} $
-
-$ \underline{a+b} $
-....
-|image:/img_adoc,md,other/img_LaTeX/LaTeX_38.png[]
-
-|===
-
----
-
-==== 重音符号
-
-[cols="1a,1a" options="autowidth"]
-|===
-|Header 1 |Header 2
-
-|....
-$ \hat{x} $
-
-$ \bar{x} $
-
-$ \tilde{x} $
-....
-|image:/img_adoc,md,other/img_LaTeX/LaTeX_40.png[]
-
-|===
-
-
----
-
-==== 开方, 根式(square root) -> \sqrt{} , 分式(fraction) -> \frac{分子}{分母}
-
-
-[cols="1a,1a" options="autowidth"]
-|===
-|Header 1 |Header 2
-
-|....
-\sqrt{x}
-
-\frac{1}{2}
-....
-|image:/img_adoc,md,other/img_LaTeX/LaTeX_13.png[]
-
-|===
-
-但你会发现, 行内公式, 和行间公式, 分式的渲染字体大小, 不同.
-
-但你可以用 :
-
-- \dfrac{分子}{分母} : 把字号设置为"独立公式"中的大小；
-- \tfrac{分子}{分母} : 把字号设置为"行间公式"中的大小。
-
-....
-aaa  $\frac{1}{2}$ bbb
-%行内渲染
-
-\[ \frac{1}{2}. \]
-%行间渲染
-
-$ \dfrac{1}{2}. $
-%用 \dfrac, 来强制将"行内模式"分式的字体大小, 同"行间模式"保持一致.
-
-\[ \tfrac{1}{2}. \]
-%用 \tfrac, 可将"行间模式"的字体大小, 强制同"行内模式"保持一致.
-....
-
-image:/img_adoc,md,other/img_LaTeX/LaTeX_14.png[]
-
-[cols="1a,1a" options="autowidth"]
-|===
-|Header 1 |Header 2
-
-|\sqrt[开方次数，默认为2]{开方公式}
-
-....
-$ \sqrt[3]{x+y} $
-....
-|image:/img_adoc,md,other/img_LaTeX/LaTeX_43.png[]
-
-|===
-
-
-
----
-
-==== 繁分式(complex fraction) -> \cfrac
-
-- 分数用 \frac{分子}{分母} 表示
-- \cfrac{分子}{分母} 用于连分数表示 (这样相较于\frac不会产生字体自动缩小的问题)
-
-image:/img_adoc,md,other/img_LaTeX/LaTeX_15.png[]
-
----
-==== 让括号自动大小 -> 用\left( 和 \right) 括起来.
-
-自动模式下要用 \left 和 \right 命令后面跟上所需分隔符，用来创建自动匹配高度的 (圆括号)，[方括号] 和 {花括号} 等分隔符.
-
-....
-$ f(x,y,z) = 3y^2z (3+\frac{7x+5}{1+y^2}) $
-
-
-$ f(x,y,z) = 3y^2z \left( 3+\frac{7x+5}{1+y^2} \right) $
-
-$ f(x,y,z) = 3y^2z \left[ 3+\frac{7x+5}{1+y^2} \right] $
-
-$ f(x,y,z) = 3y^2z \left\{ 3+\frac{7x+5}{1+y^2} \right\} $
-% 注意: 大括号需要转义 \{ , \}
-....
-
-image:/img_adoc,md,other/img_LaTeX/LaTeX_52.png[]
-
-
-
-....
-$ f([
-\frac{1+\{x,y\}}
-{(\frac{x}{y} + \frac{y}{x})(u+1)}
-+a
-]^\frac{3}{2}
-) $
-
-
-
-$ f\left(
-\left[
-\frac{1+\{x,y\}}
-{\left(\frac{x}{y} + \frac{y}{x}\right)(u+1)}
-+a
-\right]^\frac{3}{2} \right) $
-% 要让括号适应每一层的大小, 就需要每一层都用上 \left 和 \right
-....
-
-image:/img_adoc,md,other/img_LaTeX/LaTeX_54.png[]
-
-
-
-
----
-
-==== 极限 -> \lim
-
-[cols="1a,1a" options="autowidth"]
-|===
-|Header 1 |Header 2
-
-|....
-$ \lim_{x \to \infty} x^2_22 $
-
-$ \lim_{x \to \infty} x^2_{22} $
-....
-|image:/img_adoc,md,other/img_LaTeX/LaTeX_26.png[]
-
-|要让 lim的下标在正下方, 可以用  \lim\limits
-....
-$ \lim\limits_{x \to 0} \frac{a^x}{b+c} $
-
-$ \lim_{x \to 0} \frac{a^x}{b+c} $
-....
-|image:/img_adoc,md,other/img_LaTeX/LaTeX_34.png[]
-
-|===
-
----
-
-==== 求和 ->  \sum
-
-[cols="1a,1a" options="autowidth"]
-|===
-|Header 1 |Header 2
-
-|....
-$ \sum_{n=1}^{20} n^{2} $
-....
-|image:/img_adoc,md,other/img_LaTeX/LaTeX_28.png[]
-
-|===
-
-
----
-
-==== 积分(integral) -> \int
-
-[cols="1a,1a" options="autowidth"]
-|===
-|Header 1 |Header 2
-
-|....
-$ \int_{1}^{5}x\mathrm{d}x $
-
-$ \int_{1}^{5}xdx $
-....
-|image:/img_adoc,md,other/img_LaTeX/LaTeX_27.png[]
-
-|===
-
-
-\mathrm{...} +
-可以将括号内的字母, 由数学斜体变为正体. +
-比如微分符号d、二项式系数C、等于号上的def、自然常数e、虚数单位i，一般打这些特殊符号的时候, 会将这些字母写在 \mathrm{...} 中，而不是直接打这个字母本身.
-
----
-
-==== 乘积(product) -> \prod
-
-[cols="1a,1a" options="autowidth"]
-|===
-|Header 1 |Header 2
-
-|....
-$ \prod_{j=1}^{3} y_{j} $
-....
-|image:/img_adoc,md,other/img_LaTeX/LaTeX_29.png[]
-
-|===
-
-
----
-
-==== 省略号(...) -> \ldots点位于基线上，\cdots点设置为居中，\vdots使其垂直，\ddots对角线排列
-
-[cols="1a,1a" options="autowidth"]
-|===
-|Header 1 |Header 2
-
-|基线上 -> \ldots
-|Column 2, row 1
-
-|居中 -> \cdots
-|Column 2, row 2
-
-|垂直 -> \vdots
-|Column 2, row 3
-
-|对角线 -> \ddots +
-....
-diagonal (a.)斜线的；对角线的
-=> dia-, 穿过。-gon, 弯，角
-....
-
-....
-$ x_1,x_2,\ldots,x_5 $
-
-$ x_1,x_2,\cdots,x_5 $
-
-$ x_1,x_2,\vdots,x_5 $
-
-$ x_1,x_2,\ddots,x_5 $
-....
-|image:/img_adoc,md,other/img_LaTeX/LaTeX_30.png[]
-|===
-
----
-
-==== ★ 水平大括号 -> \underbrace{a,b,c..., n}_{n个数}
-
-命令\overbrace 和\underbrace 在表达式的上、下方给出一水平的大括号。
-
-....
-\underbrace{x_1,x_2,x_3..., x_n}_{n个}
-% 水平大括号在下方
-
-\overbrace{...}^{n个}
-% 水平大括号在上方
-....
-
-image:/img_adoc,md,other/img_LaTeX/LaTeX_56.png[]
-
-
-
----
-
-==== 矩阵 -> \begin{bmatrix}
-
-采用矩阵"环境", 实现矩阵排列. 常用的矩阵环境有 matrix、bmatrix、vmatrix、pmatrix ，其区别为在于外面的括号不同：
-
-下列代码中，&用于分隔列，\用于分隔行. +
-即 : 采用“&”分割各个对齐单元，使用“\\”换行。
-
-[cols="1a,1a" options="autowidth"]
-|===
-|Header 1 |Header 2
-
-|....
-$ \begin{matrix}
-	a & b \\
-	c & d
-\end{matrix} $
-
-
-$ \begin{bmatrix}
-	a & b \\
-	c & d
-\end{bmatrix} $
-
-
-$ \begin{vmatrix}
-	a & b \\
-	c & d
-\end{vmatrix} $
-
-
-$ \begin{pmatrix}
-	a & b \\
-	c & d
-\end{pmatrix} $
-....
-|image:/img_adoc,md,other/img_LaTeX/LaTeX_31.png[]
-
-|....
-$ \begin{bmatrix}
-	1 & 2 & \cdots \\
-	3 & 4 & \cdots \\
-	\vdots & \vdots & \ddots \\
-\end{bmatrix} $
-....
-|image:/img_adoc,md,other/img_LaTeX/LaTeX_32.png[]
-
-|===
-
----
-
-==== 向量(vector quantity) -> \vec 表示向量，\overrightarrow 表示箭头向右的向量，\overleftarrow 表示箭头向左的向量
-
-[cols="1a,1a" options="autowidth"]
-|===
-|Header 1 |Header 2
-
-|....
-$ \vec{a} $
-
-$ \overleftarrow{AB} $
-
-$ \overrightarrow{DE} $
-....
-|image:/img_adoc,md,other/img_LaTeX/LaTeX_37.png[]
-
-|===
-
-
-
----
-
-==== 公式组合 ->通 过cases环境实, 现公式的组合
-
-- &分隔公式和条件，
-- 还可以通过 \lim\limits,  来让x→0 位于lim的正下方, 而非默认在lim符号的右下方显示.
-
-....
-\[
-D(x) = \begin{cases}
-	\lim\limits_{x \to 0} \frac{a^x}{b+c}, & x<3 \\
-	\pi, & x=3 \\
-	\int_a^{3b} x_{ij} + e^2dx , & x>3 \\
-\end{cases}
-\]
-....
-
-image:/img_adoc,md,other/img_LaTeX/LaTeX_35.png[]
-
----
-
-==== 拆分单个公式 -> 通过split环境
-
-....
-\[
-\begin{split}
-	\cos 2x & = \cos^{2}x - \sin^{2}x \\
-	& = 2 \cos^{2}x -1
-\end{split}
-\]
-....
-
-image:/img_adoc,md,other/img_LaTeX/LaTeX_36.png[]
-
----
-
-==== 其他符号
-
-==== 角∠ 的符号 -> \angle
-
-stem:[ \angle ]
-
-==== 角度度数的符号° -> 通过上标输入 ^\circ
-
-stem:[ 90^\circ ]
-
-====  π -> \pi
-stem:[ \pi ]
-
-==== 反斜杠\ -> \textbackslash
-
-image:/img_adoc,md,other/img_LaTeX/LaTeX_41.png[]
-
-image:/img_adoc,md,other/img_LaTeX/LaTeX_51.webp[]
-
-image:/img_adoc,md,other/img_LaTeX/LaTeX_48.webp[]
-
-image:/img_adoc,md,other/img_LaTeX/LaTeX_49.webp[]
-
-
-
-
-+
----
-
-==== ★ 希腊字母 -> \读音
-
-通过反斜杠\ 加上其字母读音实现. +
-读音首字母大写, 即可输入其大写形式.
-
-[cols="1a,1a" options="autowidth"]
-|===
-|Header 1 |Header 2
-
-|....
-$
-\alpha \\
-\beta \\
-\gamma \\
-\delta \\
-\epsilon \\
-\varepsilon \\
-\zeta \\
-\eta \\
-\theta \\
-\vartheta \\
-$
-....
-|image:/img_adoc,md,other/img_LaTeX/LaTeX_33.png[]
-
-|===
-
-image:/img_adoc,md,other/img_LaTeX/LaTeX_47.webp[]
-
----
-
-==== 给公式加个边框 -> \boxed{}
-
-[cols="1a,1a" options="autowidth"]
-|===
-|Header 1 |Header 2
-
-|....
-$ \boxed{E=mc^2} $
-....
-|image:/img_adoc,md,other/img_LaTeX/LaTeX_42.png[]
-
-|===
-
-
----
-
-== ----- -----
-
----
-
-== TeX 家族介绍
+==== TeX 家族介绍
 
 
 [cols="1a,1a"]
@@ -1629,16 +193,1398 @@ $ \boxed{E=mc^2} $
 
 ---
 
-== TeX Live , MiKTeX (->CTeX )
+==== ---- TeX Live , MiKTeX (->CTeX )
 
 这些都是被称为「发行」的软件合集。他们包括了上述各种引擎的可执行程序，以及一些文档类、模板、字体文件、辅助程序等等。
 
 
+
 ---
 
-226
+== ----- -----
 
-https://www.jianshu.com/p/22117d964baf
+== latex 页面编辑相关
 
-https://www.cnblogs.com/bubcs/p/12736151.html
+==== tex 文件的基本格式
+
+....
+\documentclass{article}
+
+% 这里是导言区
+
+\begin{document}
+Hello, world!
+\end{document}
+....
+
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|参数
+|\documentclass 后面跟着一个参数 article.  +
+该句代码的意思是: documentclass 调用了名为 article 的文档类(或环境).
+
+|导言区
+|从 \documentclass{article} 开始到 \begin{document} 之前的部分, 被称为"导言区"。  +
+可以在"导言区"中对文档进行设置, 如: 页面大小、页眉页脚样式、章节标题样式等等。
+
+|环境
+|- 控制序列 begin 总是与 end 成对出现。 +
+这两个控制序列, 以及他们中间的内容, 被称为"环境"； +
+它们之后的第一个必要参数(写在 大括号{}中), 总是一致的，被称为"环境名"。 如, 下面的 "document" 就是环境名.
+
+....
+\begin{document}
+...
+\end{document}
+....
+
+- 只有在 document 环境中的内容，才会被渲染.
+- 在 \end{document} 之后插入任何内容都是无效的。
+|===
+
+---
+
+==== 修改页面边距 -> 使用 geometry 宏包
+
+要设置页边距，推荐使用 geometry 宏包
+
+把下面的代码放在 \begin{document} 前面, 即写在"导言区"中.
+
+....
+\usepackage{geometry}
+\geometry{papersize={20cm,15cm}}
+\geometry{left=1cm,right=2cm,top=3cm,bottom=4cm}
+....
+意思是: 将纸张的长度设置为 20cm、宽度设置为 15cm, 左边距 1cm、右边距 2cm、上边距 3cm、下边距 4cm.
+
+或
+....
+\usepackage{geometry}
+\geometry{a4paper,left=0.5cm,right=0.5cm,top=0.5cm,bottom=0.5cm}
+....
+
+
+
+---
+
+==== 修改字体大小 -> \documentclass[12pt]{article}
+
+[cols="1a,1a" options="autowidth"]
+|===
+|Header 1|
+
+|全局模式 修改字体大小
+|\documentclass[12pt]{article}
+
+|局部模式 修改字体大小
+|设置字体大小的命令, 从小到大为：
+
+\tiny +
+\scriptsize +
+\footnotesize +
+\small +
+\normalsize +
+\large +
+\Large +
+\LARGE +
+\huge +
+\Huge +
+|===
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_16.png[]
+
+---
+
+==== 取消首行的缩进 -> \setlength{\parindent}{0pt} <- 放在导言区中
+
+是全局的操作。比如：若放在第一段的段首，则下面所有的段落都会按照这个格式缩进。
+....
+\setlength{\parindent}{0pt}
+....
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_55.png[]
+
+---
+
+
+====  支持中文渲染 -> \documentclass [UTF8]{ctexart}
+
+....
+\documentclass [UTF8]{ctexart}
+....
+
+
+---
+
+==== 插入数学公式 ->  amsmath, mathtools 宏包
+
+为了使用 AMS-LaTeX 提供的数学功能，我们需要在导言区加载 amsmath 宏包：
+
+....
+\documentclass{article}
+\usepackage{amsmath} % 载入 amsmath 宏包
+
+\begin{document}
+$E=mc^2$
+\[E=mc^2\]
+\end{document}
+....
+
+---
+
+==== 在数学公式中输入文本 -> \text{}
+
+使用amsmath 宏包, 数学模式中, 不能直接输入英文和中文. 如果你想输入文字, 则要使用 amsmath 提供的 \text 命令.
+
+[options="autowidth"]
+|===
+|效果 |写法
+
+|\begin{align}
+y = x^2 (\text{三次函数})
+\end{align}
+|y = x^2 (\text{三次函数})
+
+注意: 在 asciidoc 的latex环境中, 可以直接输入中文, 没必要使用 \text{} 命令.
+
+|===
+
+
+
+---
+
+== ----- -----
+
+---
+
+== latex 框架基础知识
+
+==== 命令 → 以反斜线\开头
+
+命令中的大括号 {}, 能标识命令的作用范围, 表示这是一个整体.
+
+
+
+---
+
+==== 命令中的参数 -> 必选参数放在 大括号{}中, 可选参数放在 中括号 [] 中
+
+- 无参数的命令: 主要是以
+....
+\command
+....
+的形式输入，例如 \hline
+
+- 有n个参数命令： 主要是以
+....
+\command{parameter 1}{parameter 2}⋯
+{parameter n}
+....
+的形式输入，例如 \begin{equation}。
+
+
+- 有可选参数的命令：主要是以
+....
+\command[arg] {parameter 1}{parameter 2}⋯
+{parameter n}
+....
+的形式输入，例如:
+....
+\sqrt[n]{x^2 + y^2}
+
+\documentclass[UTF8]{article}
+....
+中括号[]是可选参数，大括号{}是必选参数。
+
+
+---
+
+==== 环境
+
+环境:: 由下面内容组成的代码块, 就称为一个"环境.
+....
+\begin{环境名}
+...
+\end{环境名}
+....
+
+- 环境的作用 : 能用来控制里面内容的对齐方式.
+- 环境可以嵌套.
+
+
+---
+
+==== 注释 -> %
+
+注释 : 以 % 开头.
+
+若要输出 % 字符本身，需要在 % 前加上反斜杠 \ 进行转义（escape）。 +
+如:  20\%
+
+
+---
+
+==== 对齐 -> 用 &
+
+&符号用来表明"对齐的位置".
+
+---
+
+==== 文本对齐 : 居中 ->  \begin{gather}
+
+多行居中对齐, 就将内容写在 \\{gather} ... \end{gather} 里面.
+
+....
+\begin{gather}
+aaa \\
+bbb bb\\
+c\\
+ddddddddd\\
+\end{gather}
+....
+
+效果
+
+\begin{gather}
+aaa \\
+bbb bb\\
+c\\
+ddddddddd\\
+\end{gather}
+
+
+
+---
+
+==== 空格 \; 或 \quad, 换行 \\
+
+[options="autowidth"]
+|===
+|效果 |写法
+
+|\begin{align}
+A \, B
+\end{align}
+|\, <- 空格
+
+|\begin{align}
+A \: B
+\end{align}
+|\: <- 空格
+
+|\begin{align}
+A \; B
+\end{align}
+|\; <- 空格
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_57.png[]
+
+|\begin{align}
+A \quad B
+\end{align}
+|\quad <- 空格
+
+\quad、1em、em、m 代表当前字体下接近字符‘M’的宽度（approximately the width of an "M" in the current font）
+
+|\begin{align}
+A \qquad B
+\end{align}
+|\qquad <- 空格
+
+
+|\begin{align}
+A \\
+B
+\end{align}
+|\\ <- 换行 +
+\\[行距] <- 还可以加上行距, 该可选参数, 写在中括号[] 中.
+
+\begin{align}
+A \\[5pt]
+B
+\end{align}
+
+注意, \\和[尺寸] 之间不能有空格!
+|===
+
+
+---
+
+==== asciidoc中, 输入 latex公式
+
+- 行内公式, 单行公式的写法:
+....
+\stem:[公式内容]
+....
+
+STEM 的意思是 : Science , Technology, Engineering, Mathematics 四门学科的首字母的缩写.
+
+
+- 多行公式的写法:
+....
+\begin{align*}
+公式1
+公式2
+公式...
+\end{align*}
+....
+
+
+注意区别:
+
+[options="autowidth"]
+|===
+|Header 1 |行内公式的写法 |行间公式的写法
+
+|asciidoc中
+|\stem:[公式内容]
+| 反斜杠begin{align}
+...
+\end{align}
+
+|传统latex编辑器中
+|$ ... $
+|反斜杠[ ... \]
+
+其实有三种方式, 来输入行间公式:
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_20.png[]
+|===
+
+
+---
+
+==== 给公式加个边框 -> \boxed{}
+
+[options="autowidth"]
+|===
+|Header 1 |效果
+
+|\boxed{E=mc^2}
+|\begin{align}
+\boxed{E=mc^2}
+\end{align}
+|===
+
+---
+
+==== 给公式手动编号 -> \tag{你的编号}
+
+....
+\begin{align}
+aaa \tag{1} \\
+bbbbbb \tag{1.1} \\
+cc \tag{2}
+\end{align}
+....
+
+效果
+\begin{align}
+aaa \tag{1} \\
+bbbbbb \tag{1.1} \\
+cc \tag{2}
+\end{align}
+
+---
+
+==== 把一个很长的单个公式, 拆分成两行 ->  通过split环境
+
+....
+\begin{align}
+\begin{split}
+	\cos 2x & = \cos^{2}x - \sin^{2}x \\
+	& = 2 \cos^{2}x -1
+\end{split}
+\end{align}
+....
+
+效果
+
+\begin{align}
+\begin{split}
+	\cos 2x & = \cos^{2}x - \sin^{2}x \\
+	& = 2 \cos^{2}x -1
+\end{split}
+\end{align}
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_36.png[]
+
+---
+
+
+== ----- -----
+
+---
+
+== 数学公式 : 括号类
+
+==== 让括号自动调整大小 -> 用\left 和 \right 括起来.
+
+比较下面 在使用了\left左括号, 和 \right右括号, 后的显示效果.
+
+[options="autowidth"]
+|===
+|效果 |写法
+
+|\begin{align}
+(3+\frac{7x+5}{1+y^2})
+\end{align}
+|(3+\frac{7x+5}{1+y^2})
+
+|\begin{align}
+\left( 3+\frac{7x+5}{1+y^2} \right)
+\end{align}
+|\left( 3+\frac{7x+5}{1+y^2} \right)
+
+|\begin{align}
+3 + \left[ \frac{7x+5}{1+y^2} \right]
+\end{align}
+|3 + \left[ \frac{7x+5}{1+y^2} \right]
+
+
+|\begin{align}
+3 + \left \{ \frac{7x+5}{1+y^2} \right \}
+\end{align}
+|3 + \left\{ \frac{7x+5}{1+y^2} \right\}
+
+注意: 让大括号也自动调整大小时, 大括号{} 需要转义, 即写成: \{ 和 \}
+
+
+|\begin{align}
+f \left(
+\left[
+\frac{1+\{x,y\}}
+{\left(\frac{x}{y} + \frac{y}{x}\right) (u+1)}
++a
+\right]^\frac{3}{2}
+\right)
+\end{align}
+|
+f \left(
+\left[
+\frac{1+\{x,y\}}
+{\left(\frac{x}{y} + \frac{y}{x}\right) (u+1)}
++a
+\right]^\frac{3}{2}
+\right)
+
+要让括号适应每一层的大小, 就需要每一层都用上 \left 和 \right
+
+
+|===
+
+
+
+
+---
+
+==== 方程组, 分段函数 -> \begin{cases}
+
+把方程组的内容, 写在 \begin{cases} 环境里
+....
+\begin{cases}
+x+y = 22 \\
+a+b = 0
+\end{cases}
+....
+
+效果
+
+\begin{cases}
+x+y = 22 \\
+a+b = 0
+\end{cases}
+
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_35.png[]
+
+
+---
+
+==== 矩阵 -> \begin{bmatrix}
+
+需要使用到矩阵"环境", 来实现矩阵排列.
+
+常用的矩阵环境有 matrix、bmatrix、vmatrix、pmatrix ，其区别为在于外面的括号不同：
+
+[options="autowidth"]
+|===
+|效果 |写在下面的环境中
+
+
+|\begin{align}
+\begin{matrix}
+x_1 & x_2 & \dots \\
+x_3 & x_4 & \dots \\
+\vdots & \vdots  & \ddots \\
+\end{matrix}
+\end{align}
+|
+
+|\begin{pmatrix}
+a & b \\
+c & d \\
+\end{pmatrix}
+|\begin{pmatrix}
+
+|\begin{bmatrix}
+a & b \\
+c & d \\
+\end{bmatrix}
+|\begin{bmatrix}
+
+|\begin{Bmatrix}
+a & b \\
+c & d \\
+\end{Bmatrix}
+|\begin{Bmatrix}
+
+|\begin{vmatrix}
+a & b \\
+c & d \\
+\end{vmatrix}
+|\begin{vmatrix}
+
+|\begin{Vmatrix}
+a & b \\
+c & d \\
+\end{Vmatrix}
+|\begin{Vmatrix}
+|===
+
+---
+
+==== ---- 在矩阵内部, 画横线或竖线 -> 要用 array 环境
+
+array 环境, 它提供了列对齐的参数, 有三种:
+
+- 左对齐为 l (left),
+- 居中对齐为 c (center),
+- 右对齐为 r (right)
+
+不同的列, 用 & 分隔,  +
+行用 \\ 分隔 +
+
+它还能在矩阵中画横线或竖线:
+
+- 画竖线: 用 | 表示
+- 画横线: \hline (horizontal  line)
+
+如:
+
+.标题
+====
+例如 : 列左对齐
+....
+\begin{array}{llll|l}
+a & b & c & d & e \\
+a & b & c & d & e \\
+a & b & c & d & e \\
+a & b & c & d & e \\
+\end{array}
+....
+
+效果
+\begin{array}{llll|l}
+a & b & c & d & e \\
+a & b & c & d & e \\
+a & b & c & d & e \\
+a & b & c & d & e \\
+\end{array}
+====
+
+.标题
+====
+例如：列居中对齐, 加竖线, 加横线:
+....
+\begin{align}
+\left[
+\begin{array}{cc|ccc}
+a & b & c & d & e \\
+a & b & c & d & e \\  \hline
+a & b & c & d & e \\
+a & b & c & d & e \\
+\end{array}
+\right]
+\end{align}
+....
+
+效果
+
+\begin{align}
+\left[
+\begin{array}{cc|ccc}
+a & b & c & d & e \\
+a & b & c & d & e \\  \hline
+a & b & c & d & e \\
+a & b & c & d & e \\
+\end{array}
+\right]
+\end{align}
+
+- 上面用了 \left[ 和 \right] , 它们的作用是包裹住括号内最大内容的大小. +
+- 另外可以看到, "环境"可以嵌套. 本例中, "align环境" 嵌套了 "array环境".
+====
+
+
+.标题
+====
+例如：列右对齐, 加竖线, 加横线:
+....
+\begin{align}
+(A,B) =
+\left(
+\begin{array}{r|rrrr}
+a & b & c & d & e \\
+a & b & c & d & e \\
+a & b & c & d & e \\ \hline
+a & b & c & d & e \\
+\end{array}
+\right)_{m \times n}
+\end{align}
+....
+
+效果
+
+\begin{align}
+(A,B) =
+\left(
+\begin{array}{r|rrrr}
+a & b & c & d & e \\
+a & b & c & d & e \\
+a & b & c & d & e \\ \hline
+a & b & c & d & e \\
+\end{array}
+\right)_{m \times n}
+\end{align}
+====
+
+
+---
+
+== ----- -----
+
+---
+
+
+== 数学公式 : 上下标类
+
+==== ★ 在上方或下方, 加上你自己的文字说明 -> \overset{上}{中},  \underset{下}{中}
+
+
+使用 \overset{上}{中}, 和 \underset{下}{中} 命令, 可以将前一个括号中的内容, 置于后一个括号的上方或下方.
+
+[options="autowidth"]
+|===
+|效果 |写法
+
+|\begin{align}
+\overset{我的说明}{abcdefg} \\
+\end{align}
+|\overset{我的说明}{abcdefg}
+
+|\begin{align}
+\underset{我的说明}{abcdefg} \\
+\end{align}
+|\underset{我的说明}{abcdefg}
+
+|===
+
+
+---
+
+==== 上标^ , 下标_
+
+[options="autowidth"]
+|===
+|Header 1 |效果
+
+|e^{2\pi i}
+|\begin{align}
+e^{2\pi i}
+\end{align}
+
+| K^ {n^i}
+|\begin{align}
+K^ {n^i}
+\end{align}
+
+| K_{n_i}
+|\begin{align}
+K_{n_i}
+\end{align}
+
+| K^ {3^ {3^ {\cdot^ {\cdot^ {\cdot^3}}}}}
+|\begin{align}
+K^ {3^ {3^ {\cdot^ {\cdot^ {\cdot^3}}}}}
+\end{align}
+|===
+
+
+- 上标^ 和下标_ , 它们默认只作用于之后的一个字符，如果想对连续的几个字符起作用，就将这些字符用花括号 {} 括起来. +
+- 上下标可以同时使用, 先写上标或先写下标, 次序并不重要, 两者互不影响.
+- 嵌套使用上下标时, 则外层一定要使用分组(用花括号).
+
+
+---
+
+==== 对数函数 -> \log_{下标} 上标
+
+[options="autowidth"]
+|===
+|Header 1 |效果
+
+|\log_{原常数a}{原Y}
+|\begin{align}
+\log_{原常数a}{原Y}
+\end{align}
+|===
+
+---
+
+==== 开根号 -> \sqrt[根指数]{被开方的内容}
+
+[options="autowidth"]
+|===
+|Header 1 |效果
+
+|\sqrt{x}
+|\begin{align}
+\sqrt{x}
+\end{align}
+
+|\sqrt[3]{x}
+|\begin{align}
+\sqrt[3]{x+y}
+\end{align}
+|===
+
+---
+
+==== 极限 -> \lim_{x \to \infty} 或 \lim\limits{}
+
+[options="autowidth"  cols="1a,1a"]
+|===
+|效果 |写法
+
+|\begin{align}
+ \lim_{x \to \infty}
+\end{align}
+| \lim_{x \to \infty}
+
+- \infty : 无穷大
+
+|\begin{align}
+\lim\limits_{x \to 0} \frac{a^x}{b+c}
+\end{align}
+|\lim\limits_{x \to 0} \frac{a^x}{b+c}
+
+用了  \lim\limits 后, 能让 lim的下标在正下方.
+
+|===
+
+---
+
+==== 累加 ->  \sum_{n}^{i=1}
+
+[options="autowidth"]
+|===
+|Header 1 |效果
+
+| \sum_{n}^{i=1}
+|\begin{align}
+ \sum_{n}^{i=1} \\
+\sum_{n=1}^{20} n^{2}
+\end{align}
+|===
+
+
+---
+
+==== 积分(integral) -> \int
+
+[options="autowidth"]
+|===
+|效果 |写法
+
+
+|\begin{align}
+\int_{1}^{5}x d x
+\end{align}
+|\int_{1}^{5}x d x
+
+
+|\begin{align}
+\int_{1}^{5}x \mathrm{d} x
+\end{align}
+
+|\int_{1}^{5}x \mathrm{d} x
+
+\mathrm{...} +
+可以将括号内的字母, 由数学斜体变为正体. +
+比如微分符号d、二项式系数C、等于号上的def、自然常数e、虚数单位i，一般在打这些特殊符号的时候, 会将这些字母写在 \mathrm{...} 中，而不是直接打这个字母本身.
+
+|===
+
+---
+
+==== 乘积(product) -> \prod{}
+
+[options="autowidth"]
+|===
+|效果 |写法
+
+|\begin{align}
+\prod_{j=1}^{3} y_{j}
+\end{align}
+|\prod_{j=1}^{3} y_{j}
+
+|===
+
+
+---
+
+==== 向量(vector)(有方向的线段) -> \overrightarrow{AB}
+
+- \vec 表示向量，
+- \overleftarrow 表示箭头向左的向量 (over left arrow)
+- \overrightarrow 表示箭头向右的向量 (over right arrow)
+
+[options="autowidth"]
+|===
+|效果 |写法
+
+|\begin{align}
+\vec{a}
+\end{align}
+|\vec{a}
+
+|\begin{align}
+\overleftarrow{AB}
+\end{align}
+|\overleftarrow{AB}
+
+|\begin{align}
+\overrightarrow{AB}
+\end{align}
+| \overrightarrow{AB}
+|===
+
+
+---
+
+==== 水平大括号 -> 下方 \underbrace{a,b,c..., n}_{n个数}; 上方 \overbrace{...}
+
+[options="autowidth"]
+|===
+|Header 1 |效果
+
+|\underbrace{a,b,c..., n}_{n个数}
+|\begin{align}
+\underbrace{a,b,c..., n}_{n个数}
+\end{align}
+
+|\overbrace{a,b,c..., n}_{n个数}
+|\begin{align}
+\overbrace{a,b,c..., n}_{n个数}
+\end{align}
+|===
+
+---
+
+==== 上水平线 -> \overline,  下水平线 -> \underline
+
+[options="autowidth"]
+|===
+|Header 1 |效果
+
+|\overline{x+y}
+|\begin{align}
+\overline{x+y}
+\end{align}
+
+|\underline{x+y}
+|\begin{align}
+\underline{x+y}
+\end{align}
+|===
+
+
+---
+
+==== 弧长 -> \widehat{AB}
+
+[options="autowidth"]
+|===
+|Header 1 |效果
+
+|\widehat{AB}
+|\begin{align}
+\widehat{AB}
+\end{align}
+|===
+
+---
+
+==== 平均数 -> \overline{x} 或 \bar{x}
+
+[options="autowidth"]
+|===
+|Header 1 |效果
+
+|\overline{x}
+|\begin{align}
+\overline{x}
+\end{align}
+
+|\bar{x}
+|\begin{align}
+\bar{x}
+\end{align}
+|===
+
+---
+
+==== 重音符号
+
+[options="autowidth"]
+|===
+|Header 1 |效果
+
+|\hat{x}
+|\begin{align}
+\hat{x}
+\end{align}
+
+|\bar{x}
+|\begin{align}
+\bar{x}
+\end{align}
+
+|\tilde{x}
+|\begin{align}
+\tilde{x}
+\end{align}
+
+|===
+
+---
+
+==== 循环小数头上的点号 -> \dot{num}
+
+[options="autowidth"]
+|===
+|Header 1 |效果
+
+|\dot{num}
+|\begin{align}
+\dot{3}
+\end{align}
+|===
+
+---
+
+== ----- -----
+
+---
+
+== 分数类
+
+==== 分式 -> \frac{分子}{分母}
+
+[options="autowidth"]
+|===
+|效果 |写法
+
+|\begin{align}
+\frac{1}{2}
+\end{align}
+|\frac{1}{2}
+
+|\begin{align}
+\frac{\frac{4ac}{b^2}}{2}
+\end{align}
+|\frac{\frac{4ac}{b^2}}{2}
+
+注意 : \frac命令, 会令分数的高度自动压缩到一行的高度, 如果你想保持分数的数字不被缩小, 可以使用 \dfrac命令.
+
+|\begin{align}
+\frac{\dfrac{4ac}{b^2}}{2}
+\end{align}
+|\frac{\dfrac{4ac}{b^2}}{2} +
+<- 用 \dfrac, 来强制将"行内模式"分式的字体大小, 同"行间模式"保持一致.
+|===
+
+
+---
+
+==== 繁分式(complex fraction) -> \cfrac {分子}{分母}
+
+注意下面使用 原始的 \frac 和 \cfrac 的效果区别: 使用 \cfrac 后, 分式上不会产生 字体自动缩小的问题)
+
+[options="autowidth"]
+|===
+|效果 |写法
+
+|\begin{align}
+\frac{1}{\sqrt{2} +
+    \frac{1}{\sqrt{2} +
+        \frac{1}{\sqrt{2} + \dotsb }
+    }
+}
+\end{align}
+
+|
+\frac{1}{\sqrt{2} +
+    \frac{1}{\sqrt{2} +
+        \frac{1}{\sqrt{2} + \dotsb }
+    }
+}
+
+|\begin{align}
+\cfrac{1}{\sqrt{2} +
+    \cfrac{1}{\sqrt{2} +
+        \cfrac{1}{\sqrt{2} + \dotsb }
+    }
+}
+\end{align}
+
+|
+\cfrac{1}{\sqrt{2} +
+    \cfrac{1}{\sqrt{2} +
+        \cfrac{1}{\sqrt{2} + \dotsb }
+    }
+}
+
+|===
+
+---
+
+== ----- -----
+
+== 数学 : 单个符号
+
+==== 需要转义的字符  ->   # $ % & ~ _ ^ \ { }
+
+要打出 # $ % & ~ _ ^ \ { } 的原始字符时, 需要转义, 即在每个字符前加上\.
+
+[options="autowidth"]
+|===
+|效果 |写法
+
+|\begin{align}
+\backslash
+\end{align}
+|\backslash
+
+|===
+
+
+
+---
+
+
+==== 省略号 \cdots, 竖线 \mid, 波浪符号 \thicksim
+
+
+[options="autowidth"]
+|===
+|效果 |写法
+
+|\begin{align}
+a, b, \cdots, d
+\end{align}
+|\cdots <- 省略号(居中)
+
+
+|\begin{align}
+a, b, \ldots, d
+\end{align}
+|\ldots <- 省略号(基线上)
+
+|\begin{align}
+a, b, \vdots, d
+\end{align}
+|\vdots <- 省略号(垂直)
+
+|\begin{align}
+a, b, \ddots, d
+\end{align}
+|\ddots <- 省略号(对角线)
+
+diagonal (a.)斜线的；对角线的
+=> dia-, 穿过。-gon, 弯，角
+
+|\begin{align}
+\mid
+\end{align}
+|\mid <- 竖线
+
+
+|\begin{align}
+\thicksim
+\end{align}
+|\thicksim <- 波浪线符号
+
+|stem:[\cancel{x}]
+|\cancel{x} <- 删除线. 只对行内公式有效果.
+
+|===
+
+
+
+
+---
+
+==== 加减 \pm, 乘 \cdot, 除 \div, 绝对值 \left| ... \right|
+
+[options="autowidth"]
+|===
+|效果 |写法
+
+|\begin{align}
+\pm
+\end{align}
+|\pm +
+同时正负号
+
+|\begin{align}
+\mp
+\end{align}
+|\mp +
+同时负正号
+
+|\begin{align}
+\times
+\end{align}
+|\times
+
+|\begin{align}
+A \cdot B
+\end{align}
+|A \cdot B
+
+|\begin{align}
+\div
+\end{align}
+|\div
+
+|\begin{align}
+\left\| x \right \|
+\end{align}
+|\left 竖线 x \right 竖线
+
+|===
+
+
+---
+
+==== 约等号 \approx, 不等号 \ne, 大于等于 \ge, 小于等于号 \le
+
+[options="autowidth"]
+|===
+|效果 |写法
+
+|\begin{align}
+\approx
+\end{align}
+|\approx
+
+|\begin{align}
+\ne
+\end{align}
+|\ne
+
+
+|\begin{align}
+\neq
+\end{align}
+|\neq
+
+
+|\begin{align}
+\ge
+\end{align}
+|\ge
+
+
+|\begin{align}
+\le
+\end{align}
+|\le
+|===
+
+---
+
+==== 集合 : 属于 \in, 不属于 \notin, 包含 \supseteq, 包含于 \subseteq, 交集 \cap, 并集 \cup, 补集 \complement_UA, 空集 \varnothing,
+
+[options="autowidth"]
+|===
+|效果 |写法
+
+|\begin{align}
+\in
+\end{align}
+|\in
+
+
+|\begin{align}
+\notin
+\end{align}
+|\notin
+
+
+|\begin{align}
+\supseteq
+\end{align}
+|\supseteq  <- 包含 sup set equate
+
+
+|\begin{align}
+\subseteq
+\end{align}
+|\subseteq <- 包含于 sub set eq
+
+|\begin{align}
+\nsupseteq
+\end{align}
+|\nsupseteq <- 不包含 not suP set equate
+
+|\begin{align}
+\nsubseteq
+\end{align}
+|\nsubseteq <- 不包含于 not suB set equate
+
+
+|\begin{align}
+\supsetneqq
+\end{align}
+|\supsetneqq <- 真包含 suP set not equate equate <- 有两条横线, 所以要两个 eq, 即eqq
+
+
+|\begin{align}
+\subsetneqq
+\end{align}
+|\subsetneqq <- 真包含于 suB set not equate equate <- 有两条横线, 所以要两个 eq, 即eqq
+
+如果集合A 是集合B 的子集, 并且集合B中 至少有一个元素不属于A, 那么集合A 就称为集合B 的"真子集".
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_60.jpg[150,150]
+
+记作:
+\begin{align}
+A \subsetneqq B \quad (或 B \supsetneqq A)
+\end{align}
+
+读作 "A真包含于B" (或 "B真包含A")
+
+
+|\begin{align}
+\cap
+\end{align}
+|\cap <- 交集 (cap 帽子)
+
+|\begin{align}
+\cup
+\end{align}
+|\cup <- 并集 (cup 杯子)
+
+|\begin{align}
+\complement_UA
+\end{align}
+|\complement_UA <- 补集. 表示集合A 在全集U 中的补集
+
+image:/img_adoc,md,other/img_LaTeX/LaTeX_61.png[200,200]
+
+|\begin{align}
+\varnothing
+\end{align}
+|\varnothing <- 空集
+
+|===
+
+---
+
+==== 逻辑 : 全称量词  \forall, 存在量词 \exists, 命题的否定 \neg, 能推导出结论 \Rightarrow,  推导不出结论 \nRightarrow, 因为 \because, 所以 \therefore,
+
+[options="autowidth"]
+|===
+|效果 |写法
+
+|\begin{align}
+ \forall
+\end{align}
+| \forall <- 全称量词
+
+|\begin{align}
+\exists
+\end{align}
+|\exists <- 存在量词
+
+|\begin{align}
+\neg
+\end{align}
+| \neg <- 命题的否定
+
+|\begin{align}
+\Rightarrow
+\end{align}
+| \Rightarrow <- 能推导出结论
+
+|\begin{align}
+\nRightarrow
+\end{align}
+| \nRightarrow <- 推导不出结论
+
+|\begin{align}
+\because
+\end{align}
+| \because <- 因为
+
+|\begin{align}
+\therefore
+\end{align}
+|\therefore <- 所以
+|===
+
+---
+
+==== 角度
+
+[options="autowidth"]
+|===
+|效果 |写法
+
+|\begin{align}
+\angle
+\end{align}
+|\angle
+
+|\begin{align}
+90^\circ
+\end{align}
+|90^\circ
+
+
+|===
+
+---
+
+==== 函数 : 复合函数 \circ,
+
+[options="autowidth"]
+|===
+|效果 |写法
+
+|\begin{align}
+f \circ  g
+\end{align}
+|\circ <- 复合函数中间的圆圈
+
+|===
+
+
+---
 
