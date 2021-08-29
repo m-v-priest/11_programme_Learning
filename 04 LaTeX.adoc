@@ -613,6 +613,20 @@ image:/img_adoc,md,other/img_LaTeX/LaTeX_36.png[]
 
 ---
 
+==== 删除线 -> \not{a}
+
+
+|===
+|效果 |写法
+
+|\begin{align}
+\not{a} 
+\end{align}
+|\not{a} <- 只对第一个字符生效
+|===
+
+
+---
 
 == ----- -----
 

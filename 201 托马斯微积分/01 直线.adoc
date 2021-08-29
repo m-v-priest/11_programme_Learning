@@ -861,7 +861,121 @@ a^2  + b^2 -2ab \cos \theta = c^2
 
 ==== 反三角函数
 
+==== ---- 反正弦函数 stem:[ arcsin x]
+
 反函数和原函数的图像, 关于直线 stem:[ y=x] 对称。
+
+6个基本三角函数(sin, cos, tan, cot, sec, csc)中, 没有一个是一对一的, 这些函数都没有反函数. 但是, 如果限制其定义域, 就会产生一个有反函数的形函数.
+
+受到限制定义域的 sin函数 的反函数, 叫做 "反sin函数". +
+x 的 反sin函数, 就是在 stem:[ \[\frac{- \pi}{2}, \frac{\pi}{2}\] ] 中的角度. +
+反正弦函数, 就记作: stem:[ sin^{-1} x ] 或 stem:[ arcsin x].
+
+image:img_thomas_calculus/calculus_025.svg[500,500]
+
+image:img_thomas_calculus/calculus_026.jpg[500,500]
+
+即:
+
+[options="autowidth"  cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|正弦函数
+|
+\begin{align}
+y = \sin x, \quad (x \in [ \frac{- \pi}{2}, \frac{\pi}{2} ])
+\end{align}
+
+|反正弦函数
+|
+\begin{align}
+& x = \sin y , \quad (x \in [ -1, 1]) \\
+& 或 y = \arcsin x
+\end{align}
+
+- 定义域:stem:[ -1,1 ]
+- 值域 : stem:[  \[ \frac{- \pi}{2}, \frac{\pi}{2} \] ]
+|===
+
+---
+
+==== 6个基本的反三角函数 Inverse trigonometric function 的 定义域和值域
+
+同样, 可以通过限制其他基本三角函数的"定义域", 来产生它们的反函数.
+
+[options="autowidth"]
+|===
+||反三角函数 |定义域 |值域
+
+|arcsinx
+|stem:[ y = \sin^{-1} x ]
+
+image:img_thomas_calculus/calculus_028.svg[500,500]
+
+|stem:[ -1 \leq x \leq 1 ]
+|stem:[ - \frac{\pi}{2} \leq y \leq \frac{\pi}{2} ]
+
+|arccosx
+|stem:[ y = cos^{-1} x ]
+
+image:img_thomas_calculus/calculus_029.svg[500,500]
+
+|stem:[ -1 \le x \leq 1 ]
+|stem:[ 0 \le y \leq \pi ]
+
+|arctanx
+|stem:[ y = tan^{-1} x ]
+
+image:img_thomas_calculus/calculus_030.svg[500,500]
+
+|stem:[ -\infty < x < \infty ]
+|stem:[ - \frac{\pi}{2} < y < \frac{\pi}{2}]
+
+|arccotx
+|stem:[ y = cot^{-1} x = \frac{\pi}{2} - tan^{-1} x ]
+
+image:img_thomas_calculus/calculus_031.svg[500,500]
+
+|stem:[ -\infty < x < \infty ]
+|stem:[ 0 < y < \pi]
+
+|arcsecx
+|stem:[ y = sec^{-1} x = cos^{-1} (\frac{1}{x})]
+
+image:img_thomas_calculus/calculus_032.svg[500,500]
+
+
+|stem:[\|x\| \ge 1] +
+也即: +
+stem:[ (-\infty, -1\] \cup \[1, +\infty) ]
+|stem:[ 0 \le y \le \pi, \quad y \ne \frac{\pi}{2}] +
+也即: +
+stem:[ \[0, \pi/2 ) \cup (\pi/2, \pi\]  ]
+
+|arccscx
+|stem:[ y = csc^{-1} x = sin^{-1}(\frac{1}{x})]
+
+image:img_thomas_calculus/calculus_033.svg[500,500]
+
+
+|stem:[\|x\| \ge 1] +
+也即: +
+stem:[ (-\infty, -1\] \cup \[1, +\infty) ]
+|stem:[ - \pi/2 \le y \le \pi/2, \quad y \ne 0] +
+也即 +
+stem:[ \[-pi/2, 0) \cup (0, \pi/2\] ]
+|===
+
+image:img_thomas_calculus/calculus_027.jpg[600,600]
+
+---
+
+==== 6个反三角函数的常用值
+
+反三角函数与原函数的 定义域和值域, 正好对调, 所以 原函数的圆的半径 r = 1,.
+
+
 
 
 
@@ -871,4 +985,22 @@ a^2  + b^2 -2ab \cos \theta = c^2
 
 
 
-57
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+59
