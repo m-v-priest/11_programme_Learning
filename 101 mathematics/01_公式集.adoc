@@ -1,0 +1,222 @@
+
+= 公式集
+:toc:
+
+---
+
+== 整式 (公式)
+
+\begin{align}
+a^0 & =1 \\
+a^{-n} & = \frac{1}{a^n} \quad (a  \ne  0) \\
+\\
+ a^m * a^n & = a^{m+n} \\
+\frac{a^m} {a^n} & = a^{m-n} \\
+\\
+( a^m )^n & = a^{m * n} \\
+\\
+(ab)^n & = a^n * b^n  (n 是正整数) \\
+ (\frac{a}{b})^n & = \frac{a^n} {b^n} \\
+\end{align}
+
+
+---
+
+== 分式 (公式)
+
+\begin{align}
+\frac{a}{b} * \frac{c}{d} & = \frac{ac}{bd} \\
+ \frac{a}{b} \div \frac{c}{d} & =\frac{a}{b} * \frac{d}{c} = \frac{ad}{bc}  \\
+ (\frac{a}{b})^n & = \frac{a^n} {b^n} \\
+\\
+\frac{a}{c} \pm \frac{b}{c} & = \frac{a \pm b}{c} \\
+\frac{a}{b} \pm \frac{c}{d} & = \frac{ad}{bd} \pm \frac{bc}{bd}= \frac{ad \pm bc}{bd}  \\
+\end{align}
+
+---
+
+
+== 开方 (公式)
+
+\begin{align}
+\sqrt{a} * \sqrt{b} & = \sqrt{ab} \quad(a \ge 0, b \ge 0) \\
+\frac{\sqrt{a}}{\sqrt{b}} & = \sqrt{\frac{a}{b}} \quad(a \ge 0, b > 0) \\
+\end{align}
+
+
+---
+
+== 因式分解 -> 把一个多项式, 化成几个整式的"积"的形式
+
+\begin{align}
+ a^2- b^2 & = (a+b)(a-b) \\
+ a^2+ 2ab + b^2 & = (a+b)^2 \\
+a^2 - 2ab + b^2 & = (a-b)^2 \\
+x^2 + x(p+q) + pq & = (x+p)(x+q) \\
+\end{align}
+
+---
+
+== ----- -----
+
+---
+
+==  函数的平均变化率 : 斜率 stem:[ \frac{\Delta y} {\Delta x} = \frac{f(x_2) - f(x_1)} {x_2 - x_1}]
+
+\begin{align}
+\frac{\Delta y} {\Delta x}  & = 斜率 k \\
+\Delta y & = k \Delta x <- 即: 自变量每增大一个单位时, 因变量会增大k个单位.
+\end{align}
+
+---
+
+== 函数的奇偶性 : ① 奇函数: stem:[  f(-x)= - f(x) ], ② 偶函数: stem:[  f(-x) = f(x)  ]
+
+[options="autowidth"]
+|===
+|Header 1 |满足 |图像的对称性
+
+|奇函数
+|stem:[  f(-x)= - f(x)]
+|图像关于"原点"对称
+
+image:img_math/math_65.png[]
+
+|偶函数
+|stem:[  f(-x) = f(x)]
+|图像关于"y轴"对称
+
+image:img_math/math_64.png[]
+|===
+
+
+== ----- -----
+
+---
+
+== 正比例函数 (是经过原点的直线) -> y = kx
+
+- k : 比例系数
+
+
+---
+
+== 一次函数(直线) -> stem:[ f(x)=kx+b]（k，b是常数，k≠0）
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|斜率
+|k
+
+|图形与y轴的截距
+|b
+|===
+
+---
+
+== ----- -----
+
+---
+
+== 一元二次函数(抛物线) : 一般式 -> stem:[ y = ax^2 + bx + c ]
+
+\begin{align}
+\boxed{
+ y = ax^2 + bx + c \quad（a≠0; a, b, c为常数)
+}
+\end{align}
+
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|顶点
+|stem:[ (-\frac{b}{2a},  \frac{4ac - b^2} {4a} ) ]
+
+|对称轴
+|stem:[ x = -\frac{b}{2a} ]. +
+-> 当 b=0 时，抛物线的对称轴是y轴.
+
+image:img_math/math_29.png[]
+
+|图像开口方向
+|a: 控制图像开口方向. 当 a > 0 , 图像开口向上; a<0 时, 开口向下. +
+-> \|a\|越小，则抛物线的开口越大 +
+-> \|a\|越大，则抛物线的开口越小
+
+|抛物线与y轴的交点
+|抛物线与y轴交于 点(0, c）
+
+|抛物线与x轴交点的个数
+| 由stem:[ \Delta ]来判定: stem:[ \Delta = b^2 - 4ac]
+
+'''
+-> 当 stem:[ \Delta>0 ]时，抛物线与x轴有 2个交点。 即 : +
+
+stem:[ x_1 = \frac{-b+\sqrt{b^2-4ac}}{2a}] +
+stem:[ x_2= \frac{-b-\sqrt{b^2-4ac}}{2a} ]
+
+'''
+-> 当 stem:[ \Delta =0 ]时，抛物线与x轴有 1个交点。 即 有两个相等的实数根 : +
+stem:[ x_1= x_2 = -\frac{b}{2a} ]
+
+'''
+-> 当 stem:[ \Delta<0 ]时，抛物线与x轴 没有交点。即 无实数根.
+|===
+
+
+---
+
+
+== 一元二次函数 : 顶点式 -> stem:[y=a(x - horizontal)^2 + vertical ]
+
+\begin{align}
+\boxed{
+ y=a(x - horizontal)^2 + vertical
+}
+\end{align}
+
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|图像开口方向
+|a: 控制图像开口方向.  +
+-> 当 a > 0 , 图像开口向上;  +
+-> a < 0 时, 开口向下.
+
+|顶点
+| (horizontal, vertical)
+
+- stem:[ h = -
+frac{b}{2a}]
+
+- stem:[ k =
+frac{4ac - b^2}{4a}]
+
+|函数图像的对称轴
+| x = horizontal
+|===
+
+---
+
+== 一元二次函数 : 交点式 -> stem:[ y=a(x - x_1)(x- x_2)]
+
+函数图像与x轴, 相交于stem:[(x_1, 0) ] 和stem:[(x_2, 0) ]  两点。
+
+---
+
+== 一元二次函数的配方法: -> stem:[ y = ax^2 + bx + c = a (x + \frac{b}{2a})^2 + \frac{4ac - b^2} {4a} ]
+
+---
+
+== ----- -----
+
+---
+
+== 次数大于4 的多项式方程, 不存在通用的求根公式
+
+
+
