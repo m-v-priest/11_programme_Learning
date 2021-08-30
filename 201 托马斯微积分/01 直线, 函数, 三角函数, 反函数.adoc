@@ -971,15 +971,86 @@ image:img_thomas_calculus/calculus_027.jpg[600,600]
 
 ---
 
-==== 6个反三角函数的常用值
+==== 6个反三角函数的常用值 -> ① 原三角函数, 是输入弧度角, 输出两个边长的比例; ② 其反三角函数, 是输入两个边长的比例, 输出弧度角的角度.
 
-反三角函数与原函数的 定义域和值域, 正好对调, 所以 原函数的圆的半径 r = 1,.
+反三角函数与原函数的 定义域和值域, 正好对调, 所以:
+
+[options="autowidth"]
+|===
+|Header 1 |定义域 x |值域 y
+
+|原函数
+|弧度角
+|该弧度角的 sin/ cos /tan /cot 等值
+
+|其反函数
+|该弧度角的 sin/ cos /tan /cot 等值
+|弧度角
+|===
+
+image:img_thomas_calculus/calculus_034.png[]
 
 
+.标题
+====
+例如： 某飞机从芝加哥, 飞往圣路易斯. 在中途发现偏离行线12英里. 那么它要转向多少度(即 ∠a + ∠b), 才能对准目的地?
 
+image:img_thomas_calculus/calculus_035.png[]
 
+思考: 原三角函数, 是输入弧度角, 输出两个边长的比例;  其反三角函数, 是输入两个边长的比例, 输出弧度角的角度. 所以我们只要来算这里面三角函数的"反函数", 就能得到 ∠a 和 ∠b 的弧度角了.
 
+\begin{align}
+& ∠a = \sin^{-1}\frac{12}{180} \approx 0.067弧度 \approx 3.8° \\
+& ∠b = \sin^{-1}\frac{12}{62} \approx 0.195弧度 \approx 11.2° \\
+& ∠c = ∠a + ∠b \approx 15°
+\end{align}
 
+====
+
+---
+
+==== 与 sin 和 arcsin 有关的恒等式
+
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|arcsin
+|arcsin 的图像是关于原点对称的, 所以是奇函数. 即:
+\begin{align}
+\sin^{-1}(-x) = - \sin^{-1} x
+\end{align}
+
+image:img_thomas_calculus/calculus_034.svg[300,300]
+
+|arccos
+|arccos 的图像没有对称性, 但是我们从图上可以看出:
+
+\begin{align}
+cos^{-1} x + cos^{-1} (-x) = \pi  \\
+<- 反三角函数输出的是弧度角 \\
+或 cos^{-1} (-x) = \pi - cos^{-1} x  \\
+\end{align}
+
+image:img_thomas_calculus/calculus_036.png[300,300]
+
+image:img_thomas_calculus/calculus_035.svg[300,300]
+
+\begin{align}
+cos^{-1} 1 + cos^{-1} (-1) = 0+ \pi  = \pi
+\end{align}
+
+'''
+
+image:img_thomas_calculus/calculus_037.png[300,300]
+
+而且, 我们从上图还可以看出 : 对于 x >0, 有:
+\begin{align}
+sin^{-1} x + cos^{-1} x = 90° = \frac{\pi}{2} \\
+<- 反函数输出的值, 是弧度角
+\end{align}
+
+|===
 
 ---
 
@@ -1001,6 +1072,3 @@ image:img_thomas_calculus/calculus_027.jpg[600,600]
 
 
 
-
-
-59
