@@ -118,11 +118,13 @@ progression [ C ] a number of things that come in a series 系列；序列；连
 
 ---
 
-== 等差中项 arithmetic mean -> stem:[  M = \frac{a+b}{2}]
+==== 等差中项 arithmetic mean -> stem:[  M = \frac{a+b}{2}]
 
 等差中项 arithmetic mean:: 若 a, M, b 成 等差数列, 则 M 叫做 a与b 的"等差中项", 且: stem:[ M-a = b - M ], 即: stem:[ 2M = b+a ]
 \begin{align}
+\boxed{
 M = \frac{a+b}{2}
+}
 \end{align}
 
 
@@ -144,7 +146,7 @@ M & = \frac{a+b}{2} \\
 
 ---
 
-== "等差数列"的通项公式 -> stem:[ a_n = a_1 +(n-1)d ]
+==== "等差数列"的通项公式 -> stem:[ a_n = a_1 +(n-1)d ]
 
 如果已知等差数列 stem:[ {a_n} ] 的首项是 stem:[  a_1], 公差是 d, 那么可以求出该"等差数列"的通项公式吗? 可以.
 
@@ -234,19 +236,136 @@ a_n & =  a_1 +(n-1)d \\
 所以 -401 是本等差数列中的项.
 ====
 
+.标题
+====
+例如： 已知等差数列stem:[ {a_n} ]中, stem:[ a_5 = 10 ], 若 stem:[ a_{12} = 31 ], 问 stem:[ a_25 =?]
+
+可以列方程:
+\begin{align}
+& \begin{cases}
+a_5 = a_1 + 4d = 10 \\
+a_{12} = a_1 + 11d = 31
+\end{cases} \\
+& 解得 \begin{cases}
+a_1 = -2 \\
+d =3
+\end{cases}
+\end{align}
+====
+
+所以该数列的通项公式就是:
+\begin{align}
+\boxed{
+a_n = a_1 + (n-1)d
+}
+= -2 + 3(n-1)
+\end{align}
+
+所以
+\begin{align}
+a_{25} = -2+3*(25-1) = 70
+\end{align}
+---
+
+
+---
+
+==== "等差数列"的通项公式2 -> stem:[a_n = a_m + (n-m) d  ]
+
+.标题
+====
+例如：已知等差数列stem:[ {a_n} ]中, stem:[ a_5 = 10 ],  若 stem:[ d=2 ], 问 stem:[ a_10 = ? ]
+
+\begin{align}
+已知 \; a_5 & = 10 = a_1 + 4d \\
+要求 \; a_{10} & = a_1 + 9d \\
+& =  (a_1 + 4d) + 5d \\
+& = a_5 + 5d \\
+& = 10 + 9*2 <- 因为已知 d=2 \\
+& = 28
+\end{align}
+====
+
+这里可以得出一个规律:
+
+*在等差数列stem:[ {a_n} ]中, 若知道: ①第m项 stem:[ a_m ]的值, 及 ②公差d的值, 就能知道第n项的值*:
+\begin{align}
+\boxed{
+a_n = a_m + (n-m) d
+}
+\end{align}
+
+例如:
+\begin{align}
+a_5 = a_3 + (5-3)d = a_3 + 2d
+\end{align}
+
+进一步, 我们就可以知道, 公差 d 也就等于:
+\begin{align}
+& \because a_n = a_m + (n-m) d \\
+& \therefore \boxed{
+d = \frac{a_n - a_m}{n-m} \\
+<- 这个公式的意味 换言之, 我们只要知道了任意两个项的值, 就能算出该数列的公差d
+}
+\end{align}
+
+
+.标题
+====
+例如：已知在等差数列 stem:[ {a_n} ]中, stem:[  a_1 + a_3 = 6, \quad a_7 = 18], 问 stem:[ a_10 = ? ]
+
+思考: +
+根据公式 stem:[  a_n = a_m + (n-m) d], 可知  stem:[  a_7 + 3d = a_{10}] <- 即, 要求的 stem:[ a_{10}] 可以拆分成 stem:[  a_7 + 3d]. +
+stem:[ a_7  ]是已知的, 只要再知道 公差d, 就能算出题目.
+
+那么 d 怎么求呢? 因为上面说过, 只要知道数列中任意两项的值, 就能算出公差d来. 现在我们只知道其中的一项 stem:[  a_7], 那么另一项能从哪里来呢?
+
+[options="autowidth"]
+|===
+|步骤 |Header 2
+
+|用"等差中项",来得到这个另一项
+|我们注意到: stem:[  a_1 + a_3 = 6], 而我们可以用"等差中项"公式, 来得到其"中项", 即 stem:[  a_2],这样, 两项就齐了.
+
+\begin{align}
+\boxed{ 等差中项公式: M = \frac{前1项 + 第3项}{2}} \\
+即: a_2 = \frac{a_1 + a_3}{2} = \frac{6}{2} = 3
+\end{align}
+
+所以, 现在我们手里就有两项的值了:
+\begin{align}
+& a_7 = 18 \\
+& a_2 = 3
+\end{align}
+
+|通过任意两项, 来得出公差d
+|所以我们就能通过任意两项, 来得出公差d:
+\begin{align}
+& \boxed{
+d = \frac{a_n - a_m}{n-m}
+}
+= \frac{a_7 - a_2}{7-2}
+= \frac{18-3}{5} = 3
+\end{align}
+
+|知道任意一项stem:[ a_m ]的值, 和公差d, 就能算出其他的任意一项stem:[ a_n ]的值
+\begin{align}
+\boxed{
+ a_n = a_m + (n-m) d
+}
+\end{align}
+|所以
+\begin{align}
+a_{10} = a_7 + 3d = 18 + 3*3 = 27
+\end{align}
+|===
+
+====
+
 
 
 
 
 ---
 
-
-
-
-
-
----
-
-https://www.bilibili.com/video/BV1bE411T7cA?p=148
-
-5:32
+https://www.bilibili.com/video/BV1bE411T7cA?p=149
