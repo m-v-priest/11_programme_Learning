@@ -94,7 +94,9 @@ a_n - a_{n-1} = n \quad (n \ge 2), \quad 且 a_1 = 1
 
 ====
 
-== 等差数列 Arithmetic progression -> stem:[  a_{n+1} - a_n = d]
+== 等差数列
+
+==== 等差数列 Arithmetic progression -> stem:[  a_{n+1} - a_n = d]
 
 等差数列 Arithmetic progression:: 等差数列是指从第二项起，每一项与它的前一项的差, 等于同一个常数. 常用A、P表示。 +
 这个常数叫做等差数列的"公差"(Common difference)，公差常用字母 d (difference) 表示。
@@ -522,6 +524,8 @@ s_n = \frac{n(a_1 + a_n)}{2}
 }
 \end{align}
 
+*即: 首项加尾项的和 (stem:[ a_1 + a_n ]), 乘以总项数的一半 (stem:[ n/2 ])*
+
 ---
 
 ==== 等差数列前n项 的和 -> stem:[ S_n = na_1 + \frac{n(n-1)}{2} d] <- 即只要知道 ①"第1项" 和 ②"公差d"的值, 就能算出前n项的和.
@@ -541,6 +545,7 @@ s_n = \frac{n(a_1 + a_n)}{2}
 }
 \end{align}
 
+*即: 总项数量个首项 (stem:[ na_1 ]), 加上 倒数两项序数的乘积(stem:[ n(n-1) ]) 乘以公差的一半(stem:[ d/2 ])*
 
 .标题
 ====
@@ -585,14 +590,76 @@ d = 6
 ====
 
 
+.标题
+====
+例如：
+已知在等差数列stem:[  {a_n}]中, stem:[  a_1 =1, \quad a_n = -512, \quad S_n = -1022], 求 公差d.
+
+下图, 绿色代表已知参数, 红色代表要求的参数, 那么我们就可以通过算出黄色参数, 来连锁得到红色参数的值.
+
+image:img_math/math_141.svg[200,200]
+
+\begin{align}
+& -1022 = \frac{n}{2} (1-512) <- 即 : S_n = \frac{n}{2} (a_1 + a_n)\\
+& n = 4 \\
+& -512  = 1 + 3d <- 即 : a_n = a_1 +(n-1)d  \\
+& d = -171
+\end{align}
+
+====
+
+---
+
+==== stem:[  a_n = S_n - S_{n-1}]
+
+推导过程很简单:
+\begin{align}
+\because S_n &= a_1 + a_2 + ... + a_{n-1}, + a_n \tag{1} \\
+S_{n-1} &= a_1 + a_2 + ... + a_{n-1} \quad(n \ge 2) \tag{2}\\
+(1) - (2) 就能得到: \\
+S_n - S_{n-1} &= a_n
+\end{align}
+
+即:
+\begin{align}
+\boxed{
+a_n = S_n - S_{n-1} \quad(n \ge 2)
+}
+\end{align}
+
+同时能看出:
+\begin{align}
+\boxed{
+当 n =1 时, a_1 = S_1
+}
+\end{align}
+
+故:
+\begin{align}
+\boxed{
+a_n =
+\begin{cases}
+S_1 , & 当 n=1 \\
+S_n - S_{n-1} & 当 n \ge 2
+\end{cases}
+}
+\end{align}
+
+
+
+
+
 ---
 
 
 
-https://www.bilibili.com/video/BV1bE411T7cA?p=150
 
 
-15:05
+
+https://www.bilibili.com/video/BV1bE411T7cA?p=151
+
+
+3:54
 
 
 
