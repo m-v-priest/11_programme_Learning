@@ -296,7 +296,7 @@ image:img_math/math_109.png[]
 |stem:[ \alpha ] 是一个 2 rad 的角
 
 |stem:[ \sin \frac{\pi}{3} ]
-|弧度是 stem:[\frac{\pi}{3}], 这个角的正弦
+|弧度角是 stem:[\frac{\pi}{3}]这个角 的正弦
 |===
 
 
@@ -598,7 +598,9 @@ image:img_math/math_118.png[]
 
 诱导公式的一般形式是:
 \begin{align}
-sin / cos /tan / cot (k *\frac{\pi}{2} \pm \alpha) = ?, \quad 其中 k \in Z
+\boxed{
+sin / cos /tan / cot (k *\frac{\pi}{2}弧度 \pm \alpha 弧度) = ?, \quad 其中 k \in Z
+}
 \end{align}
 如何化简这个式子, 就是依据“奇变偶不变,符号看象限”这句口诀。
 
@@ -666,12 +668,6 @@ image:img_math/math_127.gif[400,400]
 - stem:[sin（180°+α）=﹣sinα] +
 α为锐角（第一象限角），180°＋α为第三象限角，第三象限的正弦（sin）为负，所以等式右边有负号。
 |===
-
-
-
-
-
-
 
 有了上述的知识基础，我们就可以化简任意一个三角诱导公式:
 
