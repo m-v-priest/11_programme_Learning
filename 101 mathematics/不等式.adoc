@@ -212,14 +212,136 @@ image:img_math/math_143.png[]
 image:img_math/math_144.png[]
 ====
 
+---
+
+==== 1 的代换
+
+常常用在这种题型里:
+
+- 已知 stem:[ 1/a + 1/b =1] (分子上的1可以换成任何常数), 求 stem:[ a+b]的最小值. +
+- 或 已知 stem:[ a+b=1] (前面往往还带有系数), 求 stem:[ a/b] 等分式的最小值.
+
+具体来说:
+
+- 题目是求"最值"
+- 已知的部分, 是"和式"; 要求的部分, 也是"和式". 这两个和式中, 一个为"整式", 一个为"分式"（或可化为分式）.
+- 已知的"和式", 可以变为常数1.
+- 这两个和式, 都是齐次式, 或可变为齐次式.
+
+符合上述特征的题目，就能通过“1的代换", 来轻松解决问题. +
+即, 我们就在所要求的式子后面, 乘以一个1, 或者一个常数.
+
+
+
+
+
+.标题
+====
+例如：已知 stem:[ mn >0, \quad 2m+n=1] , 则 stem:[ 1/m + 2/n]的最小值是?
+
+解:
+\begin{align}
+& \frac{1}{m} + \frac{2}{n} \\
+& = (\frac{1}{m} + \frac{2}{n} ) * 1 \\
+& = (\frac{1}{m} + \frac{2}{n}) * (2m+n)  <- 因为题目已知 2m+n =1  \\
+& = 2 + \frac{n}{m} + \frac{4m}{n} + 2 <- 中间两项,就可以用基本不等式来做 \\
+& \ge 4 + 2 \sqrt{\frac{n}{m} * \frac{4m}{n} } \\
+& \ge 4 + 2*2 = 8
+\end{align}
+
+所以, 本题 stem:[ 1/m + 2/n]的最小值是 8.
+
+那么 stem:[ \frac{1}{m} + \frac{2}{n}]  什么时候取等号呢?
+就是当 stem:[  \frac{n}{m} = \frac{4m}{n}] 时, 即:
+\begin{align}
+& \frac{n}{m} = \frac{4m}{n} \\
+& n^2 = 4m^2 \\
+& n = 2m
+\end{align}
+
+既然知道了 n 和 m 的关系, 进一步, 我们把 n 代入原式中, 就能求出 m和n 的具体值来了:
+\begin{align}
+& 2m+n=1 &① \\
+& 2m + 2m = 1 \\
+& m = \frac{1}{4} <- 把它代入 ①中\\
+& \frac{1}{2} + n = 1 \\
+& n = \frac{1}{2}
+\end{align}
+
+即, 当 stem:[ m=1/4, \quad n = 1/2] 时, stem:[  \frac{1}{m} + \frac{2}{n}] 就能取到等号 = 8.
+====
+
+
+.标题
+====
+例如： 已知 stem:[ m>0, n>0, 1/m + 4/n =1], 若不等式 stem:[ m+n \ge -x^2 + 2x +a] 对已知的 m,n, 及任意实数 x 恒成立, 则实数 a 的取值范围是?
+
+既然我们看到了题目给出了 stem:[  1/m + 4/n =1], 那就明摆着可以用"1的代换"法来做做看了.
+
+题目中不等式左边的部分:
+\begin{align}
+& m + n  = (m+n) * 1 \\
+& = (m+n) * (\frac{1}{m} + \frac{4}{n}) \\
+& = 1 +\frac{4m}{n} + \frac{n}{m} + 4 <- 中间两项使用"基本不等式"公式 \\
+& \ge 5 + 2\sqrt{\frac{4m}{n} * \frac{n}{m} } \\
+& \ge 5 + 4 \\
+& \ge 9
+\end{align}
+
+所以 stem:[ m + n \ge 9] , 即 m + n 的最小值是9
+
+所以, 题目中原式的 stem:[ m+n \ge -x^2 + 2x +a], 就可以写成:
+\begin{align}
+& 9 \ge -x^2 + 2x +a \\
+& <- 既然 m+n 的所有区间都满足这个不等式, 那么我们就用 m +n的最小值9来代进去了 \\
+& x^2 -2x -a +9 \ge 0 \\
+\end{align}
+
+这里, 我们可以把它看做是一个二次方程, 或二次函数 stem:[  f(x) = x^2 - 2x + (9-a)], 既然它的y值 >0, 即它的曲线和x轴只有一个交点, 或在x轴上方. 也就是说, 它的 stem:[ \Delta \le 0]
+
+即:
+\begin{align}
+& \Delta = b^2 - 4ac \le 0 \\
+ &(-2)^2 - 4(9-a) \le 0 \\
+& a \le 8
+\end{align}
+
+所以, 本题问 a 的取值范围, 就是 stem:[ (-\infty, 8\]]
+====
+
+.标题
+====
+例如：已知 stem:[ x+2y = xy \quad (x>0, y>0)], 则 stem:[ 2x+y] 的最小值为 ?
+
+\begin{align}
+ x+2y = xy \\
+\frac{x}{xy} + \frac{2y}{xy} = 1 \\
+\frac{1}{y} + \frac{2}{x} = 1
+\end{align}
+
+这样, 我们就能用1的代换, 来做. 既然题目问的是  stem:[ 2x+y] 的最小值, 那么就 :
+\begin{align}
+ 2x+y =  (2x+y) * 1 \\
+=  (2x+y) * (\frac{1}{y} + \frac{2}{x} ) \\
+\ge 2 \sqrt{ (2x+y) * (\frac{1}{y} + \frac{2}{x}) }
+\end{align}
+====
+
+---
+
+
+
+
+
+
+
 
 
 
 
 ---
 
-https://www.bilibili.com/video/BV147411K7xu?p=116
-
+https://www.bilibili.com/video/BV147411K7xu?p=117
 
 
 
