@@ -122,7 +122,7 @@ GM = \sqrt[n]{x_1 * x_2 *  ... * x_n}
 & 我们引入两个变量 x, y, 令 x = a^2, \; y = b^2 \\
 & 就有: x+y \ge 2 \sqrt{xy} \\
 & \boxed{
-\frac{x+y}{2} \ge \sqrt{xy}
+\frac{x+y}{2} \ge \sqrt{xy} \quad (x＞0, y＞0), (并且 当 x=y时, 该式子能取到等号.)
 } \\
 & <- 这个就是"基本不等式". 即: 两个正实数的"算术平均数", 大于或等于它们的"几何平均数"。
 \end{align}
@@ -244,7 +244,8 @@ image:img_math/math_144.png[]
 & \frac{1}{m} + \frac{2}{n} \\
 & = (\frac{1}{m} + \frac{2}{n} ) * 1 \\
 & = (\frac{1}{m} + \frac{2}{n}) * (2m+n)  <- 因为题目已知 2m+n =1  \\
-& = 2 + \frac{n}{m} + \frac{4m}{n} + 2 <- 中间两项,就可以用基本不等式来做 \\
+& = 2 + \frac{n}{m} + \frac{4m}{n} + 2 \\
+& <- 中间两项, 变量互为倒数关系, 就可以用基本不等式来做了, 因为可以消去变量, 只剩下常数.  \\
 & \ge 4 + 2 \sqrt{\frac{n}{m} * \frac{4m}{n} } \\
 & \ge 4 + 2*2 = 8
 \end{align}
@@ -314,9 +315,9 @@ image:img_math/math_144.png[]
 例如：已知 stem:[ x+2y = xy \quad (x>0, y>0)], 则 stem:[ 2x+y] 的最小值为 ?
 
 \begin{align}
- x+2y = xy \\
-\frac{x}{xy} + \frac{2y}{xy} = 1 \\
-\frac{1}{y} + \frac{2}{x} = 1
+& x+2y = xy \\
+& \frac{x}{xy} + \frac{2y}{xy} = 1 \\
+& \frac{1}{y} + \frac{2}{x} = 1 <- 我们让这个式子转换成等于了1
 \end{align}
 
 这样, 我们就能用1的代换, 来做. 既然题目问的是  stem:[ 2x+y] 的最小值, 那么就 :
@@ -330,9 +331,186 @@ image:img_math/math_144.png[]
 ---
 
 
+.标题
+====
+例如：函数 stem:[ y = 2x + \frac{2}{x-1} \quad  (x>1)] 的最小值是 ?
+
+方法1:
+
+这个式子, 我们不能直接套用"基本不等式公式"来做, 因为 stem:[ \sqrt{2x * \frac{2}{x-1}} ] 无法消掉未知数x.
+
+所以, 我们用另一种变量替代(换元)法来做, 即 : 用 a 代表 x-1, 则就有:
+
+- x-1 = a  <- 因为 x>1, 所以 x-1 = a > 0, a 就满足使用 "基本不等式公式"的条件了.
+- x = a+1
+
+这样, 原式就能变成:
+\begin{align}
+& y = 2x + \frac{2}{x-1} \\
+&  = 2(a+1) + \frac{2}{a} \\
+& = 2 + (2a +  \frac{2}{a} ) <- 括号中的, 我们就能套用"基本不等式公式"了, 因为可以消掉变量a \\
+& \ge 2 + 2 \sqrt{2a * \frac{2}{a} } \\
+& \ge 2 + 4 \\
+& \ge 6
+\end{align}
+
+那么进一步, 原式什么时候能取到等号呢?
+
+即 当 stem:[ 2a = 2/a] 时, 就能取到等号. 即 stem:[ a^2 =1 , a=1], +
+而 stem:[ x = a+1] , 则 stem:[ x = 2] 时, 原式能取到等号.
+
+image:img_math/math_145.png[]
+
+
+换元法 method of substitution :: 解一些复杂的因式分解问题，常用到换元法，即对结构比较复杂的多项式，若把其中某些部分看成一个整体，用新字母代替(即换元)，则能使复杂的问题简单化.
+
+'''
+
+方法2: 既然原式是 stem:[ y = 2x + \frac{2}{x-1} \quad  (x>1)] , 为了可以套用"基本不等式"公式, 我们为了能消掉后面分母上的 x-1, 就对前面的 2x, 让它变成 2x - 2 + 2 , 即 stem:[ 2(x-1) + 2], 这样就能消掉 x-1 这个变量 :
+
+\begin{align}
+& y = 2x + \frac{2}{x-1} \\
+& = 2(x-1) + \frac{2}{x-1} + 2 \\
+& \ge 2\sqrt{2(x-1) * \frac{2}{x-1}} +2 \\
+& \ge 2 * 2 + 2 \\
+& \ge 6
+\end{align}
+====
+
+---
+
+==== 余弦定理 & 用"三角函数"来计算"三角形面积"
+
+下题, 我们要用到"余弦定理", 和 "用三角函数公式来计算三角形面积".
+
+.标题
+====
+余弦定理 The Law of Cosines :: 对于任意三角形(锐角, 钝角, 直角都行)，任何一边的平方, 等于其他两边平方的和, 减去这两边与它们夹角的余弦的积的两倍。
+
+即:
+\begin{align}
+\boxed{
+a^2 = b^2 + c^2 - 2bc *\cos \alpha \\
+\cos \alpha  = \frac{b^2 + c^2 - a^2}{2bc} \\
+\cos \alpha  = \frac{sin^2 \beta + sin^2 \gamma - sin^2 \alpha}{2 sin \beta sin \gamma}
+} \\
+\end{align}
+
+image:img_math/math_146.png[300,300]
+====
+
+
+.标题
+====
+三角函数公式, 来计算三角形面积
+
+image:img_math/math_147.png[]
+
+△ABC的面积是 stem:[ = \frac{ah}{2}]
+
+\begin{align}
+& 而 sin ∠C = \frac{h}{b} \\
+& h = sin ∠C * b <- 把 h 代入 三角形的面积公式 \\
+& △ABC的面积 = \frac{ah}{2} \\
+& △ABC的面积 =\frac{a * (sin ∠C * b)}{2} \\
+& \boxed{
+△ABC的面积 = \frac{1}{2} ab \sin ∠C <- 用三角函数, 算面积
+}
+\end{align}
+
+即: 三角形的面积, 等于(两邻边 及其夹角正弦值的乘积) 的一半。
+
+完整的面积公式为:
+若△ABC中, 角A，B，C 所对的三边是a,b,c, 则:
+\begin{align}
+\boxed{
+S△ABC = \frac{1}{2} ab *  \sin C \\
+= \frac{1}{2} bc *  \sin A \\
+= \frac{1}{2} ac *  \sin B
+}
+\end{align}
+
+====
 
 
 
+.标题
+====
+例如：△ABC 中, 已知 a=1, stem:[∠A = \frac{\pi}{3}  ], 问: +
+△ABC 的周长的最大值是? +
+△ABC 的面积最大值是?
+
+- 求周长的最值 :
+
+周长 = a + (b + c), 由于 a 是已知的, 我们就要知道 b + c 的最值是什么?
+
+*那么怎么知道 b + c 的最值呢? 换言之, 有没有什么公式, 是把 变量 a(值已知),b,c, 和 ∠A(值已知) 等连在一起的呢? 以至于能求出 b+c 的值的呢? 有的 -- 就是"余弦定理".*
+
+余弦定理, 即:
+\begin{align}
+\boxed{
+\cos \alpha  = \frac{b^2 + c^2 - a^2}{2bc}
+}
+\end{align}
+
+由于题目给出  stem:[∠A = \frac{\pi}{3}  ], 所以 stem:[ cos A = cos \frac{\pi}{3} = \frac{1}{2}]
+
+把已知的值, 代入余弦定理, 即:
+\begin{align}
+& \frac{1}{2} = \frac{b^2 + c^2 - 1}{2bc} \quad ① \\
+& bc = b^2 + c^2 - 1 \\
+& 1 = b^2 + c^2 - bc <- 为了配成(b+c)的形式, 我们给它加上一个2bc, 再减去一个2bc \\
+& 1 =  b^2 + 2bc + c^2 - 2bc - bc\\
+& 1 = (b+c)^2 - 3bc <-别忘了我们的初心, 我们想要知道的是 (b+c) 的值, 而不是bc的值\\
+& <- bc能不能变换成 (b+c) 的形式? 可以. 套用基本不定式公式, 即: b + c \ge 2\sqrt{bc}, 就是 bc \le (\frac{b+c}{2})^2 \quad ②\\
+& 1 \ge (b+c)^2 - 3  (\frac{b+c}{2})^2 <- 现在, 我们就得到了只含有 (b+c)的式子, 正是我们的初心想知道的东西 \\
+& 1 \ge (b+c)^2 - 3 * \frac{1}{4} (b+c)^2  \\
+& 1 \ge \frac{1}{4} (b+c)^2 \\
+& 2 \ge b+c
+\end{align}
+
+所以, 就能知道 △ABC 的周长 是:
+\begin{align}
+a+ (b+c) \le 1 + 2
+\end{align}
+即, 周长的最大值, 就是 3.
+
+那么进一步, 什么时候周长就等于3呢? 也就是在上面的式子, 从"等号"变成"不等号"的那一步中的 stem:[ b + c \ge 2\sqrt{bc}], 即当 b = c 时, 该式子就能取到等号, 而非不等号. +
+那么当 b = c 时, 代入 ①, 就能求出b与c的具体值了 :
+\begin{align}
+& \frac{1}{2} = \frac{b^2 + c^2 - 1}{2bc} \quad  \\
+& \frac{1}{2} = \frac{2b^2 -1 }{2b^2} \\
+& 2b^2 = 4b^2 - 2 \\
+&  2 = 2b^2 \\
+& b = 1
+\end{align}
+
+所以, 当 b = c  = 1 时, △ABC 的周长能取到等于3 的值.
+
+'''
+
+- △ABC 的面积最大值是?
+
+套用三角函数来计算面积的公式:
+\begin{align}
+\boxed{
+S△ABC = \frac{1}{2} bc *  \sin A
+}
+\end{align}
+
+其中 stem:[ sin A = sin \frac{\pi}{3} = \frac{\sqrt{3}}{2}]
+
+而 bc 从上面的 ② 可知, stem:[ bc \le (\frac{b+c}{2})^2] , 因为 stem:[ b = c = 1], 即 stem:[ bc \le 1].
+
+所以
+\begin{align}
+S△ABC &= \frac{1}{2} bc *  \sin A \\
+&\le \frac{1}{2} * 1 * \frac{\sqrt{3}}{2} \\
+&\le \frac{\sqrt{3}}{4}
+\end{align}
+
+所以, 当 stem:[ b = c = 1] 时, 三角形面积能取到最大值 stem:[\frac{\sqrt{3}}{4} ].
+====
 
 
 
@@ -341,7 +519,19 @@ image:img_math/math_144.png[]
 
 ---
 
-https://www.bilibili.com/video/BV147411K7xu?p=117
+
+
+https://www.bilibili.com/video/BV147411K7xu?p=118
+
+
+
+
+
+
+
+
+
+
 
 
 
