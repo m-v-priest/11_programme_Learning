@@ -673,11 +673,56 @@ image:img_math/math_151.png[]
 
 == 不等式的性质
 
+.标题
+====
+例如： 若 stem:[  a+b+c=0], 且 stem:[  a<b<c], 则 下列不等式,一定成立的是哪个?
+\begin{align}
+& A. \quad ab^2 < b^2c \\
+& B. \quad ab < ac \\
+& C. \quad ac < bc \\
+& D. \quad ab < bc \\
+\end{align}
+
+既然 stem:[  a+b+c=0], 说明:
+
+- a,b,c 三个数不可能都是正数, 否则它们的和就 >0 了. 因此最小的a不可能是正数, 否则必它大的 b和c 就都是正数了. 造成三个数都是正数.
+- 这三个数也不可能都是负数, 否则它们的和就 <0 了. 因此最大的c不可能是负数, 否则比它小的b和a 就都是负数了.
+- 所以: 这三个数中, a就是负数, c就是正数. b呢? 不确定, b可以为正, 也可为负, 也可为0.
+
+所以:
+
+[options="autowidth"]
+|===
+|Header 1 |stem:[ \underbrace{a}_{-} < \underbrace{b}_{-0+} < \underbrace{c}_{+} ]
+
+|stem:[  A. \quad ab^2 < b^2c]
+|<- 如果 b 是 0 的话, 则 选项A 就排除了.
+
+|stem:[  B. \quad ab < ac ]
+|已知 b<c, 但 a是负数, 所以就应该是 ab > ac 了. B选项错误.
+
+|stem:[  C. \quad ac < bc]
+|因为c是正数, 所以符号正确
+
+|stem:[  D. \quad ab < bc ]
+|虽然已知 a<c, 但 b 可正可负, 如果是负数, 则就应该是 ab > cb 了, 所以D选项也不精确.
+|===
 
 
 
 
 
+
+
+
+
+
+
+====
+
+
+
+3:14
 
 
 
