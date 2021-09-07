@@ -424,6 +424,17 @@ image:img_geogebra/geogebra_39.png[]
 
 ---
 
+== 线性不定式的"可行域" 画图 -> 用 ∧ 符号, 来连接两个不定式即可
+
+如:
+....
+x+y-5≤0 ∧ x-2y-2≤0
+....
+
+image:img_geogebra/geogebra_56.png[]
+
+---
+
 == ----- -----
 
 ---

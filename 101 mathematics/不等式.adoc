@@ -512,16 +512,193 @@ S△ABC &= \frac{1}{2} bc *  \sin A \\
 所以, 当 stem:[ b = c = 1] 时, 三角形面积能取到最大值 stem:[\frac{\sqrt{3}}{4} ].
 ====
 
+---
 
+==== 总结 : 各种方法
 
+[cols="1a,4a"]
+|===
+|Header 1 |基本不等式公式: stem:[ \sqrt{\frac{x^2+ y^2}{2}} \ge \frac{x+y}{2} \ge \sqrt{xy}]
 
+|直接套用"基本不等式公式"法
+|\begin{align}
+& x + \frac{1}{x} 的极值是? \\
+& 可以直接套用公式 : \\
+& 原式 \ge 2 \sqrt{x * \frac{1}{x}} \ge 2
+\end{align}
 
+'''
+
+例: +
+\begin{align}
+& \sqrt{(3-a)(a+6)} \\
+& 直接套用公式 \sqrt{xy} \le \frac{x+y}{2} \\
+& 即: 原式 \le  \frac{(3-a) + (a+6)}{2} \le \frac{9}{2}
+\end{align}
+
+|1 的代换
+|例: 已知 stem:[ a>0, b>0, 2/x + 1/y =1], 求 x+2y 的最小值.
+
+\begin{align}
+& = (x+2y) * 1 \\
+& = (x+2y) * (\frac{2}{x} + \frac{1}{y}) \\
+& = 2 + \frac{x}{y} + \frac{4y}{x} + 2 \\
+& 中间两项, 就互为倒数了, 我们可以使用"基本不等式公式", 来消去变量 \\
+& \ge 2\sqrt{\frac{x}{y} * \frac{4y}{x}} + 4 \\
+& \ge 8 <- 即, x+2y 的最小值是8
+\end{align}
+
+|补项法: 将缺少的部分补充回来, 以满足"基本不等式"的使用
+|例1:  +
+已知, stem:[ x>1], 求 stem:[ x + \frac{1}{x-1}] 的最小值?
+
+\begin{align}
+& x + \frac{1}{x-1} \\
+& = (x-1) +1 + \frac{1}{x-1} \\
+& <- 补项, 把其中一项凑成另一项的倒数, 方便使用"基本不等式公式"来消去变量. \\
+& \ge 2 \sqrt{ (x-1) * \frac{1}{x-1}} +1 \\
+& \ge 3
+\end{align}
+
+'''
+
+例2: 在"1的代换"法中, 使用"补项"法:  +
+已知 stem:[ a>0, b>1], 当 stem:[ a+b=2] 时, 问 stem:[ \frac{2}{a} + \frac{1}{b-1}] 的最小值是?
+
+\begin{align}
+& \because  a+b=2 \\
+& a+(b-1) = 2-1 =1 \\
+& <- ① 目的是凑成等于1, 可以使用1的代换. ② 并且凑成另一项的倒数, 方便使用"基本不等式公式"来消去变量.\\
+& \\
+& 题目要求的 \frac{2}{a} + \frac{1}{b-1} \\
+& =  (\frac{2}{a} + \frac{1}{b-1}) *1 \\
+& = (\frac{2}{a} + \frac{1}{b-1}) * [a+(b-1)]\\
+& = 展开后, 中间两项就能用基本不等式公式
+\end{align}
+
+'''
+
+例3: 已知 stem:[ a>b>0], 问 stem:[ a^2 + \frac{1}{ab} + \frac{1}{a(a-b)] 的极值?
+
+基本不等式公式, 是两项的, 本题中有3项? 怎么处理呢? 看看能否将它们拆成四项, 或合并为两项?
+\begin{align}
+& a^2 + \frac{1}{ab} + \frac{1} {a(a-b)} \\
+& 令 x = ab, \quad y = a(a-b) <- 换元法 \\
+& 则 y = a^2 - ab = a^2 - x \\
+& 即 : a^2 = y + x \\
+& \therefore 原式 = (x+y) + \frac{1}{x} + \frac{1}{y} \\
+& = (x +  \frac{1}{x}) + (y + \frac{1}{y}) \\
+& \ge 2 \sqrt{x * \frac{1}{x}} + 2 \sqrt{y * \frac{1}{y}} \\
+& \ge 4
+\end{align}
+
+|换元法
+|例 stem:[a,b>0, a+b =5 ] , 求 stem:[ \sqrt{a+1} + \sqrt{b+3}] 的最大值?
+
+\begin{align}
+& 令 x = \sqrt{a+1}, \quad y =  \sqrt{b+3} <- 换元法 \\
+& x^2 = a+1, \quad a= x^2 - 1 \\
+& y^2 = b+3, \quad b = y^2- 3 \\
+& \because  a+b =5 \\
+& 即: (x^2 - 1) + (y^2- 3) = 5 \\
+& x^2 + y^2 = 9 \\
+& 根据基本不等式公式, 有
+\boxed{
+\sqrt{\frac{x^2+ y^2}{2}} \ge \frac{x+y}{2} \ge \sqrt{xy}
+}\\
+& 即  \frac{x+y}{2} \le  \sqrt{\frac{x^2+ y^2}{2}} \\
+& \frac{x+y}{2} \le  \sqrt{\frac{9}{2}} \\
+& x + y \le 2 *3 \sqrt{\frac{1}{2}} \\
+& \le 3 \sqrt{2}
+\end{align}
+
+'''
+
+例: stem:[ x,y>0, \quad x+2y + 2xy = 8], 求 stem:[ x+2y] 的最小值?
+
+要求的是 x+2y, 而已知条件中也含有x+2y, 所以我们用换元法, 令 t = x+2y
+
+\begin{align}
+& 要求的 x + 2y \ge 2 \sqrt{x*2y} <- 根据"基本不等式"公式 \\
+& x + 2y  \ge 2 \sqrt{2} \sqrt{xy} <- 两边再同时进行平方 , 把根号去掉\\
+& (x + 2y)^2 \ge 8 xy <- 之前我们令 t = x+2y了, 代进去\\
+& t^2 \ge 8 xy \\
+& xy \le \frac{t^2}{8} <- 为了算出t的具体值, 我们要把它代入回题目给出的已知条件 x+2y + 2xy = 8 中 \\
+& \\
+& \because  (x+2y) + (2xy) = 8 \\
+& 即: (t) + (2*  \frac{t^2}{8}) \ge 8 <- 两边同时乘上8 \\
+& 8t + 2t^2 - 64 \ge 0 \\
+& t^2 + 4t - 32 \ge 0 \\
+& (t-4)(t+8) \ge 0 \\
+& t \ge 4 \; 或 \; t \le -8 \\
+& \\
+& \because 一开始, 我们就已经令 t =  x+2y 了, 所以: \\
+& x + 2y 就和t一样, 是 \ge 4 \; 或 \;  \le -8 \\
+& 又因为题目给出  x,y>0, 所以 x + 2y 就只能是 \ge 4
+\end{align}
+
+image:img_math/math_148.png[]
+
+|===
 
 ---
 
+== 线性不等式的"可行域" feasible region
+
+stem:[ x+y \ge 3] 怎么画图 (即它的"可行域"是什么)? 因为有两个变量, 所以必须在平面直角坐标系上来画了. 即, 相当于 f(x) = x+y , 在 y=3 以上的区域.
+
+image:img_math/math_149.png[]
 
 
-https://www.bilibili.com/video/BV147411K7xu?p=118
+那么同时满足两个条件呢? 可行域是什么?
+
+\begin{cases}
+y \ge -x+3 \\
+y \le x
+\end{cases}
+
+image:img_math/math_150.png[]
+
+
+同时满足三个条件:
+\begin{cases}
+y \ge -x+3 \\
+y \le x \\
+x \le 5
+\end{cases}
+
+image:img_math/math_151.png[]
+
+---
+
+== 不等式的性质
+
+
+
+
+
+
+
+
+
+
+https://www.bilibili.com/video/BV147411K7xu?p=120
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
