@@ -4,6 +4,8 @@
 
 ---
 
+== 做题的过程, 始终问自己两个问题: 1.中间推导出了什么? 2. 推导出这个结论的目的是什么? 即得到这个"中间结论", 是为什么目的服务? 这个目的最终会指向最终的终点问题.
+
 == 如何比较两个数字的大小? -> 作差法 -> stem:[ 若A-B>0，则A>B]
 
 比较两个数字(a,b)大小的方法, 可以用"作差法" : 即将一个数减去另一个数 (比如让 a-b), 来看其值是否等于0? 如果不等于0, 就说明两数不相等.
@@ -34,6 +36,31 @@
 & 即 \; A>B
 \end{align}
 ====
+
+
+.标题
+====
+例如：如果 stem:[ a>b>0, t>0], 设 stem:[ M = \frac{b}{a}, N = \frac{b+t}{a+t}], 那么, 下面哪个是对的?
+
+\begin{align}
+& A. M<N \\
+& B. M>N \\
+& C. M=N \\
+& D. M与N 的大小关系, 和 t 有关
+\end{align}
+
+要比较 M 与 N 的大小, 我们可以用"作差法", 或"作商法"来比较:
+
+比如作差法:
+\begin{align}
+& N-M =  \frac{b+t}{a+t} - \frac{b}{a} \\
+& = \frac{ab + at - ab - bt} {a(a+t)} \\
+& = \frac{t(a-b)} {a(a+t)} <- \frac{t>0, a>b, 所以分子>0} {a,t 都 >0, 所以分母>0} \\
+& 即: N-M > 0 <- N>M, 选项 A 正确
+\end{align}
+====
+
+
 
 ---
 
@@ -641,37 +668,11 @@ image:img_math/math_148.png[]
 
 |===
 
----
-
-== 线性不等式的"可行域" feasible region
-
-stem:[ x+y \ge 3] 怎么画图 (即它的"可行域"是什么)? 因为有两个变量, 所以必须在平面直角坐标系上来画了. 即, 相当于 f(x) = x+y , 在 y=3 以上的区域.
-
-image:img_math/math_149.png[]
-
-
-那么同时满足两个条件呢? 可行域是什么?
-
-\begin{cases}
-y \ge -x+3 \\
-y \le x
-\end{cases}
-
-image:img_math/math_150.png[]
-
-
-同时满足三个条件:
-\begin{cases}
-y \ge -x+3 \\
-y \le x \\
-x \le 5
-\end{cases}
-
-image:img_math/math_151.png[]
 
 ---
 
-== 不等式的性质
+
+==== 不等式的性质
 
 .标题
 ====
@@ -708,26 +709,175 @@ image:img_math/math_151.png[]
 |虽然已知 a<c, 但 b 可正可负, 如果是负数, 则就应该是 ab > cb 了, 所以D选项也不精确.
 |===
 
-
-
-
-
-
-
-
-
-
-
 ====
 
 
+.标题
+====
+化为"相同形式"法, 来比大小 :
 
-3:14
+例如： 已知 stem:[ a = \sqrt{2} + \sqrt{11}, b=5, c = \sqrt{6} + \sqrt{7}], 则 a, b, c 的大小关系为?
+\begin{align}
+& A. a>b>c \\
+& B. c>a>b \\
+& C. c>b>a \\
+& D. b>c>a \\
+\end{align}
+
+解体思路: 两个根号能否变成一个根号? 这样, 我们就能用"化为相同形式", 来对这三个数做比较了.
+那么如何变成一个根号? 对它们同时做平方 (它们是正数, 因此做平方后, 彼此的大小关系不会改变).
+
+即:
+\begin{cases}
+a^2 = 2+11 + 2\sqrt{2*11} & = 13 + 2 \sqrt{22} \\
+b^2 = 5^2 = 25 = 13 + 2*6 & = 13 + 2 \sqrt{36} \\
+c^2 = 6+7 + 2 \sqrt{6*7} & = 13 + 2 \sqrt{42}
+\end{cases}
+
+我们把 a, b, c 三个数, 都化为了相同的表达形式. 这样后, 一眼就能看出来: c>b>a, 选 C.
+====
+
+
+.标题
+====
+例如：设 a,b 为正实数, 则下列选项中, 正确的有?
+\begin{align}
+& A. 若 a^2 - b^2 = 1, 则 a-b<1 \\
+& B. 若 \frac{1}{b} - \frac{1}{a} = 1, 则 a-b<1 \\
+& C. 若|\sqrt{a} - \sqrt{b}| = 1, 则 |a-b|<1 \\
+& D. 若 |a^3 - b^3| = 1,  则 |a-b|<1
+\end{align}
+
+验证 选项A:
+
+[options="autowidth"]
+|===
+|推出了中间结论↓ |从已知条件 stem:[ a^2 - b^2 = 1] 出发
+
+| a>b
+|\begin{align}
+& a^2 - b^2 = 1 \\
+& (a+b)(a-b) = 1 \quad ① \\
+& \because  a,b>0, 则 a+b>0 \\
+& 正负号代入①可知,  正数 * (a-b) = 正数1 \\
+& 则 (a-b)也是正数, >0 \\
+& a-b>0, 则 a>b
+\end{align}
+
+|a+b 与 a-b 是倒数关系
+|从①可知: 两个数的"乘积"是1, 则这两个数必定是倒数关系(如, x 与 stem:[ \frac{1}{x}] 之间的关系).  +
+\begin{align}
+& \because a>b \\
+& \therefore  a+b > a-b
+\end{align}
+所以, ①式中, a+b是x, a-b 是 stem:[1/x ] +
+显然, stem:[1/x ] 是个分数, 小于1的, 所以,  a-b < 1. 即 选项A 正确.
+|===
+
+
+'''
+
+验证 选项B:
+\begin{align}
+& 问: 若 \frac{1}{b} - \frac{1}{a} = 1, 则 a-b<1 ? \\
+& 既然 \frac{1}{b} - \frac{1}{a} = 1 \\
+& \frac{a-b}{ab} = 1 \\
+& a-b = ab <- 我们代个具体的数字进去看看, 算出满足这个式子的具体的 a, b, 假设a=10的话 \\
+& 10 - b = 10b \\
+& 11b = 10 \\
+& b = \frac{10}{11} \\
+& a- b = 10 - \frac{10}{11} <- 显然, a和b的差距远远大于1, 所以选项 B 错误.
+\end{align}
+
+'''
+
+验证 选项C:
+
+stem:[若|\sqrt{a} - \sqrt{b}| = 1, 则 |a-b|<1 ? ]
+
+一个数字, "开方"后的值, 肯定会更小. 所以两个数字"开方"后的差(彼此相邻的距离), 肯定要比"开方"前更小的, 而不可能更大. 所以选项C 错误.
+
+'''
+
+验证 选项 D:
+
+stem:[ 若 |a^3 - b^3| = 1,  则 |a-b|<1 ?]
+
+\begin{align}
+& 既然已知 |a^3 - b^3| = 1 \\
+&  |(a-b)(a^2 + ab + b^2)| = 1 \\
+& |a-b| * |a^2 + ab + b^2| = 1 <- 既然问题问的是 |a-b|, 那我们就凑出 |a-b| 的形式  \\
+& |a-b| * |(a-b)^2 + 3ab| = 1 \\
+& |a-b| * |(a-b)^2 | < 1 <- x*y , \; y变小后, x与y的乘积的值, 肯定也会缩小 \\
+& |a-b|^3 < 1 \\
+& |a-b| < 1 <- 一个正数x, 其开立方 \sqrt[3]{x}后的值, 肯定比x 更小
+\end{align}
+
+所以, 选项D 正确
+
+====
+
+---
+
+====  stem:[ \frac{1}{n(n+1)} < \frac{1}{n^2} < \frac{1}{n(n-1)}] <- 分母越大, 分数值越小
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|stem:[\frac{1}{n^2} < \frac{1}{n(n-1)} ]
+|<- 这个很好理解, stem:[  n*(n-1) 比 n*n 小], 分母越小,分数值越大, 所以: stem:[\frac{1}{n(n-1)}  > \frac{1}{n^2} ]
+
+| stem:[ \frac{1}{n(n+1)} < \frac{1}{n^2} ]
+|<- stem:[ n(n+1) > n*n], 分母越大, 分数值越小, 所以 stem:[ \frac{1}{n^2}  > \frac{1}{n(n+1)} ]
+|===
+
+连起来即:
+\begin{align}
+\boxed{
+\frac{1}{n(n+1)} < \frac{1}{n^2} < \frac{1}{n(n-1)}
+}
+\end{align}
 
 
 
 
-https://www.bilibili.com/video/BV147411K7xu?p=120
+
+---
+
+== 线性不等式的"可行域" feasible region
+
+stem:[ x+y \ge 3] 怎么画图 (即它的"可行域"是什么)? 因为有两个变量, 所以必须在平面直角坐标系上来画了. 即, 相当于 f(x) = x+y , 在 y=3 以上的区域.
+
+image:img_math/math_149.png[]
+
+
+那么同时满足两个条件呢? 可行域是什么?
+
+\begin{cases}
+y \ge -x+3 \\
+y \le x
+\end{cases}
+
+image:img_math/math_150.png[]
+
+
+同时满足三个条件:
+\begin{cases}
+y \ge -x+3 \\
+y \le x \\
+x \le 5
+\end{cases}
+
+image:img_math/math_151.png[]
+
+---
+
+
+
+
+
+https://www.bilibili.com/video/BV147411K7xu?p=122
 
 
 

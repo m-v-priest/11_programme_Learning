@@ -658,12 +658,157 @@ S_n - S_{n-1} & 当 n \ge 2
 
 
 
-
+未完待续
 
 https://www.bilibili.com/video/BV1bE411T7cA?p=151
 
 
 3:54
+
+---
+
+== 等比数列 geometric progression -> stem:[  \frac{a_n}{a_{n-1}} = 公比q]
+
+等比数列 geometric progression :: 等比数列是指从第二项起，每一项与它的前一项的比值, 都等于同一个常数的一种数列，常用G、P表示。这个常数叫做等比数列的"公比"，常用字母q (Common ratio)表示.
+
+即:
+\begin{align}
+& \frac{a_n}{a_{n-1}} = q \quad (n \ge 2, \; q \ne 0 ,  \; a_n \ne 0 ) \\
+& 或 \quad \frac{a_{n+1}}{a_n} = q \quad (n \in N^*)
+\end{align}
+
+.标题
+====
+例如：
+1, -1, 1, -1 , ... 是等比数列, 它的公比q 是 -1
+
+a,a,a,a,... 是等比数列吗? 不一定. 因为"等比数列"必须满足其每一项 不为0, 而这里的a是不是0呢? 不确定. 所以: +
+-> 当 stem:[ a = 0] 时, 就不是"等比数列" +
+-> 当 stem:[a \ne 0] 时, 才是"等比数列", q = 1
+
+====
+
+即:
+
+- 若 公比 stem:[ q>0], 则各项的符号与stem:[ a_1] 相同
+- 若 公比 stem:[ q<0], 则各项的符号 "正负相间"
+
+.标题
+====
+例如：下面的两个树中, 能否插入一个数, 让它们变成 geometric progression 等比数列 ?
+
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|stem:[ -12, ? , 0]
+|<- 因为等比数列中, 每一项都不能=0, 所以这里出现了0 , 就不能变成等比数列.
+
+|2, ?, 8
+|\begin{align}
+& \frac{x}{2} =\frac{8}{x} <- 如果能组成"等比数列", 就会有 \\
+& x^2= 16, x = \pm 4 <- 所以可行
+\end{align}
+
+|-3, ? , 3
+|\begin{align}
+\frac{x}{-3} = \frac{3}{x}, \quad x^2 = -9
+\end{align}
+显然x是个复数, 无法满足等比数列中"项"的条件.
+|===
+
+====
+
+---
+
+==== 等比中项(G) geometric mean -> stem:[ G^2 = a_{n-1} * a_{n+1}]
+
+等比中项 geometric mean:: 如果在等比数列a项和b项中，插入一个数G, 使a、G、b 成 "等比数列"，那么G 就叫做a、b的"等比中项"。即有:
+
+\begin{align}
+\frac{G}{a} = \frac{b}{G} \\
+\boxed{
+G^2 = ab \\
+G = \pm \sqrt{ab}
+}
+\end{align}
+
+
+但倒过来, 如果已知 stem:[ x^2 = ac], 则 a, x, c 就一定是"等比数列"吗? 不一定, 因为 如果 a=x = 0 的话, 该式子也成立. 但显然, 0, 0, c 不是等比数列. 等比数列要求其中的每一项都不为0.
+
+注意: *若 a, c 有"等比中项G", 则 a, c 的正负符号相同.* +
+因为如果有 stem:[ G^2 = ab], 等号左边>0, 则等号右边的 a 和 b , 肯定要么同为正数, 要么同为负数.
+
+---
+
+
+==== "等比数列"的通项公式1 -> stem:[ a_n = a_1 *q^{n-1}]
+
+从"等比数列"的定义, 我们可以知道:
+\begin{align}
+& a_1 \\
+& a_2 = a_1 * q \\
+& a_3 = a_1 * q * q = a_1 * q^2 <- 可以看出, q的指数, 和等号左边 a的项目数, 只相差1位 \\
+& ... \\
+& a_n = a_1 q^{n-1}
+\end{align}
+
+所以, 等比数列的通项公式, 即为:
+\begin{align}
+\boxed{
+a_n = a_1 * q^{n-1} \quad (n \in N^*)
+}
+\end{align}
+
+
+同"叠乘法", 也能推导出来:
+
+image:img_math/math_152.png[]
+
+image:img_math/math_153.png[]
+
+---
+
+====  "等比数列"的通项公式2 ->  stem:[ a_n = a_m * q^{n-m}]
+
+推论: 数列stem:[ {a_n}] 是"等比数列", 则 stem:[ a_n = a_m * q^{n-m}]
+
+证明过程:
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+https://www.bilibili.com/video/BV1bE411T7cA?p=154
+
+13:30
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
