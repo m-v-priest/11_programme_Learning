@@ -772,11 +772,198 @@ image:img_math/math_153.png[]
 
 ====  "等比数列"的通项公式2 ->  stem:[ a_n = a_m * q^{n-m}]
 
-推论: 数列stem:[ {a_n}] 是"等比数列", 则 stem:[ a_n = a_m * q^{n-m}]
+推论: 数列stem:[ {a_n}] 是"等比数列", 则:
+\begin{align}
+\boxed{
+a_n = a_m * q^{n-m} \quad (n>m)\\
+\frac{a_n}{a_m } =  q^{n-m}
+}
+\end{align}
 
 证明过程:
 
+\begin{align}
+从通项公式1出发: a_m & = a_1 * q^{m-1} \\
+a_n & = a_1 * q^{n-1} \\
+& =  a_1 * q^{n-1 +m -m} \\
+& =  a_1 * q^{m-1} * q^{n-m} <- 前面两个的乘积, 就是 a_m \\
+& = a_m * q^{n-m} <- 推导成功
+\end{align}
 
+
+.标题
+====
+例如：一个等比数列的第3,4项, 分别是 12和18, 求它的第1, 2 项.
+
+[options="autowidth"]
+|===
+|步骤 |Header 2
+
+|求公比q
+|方法1:
+\begin{align}
+& 已知 a_3 = 12, a_4 = 18,  代入通项公式: \boxed{ \frac{a_n}{a_m } =  q^{n-m} }\\
+& \frac{a_4}{a_3} = q^{4-3} \\
+& 公比 q = \frac{18}{12}= \frac{3}{2}
+\end{align}
+
+方法2: +
+直接利用通向公式
+\begin{align}
+\boxed{
+a_n  = a_1 * q^{n-1}
+}
+\end{align}
+
+\begin{align}
+\begin{cases}
+12 = a_1 * q^2 \; ① \\
+18 = a_1 * q^3
+\end{cases}
+\quad q = \frac{3}{2} \; ③
+\end{align}
+
+|求首项stem:[ a_1]
+|把 ③ 代入 ①
+\begin{align}
+& 12 = a_1 * (\frac{3}{2})^2 \\
+& a_1 = \frac{16}{3}
+\end{align}
+
+|就能求出 stem:[ a_1, a_2] 项的值了
+|\begin{align}
+a_2 = a_1 * q^{2-1} =  \frac{16}{3} *  \frac{3}{2} = 8
+\end{align}
+|===
+====
+
+---
+
+==== 若项数 stem:[ m+n = k+l], 则 stem:[ a_m * a_n = a_k * a_l]
+
+证明过程:
+\begin{align}
+& a_m * a_n = a_1 q^{m-1} * a_1 q^{n-1} = a_1 q^{m+n-2} \\
+& a_k * a_l = a_1 q^{k-1} * a_1 q^{l-1} = a_1 q^{k+l-2} \\
+& \because m+n = k+l \\
+& \therefore  a_1 q^{m+n-2} = a_1 q^{k+l-2} \\
+& 即 a_m * a_n = a_k * a_l
+\end{align}
+
+---
+
+==== 若项数 stem:[ m+n = 2k \quad (m,n,k \in N^+)], 则 stem:[a_m a_n = a_k^2 ]
+
+推导过程:
+\begin{align}
+& 既然:  若项数  m+n = k+l, 则 a_m * a_n = a_k * a_l \\
+& 即有: m+n = k+k, 则: a_m * a_n = a_k * a_k =   a_k^2 \\
+\end{align}
+
+.标题
+====
+例如：在等比数列中, stem:[ a_n >0], 且 stem:[ a_1 a_9 = 64, a_3 + a_7 = 20], 求 stem:[ a_11]
+
+
+[options="autowidth"]
+|===
+|过程 |Header 2
+
+|算出stem:[ a_3 和 a_7] 的具体值
+
+方法: 利用
+\begin{align}
+\boxed{
+若项数 m+n = k+l, \\
+则  a_m * a_n = a_k * a_l
+}
+\end{align}
+
+|根据公式 :
+\begin{align}
+\boxed{
+若项数 m+n = k+l, \; 则  a_m * a_n = a_k * a_l
+}
+\end{align}
+
+就有:
+\begin{align}
+a_3 a_7 = a_1 a_9 = 64
+\end{align}
+
+那么我们就可以用方程来得出 stem:[ a_3 和 a_7]的值了:
+\begin{cases}
+a_3 a_7 = 64 \\
+a_3 + a_7 = 20
+\end{cases}
+
+解得 stem:[ a_3 和 a_7] 的值, 其中某一个为 4, 另一个为 16. 即 stem:[a_3 =4,  a_7=16]  或 stem:[a_3 =16,  a_7=4].
+
+|用哪个"通项公式", 来计算 stem:[ a_{11}] 的思考:
+|stem:[ a_{11} ] +
+-> stem:[= a_1 q^{10} \quad ① ] +
+-> 或 stem:[= a_m q^{11-m}  \quad ②]
+
+有两个通向公式可以选择, 那我们选① 还是② ? +
+-> ①中, 我们要求出两个变量: stem:[ a_1 和 q] +
+-> ②中, 我们只要要求一个变量即可: stem:[ q] +
+
+所以我们采用 通项公式②.
+
+|算出公比q.
+
+方法: 利用
+\begin{align}
+\boxed{
+\frac{a_n}{a_m } =  q^{n-m}
+}
+\end{align}
+
+|stem:[ a_{11} ] +
+-> stem:[= a_1 q^{10} \quad ① ] +
+-> 或 stem:[= a_m q^{11-m}  \quad ②]
+
+有两个通向公式可以选择, 那我们选① 还是② ? +
+-> ①中, 我们要求出两个变量: stem:[ a_1 和 q] +
+-> ②中, 我们只要要求一个变量即可: stem:[ q] +
+
+所以我们采用 通项公式②.
+
+那么 q 怎么求? 利用公式:
+\begin{align}
+\boxed{
+\frac{a_n}{a_m } =  q^{n-m}
+}
+\end{align}
+
+-> 当 stem:[a_3 =4,  a_7=16] 时:
+\begin{align}
+& \frac{a_7}{a_3} = q^{7-3} \\
+& \frac{16}{4} = q^4 \\
+& q^4 = 4
+\end{align}
+
+-> 当 stem:[a_3 =16,  a_7=4] 时:
+\begin{align}
+& \frac{a_7}{a_3} = q^{7-3} \\
+& \frac{4}{16} = q^4 \\
+& q^4 = \frac{1}{4} \\
+\end{align}
+
+|算出 stem:[  a_{11}]
+
+方法: 利用公式
+\begin{align}
+\boxed{
+a_n = a_m * q^{n-m} \quad (n>m)
+}
+\end{align}
+
+|-> 当 stem:[ q^4 = 4] 时, stem:[a_{11} = a_7 q^{11-7} = 16*4 = 64 ]  +
+-> 当 stem:[ q^4 = \frac{1}{4}] 时, stem:[a_{11} = a_7 q^{11-7} = 16*\frac{1}{4} = 4 ]
+
+|===
+====
 
 
 
@@ -789,9 +976,14 @@ image:img_math/math_153.png[]
 
 ---
 
-https://www.bilibili.com/video/BV1bE411T7cA?p=154
 
-13:30
+
+
+
+---
+
+https://www.bilibili.com/video/BV1bE411T7cA?p=154
+16:28
 
 
 
