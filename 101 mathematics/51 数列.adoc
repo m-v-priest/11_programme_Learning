@@ -966,16 +966,121 @@ a_n = a_m * q^{n-m} \quad (n>m)
 ====
 
 
+.标题
+====
+例如： 在等比数列中, stem:[ a_3=4, a_7 = 9], 则 stem:[ a_5=?]
 
-
-
-
-
-
-
+\begin{align}
+& a_3  a_7 = a_5  a_5 \\
+& 4*9 = a_5^2 \\
+& a_5 可能 = \pm 6 <- 我们需要判断一下 a_5的正负号 \\
+& \because  a_5 = a_3 q^2 > 0 \\
+& \therefore a_5 = 6
+\end{align}
+====
 
 ---
 
+====  stem:[ {a_n}, {b_n}] 是项数相同的等比数列, 则 stem:[{a_n b_n} ] 也是等比数列
+
+.标题
+====
+例如： 已知 stem:[ {a_n}, {b_n}] 是 项数相同的等比数列, 那么 stem:[{a_n b_n} ] 也是等比数列吗?
+
+我们用"等比数列"必须满足的性质, 来验证一下:
+
+假设 stem:[{a_n b_n} ] 是等比数列, 那么就有 后一项比前一项, 是一个常数. 即:
+\begin{align}
+\frac{a_{n+1} b_{n+1}}{a_n b_n} = 常数
+\end{align}
+
+那么我们来验证一下上面的比值, 是否是一个常数? +
+设 stem:[ {a_n} ]的公比为p, stem:[ {b_n} ]的公比为q, 则:
+\begin{align}
+\frac{a_{n+1} b_{n+1}}{a_n b_n}
+= \frac{a_1 p^n * b_1 q^n} {a_1 p^{n-1} * b_1 q^{n-1}}
+= qp <- 它是一个与变量n 无关的常数.
+\end{align}
+
+所以,  stem:[{a_n b_n} ] 的确是一个"等比数列".
+====
+
+---
+
+
+==== stem:[ {a_n}, {b_n}] 是项数相同的等比数列, 则 stem:[\frac{a_n}{b_n}] 也是等比数列
+
+
+.标题
+====
+例如：已知 stem:[ {a_n}, {b_n}] 是 项数相同的等比数列, 那么 stem:[\frac{a_n}{b_n}] 也是等比数列吗?
+
+依然来验证一下: 我们来看后一项比前一项, 是否是一个常数?
+
+\begin{align}
+& \frac{\dfrac{a_{n+1}} {b_{n+1}}} {\dfrac{a_n} {b_n}}
+= \frac{a_{n+1}} {b_{n+1}}  * \frac{b_n}{a_n} \\
+& = \frac{a_{n+1}}{a_n} * \frac{b_n}{b_{n+1}}
+= p * \frac{1}{q}  <- 它是一个与变量n 无关的常数.
+\end{align}
+
+所以,   stem:[\frac{a_n}{b_n}] 的确是一个"等比数列".
+
+====
+
+
+.标题
+====
+例如：已知 stem:[ {a_n}, {b_n}] 是 项数相同的等比数列, 那么 stem:[a_n + b_n] 也是等比数列吗? 不一定.
+====
+
+
+.标题
+====
+例如：若 stem:[ {a_n}] 是公比为q 的等比数列, c为常数, 则下列这些数列, 也是等比数列吗?
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|stem:[ {\frac{1}{a_n}}]
+|是等比数列, 公比是 stem:[ 1/q]
+
+|stem:[ {a_n^2}]
+|是等比数列, 公比是 stem:[ q^2]
+
+|stem:[ {c a_n}]
+|\begin{cases}
+c = 0 时, 就不是等比数列 \\
+c \ne 0 时, 才是等比数列, 公比是 = \dfrac{c *a_{n+1}}{c * a_n} = q
+\end{cases}
+
+|stem:[ { a_n +c}]
+|\begin{cases}
+c = 0 时, 是等比数列 \\
+c \ne 0 时, 无法判断是否是等比数列, 因为 \dfrac{a_{n+1} + c} {a_n + c} 不好计算它的比值是否是常数.
+\end{cases}
+|===
+====
+
+
+.标题
+====
+例如： 已知三个数成等比数列, 它们的和=14, 乘积 = 64, 求这三个数.
+
+可以设这三个数分别是: stem:[ x/q, x, xq], 则有:
+\begin{align}
+& \frac{x}{q} * x * xq = 64, \; x^3 = 64,\; x = 4 \\
+& \frac{x}{q} + x + xq = 14, \; 将 x=4代入, 能得到 q = 2 或 \frac{1}{2}
+\end{align}
+
+所以, 这三个数就是:
+\begin{cases}
+\dfrac{x}{q} = \frac{4}{2或 \frac{1}{2}}\\
+x = 4 \\
+xq = 4* (2或 \frac{1}{2})
+\end{cases}
+====
 
 
 
