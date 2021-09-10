@@ -856,5 +856,52 @@ image:img_math/math_140.svg[350,350]
 
 ---
 
+==== stem:[  a_n = S_n - S_{n-1}]
 
+---
+
+== 等比数列 geometric progression -> stem:[  \frac{a_n}{a_{n-1}} = 公比q]
+
+---
+
+==== 等比中项(G) geometric mean -> stem:[ G^2 = a_{n-1} * a_{n+1}]
+
+---
+
+==== "等比数列"的通项公式1 -> stem:[ a_n = a_1 *q^{n-1}]
+
+---
+
+====  "等比数列"的通项公式2 ->  stem:[ a_n = a_m * q^{n-m}]
+
+---
+
+==== 若项数 stem:[ m+n = k+l], 则 stem:[ a_m * a_n = a_k * a_l]
+
+---
+
+==== 若项数 stem:[ m+n = 2k \quad (m,n,k \in N^+)], 则 stem:[a_m a_n = a_k^2 ]
+
+---
+
+====  stem:[ {a_n}, {b_n}] 是项数相同的等比数列, 则 stem:[{a_n b_n}, \frac{a_n}{b_n} ] 也是等比数列
+
+---
+
+====  等比数列前n项的和 -> stem:[ s_n = \frac{a_1 * (1-q^n)}{1-q} = \frac{a_1 - a_n q}{1-q}  (当 q \ne 1 时) ; \quad s_n = na_1  (当 q=1 时)]
+
+
+---
+
+====  stem:[ S_n = -Xq^n + X \quad (X \ne 0, q \ne 1, X和 -X 为相反数)]
+
+---
+
+==== stem:[(S_k), \quad (S_{2k} - S_k), \quad (S_{3k} - S_{2k}) \quad  (k \in N^*) ] 也是等比数列
+
+---
+
+==== 等比数列, 若项数为 stem:[ 2n (n \in N^+) ], 则 stem:[\frac{S_偶}{S_奇} = 公比q ]
+
+---
 
