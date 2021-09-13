@@ -873,14 +873,65 @@ image:img_math/math_151.png[]
 
 ---
 
+== 数列不等式
 
+\begin{align}
+\frac{1}{n^2} < \frac{1}{n(n-1)}
+\end{align}
+上式的逻辑是, 右边分母上的 stem:[ n^2 -n] 显然比左边分母上的 stem:[n^2  ] 小, 而分母越小, 分数值越大, 所以右边就大于左边.
+
+所以就可以进一步知道:
+\begin{align}
+\boxed{
+\frac{1}{n(n+1)} < \frac{1}{n^2} < \frac{1}{n(n-1)}
+}
+\end{align}
+
+
+
+.标题
+====
+例如： 证明:  对于 stem:[ a_n = \frac{1}{(n+1)^2}, n \in N^*], 有 stem:[S_n <1 ]
+
+我们从这个不等式出发:
+\begin{align}
+\boxed{
+ \frac{1}{(n+1)^2} <  \frac{1}{n(n+1)}
+}
+\end{align}
+很明显, 上式左边的分母, 展开后是 stem:[ n^2 + 2n +1], 右边的分母, 展开后是 stem:[ n^2 + n], 左边的分母比右边的分母, 值要大. 分母越大, 分数值越小. 所以左边的分式值, 小于右边.
+
+那么我们就可以知道, 题目给出的stem:[ a_n] (通项公式) 就有 :
+
+\begin{align}
+a_n = \frac{1}{(n+1)^2} <  \frac{1}{n(n+1)}
+\end{align}
+
+对于 n项的和 stem:[ S_n], 其中的每一项, 也都有上面的不等式关系. 即:
+\begin{align}
+S_n & = \frac{1}{(1+1)^2} + \frac{1}{(2+1)^2} + \frac{1}{(3+1)^2} ... + \frac{1}{(n+1)^2} \\
+& < \frac{1}{1(1+1)} + \frac{1}{2(2+1)}  + \frac{1}{3(3+1)} + ... +  \frac{1}{n(n+1)} \\
+& < (1 - \frac{1}{2}) + (\frac{1}{2} - \frac{1}{3}) + ... + (\frac{1}{n} - \frac{1}{n+1}) \\
+& < 1 -  \frac{1}{n+1} \\
+& < 1 <- 证明完毕
+\end{align}
+
+====
+
+
+
+
+
+
+
+---
 
 
 
 https://www.bilibili.com/video/BV147411K7xu?p=122
 
 
-
+6:16
 
 
 
