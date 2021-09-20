@@ -197,7 +197,7 @@ image:img_adoc,md,other/img_obsidian/obsidian 31.png[]
 
 ---
 
-==== 拆分与重组文件 -> note-refactor-obsidian
+==== 拆分文件 -> note-refactor-obsidian
 
 
 [options="autowidth"]
@@ -215,8 +215,134 @@ image:img_adoc,md,other/img_obsidian/obsidian 31.png[]
 按标题拆分是将标题作为文件名称，并在原文件里设置链接。
 |===
 
+改造:
+由于本插件默认只带有对1-3级别标题的拆分, 所以你可以自己添加上对 4-6级标题进行拆分的功能:
+
+打开 main.js 文件, 搜索"H3", 然后再它的代码块下面添加上:
+
+
+[source, javascript]
+----
+
+						this.addCommand({
+                            id: 'app:split-note-by-heading-h4',
+                            name: 'Split note by headings - H4',
+                            callback: function () { return _this.editModeGuard(function () { return _this.splitOnHeading(4); }); },
+                        });
+						this.addCommand({
+                            id: 'app:split-note-by-heading-h5',
+                            name: 'Split note by headings - H5',
+                            callback: function () { return _this.editModeGuard(function () { return _this.splitOnHeading(5); }); },
+                        });
+						this.addCommand({
+                            id: 'app:split-note-by-heading-h6',
+                            name: 'Split note by headings - H6',
+                            callback: function () { return _this.editModeGuard(function () { return _this.splitOnHeading(6); }); },
+                        });
+----
+
+
+image:img_adoc,md,other/img_obsidian/obsidian 32.png[]
+
+在插件设置中, 还可以进行下面两个设置
+
+image:img_adoc,md,other/img_obsidian/obsidian 33.png[]
+
+image:img_adoc,md,other/img_obsidian/obsidian 34.png[]
 
 ---
+
+
+==== ★ 聚合(查询)文件 -> obsidian-text-expand
+
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|功能
+|可以用查询命令, 但搜索结果渲染在页面上
+
+|官网
+|https://github.com/mrjackphil/obsidian-text-expand
+|===
+
+用法: 最简单的, 输入下面的代码, 然后按 ctrl+p, 执行"Text expand: expand command" 命令:
+....
+```expander
+tag: #★看穿/人活世上
+[[$filename]] <- 注意, 这里的[[]]不是参数的一部分, 只是双向应用功能而已
+```
+....
+
+image:img_adoc,md,other/img_obsidian/obsidian 35.png[]
+
+
+又例如:
+
+....
+```expander
+tag: #★看穿/人活世上
+$lines <-该命令, 直接读取每个符合本tag的卡片文件的全部文本内容
+
+---
+
+```
+....
+
+image:img_adoc,md,other/img_obsidian/obsidian 36.png[]
+
+
+
+
+即: 查询命令的模板是:
+....
+```expander
+检索式
+模板参数
+```
+....
+
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|expander
+|是该插件默认的代码块头，这句话必须要写! 插件的查询操作才能执行
+
+|检索式
+|就是我们在 Obsidian 的检索窗口中使用的检索式，你用检索式检索到的任何内容.
+
+|模板参数
+|是让你可以用上述的检索式所能获取的文件名、文件内容来进行操作替换，且生成对应的一系列内容的操作。
+
+ Text{{expand}} 插件支持的参数有:
+
+- $filename —— 返回搜索结果对应的"文件名"
+
+- $lines —— 返回搜索结果对应的文件的"文件全部内容"
+- $lines:10 —— 返回搜索结果对应的文件的文件"前十行内容"（当10设置为其它数值时，对应性变化）
+
+- $parent —— 返回搜索结果对应的"文件的所在目录名"
+- $path —— 返回搜索结果对应的"文件的路径"
+
+- $frontmatter:NAME —— 返回搜索结果对应的 文件的 YAML 的任一项结果（例如 - $frontmatter:Stars 返回 Stars 的值）
+- $header:## —— 返回搜索结果对应的文件的"所有二级标题"
+- $header:### HEADER —— 返回搜索结果对应的文件的所有匹配 HEADER 的"三级标题"
+- $blocks —— 返回搜索结果对应的文件的"所有块"（不包括隐藏块）
+- $match —— 返回搜索结果对应的文件的"所有匹配行"
+
+- $ext —— 返回搜索结果对应的文件的"后缀名"
+- $created —— 返回搜索结果对应的文件的"创建时间"
+- $size —— 返回搜索结果对应的文件的"大小"
+|===
+
+
+
+
+---
+
+
 
 == ----- -----
 
