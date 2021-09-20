@@ -4,11 +4,230 @@
 
 ---
 
+== 插件
+
+==== 手动安装插件
+
+[cols="1a,4a"]
+|===
+|步骤 |Header 2
+
+|1.
+|进入 git 官网, 搜索插件. 用关键词 "obsidian 插件名"来搜索
+
+https://github.com/search?q=obsidian+plugin
+
+|2.
+|进入插件页面后, 点击右侧的 Releases
+
+image:img_adoc,md,other/img_obsidian/obsidian 24.png[]
+
+|3.
+|obsidian的插件主要有 *3类文件*，分别命名为 :
+
+- `main.js`
+- `manifest.json`
+- `styles.css`
+
+也有些插件可能没有其中的某个文件。将上述3个文件下载到本地即可.
+
+image:img_adoc,md,other/img_obsidian/obsidian 25.png[]
+
+|4.
+|把这三个文件, 拷入一个新的文件夹中, 该文件夹起名为你的插件名. +
+然后, 把该文件夹, 拷贝入你的 <vault>/.obsidian/plugins/ 中. +
+如果 .obsidian 目录下不存在 plugins 目录, 就手动新建一个.
+
+即, 路径比如:
+....
+C:\Users\mvpri\iCloudDrive\iCloud~md~obsidian\my value\.obsidian\plugins\obsidian-kanban
+....
+
+|5.
+|重启Obsidian, 插件就能生效
+
+|===
+
+
+---
+
+==== toc动态目录 -> obsidian-plugin-dynamic-toc
+
+[options="autowidth"]
+|===
+|Dynamic Table of Contents |Header 2
+
+|功能
+|为页面增加 toc目录
+
+|官网
+|https://github.com/Aidurber/obsidian-plugin-dynamic-toc
+
+|用法
+|见下文
+|===
+
+- 直接输入下面代码即可, 注意, 它会用列表符号作为前标.  +
+并且, 它默认是从二级目录开始的, 而不包括一级目录. 因为一级目录是作为整个文章的标题的, 而不是作为目录中的一部分.
+
+....
+```toc
+
+```
+....
+
+- 如果你想用数字来作为前标, 就用
+....
+```toc
+ style: number
+```
+....
+
+- 该插件的默认参数其实如下:
+....
+```toc
+	style: bullet | number (default: bullet)
+	min_depth: number (default: 2)
+	max_depth: number (default: 6)
+```
+....
+
+说明, style参数的默认值是 bullet +
+从二级目录开始, 到六级目录结束. +
+你可以自己来修改这些参数的参数值.
+
+
+- 如果你想让一级标题, 也显示在目录中, 就要把 min_depth 参数, 设置值为1. 如下:
+....
+```toc
+	style: number
+	min_depth: 1
+	max_depth: 6
+```
+....
+
+
+---
+
+==== 对tag标签, 批量修改 -> Tag wrangler
+
+[options="autowidth"]
+|===
+|Tag wrangler |Header 2
+
+|功能
+|当你重命名某个标签时，全库内的所有同名标签都会被自动更改.
+
+|官网
+|https://github.com/pjeby/tag-wrangler
+
+|用法
+|image:img_adoc,md,other/img_obsidian/obsidian 27.png[]
+
+image:img_adoc,md,other/img_obsidian/obsidian 26.png[]
+
+|===
+
+---
+
+==== 最近打开的文件 -> Recent Files
+
+[options="autowidth"]
+|===
+|Recent Files |Header 2
+
+|功能
+|显示最近编辑过的文件
+
+|官网
+|https://github.com/tgrosinger/recent-files-obsidian
+
+|用法
+|image:img_adoc,md,other/img_obsidian/obsidian 28.png[]
+
+|===
+
+---
+
+==== 快速折叠/展开所有文件夹层  -> obsidian-collapse-all
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|功能
+|一键展开, 或折叠 所有文件夹层次
+
+|官网
+|https://github.com/OfficerHalf/obsidian-collapse-all
+
+|用法
+|image:img_adoc,md,other/img_obsidian/obsidian 29.png[]
+|===
+
+---
+
+==== 清理未链接的图片文件 -> Clear Unused Images
+
+[options="autowidth" cols="1a,1a"]
+
+|===
+|Header 1 |Header 2
+
+|功能
+|似乎只能识别png, 而不支持webp格式
+
+|官网
+|https://github.com/ozntel/oz-clear-unused-images-obsidian
+
+|用法
+|- 先对插件新进设置
+
+image:img_adoc,md,other/img_obsidian/obsidian 30.png[]
+
+image:img_adoc,md,other/img_obsidian/obsidian 31.png[]
+
+- 或者, 用命令来删除:
+
+按 ctrl + p, 找到 "Clear Unused Images" 命令
+
+|===
+
+
+
+---
+
+==== 拆分与重组文件 -> note-refactor-obsidian
+
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|Column 1, row 1
+|Column 2, row 1
+
+|官网
+|https://github.com/lynchjames/note-refactor-obsidian
+
+|用法
+|ctrlt+p打开【命令面板】，输入【note refactor】，可见note refactor的标题拆分用法，比如将一篇文章按标题1，标题2，标题3拆分为不同的片段。 +
+按标题拆分是将标题作为文件名称，并在原文件里设置链接。
+|===
+
+
+---
+
+== ----- -----
+
+---
+
 == 官方教程
 
 https://publish.obsidian.md/help-zh/%E7%94%B1%E6%AD%A4%E5%BC%80%E5%A7%8B
 
 ---
+
 
 ==== 数学公式 -> 放在 两个$$中 , 即 LaTeX 语法.
 
