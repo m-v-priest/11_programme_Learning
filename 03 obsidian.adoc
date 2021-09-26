@@ -253,7 +253,51 @@ image:img_adoc,md,other/img_obsidian/obsidian 34.png[]
 ---
 
 
-==== ★ 聚合(查询)文件 -> obsidian-text-expand
+
+
+==== ★ 聚合(查询)文件 -> 推荐:  Dataview
+
+官网  +
+https://github.com/blacksmithgu/obsidian-dataview
+
+用法:
+
+现在每个文件的头部, 写上"元信息" :
+
+....
+---
+name : 文件名
+tag: 标签名
+---
+....
+
+image:img_adoc,md,other/img_obsidian/obsidian 37.png[]
+
+然后, 在一个新的空白页面, 写上下面的代码, 用来做查询.
+
+....
+```dataview
+table tag  //若想要多个列表头, 之间可以用逗号隔开
+from #11myOwn
+```
+....
+
+上面的代码, 意思是: 建一个表格, 表格里有两列, 一列是默认的文件名, 另一列是我们制定的 tag标签名. 并限制只要查找 #11myOwn 标签即可.
+
+然后点击渲染预览, 结果就会有:
+
+image:img_adoc,md,other/img_obsidian/obsidian 38.png[]
+
+
+更多用法见: +
+https://zhuanlan.zhihu.com/p/373623264
+
+
+
+---
+
+
+==== 聚合(查询)文件 -> 不推荐这个:  obsidian-text-expand <- 速度太慢了, 而且容易修改原始文件中的数据, 导致崩溃!
 
 
 [options="autowidth"]
