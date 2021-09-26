@@ -414,8 +414,8 @@ image:img_adoc,md,other/img_obsidian/obsidian 39.png[]
 ---
 name :
 tag :
-{{date}} :
-{{time}} :
+date: {{date}}
+time: {{time}}
 ---
 ....
 
