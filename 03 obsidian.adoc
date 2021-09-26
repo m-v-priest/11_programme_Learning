@@ -399,6 +399,26 @@ https://publish.obsidian.md/help-zh/%E7%94%B1%E6%AD%A4%E5%BC%80%E5%A7%8B
 ---
 
 
+==== 模板的使用
+
+1.先在核心插件中, 打开模板功能
+
+2. 在设置 -> 模板中, 指定你之后要"自定义模板文件"的存放目录
+
+image:img_adoc,md,other/img_obsidian/obsidian 39.png[]
+
+3.进入你的模板目录, 新建一个md文件, 写入你的预设内容.
+
+image:img_adoc,md,other/img_obsidian/obsidian 40.png[]
+
+4.现在, 在任何你想插入模板内容的空白页面中, ctrl + p, 找到命令"插入模板"即可.
+
+image:img_adoc,md,other/img_obsidian/obsidian 41.png[]
+
+
+---
+
+
 ==== 数学公式 -> 放在 两个$$中 , 即 LaTeX 语法.
 
 LaTeX 官网 : +
