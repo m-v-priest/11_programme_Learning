@@ -412,7 +412,7 @@ image:img_adoc,md,other/img_obsidian/obsidian 39.png[]
 注意, 下图中写错了,  日期和时间要写成这样:
 ....
 ---
-name :
+name : //注意, 模板里不能写单引号', 否则报错.
 tag :
 date: {{date}}
 time: {{time}}
