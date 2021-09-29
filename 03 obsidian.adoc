@@ -398,6 +398,13 @@ https://publish.obsidian.md/help-zh/%E7%94%B1%E6%AD%A4%E5%BC%80%E5%A7%8B
 
 ---
 
+==== 图片目录的设置
+
+在设置 -> 文件与链接 -> 新附件的默认位置, 改成"下方指定的目录" -> 下面就能看到"附件文件夹路径"了
+
+image:img_adoc,md,other/img_obsidian/obsidian 43.png[]
+
+---
 
 ==== 模板的使用
 
