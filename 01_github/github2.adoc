@@ -45,7 +45,7 @@ git push origin master
 
 ---
 
-== + 将本地项目, 上传到github上
+== ★ 将本地项目, 上传到github上
 
 比如, 你要把本地的oldProjs项目, 上传到github上的newProj文件夹中.
 
@@ -132,4 +132,41 @@ checkout时, 再进行这个转换: LF(linux) -> CRLF(win)
 |===
 
 ---
+
+== ★ 修改远程仓库的名字, 同时对本地仓库也同步更新
+
+
+步骤
+|===
+|Header 1 |Header 2
+
+|1. 先修改远程仓库名字
+|进入你要改名字的仓库, 选 settings -> 改名 +
+image:./img_github/git_41.png[]
+
+|2.在你本地仓库下, 输入命令: +
+git remote -v
+|可以看到你本地这个仓库, 所连接到的远程仓库的对应地址  +
+image:./img_github/git_42.png[]
+
+
+|3. 继续输入命令 +
+git remote rm origin
+|意思即: 断开链接, 删除远程仓库的连接地址. 即 删除origin这个远端的仓库和你本地的映射
+
+删除后, 在用 git remote -v 来查看, 就看不到任何东西了..
+
+|4. 重新链接到远程仓库（修改过名字后的远程仓库） +
+git remote add origin git@git.zhlh6.cn:m-v-priest/02_myself_ID_EGO.git
+|
+
+|5. 进行同步
+|git pull origin master
+|===
+
+
+
+---
+
+
 

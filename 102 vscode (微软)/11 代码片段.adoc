@@ -1,0 +1,36 @@
+
+= vscode 代码片段
+:toc:
+---
+
+== react 代码片段
+
+安装插件 React-Native/React/Redux snippets for es6/es7 version Standard
+
+开发商 EQuimper
+
+官网 +
+https://marketplace.visualstudio.com/items?itemName=EQuimper.react-native-react-redux-snippets-for-es6-es7-version-standard
+
+代码片段:
+
+cccs [Component Class With Constructor]
+[source, typescript]
+....
+class $1 extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { $2 };
+  }
+  render() {
+    return (
+      $3
+    );
+  }
+}
+
+export default $1;
+....
+
+
+

@@ -1,0 +1,409 @@
+
+= GitBook
+:toc:
+
+---
+
+== 官网
+
+https://github.com/GitbookIO/gitbook/blob/master/docs/setup.md +
+https://github.com/GitbookIO/gitbook +
+https://www.gitbook.com/
+
+
+可以使用adoc文件来编写. +
+Write using Markdown or AsciiDoc
+
+---
+
+== 安装gitbook
+
+许可首先安装node.js
+
+为了加快速度, 可以使用淘宝镜像: +
+npm config set registry http://registry.npm.taobao.org
+
+|===
+|需要安装 |命令
+
+|gitbook库
+|npm install gitbook -g
+
+|
+|npm install -g gitbook-cli
+
+|安装ebook-convert, 能支持gitbook生成epub或mobi
+|npm install ebook-convert -g +
+
+|安装生成电子书的工具 calibre
+|下载地址 https://calibre-ebook.com/download +
+安装成功后要重启命令行，之后用gitbook epub/mobi 命令, 才会生效。 +
+GitBook在生成PDF的过程中使用到calibre的转换功能.
+
+|
+|检验下gitbook是否安装成功
+|gitbook -V
+|===
+
+---
+
+== 创建项目
+
+(1).先创建一个你的gitbook项目目录, 比如: +
+E:\phpStorm_proj\01_myLearn\my_GitBook\01_考研外刊阅读book +
+
+(2).进入该项目目录, 然后输入命令:
+....
+gitbook init
+....
+
+该命令会创建出两个文件:
+....
+1.README.md -> 是关于你的书的介绍
+2.SUMMARY.md -> 包含了书的目录, 即, 你本书的目录结构表, 要写在这个文件里面.
+....
+
+---
+
+==== 根据SUMMARY.md中的内容, 自动生成目录结构与相应的文件
+
+打开SUMMARY.md 目录文件, 将你的目录结构, 写进去, 格式范例如下:
+....
+# Summary
+# 中括号[]里的是电子书的目录页中的目录列表名字, 圆括号()里的是页面目录地址.
+
+* [Introduction](README.md)
+* [90年代](chapter1_90/README.md)
+    * [1991年](chapter1_90/1991.md)
+* [00年代](chapter2_00/README.md)
+    * [2001年](chapter2_00/2001.md)
+    * [2002年](chapter2_00/2002.md)
+    * [2003年](chapter2_00/2003.md)
+* [结束](end/README.md)
+....
+
+然后, 再次执行gitbook init命令
+....
+gitbook init
+....
+
+这样, 就会根据 你新修改的SUMMARY.md 目录内容, 自动生成对应的文件夹和 md 文件.
+
+---
+
+==== 增添目录
+
+如果想要新增章节，依然在 SUMMARY.md 里面新增目录结构; 然后执行 gitbook init , 就会新增对应的 md 文件.
+
+---
+
+==== 删除目录
+
+如果想要删除章节，在 SUMMARY.md 里面删除; 然后执行 gitbook init命令.
+
+注意! 虽然在SUMMARY.md里你删除了该章节的名字. 但在项目目录中, 该些实际的 md 文件并不会自动删除，还需要你手动来删除。
+
+---
+
+
+==== 在浏览器中预览你的gitbook
+
+执行命令
+....
+gitbook serve  //生成静态网页并运行服务器
+....
+
+然后浏览器中输入 http://localhost:4000 就可以预览书籍。
+
+如果执行 gitbook serve 命令时报错:
+....
+Error: ENOENT: no such file or directory, stat ‘...\gitbook\gitbook-plugin-fontsettings\fontsettings.js’
+....
+
+解决办法是, 打开下面这个文件:
+C:\Users\Administrator\.gitbook\versions\3.2.3\lib\output\website\copyPluginAssets.js +
+然后搜索所有的 confirm: true 替换成 confirm: false ,保存即可.
+
+---
+
+
+==== 输出为电子书(epub,mobi,pdf)文件
+
+....
+gitbook pdf ././你电子书的名字.pdf
+//生成 pdf/epub/mobi 格式的电子书
+....
+
+|===
+|输出格式 |命令
+
+|输出成 pdf
+|gitbook pdf
+
+|输出成 mobi
+|gitbook mobi
+
+|输出成 epub
+|gitbook epub
+|===
+
+注意: 无序列表, 在epub和pdf中显示完美, 但在mobi中却有缩进错误. 可能是mobi的bug?
+
+
+---
+
+==== 输出为静态网站
+
+输入命令
+....
+gitbook build
+....
+
+就会自动创建一个名叫"_book"的目录,里面就是你电子书的静态网页
+
+
+---
+
+== 配置文件 book.json (在电子书项目的根目录下)
+
+book.json是配置文件, 配置信息都写在里面. 常用字段包括:
+
+|===
+|字段 |介绍
+
+|styles
+|本书使用的css样式文件的路径. +
+默认情况下各generator对应的css文件为: +
+"styles": { +
+"website": "styles/website.css", +
+"ebook": "styles/ebook.css", +
+"pdf": "styles/pdf.css", +
+"mobi": "styles/mobi.css", +
+"epub": "styles/epub.css" +
+}
+
+
+|plugins
+|引入需要的插件，前面有-号的为uninstall相应的插件. +
+插件写在这里后, 然后执行 gitbook install， +
+或者使用npm安装: npm install gitbook-plugin-插件名
+
+|pluginsConfig
+|配置插件的属性
+
+|structure
+|指定 Readme、Summary、Glossary 和 Languages 对应的文件名
+
+|title
+|本书标题
+
+|author
+|本书作者
+
+|description
+|本书描述
+
+|language
+|本书语言，中文设置 "zh-hans" 即可
+
+|links
+|在左侧导航栏添加链接信息，例如个人站点
+
+|simple-page-toc
+|生成本页目录
+
+|===
+
+
+比如, book.json的内容如下:
+[source,json]
+....
+{
+  "title": "我的第一本gitbook书",
+  "author": "寒夜天",
+  "description": "考研英语外刊真题阅读",
+  "styles": {
+    "website": "./styles/website.css",
+    "ebook": "styles/ebook.css",
+    "pdf": "styles/pdf.css",
+    "mobi": "styles/mobi.css",
+    "epub": "styles/epub.css"
+  },
+  "structure": {
+    "readme": "README.md"
+  },
+  "links": {
+    "sidebar": {
+      "google搜索": "https://www.google.com/",
+      "我的GitHub": "https://github.com/m-v-priest/01_myLearn"
+    }
+  },
+  "plugins": [
+    "back-to-top-button",
+    "expandable-chapters-small",
+    "emphasize",
+    "anchor-navigation-ex",
+    "popup",
+    "splitter",
+    "atoc",
+    "simple-page-toc"
+  ],
+  "pluginsConfig": {
+
+  },
+
+  "pdf": {
+    "pageNumbers": true,
+    "fontFamily": "Arial",
+    "fontSize": 24,
+    "paperSize": "a4",
+    "margin": {
+      "left": 0,
+      "right": 0,
+      "top": 0,
+      "bottom": 0
+    }
+  }
+}
+....
+
+你要安装的插件, 都写在plugins字段中, 写在一个大list中.
+
+然后, 执行命令 :
+....
+gitbook install
+//该命令会安装所有的插件, 哪怕你之前安装过某些插件, 该命令也会全部重新再安装一遍. 非常慢.
+所以, 推荐使用单独安装某一个插件的命令: npm install gitbook-plugin-插件名
+....
+即可安装所有的插件.
+
+
+---
+
+==== 实用的插件有
+
+安装插件的命令如下:
+....
+npm install gitbook-plugin-插件名
+
+比如, 只安装simple-page-toc插件, 则命令就是:
+npm install gitbook-plugin-simple-page-toc
+....
+
+常用的插件有:
+|===
+|说明 |插件名
+
+|回到顶部
+|back-to-top-button
+
+|左侧章节目录可折叠
+|expandable-chapters-small
+
+|为文字加上背景色(默认为黄色)
+|emphasize +
+
+然后在markdown / asciidoc内容中，使用以下内容突出显示一些文本：
+
+This text is {% em %}highlighted !{% endem %} +
+This text is {% em %}highlighted with **markdown**!{% endem %} +
+This text is {% em type="green" %}highlighted in green!{% endem %} +
+This text is {% em type="red" %}highlighted in red!{% endem %} +
+This text is {% em color="#ff0000" %}highlighted with a custom color!{% endem %}
+
+|侧边栏的宽度可调节
+|splitter
+
+|悬浮按钮目录
+|anchor-navigation-ex
+
+|打开新的页面查看图片
+|popup
+
+|插入 TOC 目录
+|atoc
+
+|===
+
+---
+
+==== 导出pdf时, 设置pdf的页面尺寸和字体大小
+
+官方说明 +
+https://github.com/GitbookIO/gitbook/blob/master/docs/config.md
+
+中文文档说明 +
+https://janicezhw.github.io/gitbook/startusegitbook/configInfo/bookjson.html
+
+可以在book.json中, 来设置你输出的pdf书籍的各种参数, 加上这段：
+
+....
+  "pdf": {
+    "pageNumbers": true,
+    "fontFamily": "Arial",
+    "fontSize": 24,
+    "paperSize": "a4",
+    "margin": {
+      "left": 0,
+      "right": 0,
+      "top": 0,
+      "bottom": 0
+    }
+  }
+....
+
+但边距设置似乎无效??
+
+
+|===
+|变量 |说明
+
+|pdf.pageNumbers|将页码添加到每个页面的底部(默认为“true”)
+|pdf.fontSize|基本字体大小(默认为12)
+|pdf.fontFamily|基本字体系列(默认为Arial)
+|pdf.paperSize|纸张大小，选项为“a0”，“a1”，“a2”，“a3”，“a4”，“a5”，“a6”，“b0”，“b1”，“b2”，“b3” 'b4'，'b5'，'b6'，'legal'，'letter''(默认为'a4')
+|pdf.margin.top|顶部边距(默认为56)
+|pdf.margin.bottom|底边距(默认为56)
+|pdf.margin.right|右边距(默认为62)
+|pdf.margin.left|左边距(默认为62)
+
+
+
+|===
+
+== css支持
+
+1.在 book.json中, 可以开启对css的支持, 添加上该字段即可:
+....
+"styles": {
+    "website": "styles/website.css",
+    "ebook": "styles/ebook.css",
+    "pdf": "styles/pdf.css",
+    "mobi": "styles/mobi.css",
+    "epub": "styles/epub.css"
+}
+....
+
+2.然后在你的电子书项目的根目录下, 创建 styles目录, 在里面新建 epub.css 等css文件. +
+比如, 想要某一段文字有黄色背景, 就在这个css文件里面写上这句:
+....
+.my_yellow {
+    background-color: yellow;
+}
+....
+
+
+3.这样, 你就可以在你的markdown文件里, 使用这个class属性了.
+....
+<span class="my_yellow"> 某段文字 </span>
+....
+
+注意, 该css样式的效果, 在你编辑markdown文件时, 是看不到的, 只有在你用 `gitbook epub` 命令来导出epub文件后, 就能发现, css控制的黄色背景的确生效了!
+
+
+
+---
+
+
+
+

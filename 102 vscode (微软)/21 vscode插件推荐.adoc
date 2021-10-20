@@ -1,0 +1,18 @@
+
+= vscode 插件推荐
+:toc:
+---
+
+== 变量计算的结果, 自动预览 ->  Quokka.js
+
+用法:
+
+1. 按 Ctrl/Cmd() + Shift + P
+2. 键入 "Quokka"
+3. 选择并运行 "新建JavaScript文件" 命令
+
+---
+
+
+
+
