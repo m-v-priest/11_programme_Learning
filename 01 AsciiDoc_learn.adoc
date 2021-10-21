@@ -13,6 +13,8 @@ https://asciidoctor.org/docs/user-manual/#cols-format
 各种块的写法, 可见下面
 https://asciidoctor.cn/docs/asciidoc-syntax-quick-reference/index.html#block-id-role-and-options
 
+及 ★ +
+http://www.seinan-gu.ac.jp/~shito/asciidoctor/html_chunk/chap16.html#links
 
 快速教程
 
@@ -352,6 +354,34 @@ image:./img_adoc,md,other/img_adoc/adoc_01.png[]
 ```
 
 <br> <--可见 html标签在adoc中无效!
+
+
+---
+
+==== ★ 让目录自动加上编号 -> :sectnums:
+
+....
+:sectnums:
+
+== Section One
+== Section Two
+== Section Three
+....
+
+效果 +
+image:./img_adoc,md,other/img_adoc/adoc_03.png[]
+
+---
+
+==== ★ 让目录同时显示在页面左侧固定 -> :toc: left
+
+....
+= fileName
+:toc: left
+....
+
+效果 +
+image:./img_adoc,md,other/img_adoc/adoc_04.png[]
 
 ---
 
@@ -1668,7 +1698,7 @@ row 1
 == 特殊段落 (github中效果如同单行两列的表格)
 主要是为了引起读者注意.
 
-有5种特殊段落的标签(注意点: 1.标签必须大写, 2.标签后面必须跟着冒号, *冒号前还必须有一个空格* , 才会生效!):
+有5种特殊段落的标签(注意点: 1.标签必须大写, 2.标签后面必须跟着冒号, *冒号后还必须有一个空格* , 才会生效!):
 
 - NOTE 注释
 - TIP 提示
