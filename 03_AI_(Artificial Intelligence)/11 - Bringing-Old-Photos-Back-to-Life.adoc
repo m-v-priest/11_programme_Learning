@@ -11,7 +11,13 @@ Bringing-Old-Photos-Back-to-Life::
 是微软的项目, 可以用来修复老照片, 模糊人脸变高清. +
 地址 https://github.com/microsoft/Bringing-Old-Photos-Back-to-Life
 
-网上的教程 +
+注意: github官网上的 Installation 教程, 在win下, 必须使用 git自带的 命令行工具 git bash 才能输入成功, 不能直接在 pycharm的 terminal中输入(无法识别linux命令)!
+
+image:img_ai/29.png[]
+
+
+
+网上的教程(较老, 不保证运行成功) +
 https://baijiahao.baidu.com/s?id=1696133635752151374&wfr=spider&for=pc
 
 
