@@ -905,7 +905,7 @@ $ git checkout -- t2.txt # 将之前提交到"版本库"里的文件, 拷贝回"
 |===
 
 
-执行后，会在 C:\Users\Administrator\.ssh 目录下, 找到id_rsa(私钥)和id_rsa.pub(公钥)
+执行后，会在 C:\Users\Administrator\.ssh (注意: 这里的Administrator 是你的计算机名, 如果你改过名字, 就要换成你新的名字 )目录下, 找到id_rsa(私钥)和id_rsa.pub(公钥)
 
 - id_rsa 是私钥，不能泄露出去.
 - id_rsa.pub 是公钥，可以放心地告诉任何人.

@@ -95,7 +95,7 @@ image:img_ai/18.png[]
 
 |为了加快"包"的安装速度, 添加国内镜像源
 |先查看已经安装过的镜像源::
-cmd窗口执行命令：
+anaconda prompt 窗口中, 执行命令：
 ....
 conda config --show
 ....
