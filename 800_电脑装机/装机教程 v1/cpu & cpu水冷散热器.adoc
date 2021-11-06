@@ -1,0 +1,36 @@
+
+= 电脑装机: CPU &  CPU 水冷散热器
+:toc:
+:sectnums:
+
+---
+
+
+== CPU
+
+==== intel cpu 安装方法
+
+intel cpu, 安装时, 如何对准位置? 在它的一角, 有一个金色小三角, 对准主板cpu插槽处的一个白色小点 (或三角等其他形式).
+
+image:img_PC/001.png[]
+
+image:img_PC/002.png[]
+
+image:img_PC/003.png[]
+
+image:img_PC/004.png[]
+
+另一种确认 cpu 方向的方法是:
+
+image:img_PC/005.png[]
+
+image:img_PC/006.png[]
+
+image:img_PC/007.png[]
+
+
+---
+
+== CPU 水冷散热器
+
+---

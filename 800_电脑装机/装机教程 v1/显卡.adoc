@@ -1,0 +1,41 @@
+
+= 电脑装机: 显卡
+:toc:
+:sectnums:
+
+---
+
+
+== 显卡的安装
+
+image:img_PC/171.png[]
+
+image:img_PC/172.png[]
+
+将显卡, 插到离 cpu最近的一个 PCIE*16 插槽上.
+
+
+image:img_PC/173.png[]
+
+image:img_PC/174.png[]
+
+image:img_PC/175.png[]
+
+---
+
+== 给显卡连上供电线
+
+
+image:img_PC/176.png[]
+
+image:img_PC/177.png[]
+
+image:img_PC/178.png[]
+
+image:img_PC/179.png[]
+
+image:img_PC/180.png[]
+
+
+
+---

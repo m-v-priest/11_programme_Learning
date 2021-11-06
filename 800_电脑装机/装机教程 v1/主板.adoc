@@ -1,0 +1,89 @@
+
+= 电脑装机: 主板
+:toc:
+:sectnums:
+
+---
+
+
+== 主板
+
+==== 在机箱上, 安装固定主板所需要的 "增高螺柱"
+
+image:img_PC/033.png[]
+
+image:img_PC/034.png[]
+
+机箱上, 默认可能没有帮我们拧上"增高螺柱", 就需要我们自己拧上"增高螺柱".  +
+你的主板上有几个安装孔位, 对应到机箱上, 就要拧上几个"增高螺柱". 位置要和主板上的孔位位置一致.
+
+image:img_PC/035.png[]
+
+image:img_PC/036.png[]
+
+
+---
+
+==== 拆卸机箱背后的 PCIE 挡板
+
+image:img_PC/037.png[]
+
+|===
+|Header 1 |Header 2
+
+|对于PCIE挡板和机箱是连在一起的情况下
+|image:img_PC/038.png[]
+
+|对于可重复组装的PCIE挡板
+|image:img_PC/039.png[]
+|===
+
+---
+
+==== 安装主板到机箱里
+
+
+[cols="1a,3a"]
+|===
+|Header 1 |Header 2
+
+|第一种情况: "IO挡板" 和 "主板" 是分离式的
+|image:img_PC/040.png[]
+
+把io挡板放在主板上, 确认一下其上下位置 +
+image:img_PC/041.png[]
+
+image:img_PC/042.png[]
+
+image:img_PC/043.png[]
+
+image:img_PC/044.png[]
+
+把这两个凸起, 掰起来 +
+image:img_PC/045.png[]
+
+image:img_PC/046.png[]
+
+image:img_PC/047.png[]
+
+image:img_PC/048.png[]
+
+image:img_PC/049.png[]
+
+image:img_PC/050.png[]
+
+image:img_PC/051.png[]
+
+
+|第二种情况: 主板和 IO挡板, 是一体式的
+|这个比较简单
+
+image:img_PC/052.png[]
+
+image:img_PC/053.png[]
+
+再将螺丝, 拧到"固定孔位"中就行了.
+
+|===
+
+---
