@@ -132,4 +132,103 @@ image:img/020.png[]
 
 ---
 
+== rgb 与 argb 灯光控制
+
+==== 接口
+
+[cols="1a,4a"]
+|===
+|Header 1 |Header 2
+
+|rgb
+|传统的 rgb, 采用 12v 电压, 4pin 供电.
+
+image:img/021.png[]
+
+|argb
+|argb 采用 5v 电压, 3pin 供电.
+
+
+image:img/022.png[]
+|===
+
+image:img/023.png[]
+
+image:img/025.png[]
+
+image:img/024.png[]
+
+---
+
+== rgb 风扇的两根线
+
+一般, rgb风扇都是有两条信号线:
+
+- 一条控制风扇转速,
+- 另一条控制 rgb灯光效果.
+
+image:img/026.png[]
+
+
+[cols="1a,3a"]
+|===
+|Header 1 |Header 2
+
+|控制"风扇转速" 的线
+|image:img/027.png[]
+
+image:img/028.png[]
+
+插上之后, 风扇就能直接转了.
+
+|控制 "rgb灯光" 的线
+|image:img/029.png[]
+
+image:img/030.png[]
+
+image:img/031.png[]
+
+|===
+
+一般, 市面上的风扇, 控制转速的接口, 主要有:
+
+image:img/032.png[]
+
+image:img/033.png[]
+
+一般来说, 只要前两只脚有接通, 风扇就会转. +
+第三只脚的功能, 是让主板可以侦测风扇的转速.
+
+3Pin 和 4pin 风扇的前三只脚, 构造是完全相同的. 它们的差异在于第4只脚 -- 支持进行PWM模式控制.
+
+image:img/034.png[]
+
+image:img/035.png[]
+
+image:img/036.png[]
+
+用 pwm 技术来控制风扇转速的, 该风扇就叫做"pwm风扇", 它是 4pin 的.
+
+3pin 的风扇就是 "dc风扇".
+
+3pin风扇 可以插在 4pin 的插座上, 但无法通过 pwm模式来进行转速控制, 只能使用 dc 模式来调整.
+
+3pin的 dc风扇, 主要通过电压的高低, 来控制风扇的转速. 电压越高, 风扇转速越高. 但 dc风扇的缺点就是, 无法精确控制转速.
+
+pwm模式的风扇, 电压会被固定在12v, 风扇转速是通过最后一支 pwm针脚 来控制的.
+
+image:img/037.png[]
+
+image:img/038.png[]
+
+
+
+
+
+
+
+---
+
+
+
 
