@@ -23,3 +23,12 @@ image:img_github/45.png[]
 
 ---
 
+== 如果提示 “没有写入 Hosts 文件的权限”
+
+image:img_github/46.png[]
+
+image:img_github/47.png[]
+
+
+---
+
