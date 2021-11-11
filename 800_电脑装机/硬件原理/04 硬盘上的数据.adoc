@@ -1,0 +1,9 @@
+
+= 硬盘上的数据
+:toc:
+:sectnums:
+
+---
+
+image:img/052.png[]
+
