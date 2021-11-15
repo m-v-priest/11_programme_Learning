@@ -256,3 +256,13 @@ image:img/093.png[]
 
 ---
 
+== 内存条的 SPD 与 XMP
+
+
+
+image:img/139.png[]
+
+image:img/140.png[]
+
+image:img/141.png[]
+
