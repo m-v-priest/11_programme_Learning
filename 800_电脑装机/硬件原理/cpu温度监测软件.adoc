@@ -21,7 +21,7 @@ https://www.intel.com/content/www/us/en/developer/articles/tool/power-gadget.htm
 - Utilization : 当前 CPU 的占用率
 - Temperature : 当前 CPU 的温度，此温度是内核温度
 
-image:img/094.png[]
+image:img/094.gif[]
 
 
 | AMD 官方监测软件
