@@ -147,6 +147,28 @@ adoc中用latex时 : 注意空格和空行的问题
 
 ---
 
+== #折叠#
+
+....
+[%collapsible]
+====
+Example block turns into collapsible summary/details.
+====
+....
+
+
+效果
+[%collapsible]
+====
+Example block turns into collapsible summary/details.
+====
+
+该功能的 英文文档说明:
+https://blog.mrhaki.com/2019/03/awesome-asciidoctor-collapsible-content.html
+
+
+---
+
 == ★ 自定义代换 -> :<name>: <value>
 
 官方文档介绍 : https://asciidoc.org/asciidoc.css-embedded.html#X18
