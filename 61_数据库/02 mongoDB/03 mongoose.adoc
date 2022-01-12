@@ -48,7 +48,7 @@ db.once('close', () => {
 
 == Schema(接口) - Model(类) - document(实例)
 
-
+[options="autowidth"]
 |===
 |概念 |说明
 

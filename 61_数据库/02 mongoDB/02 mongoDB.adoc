@@ -6,7 +6,7 @@
 
 == SQL 和 NoSQL 的对应关系
 
-
+[options="autowidth"]
 |===
 |SQL(关系型数据库) |NoSQL(非关系型数据库)
 mongoDB
@@ -44,7 +44,7 @@ Capped collections 就是固定大小的collection。
 
 == 启动mongoDB
 
-
+[options="autowidth"]
 |===
 |功能 |命令
 
@@ -65,7 +65,7 @@ Capped collections 就是固定大小的collection。
 
 == database 数据库操作
 
-
+[options="autowidth"]
 |===
 |功能 |命令
 
@@ -93,6 +93,7 @@ Capped collections 就是固定大小的collection。
 
 == collection 集合操作
 
+[options="autowidth"]
 |===
 |功能 |命令
 
@@ -443,7 +444,7 @@ db.colP4.find({
 注意: 使用mongoexport，mongoimport, 需要退出当前的数据库运行环境 (即关掉运行mongo的cmd窗口)
 否则会报错：[js] SyntaxError: missing ; before statement @(shell):1:15
 
-
+[options="autowidth"]
 |===
 |功能 |命令
 

@@ -186,7 +186,7 @@ adoc中用latex时 : 注意空格和空行的问题
 
 ---
 
-== ★ 引用并嵌入另一个adoc文章中的内容 -> include::example.adoc[]
+== ★ #引用并嵌入另一个adoc文章中的内容 -> include::example.adoc[]#
 
 比如, 你在你当前编辑文件的同一目录下,有一个 example.adoc, 里面的内容如下:
 
@@ -406,6 +406,24 @@ mddir  //直接运行mddir命令
 ```
 image::01 程序学习 (前端, ui)/03-2 JavaScript/01 javaScript_learn/img_javaScript/arr_copyWithin.svg[20,20]
 ```
+---
+
+== #用相对路径, 链接到本机的另一个adoc文件#
+
+....
+link:相对路径/file.adoc[本链接在页面上显示时, 可自定义的文字]
+....
+
+注意:
+
+1. file文件名中, 不能有空格! 也不能有英文的单引号和双引号， 只能用中文的双引号.
+2. [] 中括号里面, 可以写上你自定义的, 该链接的展示文字
+
+效果:
+
+link:相对路径/file.adoc[本链接在页面上显示时, 可自定义的文字]
+
+
 ---
 
 == ★ 页面内链接(锚点)
