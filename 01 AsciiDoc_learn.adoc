@@ -150,17 +150,20 @@ adoc中用latex时 : 注意空格和空行的问题
 == #折叠#
 
 ....
+.折叠按钮处显示的名称
 [%collapsible]
 ====
-Example block turns into collapsible summary/details.
+被折叠的内容放在这里
 ====
 ....
 
 
 效果
+
+.折叠按钮处显示的名称
 [%collapsible]
 ====
-Example block turns into collapsible summary/details.
+被折叠的内容放在这里
 ====
 
 该功能的 英文文档说明:

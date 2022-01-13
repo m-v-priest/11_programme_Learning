@@ -12,9 +12,9 @@
 
 == Section Two
 
-== Section Three
 
-== Section Three
-
-== Section Three
-
+.name
+[%collapsible]
+====
+contents
+====
