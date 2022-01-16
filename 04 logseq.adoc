@@ -11,6 +11,12 @@ https://logseq.com/
 
 https://github.com/logseq
 
+== 官方文档
+
+https://logseq.github.io/#/page/Contents
+
+https://mschmidtkorth.github.io/logseq-msk-docs/#/page/Logseq%20-%20Unofficial%20Documentation
+
 ---
 
 == 新建链接页面 -> [[]]
@@ -24,6 +30,9 @@ https://github.com/logseq
 
 == 不跳转链接, 而是在右侧边栏打开该链接页面 -> 按住SHIFT+单击[[ ]]中的文字
 
+== 输入 latex 数学公式 -> 输入 "< latex"
+
+== 下划线 -> <ins>Underline</ins>
 
 == 输入表格
 
