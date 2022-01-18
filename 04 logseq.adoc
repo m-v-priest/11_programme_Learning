@@ -38,6 +38,54 @@ image:img_adoc,md,other/logseq_02.png[]
 
 ---
 
+==== 自定义 logseq 默认主题css 的字号大小
+
+默认主题的字号太大了, 可以这样修改缩小: 在设置里面, 修改css.  +
+它的优点是: 它能对所有安装的第三方主题的字号大小, 同样覆盖生效. 这就很不错.
+
+image:img_adoc,md,other/logseq_03.png[]
+
+然后输入
+....
+* {font-size:14px;}
+....
+
+image:img_adoc,md,other/logseq_04.png[]
+
+*其实, 这个css文件, 名叫 custom.css, 路径就在* C:\phpStorm_proj\02_myself_ID_EGO\100 logseq_myOwn\logseq 里面,  +
+你可以手动打开它直接修改, 而不需要在 logseq里面那么麻烦地修改了.
+
+---
+
+
+==== 修改默认表格的css样式
+
+如上操作, 在 custom.css中, 加入代码:
+
+....
+table {
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid hsl(0, 0%, 40%);
+}
+
+/* tr:hover {background-color: #f3e2e2;} */
+/* 在 <tr> 元素上使用 :hover 选择器，可以让鼠标在悬停时, 下面的表格行变色 */
+....
+
+
+
+---
+
+==== 插件 和 主题
+
+主题: 装 atlas theme : Light, 文字小, 精致, 很好看
+
+
+---
+
 == ----- -----
 
 ---
