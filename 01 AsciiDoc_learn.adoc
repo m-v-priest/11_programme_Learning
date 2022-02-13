@@ -380,6 +380,24 @@ image:./img_adoc,md,other/img_adoc/adoc_01.png[]
 
 <br> <--可见 html标签在adoc中无效!
 
+---
+
+==== toc层级 -> :toclevels: 4
+
+官方文档
+https://docs.asciidoctor.org/asciidoc/latest/toc/levels/
+
+toc 默认只显示两层 level, 要显示多层目录, 就要用 :toclevels: 属性
+
+By default, the TOC displays level 1 (==) and level 2 (===) section titles.  +
+You can assign a different level depth with **the toclevels attribute**.
+
+....
+= 主标题
+:toc:
+:toclevels: 4
+....
+
 
 ---
 
