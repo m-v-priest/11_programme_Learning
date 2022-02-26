@@ -28,7 +28,11 @@ https://github.com/logseq
 
 https://logseq.github.io/#/page/Contents
 
+英文问答社区 https://discuss.logseq.com/
+
 中文社区 https://cn.logseq.com/
+
+
 
 ---
 
@@ -85,6 +89,16 @@ table, th, td {
 
 
 ---
+
+
+==== 插入音频
+
+....
+[:audio {:controls true :src "../assets/recording.mp3"}]
+
+[:audio {:controls true :src "https://...xxx.mp3"}]
+
+....
 
 == ----- -----
 
@@ -224,6 +238,25 @@ markdwon表格中不支持换行, 与列表.
 ---
 
 == ----- -----
+
+
+
+---
+
+
+
+== logseq 的 properties
+
+官方文档说明
+https://docs.logseq.com/#/page/term%2Fproperties
+
+
+
+
+---
+
+== ----- -----
+
 
 ---
 

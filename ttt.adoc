@@ -1,20 +1,8 @@
 
 = fileName
-:toc: left
+:toc:
 
 
 ---
 
-:sectnums:
 
-
-== Section One
-
-== Section Two
-
-
-.name
-[%collapsible]
-====
-contents
-====
