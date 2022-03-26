@@ -29,9 +29,39 @@ https://powerman.name/doc/asciidoc
 
 
 官方文档
+
+https://docs.asciidoctor.org/asciidoc/latest/stem/
+
+
 https://webcache.googleusercontent.com/search?q=cache:aB1APK9SnygJ:https://docs.asciidoctor.org/asciidoc/latest/stem/stem/+&cd=1&hl=en&ct=clnk&gl=sg
 
 ==== 单行用 stem:[] 包围 LaTex 语法, 多行则包在 "反斜杠(\)begin{align*} 和 "\end{align*}" 里面.
+
+
+单行公式, 有两种写法:
+
+....
+stem:[latex公式]
+
+latexmath:[latex公式]
+....
+
+多行公式, 也有两种写法:
+
+....
+\begin{align*}
+latex多行公式
+\end{align*}
+....
+
+....
+[asciimath]
+++++
+sqrt(4) = 2
+++++
+....
+
+
 
 asciidoctor 通过 mathjax 实现 LaTex 字体的显示，方法和 markdown 差不多，区别是:
 
@@ -149,13 +179,17 @@ adoc中用latex时 : 注意空格和空行的问题
 
 ---
 
-== #折叠#
+== #多行折叠#
 
 ....
 .折叠按钮处显示的名称
 [%collapsible]
 ====
 被折叠的内容放在这里
+
+line 2
+
+line 3
 ====
 ....
 
@@ -166,11 +200,59 @@ adoc中用latex时 : 注意空格和空行的问题
 [%collapsible]
 ====
 被折叠的内容放在这里
+
+line 2
+
+line 3
 ====
+
+---
+
+如果想让折叠处, 默认是展开状态, 就写成:
+
+....
+.名称写在这里
+[%collapsible%open]
+====
+本处折叠内容, 默认会先展开
+
+而非先折叠起来
+====
+....
+
+效果
+
+.名称写在这里
+[%collapsible%open]
+====
+本处折叠内容, 默认会先展开
+
+而非先折叠起来
+====
+
+
+
 
 该功能的 英文文档说明:
 https://blog.mrhaki.com/2019/03/awesome-asciidoctor-collapsible-content.html
 
+---
+
+== #单行折叠#
+
+....
+[example%collapsible]
+单行内容 line content +
+123 +
+456
+....
+
+效果
+
+[example%collapsible]
+单行内容 line content +
+123 +
+456
 
 ---
 
@@ -1117,6 +1199,32 @@ code....
 
 ---
 
+还可写成 :
+
+....
+[sidebar]
+.Related information
+--
+This is aside text.
+
+**It is used to** present information related to the main content.
+--
+....
+
+效果
+
+[sidebar]
+.Related information
+--
+This is aside text.
+
+**It is used to** present information related to the main content.
+--
+
+
+
+---
+
 == 案例文本块(里面支持字体加粗, 列表, 和分隔线!) (github中会丢失代码块的底色, 变成白色)
 写在上下4个等号= 里面即可.
 
@@ -1631,7 +1739,7 @@ Another paragraph.
 
 ---
 
-==== 子表格 => 表格单元格中, 再插入一个表格 <- 将子表格的列的间隔符, 用"!"表示即可.
+==== #子表格, 表格嵌套# => 表格单元格中, 再插入一个表格 <- 将子表格的列的间隔符, 用"!"表示即可.
 
 ....
 [cols="1,2a"]
