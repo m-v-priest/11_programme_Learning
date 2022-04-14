@@ -169,4 +169,40 @@ git remote add origin git@git.zhlh6.cn:m-v-priest/02_myself_ID_EGO.git
 ---
 
 
+== ★ github上传时, 有文件遗漏, 没有全部 push 上去
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|git status
+|首先, 用 git status 命令, 用于查看在你上次提交之后, 是否有对文件进行再次修改。可以发现被遗漏的文件(即未被git 跟踪的文件)
+
+image:img_github/48.png[]
+
+image:img_github/49.png[]
+
+
+|git add -A
+|添加所有变化
+
+|git add -u
+|添加被修改(modified)和被删除(deleted)文件，不包括新文件(new)
+
+|git add .
+|添加新文件(new)和被修改(modified)文件，不包括被删除(deleted)文件
+
+
+
+|git restore --staged
+|我们通过 git add 命令, 将文件提交到暂存区之后，发现文件提交错了，就可以通过git restore --staged 撤销在暂存区提交的文件。
+
+|git ls-files
+|git ls-files 命令, 可以查看暂存区的文件
+|===
+
+
+
+
+
 
