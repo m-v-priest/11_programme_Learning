@@ -13,6 +13,68 @@
 
 而如果你直接在 [[]] 中来改文件名, 只会创造出一个新的空白文件, 并链接到这个空白文件上, 你原来的有内容的老文件就将失联(不再被链接到)了!
 
+==== #★ 导出 pdf#
+
+logseq无法直接导出pdf, 可以先导出 html, 然后在 pycharm中, 编辑该html (如把太大的图片, 尺寸设为自适应到浏览器显示宽度的100%), 并外链css. 然后在 chrome中 打印出 pdf 即可. 亲测可行.
+
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+| 在HTML中, 外链 css
+|在HTML中的 <head> 标签中, 加上这句代码:
+
+....
+<link rel="stylesheet" type="text/css" href="style.css">
+....
+
+然后把 css文件, 放到和 HTML文件 相同的目录中.
+
+image:img_adoc,md,other/logseq_05.png[]
+
+|css文件中的内容如下:
+|
+[source, css]
+----
+li {
+line-height: 1.4em;
+padding: 0.2em
+}
+
+blockquote {
+  background: #eeeeee;
+  line-height: 1.4em;
+  border-left: 3px solid #ccc; /*应用块前竖线的粗细*/
+  margin: 0.1em; /*上－右－下－左*/
+  padding: 0.5em 10px;
+}
+blockquote:before {
+  color: #ccc;
+  /*content: open-quote;*/
+  /*font-size: 4em;*/
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+
+blockquote p {
+  display: inline;
+}
+----
+
+|将图片, 宽度自适应到浏览器显示的宽度.
+| 在 img 标签中, 加上 "width="100%" 即可.
+
+....
+<img src="../assets/image_xxx.png" title="image.png" width="100%"/>
+....
+
+|在chrome 中, 导出成 pdf
+|按 ctrl + p, 另存为pdf即可
+
+image:img_adoc,md,other/logseq_06.png[]
+|===
+
 ---
 
 

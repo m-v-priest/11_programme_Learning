@@ -91,6 +91,7 @@ git push origin master
 
 主要源于不同操作系统, 所使用的"换行符"不一样:
 
+[options="autowidth"]
 |===
 |系统 |采用的换行符
 
@@ -115,7 +116,7 @@ true  //<--输出的结果
 
 此命令会有三个输出值: “true”，“false” 或者“input”
 
-
+[options="autowidth"]
 |===
 |输出值 |说明
 
@@ -137,6 +138,8 @@ checkout时, 再进行这个转换: LF(linux) -> CRLF(win)
 
 
 步骤
+
+[options="autowidth"]
 |===
 |Header 1 |Header 2
 
@@ -169,7 +172,62 @@ git remote add origin git@git.zhlh6.cn:m-v-priest/02_myself_ID_EGO.git
 ---
 
 
-== ★ github上传时, 有文件遗漏, 没有全部 push 上去
+== ★ (亲测成功) github上传时, 发现有文件遗漏, 没有全部 push 上去 -> 原因: 你在本地的该目录上, 看到后面有个 "master"字样
+
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|1.
+|为什么某个目录(比如目录名字是"101 logseq_english"), 没有上传上去? 因为你看到, 在pycharm中, 该本地目录前, 有个"master"字样. 类似如下图:
+
+image:img_github/051.png[]
+
+|2.
+|你进入该"101 logseq_english"目录, #里面有个 .git文件, 删除它.# 这样, 该目录后面就不会带有 "master" 字样了.
+
+image:img_github/052.png[]
+
+|3.
+|但是, 你现在依然无法上传"101 logseq_english"目录. 你打开github网站, 发现该目录的图标上, 多出一个箭头来了, 并且你无法点击进入该目录. 相当于被冻结了一样.
+
+image:img_github/050.png[]
+
+|4.
+|你在本机上这样解决:  在pycharm 的 terminal终端中,  退回上一层目录("02_myself_ID_EGO"), 依次执行以下命令:
+
+....
+git rm --cached "101 logseq_english"  //文件名中若带有空格的, 就要在文件名两端加上双引号即可.
+git add .
+git commit -m "commit messge"  //双引号中的是你本次上传的说明性信息
+git push origin master  //即 git push origin [branch_name]
+....
+
+
+
+|===
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+== 其他
+
 
 [options="autowidth"]
 |===

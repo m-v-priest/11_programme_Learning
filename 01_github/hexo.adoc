@@ -222,7 +222,7 @@ image:./img_hexo/hexo_01.png[]
 
 注意: Hexo 新建的文件, 有三种默认布局：分别是 post、page 和 draft布局。在创建这三种不同类型的文件时，它们会被保存到不同的路径中:
 
-
+[options="autowidth"]
 |===
 |新建的页面布局 |会保存到路径
 |post 布局 |source/_posts
@@ -535,6 +535,7 @@ INFO  Hexo is running at http://localhost:4000 . Press Ctrl+C to stop.
 
 选项有
 
+[options="autowidth"]
 |===
 |选项|描述
 |-p, --port |重设端口
@@ -552,6 +553,7 @@ INFO  Hexo is running at http://localhost:4000 . Press Ctrl+C to stop.
 
 您可以在 _config.yml 中修改网站的大部分配置信息。如 :
 
+[options="autowidth"]
 |===
 |参数 |描述
 |title |网站标题
@@ -716,7 +718,7 @@ hexo d -g
 
 下面, 把你的整个本机hexo项目(而非只是它生成的静态网站) , 上传到 git仓库中.
 
-
+[options="autowidth"]
 |===
 |步骤 |命令
 

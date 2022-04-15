@@ -10,7 +10,7 @@
 
 == vscode 的 markdown必装插件
 
-
+[options="autowidth"]
 |===
 |vscode插件 |功能
 
@@ -382,6 +382,8 @@ image:./img_adoc,md,other/md_11.png[]
 ====  ---- 表格的对齐方式
 
 对表格的第二行进行设置:
+
+[options="autowidth"]
 |===
 |对齐方式 |将第二行写为
 

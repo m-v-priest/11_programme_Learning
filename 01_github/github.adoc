@@ -10,7 +10,7 @@
 
 1.修改本地hosts文件
 
-
+[options="autowidth"]
 |===
 |Header 1 |位置
 
@@ -43,7 +43,7 @@ http://github.com
 
 该错误的原因是：
 
-
+[options="autowidth"]
 |===
 |原因 |背景知识
 
@@ -96,6 +96,7 @@ ipconfig /flushdns
 
 == 0. ++快速实现手册
 
+[options="autowidth"]
 |===
 |你想要实现 |方法
 
@@ -168,7 +169,7 @@ git config --global user.email "email@example.com"
 
 ==== 升级 git 到最新版本 -> git update-git-for-windows
 
-
+[options="autowidth"]
 |===
 | |命令
 
@@ -422,6 +423,7 @@ f7a456c64fa7b83a95d912b3fb3c6c62877c7df6 myinfo:t1文件_第2次更新
 
 如果你想回退到上一个版本, 即 第2次修改后的t1.txt. 由于当前版本(即最新commit时的版本), 是用 HEAD 来表示的. 所以:
 
+[options="autowidth"]
 |===
 |回到指定版本 |命令
 
@@ -566,6 +568,7 @@ Changes to be committed:
 
 现在，暂存区的状态就变成了：
 
+[options="autowidth"]
 |===
 |工作区(你的目录)||暂存区(atage)
 
@@ -599,6 +602,7 @@ nothing to commit, working tree clean # clean表明, 工作区是"干净"的.
 
 现在版本库变成了这样，暂存区就没有任何内容了：
 
+[options="autowidth"]
 |===
 |工作区(你的目录)||暂存区(stage) || master分支(由HEAD指针指向)
 
@@ -889,7 +893,7 @@ $ git checkout -- t2.txt # 将之前提交到"版本库"里的文件, 拷贝回"
 
 首先查看 C:\Users\Administrator\.ssh 这个目录存不存在? 如果存在, 则直接跳到下一步。如果没有，打开Shell（Windows下打开Git Bash），创建SSH Key：
 
-
+[options="autowidth"]
 |===
 |步骤 |
 
@@ -1188,7 +1192,7 @@ image:./img_github/git_35 分支.svg[800,800]
 
 ==== (2) ++分支操作的命令总结
 
-
+[options="autowidth"]
 |===
 |你想要的分支操作 |命令
 
