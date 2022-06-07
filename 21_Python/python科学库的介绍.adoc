@@ -1,0 +1,23 @@
+
+
+:sectnums:
+:toclevels: 3
+:toc:
+
+
+== Numpy -> 处理矩阵 matrix
+
+
+---
+
+== SciPy -> stem领域用, 微积分
+
+---
+
+== Pandas -> 基于 NumPy 的一种工具. 数据分析.
+
+---
+
+== Matplotlib -> 2d绘图, 数据可视化
+
+---
