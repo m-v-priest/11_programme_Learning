@@ -12,6 +12,16 @@ pip3 install --user numpy scipy matplotlib
 或用清华源: +
 pip3 install numpy scipy matplotlib -i https://pypi.tuna.tsinghua.edu.cn/simple
 
+pip3 install numpy scipy matplotlib -i https://repo.huaweicloud.com/repository/pypi/simple
+
+
+- 清华大学：https://pypi.tuna.tsinghua.edu.cn/simple
+- 华为云：https://repo.huaweicloud.com/repository/pypi/simple
+- 阿里云：http://mirrors.aliyun.com/pypi
+
+在使用pip的时候加参数-i
+
+
 测试是否安装成功
 
 [source, python]

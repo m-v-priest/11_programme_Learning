@@ -1,0 +1,14 @@
+* {font-size:14px;}
+
+
+
+table {
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid hsl(0, 0%, 40%);
+}
+
+/* tr:hover {background-color: #f3e2e2;} */
+/* 在 <tr> 元素上使用 :hover 选择器，可以让鼠标在悬停时, 下面的表格行变色 */

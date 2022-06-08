@@ -262,5 +262,18 @@ image:img_github/49.png[]
 
 
 
+---
 
+== 遇到过的报错
+
+==== github error: cannot lock ref ...
+
+解决办法:
+
+1.执行命令： git gc --prune=now +
+该命令可以清理优化本地的 git 项目.  (比如因为提交的改动过多，导致本地的缓冲区占用太大。)
+
+2.再执行：git remote prune origin
+
+---
 
