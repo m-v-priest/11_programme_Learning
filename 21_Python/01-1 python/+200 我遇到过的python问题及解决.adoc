@@ -1,6 +1,27 @@
 
 = 我遇到过的python问题及解决
+
 :toc:
+:toclevels: 3
+:sectnums:
+
+---
+
+
+== #python, 一些第三方库, 无语法提示, 解决办法#
+
+比如, 你有个变量是 np.ndarray 数组类型, 那么就可以在它的代码后面, 添加: # type: np.ndarray
+[source, python]
+....
+a = np.arange(12).reshape((3,4)) # type: np.ndarray
+....
+即, 将变量的类型名, 硬性指定在注释语句中. +
+这样, 你再输入"a.某某方法()"时, 就有代码提示了.
+
+
+
+
+
 
 ---
 
