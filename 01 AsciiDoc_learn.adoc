@@ -547,6 +547,32 @@ mddir  //直接运行mddir命令
 ```
 image::01 程序学习 (前端, ui)/03-2 JavaScript/01 javaScript_learn/img_javaScript/arr_copyWithin.svg[20,20]
 ```
+
+=== 图片占页面宽度的比例
+
+注意: 以下代码, 是图片占页面宽度的比例, 而不是说图片相对于本身原尺寸的缩放比例.
+....
+image:img/0001.png[width=25%]
+....
+
+
+---
+
+== #图片以自身尺寸为比例缩放#
+
+asciidoc 图片尺寸设置中, 有这个参数: iw
+....
+vw
+Percentage of the page width (edge to edge)
+
+iw
+Percentage of the intrinsic width of the image 图像固有宽度的百分比
+....
+
+
+
+
+
 ---
 
 == #用相对路径, 链接到本机的另一个adoc文件#
