@@ -1,6 +1,25 @@
-- [https://www.bilibili.com/video/BV1gR4y1b7oW?p=9&vd_source=52c6cb2c1143f8e222795afbab2ab1b5](https://www.bilibili.com/video/BV1gR4y1b7oW?p=18&vd_source=52c6cb2c1143f8e222795afbab2ab1b5)
+- [[https://www.bilibili.com/video/BV1gR4y1b7oW?p=9&vd_source=52c6cb2c1143f8e222795afbab2ab1b5](https://www.bilibili.com/video/BV1gR4y1b7oW?p=18&vd_source=52c6cb2c1143f8e222795afbab2ab1b5)](https://www.bilibili.com/video/BV1gR4y1b7oW?p=115&vd_source=52c6cb2c1143f8e222795afbab2ab1b5)
 -
 - https://www.bilibili.com/video/BV1EK4y1b7ux?p=13&spm_id_from=pageDriver&vd_source=52c6cb2c1143f8e222795afbab2ab1b5
+-
+-
+- 基本框架代码
+  collapsed:: true
+	- ```
+	  namespace ConsoleApp2
+	  {
+	      internal class Program
+	      {
+	      
+	  
+	          static void Main(string[] args)
+	          {
+	            
+	  
+	          }
+	      }
+	  }
+	  ```
 -
 - 快捷键
 	- 快速输入 Console.WriteLine() : cw+两次Tab
@@ -269,6 +288,11 @@
 	              Console.WriteLine(total); //5050
 	  ```
 -
+- 常量
+	- ```
+	  const int NUM= 97; //定义常量. 常量的变量名一般用大写
+	  ```
+-
 - 字符串
 	- 字符串类型数据, 其方法, 不会修改原字符串, 而会返回一个新字符串. 因为字符串是不能被修改的.
 	- 去除字符串头尾的空白字符: string变量.Trim()
@@ -335,8 +359,149 @@
 			              }
 			  ```
 -
+- 枚举类型
+  collapsed:: true
+	- ```
+	  namespace ConsoleApp2
+	  {
+	      internal class Program
+	      {
+	          enum type职业  //定义一个枚举类型的变量. 注意, 枚举类型的定义, 必须放在main函数前面
+	          {
+	              皇帝, 丞相, 大都督, 刺史, 太守, 将军  //注意:这些字符串不需要加双引号
+	          }
+	  
+	          static void Main(string[] args)
+	          {       
+	  
+	          type职业 status诸葛亮 = type职业.丞相;
+	          Console.WriteLine(status诸葛亮); //丞相
+	  
+	          }
+	      }
+	  }
+	  ```
+	- 例子
+	  collapsed:: true
+		- ![image.png](../assets/image_1673351155297_0.png)
+	- 例子
+	  collapsed:: true
+		- ![image.png](../assets/image_1673352511304_0.png)
+	-
+-
+- 结构体(相当于JavaScript中的"对象")
+  collapsed:: true
+	- ```
+	  namespace ConsoleApp2
+	  {
+	      internal class Program
+	      {
+	  
+	  
+	          // 创建一个结构体类型, 要写在main函数前面
+	          struct strcPerson
+	          {
+	              public string name;  //必须用public公开权限, 否则下面新建"结构体"变量时, 会访问不到这里
+	              public int age;
+	  
+	              public enum Enum_Sex { male, female }; //在结构体中, 我们定义了一个枚举类型
+	              public Enum_Sex sex;  //创建一个枚举类型的变量
+	  
+	              public enum Enum_IsMarried { yes, no };
+	              public Enum_IsMarried isMarried;
+	          }
+	  
+	          static void Main(string[] args)
+	          {
+	              strcPerson p1 = new strcPerson();  //创建一个结构体变量
+	              p1.name = "zrx";
+	              p1.age = 18;
+	              p1.sex = strcPerson.Enum_Sex.male;
+	              p1.isMarried = strcPerson.Enum_IsMarried.no;
+	  
+	  
+	              Console.WriteLine(p1); //ConsoleApp2.Program+strcPerson
+	              Console.WriteLine(p1.name); //zrx
+	              Console.WriteLine(p1.isMarried); //no
+	  
+	          }
+	      }
+	  }
+	  ```
+	- 例子
+		- ![image.png](../assets/image_1673354267727_0.png)
+	- 创建结构体类型的数组
+	  collapsed:: true
+		- ```
+		  namespace ConsoleApp2
+		  {
+		      internal class Program
+		      {
+		  
+		  
+		          // 创建一个结构体
+		          struct STRC_PERSON
+		          {
+		              public string name;  //必须用public公开权限, 否则下面新建"结构体"变量时, 会访问不到这里
+		              public int age;
+		          }
+		  
+		          static void Main(string[] args)
+		          {
+		              STRC_PERSON[] arrStrcPerson = new STRC_PERSON[3]; //创建一个数组(含3个元素的长度), 里面放的元素是结构体
+		              arrStrcPerson[0].name = "zrx";
+		              arrStrcPerson[1].name = "wyy";
+		              arrStrcPerson[2].name = "zm";
+		  
+		              Console.WriteLine(arrStrcPerson); //ConsoleApp2.Program+STRC_PERSON[]
+		  
+		              foreach (var item in arrStrcPerson)
+		              {
+		                  Console.WriteLine(item.name); //输出3行, 分别是 zrx, wyy, zm
+		              }
+		  
+		          }
+		      }
+		  }
+		  ```
+		- ![image.png](../assets/image_1673355026293_0.png)
+- 在结构体中, 定义方法
+  collapsed:: true
+	- ```
+	  namespace ConsoleApp2
+	  {
+	      internal class Program
+	      {
+	  
+	  
+	          // 创建一个结构体
+	          struct STRC_PERSON
+	          {
+	              public string name;
+	              public int age;
+	  
+	              public void fnPrintInfo()  // 在结构体中, 可以定义方法(即函数)
+	              {
+	                  Console.WriteLine("name:{0}, age:{1}", name, age);
+	              }
+	          }
+	  
+	          static void Main(string[] args) 
+	          {
+	              STRC_PERSON p1 = new STRC_PERSON();
+	              p1.name = "zrx";
+	              p1.age = 19;
+	              p1.fnPrintInfo(); //name:zrx, age:19
+	  
+	          }
+	      }
+	  }
+	  ```
+	- ![image.png](../assets/image_1673355877938_0.png)
+-
 -
 - 函数
+  collapsed:: true
 	- 定义函数
 	  collapsed:: true
 		- ```
@@ -378,6 +543,7 @@
 			-
 	- 函数的重载: 就是你可以定义两个同名函数, 但这两个函数必须参数不同! 比如, 你可以定义一个加法函数, 接收int类型的参数. 然后你再定义一个同名, 同功能的函数, 但接收浮点类型的参数.  它们的接收参数不同, 但执行的函数功能, 本质是一样的.
 	- 函数递归
+	  collapsed:: true
 		- ```
 		  用递归, 来求阶乘
 		              /*
@@ -395,3 +561,5 @@
 		  ```
 		- ![image.png](../assets/image_1673340499436_0.png)
 -
+- 委托 delegate
+	-
