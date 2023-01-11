@@ -502,6 +502,7 @@
 	- ![image.png](../assets/image_1673355877938_0.png)
 -
 - 类
+  collapsed:: true
 	- C# 习惯, 一个类, 就放在一个cs文件里. (文件名, 就跟你的类名保持一致就行了.) 而不要多个类写在一个文件中.
 	- 基本用法
 	  collapsed:: true
@@ -701,6 +702,7 @@
 		- ![image.png](../assets/image_1673424998141_0.png)
 		-
 	- 构造函数
+	  collapsed:: true
 		- 构造函数的作用, 使用来初始化属性值, 即给属性一些你自定义的初始默认值.
 		- 构造函数的函数名, 要和类名一致. 并且, 构造函数不需要返回值.
 		- ```
@@ -768,7 +770,127 @@
 		  }
 		  
 		  ```
--
+		- 其实, 构造函数中 , 可以使用this关键词, 来代表"本实例对象"
+		- 即,
+		- 类中这样写:
+		- ```
+		  using System;
+		  using System.Collections.Generic;
+		  using System.Linq;
+		  using System.Text;
+		  using System.Threading.Tasks;
+		  
+		  namespace ConsoleApp2
+		  {
+		      internal class ClsPerson
+		      {
+		          public string name;
+		          public int age;
+		  
+		          //构造函数
+		          public ClsPerson(string name, int age)
+		          {
+		              this.name = name;  //this就代表你之后实例化本类对象时, 当时创建出的那一个实例对象
+		              this.age = age;
+		          }
+		  
+		          public void fnInfo() 
+		          {
+		              Console.WriteLine("info : 姓名:{0}, 年龄:{1}",name,age);
+		          }
+		      }
+		  }
+		  
+		  ```
+		- main文件中这样写
+		- ```
+		  namespace ConsoleApp2
+		  {
+		      internal class Program
+		      {
+		    
+		  
+		          static void Main(string[] args) 
+		          {
+		  
+		              ClsPerson p1 = new ClsPerson("zrx",19);
+		              p1.fnInfo(); //info : 姓名:zrx, 年龄:19
+		          }
+		      }
+		  }
+		  ```
+	- 属性
+	  collapsed:: true
+		- 类中的属性, 相当于把get和set函数, 总和到一起了. 其实就是get 和set函数打包的简化写法. 因为针对每个数据类型都写一遍get和set函数, 太麻烦了!
+		- ```
+		  类中这样写:
+		  
+		  using System;
+		  using System.Collections.Generic;
+		  using System.Linq;
+		  using System.Text;
+		  using System.Threading.Tasks;
+		  
+		  namespace ConsoleApp2
+		  {
+		      internal class ClsPerson
+		      {
+		          private string name;  //这里这个不能叫"属性," 只能叫"数据成员"
+		          private int age;
+		  
+		          public int Age  //定义"属性". 注意习惯上要大写, 以区别上面的"数据成员".
+		          {
+		  
+		              get //这里相当于是 fnGet函数
+		              { 
+		                  return age;
+		              }
+		              set //这里相当于是 fnSet函数. 这里的set功能块, 默认会接收一个叫value的参数
+		              {
+		                  age = value;
+		              }
+		          }
+		  
+		  
+		          //构造函数
+		          public ClsPerson(string name, int age)
+		          {
+		              this.name = name;  //this就代表你之后实例化本类对象时, 当时创建出的那一个实例对象
+		              this.age = age;
+		          }
+		  
+		  
+		  
+		          public void fnInfo() 
+		          {
+		              Console.WriteLine("info : 姓名:{0}, 年龄:{1}",name,age);
+		          }
+		      }
+		  }
+		  
+		  ```
+		- ![image.png](../assets/image_1673436997938_0.png)
+		- main函数的 页面中这样写:
+		- ```
+		  namespace ConsoleApp2
+		  {
+		      internal class Program
+		      {
+		    
+		  
+		          static void Main(string[] args) 
+		          {
+		  
+		              ClsPerson p1 = new ClsPerson("zrx",19);
+		              p1.Age = 10;  //赋值, 会直接调用类中"Age属性"中的 get块(功能相当于get函数)
+		              Console.WriteLine(p1.Age); //10  ←读取, 会直接调用类中"Age属性"的set块
+		              //从上面你就会发现, 虽然Age属性的体内是函数功能, 但我们在使用它时, 可以把它当做一个普通的"数据成员"变量来使用. 很方便.
+		  
+		          }
+		      }
+		  }
+		  ```
+	-
 -
 - 函数
   collapsed:: true
@@ -976,5 +1098,15 @@
 			  ```
 		-
 -
+- 堆和栈
+	- 栈(好比内存): 空间小, 但读取速度块.
+	  collapsed:: true
+		- 其特征是"后进先出",即欺负新人,  在论资排辈的公司, 先裁新人.
+		- ![image.png](../assets/image_1673438470522_0.png)
+	- 堆(好比硬盘):空间大, 但读取速度慢.
+	  collapsed:: true
+		- 堆, 能够以任意顺序, 来存入或移除.
+		-
+	-
 -
 -
