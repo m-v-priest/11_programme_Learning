@@ -545,6 +545,251 @@ image:img/0021.png[,]
 
 ---
 
+== 子类中, 重写父类的同名方法
+
+==== 虚方法 (即在子类中,重写父类中的同名方法)
+
+.标题
+====
+父类中 +
+[source, java]
+----
+internal class ClsFather
+{
+    public virtual void fnTalking() //virtual 让本方法, 变成了"虚方法"
+    {
+        Console.WriteLine("父类的口才");
+    }
+}
+----
+
+子类中 +
+[source, java]
+----
+internal class ClsSon:ClsFather
+{
+    public override void fnTalking()  // 在子类中, 你要重写父类的同名方法, 只要先输入 "override+空格", 软件就会提示你要重写哪个父方法.
+    {
+        Console.WriteLine("子类的口才");
+    }
+}
+----
+
+
+主文件中 +
+[source, java]
+----
+static void Main(string[] args)
+{
+    ClsSon insSon = new ClsSon();
+    insSon.fnTalking(); //子类的口才
+}
+----
+
+
+
+====
+
+---
+
+==== "父类变量", 若指向"子类的实例", 则会忘掉"父类中不存在的子类中的方法" (即无法调用子类中的方法).
+
+.标题
+====
+例如：
+
+image:img/0026.png[,]
+
+父类 +
+[source, java]
+----
+internal class ClsFather
+{
+    public virtual void fnTalking() //virtual 让本方法, 变成了"虚方法"
+    {
+        Console.WriteLine("父类的口才");
+    }
+}
+----
+
+子类:
+[source, java]
+----
+internal class ClsSon:ClsFather
+{
+    public override void fnTalking()  // 在子类中, 你要重写父类的同名方法, 只要先输入 "override+空格", 软件就会提示你要重写哪个父方法.
+    {
+        Console.WriteLine("子类的口才");
+    }
+}
+----
+
+子类2:
+[source, java]
+----
+internal class ClsSon2 : ClsFather
+{
+    public  void fn子类2专属方法()
+    {
+        Console.WriteLine("fn子类2专属方法");
+    }
+}
+----
+
+主文件 +
+[source, java]
+----
+static void Main(string[] args)
+{
+    ClsFather insFather;
+    insFather = new ClsSon(); //父类类型的变量, 居然能指向"子类实例"上!
+    insFather.fnTalking(); //子类的口才   ← 这里, 父类变量能访问到子类中的方法, 是因为父类中有子类的同名方法存在.
+
+    insFather = new ClsSon2();  // 同样可行. 父类类型的变量, 可以指向该父类的"任意子类"的"实例"上!
+    // insFather.fn子类2专属方法();  //但是这句会报错. 因为虽然 insFather 的确指向了子类2的实例对象, 但由于 insFather 是从父类申明而来的, 所以它无法访问(会忘记)自己能访问到子类2 中的方法. 相当于 白天鹅跟了丑小鸭后,  会忘掉自己会飞.
+
+    // ClsSon insSon = new ClsFather(); // 这句会报错, 无法将子类变量, 指向父类.  记忆就是: 父亲可以指(指向)责儿子; 反之儿子则不能指责(指向)父亲
+}
+----
+====
+
+
+---
+
+==== 隐藏方法 (即子类覆盖父类的同名方法)
+
+在子类中, 要覆盖父类的同名方法, 要在子类这个方法前 使用关键词 new.
+
+.标题
+====
+例如：
+
+父类:
+[source, java]
+----
+internal class ClsFather
+{
+    public  void fnTalking()
+    {
+        Console.WriteLine("父类的口才");
+    }
+}
+----
+
+子类: +
+[source, java]
+----
+internal class ClsSon:ClsFather  //子类继承自父类
+{
+    public new void fnTalking()  //要覆盖父类中的同名方法, 在这里要加 new 关键词
+    {
+        Console.WriteLine("子类的口才");
+    }
+}
+----
+
+主文件: +
+[source, java]
+----
+static void Main(string[] args)
+{
+    ClsSon insSon = new ClsSon();
+    insSon.fnTalking(); //子类的口才
+
+    ClsFather insFather = new ClsSon();  // 父类变量, 指向子类的实例对象
+    insFather.fnTalking(); //父类的口才  ← 你发现, 虽然父类中有子类的同名方法, 但是父类变量指向子类实例后, 调用该同名方法时, 依然执行的是父类中的方法, 而不是子类中的方法. 这就是本"隐藏函数"和"虚函数"在重写父类方法的区别所在.
+    //即, 子类中, 用"虚函数"方式 重写的父类方法,   父类变量指向子类对象, 再调用子类的方法, 会执行"子类中的方法". 而屏蔽掉执行"父类中的方法".
+    // 如果用"隐藏函数"的方法, 来改写的父类方法. 父类变量指向子类对象, 再调用子类的方法, 会执行"父类中的方法". 而屏蔽掉执行"子类中的方法".
+}
+----
+
+image:img/0027.png[,]
+
+====
+
+---
+
+== 抽象类
+
+类和函数, 能用 abstract 关键词, 把它们变成"抽象"的.
+
+抽象类:
+
+- 类是一个模板, 抽象类就是一个不完整的模板.
+- 抽象类不能被实例化, 不能使用new关键字. 所以抽象类只能作为其他类的基类.
+- 也不能被密封.
+- 如果派生类(即子类)没有实现所有的抽象方法，则该"派生类"也必须声明为"抽象类".
+- 抽象类中, 可以包含普通函数, 和抽象函数.
+- 抽象类如果含有抽象的变量或值，则它们要么是null类型，要么包含了对非抽象类的实例的引用。
+- 如果一个"非抽象类"从"抽象类"中派生，则其必须通过"重载"来实现所有继承而来的抽象成员。
+
+抽象函数:
+
+- 抽象函数, 只有函数定义, 没有函数体. 即抽象函数本身也是虚拟的 virtual.
+
+.标题
+====
+例如：
+
+抽象类: +
+[source, java]
+----
+abstract internal class abstClsLife  //抽象类, 用 abstract 申明
+{
+    public abstract void fn觅食(); //抽象方法, 不需要函数体.
+
+    public void fnMove() //抽象类中, 可以包含普通的方法
+    {
+        Console.WriteLine("本生命体在移动");
+    }
+}
+----
+
+抽象类的子类 ClsFather +
+[source, java]
+----
+internal class ClsFather:abstClsLife // 父类继承自抽象类
+{
+    public  void fnTalking()
+    {
+        Console.WriteLine("父类的口才");
+    }
+
+    public override void fn觅食()  // 在子类中, 对其父类(是抽象类)中的"抽象方法"的重写 , 要用 override 关键词
+    {
+        Console.WriteLine("父类在觅食");
+    }
+}
+----
+
+主文件中 +
+[source, java]
+----
+static void Main(string[] args)
+{
+    ClsFather insFather = new ClsFather();
+    insFather.fn觅食(); //父类在觅食
+
+    abstClsLife insLife = new ClsFather(); // 我们将抽象类的变量, 指针指向其子类 "ClsFather类"的实例.
+    insLife.fn觅食(); //父类在觅食
+    insLife.fnMove(); //本生命体在移动  ← 虽然, insLife 所指向的子类"ClsFather类"中没有 fnMove()方法, 但抽象类中有, 所以这里依然能找到父类中的该方法.
+    //insLife.fnTalking(); //这句会报错. 虽然 "ClsFather类" 中有这个方法, 但抽象类中却没有这个方法. 所以无法被调用.
+}
+----
+
+image:img/0030.png[,]
+
+总结就是: 父类变量, 即使指向子类对象, 也没忘了本身父类中的方法! (身在曹营心在汉). 即, 只执行父类中有的, 和父类和子类共同有的东西(交集部分. 比如同名函数). 而忽略掉父类中不存在的东西(哪怕这些东西子类中有), 也不执行.
+====
+
+
+
+---
+
+== 密封类
+
+---
+
 == ----------  ----------
 
 ---
