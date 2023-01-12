@@ -1,0 +1,48 @@
+
+= 类型转换
+:sectnums:
+:toclevels: 3
+:toc: left
+---
+
+==== string + int, 则 int 也会被转成 string类型
+
+数字加字符串, 这个操作, 会把数字自动转成字符串类型.
+
+[source, java]
+----
+int age = 3;
+double money = 8;
+
+Console.WriteLine(age+money);  //11
+Console.WriteLine(age+"+"+money);  //3+8  ← 因为数字加字符串, 相当于都转成了字符串
+Console.WriteLine("a+b"+age+money);  //a+b38  ← age先和前面的字符串合并, 就会先把age转成了字符串, 再把money也转成了字符串, 最终就是 不存在数字的加减了.
+Console.WriteLine("a+b"+(age+money));  //a+b11
+----
+
+---
+
+==== string -> int
+
+将字符串数字, 转成int型数字, 要用这个方法 : Convert.ToInt32(你的字符串类型的数字)
+
+[source, java]
+----
+int a = Convert.ToInt32(Console.ReadLine()); // 该 Console.ReadLine()方法, 返回的是 string 类型的数据. 所以我们要用 Convert.ToInt32() 将"该string类型的数字", 转成 int 类型.
+int b = Convert.ToInt32(Console.ReadLine());
+int c = a + b;
+Console.WriteLine(c);
+----
+
+
+---
+
+==== int → char
+
+[source, java]
+----
+int num = 103;
+char c = (char)num;   //(char) 是强制类型转换成"字符类型".但注意, 大字节的变量数据, 强赛到小字节的变量空间里, 会导致数据丢失.
+Console.WriteLine(c);  //本例会打印出一个"g"
+----
+

@@ -1,0 +1,69 @@
+
+
+= if & Switch
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+== if... else if...
+
+[source, java]
+----
+Console.WriteLine("输入x,y坐标\n");
+int x = Convert.ToInt32(Console.ReadLine());
+int y = Convert.ToInt32(Console.ReadLine());
+
+if (x > 0 && y > 0)
+{
+Console.WriteLine("在象限1");
+}
+else if (x < 0 && y > 0) //当上面的条件不满足时, 再执行本处的条件判断
+{
+Console.WriteLine("在象限2");
+}
+else if (x < 0 && y < 0)
+{
+Console.WriteLine("在象限3");
+}
+else if (x > 0 && y < 0)
+{
+Console.WriteLine("在象限4");
+}
+else
+{
+Console.WriteLine("在坐标轴上");
+}
+----
+
+
+---
+
+== Switch
+
+[source, java]
+----
+int num = Convert.ToInt32(Console.ReadLine());
+
+switch (num)
+{
+  case 1: //当num=1时,就执行这条case语句
+      Console.WriteLine("you input 1");
+      break; //每条case语句,必须以 break; 结束!
+
+  case 2:
+      Console.WriteLine("you input 2");
+      break;
+  case 3:
+      Console.WriteLine("you input 3");
+      break;
+  default:
+      Console.WriteLine("you input other");
+      break;
+}
+----
+
+
+---
+

@@ -1,0 +1,18 @@
+
+
+= 数字类型
+:sectnums:
+:toclevels: 3
+:toc: left
+---
+
+== a += b 的意思, 就是: a= a+b
+
+[source, java]
+----
+int a = 5;
+int b = 3;
+b += a; //这里相当于 b=b+a, 即b=8
+Console.WriteLine(b); //8
+----
+

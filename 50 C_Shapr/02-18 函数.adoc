@@ -1,0 +1,77 @@
+
+= 函数
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+== 可变数量的参数
+
+在参数前面, 使用 params 关键词. 你就能给函数传入"任意数量"的参数了, params 会把这些参数, 封装在一个数组中. 然后就可以在函数体内, 来遍历操作该数组了.
+
+[source, java]
+----
+static int fnMy(params int[] arr) //params关键词, 能帮我们把传入函数的不确定数目的参数, 自动组装到一个数组中
+{
+  int total = 0;
+  foreach(int i in arr) {
+      total += i;
+  }
+  return total;
+}
+
+int res= fnMy(4, 6, 2, 5, 7); //24
+Console.WriteLine(res);
+----
+
+注意: params 参数, 必须是放在所有参数的最后一个位置上.
+
+[source, java]
+----
+static string fnMy(string name, params string[] arrArgs) //放在最后才行
+{
+  foreach (var item in arrArgs):
+  {
+}
+----
+
+---
+
+== 函数的重载
+
+比如, 你需要对两种不同的数据类型的变量, 执行相同的函数操作. 就可以定义两个同名函数, 函数体的功能相同, 但接收的参数类型不同. 比如, 一个函数对int做加法, 另一个同名函数对 double做加法.
+
+不过, "重载"我没试验成功. 会提示两个函数有同名错误.
+
+---
+
+== 递归. 就是函数在内部, 又调重自己.
+
+用递归, 来求阶乘 : +
+[source, java]
+----
+/*
+10!=10*9!
+f(n)=n*f(n-1)    ← 这个是求阶乘的公式
+*/
+
+static int fn阶乘(int n)
+{
+  if (n == 1) { return 1; }
+  return n * fn阶乘(n - 1);  //这个函数在体内, 又调用自己. 套娃
+}
+
+Console.WriteLine(fn阶乘(10)); //3628800
+----
+
+即: +
+image:img/0009.png[,]
+
+
+---
+
+
+
+
+

@@ -1,0 +1,39 @@
+
+
+
+= C# 新建文件时的最简代码
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+== 创建项目 → 我们选"控制台应用"
+
+image:img/0001.png[m,]
+
+
+
+---
+
+== 新建文件时的最简代码
+
+[source, java]
+----
+using System.IO.Compression;
+
+namespace ConsoleApp1
+{
+  internal class Program
+  {
+
+      static void Main(string[] args)
+      {
+
+      }
+
+
+  }
+
+}
+----

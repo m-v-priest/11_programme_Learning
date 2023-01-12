@@ -1,0 +1,26 @@
+
+
+= 循环 while
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+例子: 从1加到100
+[source, java]
+----
+int i = 1;
+int total = 0;
+
+while (i <= 100)
+{
+  total = total + i;
+  Console.WriteLine(total);
+  i++;
+} //5050
+----
+
+
+---
+

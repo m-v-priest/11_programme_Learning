@@ -1,0 +1,26 @@
+
+= 命名空间
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+== 命名空间
+
+你的"类"写在A命名空间中, 则只能在A空间中能被访问到. 而不能被其他命名空间看到.
+
+[source, java]
+----
+namespace  S1
+{
+  class Person { }
+}
+
+namespace S2
+{
+  Person p = new Person();   //我们想调用Person类, 但这个类, 我们是写在 S1命名空间中的, 而不在现在的 S2命名空间中. 所以无法调用, 会报错.
+}
+----
+
+
