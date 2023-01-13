@@ -6,6 +6,9 @@
 
 ---
 
+
+
+
 C# 中, 习惯上, 一个"类" 就放在一个cs文件里. (文件名, 就跟你的类名保持一致就行了.) 而不要把多个类写在一个文件中.
 
 == 类方法
@@ -86,6 +89,13 @@ image:img/0006.png[,]
 
 在定义类时, 将数据前面 加上private关键词, 则该数据, 就无法在"该类的实例"中访问到, 也无法修改它的值.  +
 换言之, private 访问权限, 就意味着该数据只能在"类的内部"能被访问到.
+
+- public 公有访问。不受任何限制。
+- private 私有访问。只限于本类成员访问，子类，实例都不能访问。
+- protected 保护访问。只限于本类和子类访问，实例不能访问。
+- internal 内部访问。只限于本项目（程序集）内访问，其他不能访问。
+- protected internal 内部保护访问。只限于本项目（程序集）或是子类访问，其他不能访问
+
 
 在 类文件中: +
 [source, java]
@@ -205,6 +215,154 @@ static void Main(string[] args)
   p1.fnInfo(); //info : 姓名:zrx, 年龄:19
 }
 ----
+
+
+---
+
+=== 子类的构造函数
+
+==== 构造函数是"无参数"的情况下
+
+.标题
+====
+例如：
+
+父类 +
+[source, java]
+----
+internal class ClsFather
+{
+    public ClsFather() //构造函数
+    {
+        Console.WriteLine("父类的构造函数");
+    }
+}
+----
+
+子类 +
+[source, java]
+----
+internal class ClsSon : ClsFather //继承自父类
+{
+    public ClsSon():base()       //构造函数, 这里是无参的. 注意, 这里有 ":base()"代码. 说明继承自父类的构造函数.
+    {
+        Console.WriteLine("子类的构造函数");
+    }
+}
+----
+
+主文件 +
+[source, java]
+----
+static void Main(string[] args)
+{
+    ClsSon insSon = new ClsSon();
+}
+----
+主文件会输出:
+....
+父类的构造函数
+子类的构造函数
+....
+
+可以看出, 子类继承自父类后, 在实例化子类对象时, 会先执行父类的构造函数, 再执行子类的构造函数.
+====
+
+
+==== 构造函数是"有参数"的情况下
+
+.标题
+====
+例如：
+
+父类 +
+[source, java]
+----
+internal class ClsFather
+{
+    public string name;
+
+    // 下面, 可以同时写多个构造函数, 只要传入的参数不同就行了.
+    public ClsFather() //构造函数(无参)
+    {
+        Console.WriteLine("父类的构造函数(无参)");
+    }
+
+    public ClsFather(string name) //构造函数(有参)
+    {
+        this.name = name;
+        Console.WriteLine("父类的构造函数(有参)");
+    }
+}
+----
+
+子类 +
+[source, java]
+----
+internal class ClsSon : ClsFather //继承自父类
+{
+    public int age;
+    public ClsSon() : base()    //构造函数(无参). 我们先称为"构造函数1"
+    {
+        Console.WriteLine("子类的构造函数(无参)");
+
+    }
+
+    public ClsSon(int age)  //构造函数(有参).  我们称为"构造函数2"
+    {
+        this.age = age;
+        Console.WriteLine("子类的构造函数(有参)");
+    }
+
+    public ClsSon(int age, string name):base(name)  //构造函数(有参, 并把"父类的参数"也包括进来).  这一个我们称为"构造函数3"
+    {
+        this.age = age;
+        base.name = name; //这个name的具体值, 会传递给父类的name成员. 但如何访问它呢?
+        Console.WriteLine("子类的构造函数(有参, 并包括进父类的参数)");
+    }
+
+}
+----
+
+image:img/0032.png[,]
+
+主文件 +
+[source, java]
+----
+internal class Program
+{
+
+    static void Main(string[] args)
+    {
+
+        ClsSon insSon = new ClsSon(); //子类实例化时, 无参传入
+        /* 会输出:
+        父类的构造函数(无参)
+        子类的构造函数(无参)
+        */
+
+        ClsSon insSon2 = new ClsSon(19);  //子类实例化时, 给构造函数传入参数
+        /*会输出:
+         父类的构造函数(无参)  //这说明, 无论你的子类实例化时, 传不传入参数, 父类的无参构造函数都会被调用.
+        子类的构造函数(有参)  //子类实例化时, 传入参数, 就会调用子类的"有参构造函数", 而忽略"无参构造函数".
+         */
+
+        ClsSon insSon3 = new ClsSon(19, "爸爸的名字诸葛亮"); //既然你实例化时, 连带父类的成员name 的具体值, 也一并传入了, 于是就会调用子类中相应的"构造函数3"了.
+        /*会输出:
+         父类的构造函数(有参)
+        子类的构造函数(有参, 并包括进父类的参数)
+         */
+
+    }
+}
+----
+
+image:img/0031.png[,]
+
+====
+
+
+
 
 ---
 
@@ -787,6 +945,173 @@ image:img/0030.png[,]
 ---
 
 == 密封类
+
+如果所有的类都可以被继承，那么很容易导致继承的滥用. 为了避免滥用继承，C#中提出了密封类的概念。
+
+- 密封类可以用来限制扩展性，如果密封了某个类，则其他类不能从该类继承；
+- 如果密封了某个成员，则派生类不能重写该成员的实现.
+- 密封类不能作为基类被继承，但它可以继承别的类或接口。
+- 由于密封类的不可继承性，因此密封类不能声明为抽象的，即sealed修饰符, 不能与abstract修饰符同时使用。
+
+
+如果类满足如下条件，则应将其密封:
+
+- 类是静态类。
+- 类中包含带有安全敏感信息的受保护成员。
+
+.标题
+====
+创建密封类
+[source, java]
+----
+sealed internal class ClsSeal //密封类, 用sealed关键词声明. 密封类, 无法被继承. 它没有子类.
+{
+
+}
+----
+====
+
+
+
+.标题
+====
+创建密封方法.
+
+父类是: +
+[source, java]
+----
+internal class ClsFather
+{
+    public virtual void fn秘密() //用 virtual 把它表示为虚方法, 它才能有继承关系, 即有子类能继承它.
+    { Console.WriteLine("老爸的秘密"); }
+}
+----
+
+子类是: +
+[source, java]
+----
+internal class ClsSon:ClsFather //继承自父类
+{
+    public sealed override void fn秘密() //重写父类的同名方法. 并设置为 sealed 密封. 即它不能再被其自己的子类(相当于孙类)重写了. 即,  我们可以将类或方法, 设为 sealed ,以防止它们被后代重写.  另外, 当sealed用于方法或属性时，必须始终与override一起使用。
+
+    { Console.WriteLine("儿子的秘密"); }
+}
+----
+
+
+====
+
+
+
+---
+
+== ★  如何在一个项目里面, 使用另一个项目里的类?
+
+详见我 "visual studio 设置.adoc" 页面中的笔记.
+
+
+---
+
+== static  静态成员, 静态方法
+
+"静态类"与"非静态类"的重要区别在于: "静态类"不能被实例化.
+
+静态类的主要特性：
+- 仅包含静态成员。
+- 无法实例化。
+- 是密封的。
+- 不能包含实例构造函数。
+- 静态类可以有静态构造函数，静态构造函数不可继承；
+- 静态构造函数无访问修饰符、无参数，只有一个 static 标志；
+- 静态构造函数不可被直接调用，当创建类实例或引用任何静态成员之前，静态构造函数被自动执行，并且只执行一次。
+
+非静态类, 可以包含静态的方法、字段、属性或事件；
+静态构造函数, 可以用于静态类，也可用于非静态类；
+
+
+==== 类中的静态成员, 和静态方法, 只能被类自己调用, 不能被实例对象调用. 相当于是"类"私人使用的方法, 就跟老婆一样, 不外借.
+
+.标题
+====
+例如：
+
+类 +
+[source, java]
+----
+internal class ClsPersonl
+{
+    public string name;
+    public static string v国籍;  //设为了"静态"成员.  类中的静态成员, 只能被类直接调用, 而不能被实例对象来调用, 相当于是类的私人方法了, 不开放给实例使用.
+
+    public ClsPersonl(string name)
+    {
+        this.name = name;
+    }
+}
+----
+
+主文件 +
+[source, java]
+----
+internal class Program
+{
+    static void Main(string[] args)
+    {
+        ClsPersonl.v国籍 = "china"; //← 类中的静态方法, 可以直接被类调用.
+        Console.WriteLine(ClsPersonl.v国籍);  // china
+    }
+}
+----
+====
+
+---
+
+==== 静态方法内部, 要使用变量时, 只能使用同为 static 的静态变量, 不能使用普通变量.
+
+.标题
+====
+例如：
+
+类 +
+[source, java]
+----
+internal class ClsPersonl
+{
+    public string name;
+    public static string v国籍;  //设为了"静态"成员.  类中的静态成员, 只能被类直接调用, 而不能被实例对象来调用, 相当于是类的私人方法了, 不开放给实例使用.
+
+    //构造函数
+    public ClsPersonl(string name)
+    {
+        this.name = name;
+    }
+
+    //类的静态方法
+    public static void fn静态方法()
+    {
+        //Console.WriteLine(name);  //这句会报错, 因为在静态方法里, 只能使用静态变量, 不能使用普通变量
+        Console.WriteLine(v国籍);  //这个没问题, 因为"v国籍"就是静态变量.
+    }
+}
+----
+
+
+主文件中 +
+[source, java]
+----
+internal class Program
+{
+    static void Main(string[] args)
+    {
+        ClsPersonl.v国籍 = "china"; //← 类中的静态方法, 可以直接被类调用.
+        ClsPersonl.fn静态方法(); //输出 china  ← 静态方法, 只能被类直接调用.
+    }
+}
+----
+====
+
+
+
 
 ---
 

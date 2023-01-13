@@ -1,0 +1,272 @@
+
+= 接口
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+== 接口 interface
+
+一般, 我们习惯在"接口"的变量名中, 加个 "IF", 表示它是 interface类型.
+
+- 接口中, 一般只包含"方法". 并且, 接口中只包含方法的声明, 而没有方法的实现.
+接口中, 只做了成员的声明, 而没有定义(没有具体的函数体). 成员的定义是派生类的责任。接口只是提供了派生类应遵循的标准结构。
+- 接口本身并不实现任何功能，它只是和声明"实现该接口"的对象, 订立一个必须实现哪些行为的契约。
+- 接口不能有"构造函数"，也不能有字段，接口也不允许运算符重载。
+- 接口定义中不允许声明成员的修饰符，接口成员都是公有的.
+
+
+创建一个接口:
+
+image:img/0034.png[,]
+
+image:img/0035.png[,]
+
+
+
+.标题
+====
+接口文件:
+[source, java]
+----
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace my03_接口
+{
+    internal interface InterfaceFly
+    {
+        public void fnFly(); //在本接口中, 我们定义一个fly飞翔方法.
+        public void fn隐身();
+    }
+}
+----
+
+用来实现接口的"类文件":
+[source, java]
+----
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace my03_接口
+{
+    internal class Cls我 : InterfaceFly  // 本类, 将要实现 InterfaceFly接口
+    {
+
+        public void fnFly()  //在本类中, 来具体实现"接口中定义的方法".
+        {
+            Console.WriteLine("Cls我, 这个类, 具体实现了 fly 方法");
+        }
+
+        public void fn隐身()
+        {
+            Console.WriteLine("Cls我, 这个类, 具体实现了 \"隐身\"方法");
+        }
+    }
+}
+----
+
+主文件
+[source, java]
+----
+namespace my03_接口
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Cls我 my = new Cls我();
+            my.fn隐身(); //Cls我, 这个类, 具体实现了 "隐身"方法
+        }
+    }
+}
+----
+
+====
+
+---
+
+==== 接口变量, 可以指针指向"任何实现了该接口的具体类的实例对象"
+
+.标题
+====
+例如：
+
+接口:
+[source, java]
+----
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace my03_接口
+{
+    internal interface InterfaceFly
+    {
+        public void fnFly(); //在本接口中, 我们定义一个fly飞翔方法.
+        public void fn隐身();
+    }
+}
+----
+
+实现了该接口的 "Cls我"类
+[source, java]
+----
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace my03_接口
+{
+    internal class Cls我 : InterfaceFly  // 本类, 将要实现 InterfaceFly接口
+    {
+
+        public void fnFly()  //在本类中, 来具体实现"接口中定义的方法".
+        {
+            Console.WriteLine("Cls我, 这个类, 具体实现了 fly 方法");
+        }
+
+        public void fn隐身()
+        {
+            Console.WriteLine("Cls我, 这个类, 具体实现了 \"隐身\"方法");
+        }
+    }
+}
+----
+
+
+实现了该接口的 "Cls别人"类
+[source, java]
+----
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace my03_接口
+{
+    internal class Cls别人 : InterfaceFly //本类实现了该接口
+    {
+        public void fnFly()
+        {
+            Console.WriteLine("Cls别人, 这个类, 具体实现了 fly 方法");
+        }
+
+        public void fn隐身()
+        {
+            Console.WriteLine("Cls别人, 这个类, 具体实现了 fly 方法");
+        }
+    }
+}
+----
+
+主文件
+[source, java]
+----
+namespace my03_接口
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            InterfaceFly v接口变量;  //这里,我们定义了一个接口变量, 让它可以指向"任何实现了该接口的具体类的实例对象".  即, 这个接口变量的指针, 指向那个类的实例, 就能调用该类实例中的方法.
+
+            v接口变量 =new Cls我();  // 让接口变量,指向 "Cls我"类的实例.
+            v接口变量.fnFly(); //Cls我, 这个类, 具体实现了 fly 方法
+
+
+            v接口变量 = new Cls别人(); // 让接口变量,指向 "Cls别人"类的实例.
+            v接口变量.fn隐身(); //Cls别人, 这个类, 具体实现了 fly 方法
+        }
+
+    }
+}
+----
+
+上面, v接口变量, 由于指向了不同的类的实例, 就能"变身"为不同角色, 执行不同功能. 这就是"多态" (多种形态).
+
+image:img/0036.png[,]
+====
+
+---
+
+== 接口的继承
+
+.标题
+====
+例如：
+
+父接口
+[source, java]
+----
+internal interface IF父接口
+{
+    public void fn父接口中的方法();
+}
+----
+
+子接口
+[source, java]
+----
+internal interface IF子接口: IF父接口   //子接口, 继承自父接口
+{
+    public void fn子接口中的方法();
+}
+----
+
+实现接口的"类"
+[source, java]
+----
+internal class Cls我 : IF子接口  // 本类, 将要实现 "IF子接口", 由于子接口, 继承了父接口, 所以子接口中就有两个方法了, 都要被具体实现
+{
+    public void fn子接口中的方法()
+    {
+        Console.WriteLine("Cls我, 实现了\"子接口\"中的方法");
+    }
+
+    public void fn父接口中的方法()
+    {
+        Console.WriteLine("Cls我, 实现了\"父接口\"中的方法");
+    }
+}
+----
+
+
+主文件
+[source, java]
+----
+Cls我 my = new Cls我();
+my.fn子接口中的方法(); //Cls我, 实现了"子接口"中的方法
+my.fn父接口中的方法(); //Cls我, 实现了"父接口"中的方法
+----
+====
+
+
+
+---
+
+
+==== C#中的类, 允许同时继承多个接口.
+
+[source, java]
+----
+internal class Cls我 : ClsFather, IF子接口, IF父接口
+//一个类, 既继承了"父类", 又继承了"接口"时, 接口必须写在后面.
+// 并且, C#中的类, 虽然不允许同时继承多个父类, 但允许同时继承多个接口.
+----
+
+
+---
+
