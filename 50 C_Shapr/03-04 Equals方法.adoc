@@ -1,0 +1,79 @@
+
+= Equals()方法
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+Object类型有一个名为Equals的实例方法可以用来确定两个对象是否相等。
+
+- 值类型, Equals() 关注的是逻辑等同性
+- 引用类型, Equals() 关注的是引用等同性. 所以当我们更在意引用类型的逻辑等同性的时候，我们就应该重写Equals方法。
+
+重写引用类型的Equals方法, 的一个典型例子是String类。当我们写出string1.Equals(string2)这样的代码时，我们比较的不是string1和string2这两个引用所指向的是否为同一个实例（引用等同性），而是比较string1与string2所包含的字符序列是否相同（逻辑等同性）。
+
+
+.标题
+====
+例如：
+
+类
+[source, java]
+----
+internal class ClsPerson
+{
+    private string name;
+    private int age;
+
+    public ClsPerson(string name, int age)
+    {
+        this.name = name;
+        this.age = age;
+    }
+
+    //下面重写默认的 Equals()方法
+    public override bool Equals(object? obj) //接受一个万物之组Object基类派生出来的实例对象
+    {
+        ClsPerson insP = (ClsPerson)obj;  // 把obj实例, 强制类型转换成 ClsPerson类的实例对象.
+        if (this.name == insP.name && this.age==insP.age)
+        {
+            return true;
+        }
+        return false;
+    }
+
+}
+----
+
+主文件
+[source, java]
+----
+static void Main(string[] args)
+{
+    int a = 22;
+    int b = 22;
+    Console.WriteLine(a.Equals(b)); //True.   ←对于值类型来说, Equals()方法, 相当于 ==.
+
+    string str1 = "zrx";
+    string str2 = "zrx";
+    Console.WriteLine(str1.Equals(str2));  //True.
+
+    ClsPerson insP1 = new ClsPerson("zrx",18);
+    ClsPerson insP2 = new ClsPerson("zrx",18);
+    Console.WriteLine(insP1.Equals(insP2));  //False.  ←对于引用类型来说, 默认的Equals()方法, 比较的是指针指向的内存地址. 这两个实例对象存储的内存地址不同. 如果你想比较同一类的两个实例对象里面的具体元素值, 是否相等, 那就要取重写类里面的 Equals()方法了.
+
+
+    //现在, 我们重写了ClsPerson类中的默认Equals()方法, 让它来比较实例对象里面的具体成员的值, 是否都相等?
+    ClsPerson insP3 = new ClsPerson("zrx", 18);
+    ClsPerson insP4 = new ClsPerson("zrx", 18);
+    Console.WriteLine(insP3.Equals(insP4)); //True
+
+    Console.WriteLine(insP3 == insP4); //False ← 如果你换用"=="来判断两个实例是否相等, 它判断的依然是两个引用指向的内存地址
+
+}
+----
+====
+
+
+---

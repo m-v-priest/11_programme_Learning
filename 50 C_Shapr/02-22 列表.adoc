@@ -82,6 +82,28 @@ fn遍历数组(list1);   //indx [0]=1, indx [1]=2, indx [2]=3, indx [3]=4,
 ----
 
 
+注意: 如果你的list中有两个相同value值的元素, 该  listObj.Remove(value) 方法, 只会删除第一个元素.
+
+[source, java]
+----
+static void Main(string[] args)
+{
+    void fn遍历数组(List<int> arr)
+    {
+        foreach (var item in arr)
+        {
+            Console.Write(item + ",");
+        }
+        Console.WriteLine();
+    }
+
+    List<int>   list = new List<int>() { 1,2,3, 99,3,0};
+    list.Remove(3);  //list中有两个3, 这个Remove()方法会删除哪一个呢? 会删除第一个.
+    fn遍历数组(list); //1,2,99,3,0,
+
+}
+----
+
 ---
 
 
@@ -138,6 +160,23 @@ fn遍历数组(list2); //indx [0]=91, indx [1]=92, indx [2]=93,
 ---
 
 == 查
+
+
+==== 查看某个item元素的 index索引值 → listObj.IndexOf(value)
+
+[source, java]
+----
+List<int> list = new List<int>() { 1, 2, 3, 99, 3, 0 };
+
+//查找列表中, 某个元素的索引值index
+Console.WriteLine(list.IndexOf(99));  //3
+Console.WriteLine(list.IndexOf(999));  //-1  ← 如果查找的元素值不存在, 则返回 -1
+
+//在列表中, 从后往前来查找某元素的index值
+Console.WriteLine(list.LastIndexOf(3));  //4
+----
+
+---
 
 ==== 查看数组的长度 -> listObj.Count
 

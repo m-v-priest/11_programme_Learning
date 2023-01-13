@@ -20,6 +20,13 @@ int age = 18;
 Console.WriteLine("姓名:{0}, 性别:{1}, 年龄:{2}",name,sex,age); //姓名:zrx, 性别:male, 年龄:18
 ----
 
+也可以使用字符串的格式化方法: string.Format()
+[source, java]
+----
+string str = string.Format("name:{0}, age;{1}",name,age);
+----
+
+
 ---
 
 

@@ -1,0 +1,95 @@
+
+= 泛型
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+
+== 泛型
+
+我们在编程程序时，经常会遇到功能非常相似的模块，只是它们处理的数据不一样。但我们没有办法，只能分别写多个方法来处理不同的数据类型。这个时候，那么问题来了，有没有一种办法，用同一个方法来处理传入不同种类型参数的办法呢？泛型的出现就是专门来解决这个问题的。
+
+
+.标题
+====
+例如：
+
+泛型类:
+[source, java]
+----
+internal class Cls泛型类<T>  // 尖括号<>中的T, 就是type的首字母,  这里我们就将这个类, 设为"泛型"了, 表示这个类, 属于任何类型都行. 具体的类型, 由你在实例化时再具体指定.
+{
+    private T a;
+    private T b;
+
+    public Cls泛型类(T a, T b) //构造函数
+    {
+        this.a = a;
+        this.b = b;
+    }
+
+    public T fn求和()
+    {
+        // return a + b;  //这句会报错,因为由于我们把 a和b设为任意类型T了, 所以它们如果类型不同, 就未必能相加了, 比如 数组+类, 这会是什么呢?
+
+        dynamic num1 = a; //dynamic 表示"动态类型"，即在运行时确定类型. 类型为 dynamic 的对象, 会跳过静态类型检查
+        dynamic num2 = b;
+        dynamic resNum = num1+num2;
+        return (T)resNum;  //把resNum  强制类型转换成T类型
+
+    }
+}
+----
+
+主文件中:
+[source, java]
+----
+static void Main(string[] args)
+{
+    Cls泛型类<int> ins泛型实例 = new Cls泛型类<int>(10, 20); //将泛型类, 实例化时, 就要在这里直接指定该"泛型类"的具体类型. 写在尖括号里面.
+    Console.WriteLine(ins泛型实例.fn求和()); //30
+
+    Cls泛型类<double> ins泛型实例2 = new Cls泛型类<double>(5.5, 3.14);
+    Console.WriteLine(ins泛型实例2.fn求和()); //8.64
+}
+----
+====
+
+---
+
+==== 类中的"泛型静态方法"
+
+静态方法, 只能由类自身来调用, 不能被实例调用. 那如何定义一个泛型的静态方法呢?
+
+.标题
+====
+例如：
+
+类中:
+[source, java]
+----
+internal class ClsPerson
+{
+    //泛型的静态方法
+    public static T fn求和<T>(T a, T b)
+    {
+        dynamic num1 = a;
+        dynamic num2 = b;
+        dynamic res = num1 + num2;
+        return (T)res;
+    }
+}
+----
+
+主文件:
+[source, java]
+----
+static void Main(string[] args)
+{
+    Console.WriteLine(ClsPerson.fn求和<int>(4, 5)); //9 ← 静态方法, 是由类来直接调用的. 这里还是个泛型的静态方法, 所以我们要给它申明实际的类型. 写在尖括号里.
+    Console.WriteLine(ClsPerson.fn求和<double>(2.5, 3.14)); //5.64
+}
+----
+====

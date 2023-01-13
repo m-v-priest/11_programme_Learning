@@ -1,0 +1,54 @@
+
+
+= 类: 虚方法
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+
+==== 虚方法 (即在子类中,重写父类中的同名方法)
+
+.标题
+====
+父类中 +
+[source, java]
+----
+internal class ClsFather
+{
+    public virtual void fnTalking() //virtual 让本方法, 变成了"虚方法"
+    {
+        Console.WriteLine("父类的口才");
+    }
+}
+----
+
+子类中 +
+[source, java]
+----
+internal class ClsSon:ClsFather
+{
+    public override void fnTalking()  // 在子类中, 你要重写父类的同名方法, 只要先输入 "override+空格", 软件就会提示你要重写哪个父方法.
+    {
+        Console.WriteLine("子类的口才");
+    }
+}
+----
+
+
+主文件中 +
+[source, java]
+----
+static void Main(string[] args)
+{
+    ClsSon insSon = new ClsSon();
+    insSon.fnTalking(); //子类的口才
+}
+----
+
+
+
+====
+
+---
