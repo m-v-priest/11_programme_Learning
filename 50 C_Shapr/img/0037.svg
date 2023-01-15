@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_2" data-name="图层 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 257.21 160.69">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        letter-spacing: -.06em;
+      }
+
+      .cls-3, .cls-4, .cls-5, .cls-6 {
+        font-family: MicrosoftYaHeiLight, 'Microsoft YaHei';
+      }
+
+      .cls-3, .cls-4, .cls-6 {
+        font-size: 9px;
+        isolation: isolate;
+      }
+
+      .cls-2, .cls-7 {
+        fill: #c30d23;
+      }
+
+      .cls-8, .cls-4 {
+        fill: #094;
+      }
+
+      .cls-9 {
+        stroke: #094;
+      }
+
+      .cls-9, .cls-10 {
+        fill: none;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-10 {
+        stroke: #c30d23;
+      }
+
+      .cls-5 {
+        font-size: 7px;
+      }
+
+      .cls-5, .cls-6, .cls-11 {
+        fill: #231815;
+      }
+    </style>
+  </defs>
+  <g id="_图层_1-2" data-name="图层 1">
+    <text class="cls-6" transform="translate(20.79 40.13)"><tspan x="0" y="0">insSon</tspan></text>
+    <text class="cls-4" transform="translate(20.79 148.62)"><tspan x="0" y="0">insSon</tspan></text>
+    <text class="cls-6" transform="translate(154.89 40.13)"><tspan x="0" y="0">ins</tspan><tspan class="cls-1" x="10.97" y="0">F</tspan><tspan x="14.95" y="0">ather</tspan></text>
+    <text class="cls-3" transform="translate(89.09 93.53)"><tspan class="cls-11"><tspan x="0" y="0">将父类实例, 包装(强制类型转换)成子类后, </tspan></tspan><tspan class="cls-11"><tspan x="28.98" y="10.8">子类变量,才能指向这个实例</tspan></tspan><tspan class="cls-11"><tspan x="49.82" y="21.6">(相当于借壳上市)</tspan></tspan><tspan class="cls-11" x="48.36" y="43.2"> </tspan><tspan class="cls-8" x="51.03" y="43.2">(ClsSon)</tspan><tspan class="cls-7" x="83.81" y="43.2">ins</tspan><tspan class="cls-2" x="94.78" y="43.2">F</tspan><tspan class="cls-7" x="98.75" y="43.2">ather</tspan><tspan class="cls-11"><tspan x="79.56" y="54">或</tspan></tspan><tspan class="cls-7" x="45.49" y="64.8">ins</tspan><tspan class="cls-2" x="56.46" y="64.8">F</tspan><tspan class="cls-7" x="60.43" y="64.8">ather</tspan><tspan class="cls-11" x="81.44" y="64.8" xml:space="preserve"> as </tspan><tspan class="cls-8" x="95.35" y="64.8">ClsSon</tspan></text>
+    <text class="cls-6" transform="translate(159.56 13.18)"><tspan x="0" y="0">ClsSon</tspan></text>
+    <rect class="cls-10" x="139.63" y="24.49" width="66.99" height="23.4"/>
+    <rect class="cls-9" x=".5" y="24.49" width="66.99" height="23.4"/>
+    <rect class="cls-9" x="111.34" y=".5" width="123.56" height="67.7"/>
+    <g>
+      <line class="cls-9" x1="67.49" y1="37.53" x2="132.56" y2="37.53"/>
+      <polygon class="cls-8" points="139.62 37.53 129.67 41.6 132.03 37.53 129.67 33.47 139.62 37.53"/>
+    </g>
+    <g>
+      <line class="cls-9" x1="67.49" y1="145.2" x2="132.56" y2="145.2"/>
+      <polygon class="cls-8" points="139.62 145.2 129.67 149.27 132.03 145.2 129.67 141.14 139.62 145.2"/>
+    </g>
+    <text class="cls-5" transform="translate(74.53 157.33)"><tspan x="0" y="0">可以指向√</tspan></text>
+    <text class="cls-5" transform="translate(74.53 32.94)"><tspan x="0" y="0">可以指向√</tspan></text>
+  </g>
+</svg>

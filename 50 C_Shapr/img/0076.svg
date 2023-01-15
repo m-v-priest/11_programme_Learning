@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_2" data-name="图层 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 267.91 133.97">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        stroke: #231815;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5 {
+        fill: none;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-6, .cls-7, .cls-8, .cls-9, .cls-10 {
+        font-family: MicrosoftYaHei, 'Microsoft YaHei';
+      }
+
+      .cls-6, .cls-7, .cls-9, .cls-10 {
+        font-size: 8px;
+      }
+
+      .cls-6, .cls-11 {
+        fill: #c30d23;
+      }
+
+      .cls-12 {
+        letter-spacing: -.01em;
+      }
+
+      .cls-2 {
+        stroke-width: .25px;
+      }
+
+      .cls-7, .cls-13 {
+        fill: #094;
+      }
+
+      .cls-14 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-3 {
+        stroke: #094;
+      }
+
+      .cls-15 {
+        letter-spacing: .03em;
+      }
+
+      .cls-8 {
+        font-size: 6px;
+      }
+
+      .cls-8, .cls-16 {
+        fill: #231815;
+      }
+
+      .cls-17 {
+        fill: #2ea7e0;
+      }
+
+      .cls-4 {
+        stroke-dasharray: 0 0 2.09 2.09;
+      }
+
+      .cls-4, .cls-5 {
+        stroke: #dcdddd;
+      }
+
+      .cls-18, .cls-9 {
+        fill: #00a0e9;
+      }
+    </style>
+  </defs>
+  <g id="_图层_1-2" data-name="图层 1">
+    <g>
+      <rect class="cls-5" x="53.4" y="36.71" width="21.02" height="21.02"/>
+      <g>
+        <line class="cls-5" x1="74.42" y1="47.22" x2="73.42" y2="47.22"/>
+        <line class="cls-4" x1="71.33" y1="47.22" x2="55.67" y2="47.22"/>
+        <line class="cls-5" x1="54.63" y1="47.22" x2="53.63" y2="47.22"/>
+      </g>
+    </g>
+    <g>
+      <rect class="cls-5" x="53.4" y="57.73" width="21.02" height="21.02"/>
+      <g>
+        <line class="cls-5" x1="74.42" y1="68.24" x2="73.42" y2="68.24"/>
+        <line class="cls-4" x1="71.33" y1="68.24" x2="55.67" y2="68.24"/>
+        <line class="cls-5" x1="54.63" y1="68.24" x2="53.63" y2="68.24"/>
+      </g>
+    </g>
+    <g>
+      <rect class="cls-5" x="53.4" y="78.75" width="21.02" height="21.02"/>
+      <g>
+        <line class="cls-5" x1="74.42" y1="89.26" x2="73.42" y2="89.26"/>
+        <line class="cls-4" x1="71.33" y1="89.26" x2="55.67" y2="89.26"/>
+        <line class="cls-5" x1="54.63" y1="89.26" x2="53.63" y2="89.26"/>
+      </g>
+    </g>
+    <rect class="cls-1" x="32.61" y="15.69" width="234.8" height="117.78"/>
+    <g>
+      <path class="cls-2" d="M51.52,35.92h0c-1.01,0-1.83-.82-1.83-1.83v-5.44c0-.47-.19-.92-.52-1.25l-.72-.72"/>
+      <path class="cls-2" d="M51.52,17.43h0c-1.01,0-1.83,.82-1.83,1.83v5.44c0,.47-.19,.92-.52,1.25l-.72,.72"/>
+    </g>
+    <g>
+      <path class="cls-2" d="M77.63,40.86h0c3.23,0,5.85,2.62,5.85,5.85v17.33c0,1.5,.59,2.93,1.65,3.99l2.29,2.29"/>
+      <path class="cls-2" d="M77.63,99.77h0c3.23,0,5.85-2.62,5.85-5.85v-17.33c0-1.5,.59-2.93,1.65-3.99l2.29-2.29"/>
+    </g>
+    <rect class="cls-1" x="32.61" y="15.69" width="21.02" height="21.02"/>
+    <rect class="cls-1" x="32.61" y="36.71" width="21.02" height="21.02"/>
+    <rect class="cls-1" x="32.61" y="57.73" width="21.02" height="21.02"/>
+    <circle class="cls-11" cx="32.61" cy="15.69" r="2.11"/>
+    <circle class="cls-13" cx="53.63" cy="36.71" r="2.11"/>
+    <circle class="cls-17" cx="55.74" cy="36.71" r="2.11"/>
+    <circle class="cls-17" cx="55.74" cy="47.22" r="2.11"/>
+    <circle class="cls-17" cx="55.74" cy="57.73" r="2.11"/>
+    <circle class="cls-17" cx="55.74" cy="68.24" r="2.11"/>
+    <circle class="cls-17" cx="55.74" cy="78.75" r="2.11"/>
+    <circle class="cls-17" cx="55.74" cy="89.26" r="2.11"/>
+    <text class="cls-6" transform="translate(0 6.86)"><tspan x="0" y="0">(x</tspan><tspan class="cls-14" x="6.73" y="0">S</tspan><tspan x="11.07" y="0">ta</tspan><tspan class="cls-15" x="18.47" y="0">r</tspan><tspan x="21.77" y="0">t, y</tspan><tspan class="cls-14" x="33.28" y="0">S</tspan><tspan x="37.62" y="0">ta</tspan><tspan class="cls-15" x="45.02" y="0">r</tspan><tspan x="48.33" y="0">t)</tspan></text>
+    <text class="cls-8" transform="translate(33.66 29.21)"><tspan x="0" y="0">30</tspan><tspan class="cls-12" x="7.04" y="0">p</tspan><tspan x="10.79" y="0">x</tspan></text>
+    <text class="cls-7" transform="translate(62.83 27.69)"><tspan x="0" y="0">(xEnd, yEnd) </tspan></text>
+    <text class="cls-9" transform="translate(60.57 39.82)"><tspan x="0" y="0">i</tspan></text>
+    <text class="cls-10" transform="translate(94.27 72.22)"><tspan class="cls-16" x="0" y="0">for(int </tspan><tspan class="cls-18" x="25.99" y="0">i</tspan><tspan class="cls-16" x="28.12" y="0" xml:space="preserve"> =</tspan><tspan class="cls-13" x="36.42" y="0" xml:space="preserve"> yEnd</tspan><tspan class="cls-16" x="57.47" y="0" xml:space="preserve">;   i&lt;yEnd+count*30;   i+=15)</tspan></text>
+    <text class="cls-7" transform="translate(113.38 27.69)"><tspan x="0" y="0">← 其中 xEnd= x</tspan><tspan class="cls-14" x="59.59" y="0">S</tspan><tspan x="63.93" y="0">ta</tspan><tspan class="cls-15" x="71.33" y="0">r</tspan><tspan x="74.64" y="0">t*30 </tspan></text>
+    <g>
+      <line class="cls-3" x1="58.24" y1="32.1" x2="62.34" y2="28"/>
+      <polygon class="cls-13" points="55.74 34.59 60.7 32.51 58.42 31.91 57.82 29.64 55.74 34.59"/>
+    </g>
+  </g>
+</svg>

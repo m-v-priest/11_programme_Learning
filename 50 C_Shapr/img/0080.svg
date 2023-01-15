@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_2" data-name="图层 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1592.67 795.24">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7 {
+        fill: #231815;
+      }
+
+      .cls-1, .cls-8 {
+        letter-spacing: 0em;
+      }
+
+      .cls-9 {
+        fill: #7e318e;
+      }
+
+      .cls-10 {
+        stroke: #e60012;
+      }
+
+      .cls-10, .cls-11, .cls-12, .cls-13, .cls-14, .cls-15, .cls-16 {
+        fill: none;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-2, .cls-17 {
+        letter-spacing: -.08em;
+      }
+
+      .cls-11, .cls-15 {
+        stroke: #231815;
+      }
+
+      .cls-18, .cls-19, .cls-20, .cls-5, .cls-21, .cls-22 {
+        font-size: 9px;
+      }
+
+      .cls-18, .cls-20, .cls-5, .cls-23, .cls-21, .cls-22 {
+        font-family: MicrosoftYaHeiLight, 'Microsoft YaHei';
+      }
+
+      .cls-18, .cls-24, .cls-23 {
+        fill: #fff;
+      }
+
+      .cls-19, .cls-25, .cls-24 {
+        font-family: MicrosoftYaHei-Bold, 'Microsoft YaHei';
+        font-weight: 700;
+      }
+
+      .cls-19, .cls-21 {
+        fill: #956134;
+      }
+
+      .cls-25 {
+        fill: #c30d23;
+      }
+
+      .cls-25, .cls-24 {
+        font-size: 11px;
+      }
+
+      .cls-20, .cls-5, .cls-22 {
+        isolation: isolate;
+      }
+
+      .cls-3, .cls-26 {
+        letter-spacing: 3.7em;
+      }
+
+      .cls-27 {
+        fill: #ea5514;
+      }
+
+      .cls-28, .cls-29, .cls-8 {
+        fill: #a40b5d;
+      }
+
+      .cls-4 {
+        letter-spacing: 0em;
+      }
+
+      .cls-12 {
+        stroke: #172a88;
+      }
+
+      .cls-30 {
+        fill: #094;
+      }
+
+      .cls-13 {
+        stroke: #094;
+      }
+
+      .cls-31 {
+        fill: #172a88;
+      }
+
+      .cls-32 {
+        fill: #0b318f;
+      }
+
+      .cls-33 {
+        fill: #a48b78;
+      }
+
+      .cls-34 {
+        letter-spacing: 0em;
+      }
+
+      .cls-35 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-29 {
+        letter-spacing: -.06em;
+      }
+
+      .cls-36 {
+        letter-spacing: .05em;
+      }
+
+      .cls-37, .cls-22 {
+        fill: #e60012;
+      }
+
+      .cls-14 {
+        stroke: #a40b5d;
+      }
+
+      .cls-15 {
+        stroke-width: .5px;
+      }
+
+      .cls-38 {
+        fill: #00a0e9;
+      }
+
+      .cls-39 {
+        fill: #fff100;
+      }
+
+      .cls-23 {
+        font-size: 18.98px;
+      }
+
+      .cls-16 {
+        stroke: #ea5514;
+      }
+
+      .cls-6 {
+        letter-spacing: .05em;
+      }
+
+      .cls-40 {
+        letter-spacing: -.02em;
+      }
+    </style>
+  </defs>
+  <g id="_图层_1-2" data-name="图层 1">
+    <rect class="cls-39" x="118.09" y="343.04" width="172" height="18.81"/>
+    <rect class="cls-39" x="1164.75" y="188.58" width="108.85" height="13.06"/>
+    <rect class="cls-33" x="898.54" y="490.1" width="108.85" height="13.06"/>
+    <rect class="cls-33" x="859.24" y="434.32" width="108.85" height="13.06"/>
+    <rect class="cls-33" x="812.8" y="154.43" width="120.72" height="13.09"/>
+    <g>
+      <polyline class="cls-14" points="1244.09 161.52 1244.09 217.52 1197.92 232.3"/>
+      <polygon class="cls-28" points="1191.2 234.45 1199.43 227.55 1198.43 232.14 1201.91 235.29 1191.2 234.45"/>
+    </g>
+    <g>
+      <polyline class="cls-14" points="1275.75 154.85 1326.42 154.85 1326.42 187.92"/>
+      <polygon class="cls-28" points="1268.69 154.85 1278.64 158.91 1276.28 154.85 1278.64 150.78 1268.69 154.85"/>
+    </g>
+    <g>
+      <polyline class="cls-16" points="1086.09 382.28 1276.09 382.28 1276.09 748.85 969.81 748.85"/>
+      <polygon class="cls-27" points="962.75 748.85 972.7 744.78 970.34 748.85 972.7 752.91 962.75 748.85"/>
+    </g>
+    <g>
+      <polyline class="cls-16" points="989.63 496.18 1018.05 496.18 1018.05 161.52 948.48 161.52"/>
+      <polygon class="cls-27" points="941.42 161.52 951.37 157.45 949.01 161.52 951.37 165.58 941.42 161.52"/>
+    </g>
+    <text class="cls-5" transform="translate(298.63 114.81)"><tspan x="0" y="0">Cls物体(零件)上帝</tspan></text>
+    <text class="cls-20" transform="translate(283.46 150.49)"><tspan class="cls-7"><tspan class="cls-36" x="0" y="0">X</tspan><tspan x="5.95" y="0">,Y 坐标</tspan></tspan><tspan class="cls-7"><tspan x="0" y="28">abstract fn获取图片实例()</tspan></tspan><tspan class="cls-38"><tspan x="0" y="42">fn把本实例画到画布上()</tspan></tspan></text>
+    <rect class="cls-11" x="254.38" y="99.16" width="159.77" height="114.75"/>
+    <text class="cls-5" transform="translate(1252.31 121.97)"><tspan x="0" y="0">Cls游戏元素管理</tspan><tspan x="-10.43" y="10.8">(零件供应商 - 管理部)</tspan></text>
+    <text class="cls-20" transform="translate(1098.4 157.65)"><tspan class="cls-7" x="0" y="0" xml:space="preserve"> static List&lt;Cls不可移动的物体&gt; </tspan><tspan class="cls-28" x="129.2" y="0">listIns</tspan><tspan class="cls-29" x="151.04" y="0">W</tspan><tspan class="cls-28" x="159.2" y="0">all</tspan><tspan class="cls-7" x="0" y="28">static void </tspan><tspan class="cls-32" x="43.29" y="28">fn创建墙壁</tspan><tspan class="cls-7" x="87.17" y="28">(int xSta</tspan><tspan class="cls-6" x="119.27" y="28">r</tspan><tspan class="cls-7" x="122.91" y="28">t, int ySta</tspan><tspan class="cls-6" x="160.29" y="28">r</tspan><tspan class="cls-7" x="163.92" y="28">t, int wallCount, List&lt;</tspan><tspan class="cls-37" x="248.78" y="28">Cls不可移动的物体</tspan><tspan class="cls-1" x="323.59" y="28">&gt; </tspan><tspan class="cls-8" x="332.56" y="28">listIns</tspan><tspan class="cls-29" x="354.41" y="28">W</tspan><tspan class="cls-28" x="362.57" y="28">all</tspan><tspan class="cls-7" x="371.36" y="28">)</tspan><tspan class="cls-3" x="0" y="42">	</tspan><tspan class="cls-7" x="36" y="42">// 生成 “</tspan><tspan class="cls-37" x="69.7" y="42">Cls静止物体类”的实例对象</tspan><tspan class="cls-7" x="174.77" y="42">, 存到 </tspan><tspan class="cls-28" x="200.25" y="42">listIns</tspan><tspan class="cls-29" x="222.1" y="42">W</tspan><tspan class="cls-28" x="230.25" y="42">all </tspan><tspan class="cls-7" x="241.71" y="42">列表中.</tspan><tspan class="cls-7" x="0" y="70">static void </tspan><tspan class="cls-31" x="43.29" y="70">fn把墙画到地图上()</tspan><tspan class="cls-3" x="0" y="84">	</tspan><tspan class="cls-7" x="36" y="84">//把 </tspan><tspan class="cls-28" x="54.78" y="84">listIns</tspan><tspan class="cls-29" x="76.63" y="84">W</tspan><tspan class="cls-28" x="84.78" y="84">all </tspan><tspan class="cls-7" x="96.24" y="84">列表中存放的每一个 “静止物体类”的实例对象, </tspan><tspan class="cls-3" x="0" y="98">	</tspan><tspan class="cls-7" x="36" y="98">调用这些实例对象自己体内的”</tspan><tspan class="cls-38" x="156.26" y="98">fn把本实例画到画布上()</tspan><tspan class="cls-7" x="250.62" y="98">”方法</tspan></text>
+    <text class="cls-20" transform="translate(789.63 164.21)"><tspan class="cls-7"><tspan x="0" y="0">static Graphics ins游戏框架中的画布</tspan></tspan><tspan class="cls-30"><tspan x="0" y="28">static void fn游戏开始时的动作() </tspan></tspan><tspan class="cls-3" x="0" y="42">	</tspan><tspan class="cls-7" x="36" y="42">\\ 调用”管理部”的 “</tspan><tspan class="cls-31" x="112.21" y="42">fn创建墙壁()</tspan><tspan class="cls-7" x="161.58" y="42">”方法</tspan><tspan class="cls-30"><tspan x="0" y="70">public static void fn游戏不断更新时会执行的动作()</tspan></tspan><tspan class="cls-3" x="0" y="84">	</tspan><tspan class="cls-7" x="36" y="84">\\ 调用”管理部”的</tspan><tspan class="cls-31" x="106.29" y="84">fn把墙画到地图上()</tspan></text>
+    <text class="cls-20" transform="translate(872.17 429.55)"><tspan class="cls-7"><tspan x="0" y="0">Th</tspan><tspan class="cls-40" x="10.17" y="0">r</tspan><tspan x="13.19" y="0">ead t线程1</tspan></tspan><tspan class="cls-7"><tspan x="0" y="14">Graphics ins画布</tspan></tspan><tspan class="cls-7"><tspan x="0" y="42">构造函数</tspan></tspan><tspan class="cls-7"><tspan class="cls-26" x="0" y="56">	</tspan><tspan x="36" y="56">\\ 显示窗口居中</tspan></tspan><tspan class="cls-7"><tspan class="cls-26" x="0" y="70">	</tspan><tspan x="36" y="70">\\创建画布实例对象</tspan></tspan><tspan class="cls-7"><tspan class="cls-26" x="0" y="84">	</tspan><tspan x="36" y="84">\\创建并启动”游戏主线程</tspan><tspan class="cls-17" x="136.38" y="84">”</tspan><tspan x="138.89" y="84">, 即执行 “fn游戏主线程()”方法</tspan></tspan><tspan class="cls-7"><tspan x="0" y="112" xml:space="preserve"> static void fn游戏主线程() </tspan></tspan><tspan class="cls-3" x="0" y="126">	</tspan><tspan class="cls-7" x="36" y="126">\\调用”流程逻辑供应商</tspan><tspan class="cls-2" x="127.38" y="126">”</tspan><tspan class="cls-7" x="129.89" y="126">,执行它的”</tspan><tspan class="cls-30" x="171.31" y="126">fn游戏开始时的动作()</tspan><tspan class="cls-7" x="256.68" y="126">”方法</tspan><tspan class="cls-3" x="0" y="140">	</tspan><tspan class="cls-7" x="36" y="140">\\调用”流程逻辑供应商</tspan><tspan class="cls-2" x="127.38" y="140">”</tspan><tspan class="cls-7" x="129.89" y="140">,执行它的”</tspan><tspan class="cls-30" x="171.31" y="140">fn游戏不断更新时会执行的动作()</tspan><tspan class="cls-4" x="301.68" y="140">”方法</tspan><tspan class="cls-7"><tspan x="0" y="168">检测窗体事件</tspan></tspan><tspan class="cls-7"><tspan class="cls-26" x="0" y="182">	</tspan><tspan x="36" y="182">\\如果窗体关闭, 则终止掉游戏主线程.</tspan></tspan></text>
+    <rect class="cls-11" x="1071.94" y="106.32" width="426.85" height="167.93"/>
+    <text class="cls-5" transform="translate(874.12 121.97)"><tspan x="0" y="0">Cls游戏框架</tspan><tspan x="-19.34" y="10.8">(游戏流程逻辑供应商)</tspan></text>
+    <rect class="cls-11" x="762.06" y="106.32" width="271.91" height="167.93"/>
+    <text class="cls-5" transform="translate(1017.17 381.2)"><tspan x="0" y="0">Fo</tspan><tspan class="cls-34" x="9.97" y="0">r</tspan><tspan x="13.15" y="0">m1类</tspan><tspan x="-29.45" y="10.8">(iphone组装厂, 富士康)</tspan></text>
+    <rect class="cls-11" x="852.39" y="365.56" width="363.17" height="266.23"/>
+    <text class="cls-5" transform="translate(872.17 752.07)"><tspan x="0" y="0">运行富士康实例对象</tspan></text>
+    <text class="cls-5" transform="translate(1011.88 703.73)"><tspan x="0" y="0">P</tspan><tspan class="cls-40" x="5.29" y="0">r</tspan><tspan x="8.3" y="0">ogram类</tspan><tspan x="-29.1" y="10.8">(Mian函数入口, 苹果公司)</tspan></text>
+    <rect class="cls-11" x="852.39" y="688.09" width="363.17" height="85.7"/>
+    <text class="cls-22" transform="translate(181.48 305.19)"><tspan x="0" y="0">Cls静止物体</tspan></text>
+    <text class="cls-20" transform="translate(124 340.87)"><tspan class="cls-7"><tspan class="cls-36" x="0" y="0">X</tspan><tspan x="5.95" y="0">,Y 坐标</tspan></tspan><tspan class="cls-7"><tspan x="0" y="14" xml:space="preserve"> Image Ins不可移动物体的图片实例对象 </tspan></tspan><tspan class="cls-7"><tspan x="0" y="42">fn获取图片实例() -&gt; 返回图片实例</tspan></tspan><tspan class="cls-38"><tspan x="0" y="56">fn把本实例画到画布上()</tspan></tspan></text>
+    <rect class="cls-11" x="106.48" y="289.55" width="198.1" height="120.89"/>
+    <text class="cls-5" transform="translate(438.79 305.19)"><tspan x="0" y="0">Cls可移动物体</tspan></text>
+    <text class="cls-5" transform="translate(381.31 340.87)"><tspan class="cls-36" x="0" y="0">X</tspan><tspan x="5.95" y="0">,Y 坐标</tspan><tspan x="0" y="14" xml:space="preserve"> Image Ins不可移动物体的图片实例对象 </tspan><tspan x="0" y="42">fn获取图片实例() -&gt; 返回图片实例</tspan><tspan x="0" y="56">fn把本实例画到画布上()</tspan></text>
+    <rect class="cls-11" x="363.8" y="289.55" width="198.1" height="120.89"/>
+    <text class="cls-5" transform="translate(559.54 507)"><tspan x="0" y="0">Cls敌方坦克</tspan></text>
+    <text class="cls-5" transform="translate(497.99 542.68)"><tspan class="cls-36" x="0" y="0">X</tspan><tspan x="5.95" y="0">,Y 坐标</tspan><tspan x="0" y="14" xml:space="preserve"> Image Ins不可移动物体的图片实例对象 </tspan><tspan x="0" y="42">fn获取图片实例() -&gt; 返回图片实例</tspan><tspan x="0" y="56">fn把本实例画到画布上()</tspan></text>
+    <rect class="cls-11" x="484.55" y="491.35" width="198.1" height="120.89"/>
+    <text class="cls-5" transform="translate(322.45 507)"><tspan x="0" y="0">Cls我方坦克</tspan></text>
+    <text class="cls-5" transform="translate(264.97 542.68)"><tspan class="cls-36" x="0" y="0">X</tspan><tspan x="5.95" y="0">,Y 坐标</tspan><tspan x="0" y="14" xml:space="preserve"> Image Ins不可移动物体的图片实例对象 </tspan><tspan x="0" y="42">fn获取图片实例() -&gt; 返回图片实例</tspan><tspan x="0" y="56">fn把本实例画到画布上()</tspan></text>
+    <rect class="cls-11" x="247.45" y="491.35" width="198.1" height="120.89"/>
+    <text class="cls-21" transform="translate(0 347.45)"><tspan x="0" y="0">黄色背景的代码, </tspan><tspan x="0" y="14">是子类自己新添加的东西</tspan></text>
+    <g>
+      <g>
+        <polyline class="cls-15" points="334.12 221.77 334.12 252.43 205.53 252.43 205.53 278.24"/>
+        <polygon class="cls-7" points="205.53 281.77 203.5 276.79 205.53 277.97 207.56 276.79 205.53 281.77"/>
+      </g>
+      <g>
+        <polyline class="cls-15" points="334.26 221.77 334.26 252.43 462.85 252.43 462.85 278.24"/>
+        <polygon class="cls-7" points="462.85 281.77 460.81 276.79 462.85 277.97 464.88 276.79 462.85 281.77"/>
+      </g>
+    </g>
+    <g>
+      <g>
+        <polyline class="cls-15" points="462.85 421.67 462.85 452.34 591.43 452.34 591.43 478.14"/>
+        <polygon class="cls-7" points="591.43 481.67 589.4 476.7 591.43 477.88 593.46 476.7 591.43 481.67"/>
+      </g>
+      <g>
+        <polyline class="cls-15" points="462.85 421.67 462.85 452.34 346.78 452.34 346.78 478.14"/>
+        <polygon class="cls-7" points="346.78 481.67 344.74 476.7 346.78 477.88 348.81 476.7 346.78 481.67"/>
+      </g>
+    </g>
+    <g>
+      <polyline class="cls-13" points="784.09 190.29 743.42 190.29 743.42 551.8 897.02 551.8"/>
+      <polygon class="cls-30" points="904.09 551.8 894.14 555.86 896.5 551.8 894.14 547.73 904.09 551.8"/>
+    </g>
+    <g>
+      <polyline class="cls-13" points="784.66 234.2 771.42 234.2 771.42 565.57 897.02 565.57"/>
+      <polygon class="cls-30" points="904.09 565.57 894.14 569.63 896.5 565.57 894.14 561.5 904.09 565.57"/>
+    </g>
+    <g>
+      <polyline class="cls-10" points="172.75 305.19 142.75 305.19 142.75 41.52 1390.09 41.52 1390.09 164.33"/>
+      <polygon class="cls-37" points="1390.09 171.39 1386.02 161.44 1390.09 163.8 1394.15 161.44 1390.09 171.39"/>
+    </g>
+    <g>
+      <polyline class="cls-10" points="1265.62 204.21 1265.62 218.46 1326.42 218.46 1326.42 211.27"/>
+      <polygon class="cls-37" points="1326.42 204.21 1330.48 214.16 1326.42 211.8 1322.35 214.16 1326.42 204.21"/>
+    </g>
+    <g>
+      <circle class="cls-7" cx="1390.09" cy="150.24" r="6.11"/>
+      <text class="cls-18" transform="translate(1388.35 153.44)"><tspan x="0" y="0">1</tspan></text>
+    </g>
+    <g>
+      <circle class="cls-7" cx="334.12" cy="61.93" r="12.89"/>
+      <text class="cls-23" transform="translate(330.46 68.68)"><tspan x="0" y="0">1</tspan></text>
+    </g>
+    <g>
+      <circle class="cls-7" cx="1280.75" cy="68.04" r="12.89"/>
+      <text class="cls-23" transform="translate(1275.47 74.79)"><tspan x="0" y="0">2</tspan></text>
+    </g>
+    <g>
+      <circle class="cls-7" cx="907.9" cy="68.04" r="12.89"/>
+      <text class="cls-23" transform="translate(902.62 74.79)"><tspan x="0" y="0">3</tspan></text>
+    </g>
+    <g>
+      <circle class="cls-7" cx="907.9" cy="326.97" r="12.89"/>
+      <text class="cls-23" transform="translate(902.45 333.72)"><tspan x="0" y="0">4</tspan></text>
+    </g>
+    <g>
+      <circle class="cls-7" cx="907.9" cy="650.51" r="12.89"/>
+      <text class="cls-23" transform="translate(902.62 657.26)"><tspan x="0" y="0">5</tspan></text>
+    </g>
+    <g>
+      <circle class="cls-7" cx="1176.75" cy="207.76" r="6.11"/>
+      <text class="cls-18" transform="translate(1174.25 210.96)"><tspan x="0" y="0">2</tspan></text>
+    </g>
+    <g>
+      <circle class="cls-7" cx="1297.55" cy="218.46" r="6.11"/>
+      <text class="cls-18" transform="translate(1295.05 221.66)"><tspan x="0" y="0">3</tspan></text>
+    </g>
+    <g>
+      <circle class="cls-7" cx="1303.66" cy="154.85" r="6.11"/>
+      <text class="cls-18" transform="translate(1301.08 158.05)"><tspan x="0" y="0">4</tspan></text>
+    </g>
+    <g>
+      <circle class="cls-7" cx="1230.53" cy="221.66" r="6.11"/>
+      <text class="cls-18" transform="translate(1228.03 224.86)"><tspan x="0" y="0">5</tspan></text>
+    </g>
+    <g>
+      <circle class="cls-7" cx="1300.74" cy="264.81" r="6.11"/>
+      <text class="cls-18" transform="translate(1298.24 268.01)"><tspan x="0" y="0">6</tspan></text>
+    </g>
+    <g>
+      <polyline class="cls-16" points="944.09 440.85 984.09 440.85 984.09 479.63"/>
+      <polygon class="cls-27" points="984.09 486.69 980.02 476.74 984.09 479.1 988.15 476.74 984.09 486.69"/>
+    </g>
+    <text class="cls-19" transform="translate(988.35 457.72)"><tspan x="0" y="0">这个创建画布的动作, 应该由零件供应商里面来创建画布, </tspan><tspan x="26.18" y="14">而不应该由富士康组装厂自己生产这个零件!</tspan><tspan x="62.18" y="28">富士康厂应该只负责组装!</tspan></text>
+    <text class="cls-19" transform="translate(1331.8 123.08)"><tspan x="0" y="0">这个类的名字应该改成: </tspan><tspan x="0" y="14">批量创建墙壁(并画到图上)管理处</tspan></text>
+    <text class="cls-19" transform="translate(937.78 144.13)"><tspan x="0" y="0">这个画布在这个供应商类里面, </tspan><tspan x="22.5" y="14">没有起到任何作用, </tspan><tspan x="4.5" y="28">没被任何本类的方法调用过, </tspan><tspan x="19.06" y="42">所以没必要写在这里!</tspan></text>
+    <text class="cls-25" transform="translate(21.95 249.76)"><tspan x="0" y="0">供应商(供应”零件”)</tspan><tspan x="0" y="16">物体类, 只负责两件事:</tspan><tspan x="0" y="32">1.创建物体实例对象</tspan><tspan x="0" y="48">2.把本实例,画到画布上</tspan></text>
+    <text class="cls-25" transform="translate(652.95 88.98)"><tspan x="0" y="0">供应商(供应”游戏的流程逻辑”)</tspan><tspan x="0" y="16">1.画布实例</tspan><tspan x="0" y="32">2.提供游戏”开始”时要执行的动作</tspan><tspan x="0" y="48">3.提供游戏”刷新”时要执行的动作</tspan></text>
+    <text class="cls-25" transform="translate(1105.95 320.16)"><tspan x="0" y="0">富士康组装厂, 只负责从供应商处拿取”流程逻辑”和”零件</tspan><tspan class="cls-35" x="292.42" y="0">”</tspan><tspan x="302.93" y="0">,来组装成iphone,</tspan><tspan x="0" y="16">执行:</tspan><tspan x="0" y="32">1.执行游戏主线程, 调用供应商处提供的两个方法</tspan><tspan x="0" y="48">2, 监控窗口是否关闭, 以结束游戏主线程</tspan></text>
+    <text class="cls-25" transform="translate(1403.86 49.64)"><tspan x="0" y="0">零件供应商的管理部,负责:</tspan><tspan x="0" y="16" xml:space="preserve">1.从原材料处, 获取零件.  </tspan><tspan x="0" y="32" xml:space="preserve">2. 把拿到的零件实例, 放到一个list中,  </tspan><tspan x="0" y="48">把list中的元素, 批量画到画布上</tspan></text>
+    <text class="cls-25" transform="translate(892.74 792.36)"><tspan x="0" y="0">Main主函数, 是苹果ceo, 只负责对富士康发号施令, 要求它执行开工</tspan></text>
+    <g>
+      <rect class="cls-7" x="253.38" y="73.9" width="161.77" height="24.69"/>
+      <text class="cls-24" transform="translate(280.84 90.07)"><tspan x="0" y="0">零件 供应商-原材料部</tspan></text>
+    </g>
+    <g>
+      <rect class="cls-9" x="253.38" width="161.77" height="24.69"/>
+      <text class="cls-24" transform="translate(296.41 16.17)"><tspan x="0" y="0">1.创建图片实例</tspan></text>
+    </g>
+    <g>
+      <rect class="cls-9" x="1203.66" width="161.77" height="24.69"/>
+      <text class="cls-24" transform="translate(1209.41 16.17)"><tspan x="0" y="0">2.把图片实例(墙壁)画到画布上</tspan></text>
+    </g>
+    <g>
+      <rect class="cls-9" x="803.32" y="368.15" width="161.77" height="24.69"/>
+      <text class="cls-24" transform="translate(813.35 384.32)"><tspan x="0" y="0">4.启动执行”游戏逻辑流程”</tspan></text>
+    </g>
+    <g>
+      <rect class="cls-9" x="803.32" y="688.09" width="161.77" height="24.69"/>
+      <text class="cls-24" transform="translate(851.85 704.26)"><tspan x="0" y="0">5.启动总开关</tspan></text>
+    </g>
+    <g>
+      <rect class="cls-9" x="832.78" width="161.77" height="24.69"/>
+      <text class="cls-24" transform="translate(837.31 16.17)"><tspan x="0" y="0">3.游戏的”各流程分段”的代码</tspan></text>
+    </g>
+    <g>
+      <rect class="cls-7" x="1199.87" y="81.46" width="161.77" height="24.69"/>
+      <text class="cls-24" transform="translate(1206.54 97.63)"><tspan x="0" y="0">零件 供应商-管理部(管理墙壁)</tspan></text>
+    </g>
+    <g>
+      <rect class="cls-7" x="825.85" y="81.46" width="164.37" height="24.69"/>
+      <text class="cls-24" transform="translate(857.01 97.63)"><tspan x="0" y="0">游戏流程逻辑 供应商</tspan></text>
+    </g>
+    <g>
+      <rect class="cls-7" x="850.78" y="341.41" width="114.51" height="24.69"/>
+      <text class="cls-24" transform="translate(871.83 357.58)"><tspan x="0" y="0">组装厂, 富士康</tspan></text>
+    </g>
+    <g>
+      <rect class="cls-7" x="850.78" y="663.39" width="114.51" height="24.69"/>
+      <text class="cls-24" transform="translate(886.04 679.56)"><tspan x="0" y="0">苹果公司</tspan></text>
+    </g>
+    <g>
+      <polyline class="cls-12" points="1092.75 184.77 1062.75 184.77 1062.75 201.64 986.79 201.64"/>
+      <polygon class="cls-31" points="979.73 201.64 989.68 197.58 987.32 201.64 989.68 205.71 979.73 201.64"/>
+    </g>
+    <g>
+      <polyline class="cls-12" points="1092.75 228.01 1062.75 228.01 1062.75 244.88 986.79 244.88"/>
+      <polygon class="cls-31" points="979.73 244.88 989.68 240.82 987.32 244.88 989.68 248.95 979.73 244.88"/>
+    </g>
+  </g>
+</svg>

@@ -23,4 +23,42 @@ namespace S2
 }
 ----
 
+== 命名空间, 可以嵌套
+
+[source, java]
+----
+using ConsoleApp2.myNameSpace1;
+
+namespace ConsoleApp2
+{
+
+    namespace myNameSpace1 //命名空间, 使用来管理"类"的. 命名空间可以嵌套, 比如这里, 这个 myNameSpace1 命名空间, 就位于 ConsoleApp2 命名空间的内部.
+    {
+        class Cls命名空间1里面的类 //
+        {
+
+        }
+    }
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+            myNameSpace1.Cls命名空间1里面的类 cls1 = new myNameSpace1.Cls命名空间1里面的类(); //调用时, 可以带上命名空间名, 来调用里面的类.
+
+        }
+
+    }
+}
+----
+
+image:/img/0082.png[,]
+
+在同一个项目的不同文件中, 有不同的"命名空间"(来管理里面的类), 也可以通过 using来引用该"命名空间"后, 就能调用里面的类.
+
+image:/img/0083.png[,]
+
+
+---
 
