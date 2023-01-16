@@ -8,8 +8,24 @@
 
 == 委托  (相当于一个指针, 指向另一个函数体)
 
+C# 中的委托（Delegate）类似于 C 或 C++ 中函数的指针。委托（Delegate） 是存有对某个方法的引用的一种"引用类型变量"。引用可在运行时被改变。
+委托（Delegate）特别用于实现"事件"和"回调方法"。所有的委托（Delegate）都派生自 System.Delegate 类。
+
+
+
+
 委托类型的变量, 其实就相当于一个指针, 能指向另一个函数体. 从而这个委托变量, 就能当做那个函数来执行. +
 委托, 就相当于它只有灵魂(有参数和返回值),没有身体(没有函数体),  它必须依附(指针指向)在一个身体(其他函数体)上, 才能执行那个函数功能.
+
+
+
+在C#中使用一个类，分为两个阶段。首先，需要定义这个类，告诉编译器这个类由什么字段和方法组成，然后实例化这个类的一个对象。使用委托也要经过这两个步骤。首先，定义要使用的委托(类)，告诉编译器这委托（类）表示的是哪种类型的方法，然后创建委托的实例。它们都是要即先声明，再实例化。只是有点不同，类在实例化之后叫对象或实例，但委托在实例化后仍叫委托。
+
+定义委托类似于方法的定义，但没有方法体，定义的前面要加关键字delegate。**委托相当类，所以可以在定义类的任何地方定义委托，也就是说可以在类外部，也可以在类内部定义，当然也可以在委托定义上使用任意的访问修饰符。**定义委托类型时就指明了该委托类型的实例所能接受的方法的返回类型和其参数。
+执行委托实例跟执行方法一样，直接在委托实例后加括号，并在括号中填入该委托所对应参数。
+
+
+
 
 [source, java]
 ----
@@ -76,5 +92,446 @@ image:img/0011.png[,]
 军方判断是否出征敌国
 ====
 
+
+
+.标题
+====
+例如：
+[source, java]
+----
+namespace ConsoleApp2
+{
+    internal class Program
+    {
+        //声明一个委托类型, 就像定义一个函数一样, 但没有函数体.
+        delegate void dlgFn委托中介(string name);
+
+        static void fn计算投资收益(string name)
+        {
+            Console.WriteLine("我在帮{0}计算投资收益",name);
+        }
+
+
+        static void Main(string[] args)
+        {
+            //创建一个委托类的变量, 让它指向"fn计算投资收益"函数, 代理这个函数的功能.
+            dlgFn委托中介 insDlg中介实例 = new dlgFn委托中介(fn计算投资收益); //一旦声明了委托类型，委托对象必须使用 new 关键字来创建，且传入一个指向的函数。
+            insDlg中介实例("zrx"); //我在帮zrx计算投资收益
+
+
+            //也可以在创建委托的变量时, 指向null, 之后再让它指向一个函数体.
+            dlgFn委托中介 ins中介2 = null;  //该委托变量, 先指针指向null
+            ins中介2 = fn计算投资收益; //然后,在让它指向一个具体的函数方法.
+            ins中介2("slf"); //我在帮slf计算投资收益
+
+        }
+    }
+}
+----
+
+image:img/0085.png[,]
+====
+
 ---
+
+==== 可以创建一个"委托类型"的数组, 里面存放n个函数方法, 就可以来遍历调用这些函数方法.
+
+"Cls数学计算"类文件:
+[source, java]
+----
+internal class Cls数学计算
+{
+    public static double fn乘以2倍(double num)
+    {
+        return num * 2;
+    }
+
+    public static double fn平方(double num)
+    {
+        return num * num;
+    }
+}
+----
+
+
+主文件:
+[source, java]
+----
+internal class Program
+{
+    //声明一个委托类型, 就像定义一个函数一样, 但没有函数体.
+    delegate double dlgFn委托中介(double num);
+
+
+    static void Main(string[] args)
+    {
+        //我们可以创建一个"委托类型"的数组, 里面存放n个函数方法, 就可以来遍历调用这些函数方法.
+        dlgFn委托中介[] arr委托数组 = { Cls数学计算.fn乘以2倍, Cls数学计算.fn平方 }; //我们创建一个委托类型的数组, 里面的元素,就是对函数的引用
+
+        foreach (var singleFn in arr委托数组)
+        {
+            Console.WriteLine(singleFn(5)); //遍历采用数组中的每一个函数, 给它们传入共同的参数5, 就会输出10(=5的2倍) 和 25(=5的平方).
+        }
+
+    }
+}
+----
+
+image:img/0086.png[,]
+
+---
+
+
+==== 委托类型的变量, 它指向的函数fn1, 和fn1要接收的参数var, 这两样东西, 可以传递给另一个函数B, 在函数B体内组装起来.
+
+[source, java]
+----
+namespace ConsoleApp2
+{
+    internal class Program
+    {
+        //声明一个委托类型, 就像定义一个函数一样, 但没有函数体.
+        delegate double dlgFn委托中介(double num);
+
+
+        //定义一个和上面的"委托类型", 参数和返回值 都吻合的函数方法
+        static double fn圆面积(double num半径)
+        {
+            double num圆面积 = Math.PI*Math.Pow(num半径, 2); //Math.Pow(num, 2) 表示: 做num的2次方
+            return num圆面积;
+        }
+
+
+        static  double fn组装工厂(dlgFn委托中介 ins委托要指向的具体函数, double num委托所指向的调用函数要接收的参数)
+        {
+            dlgFn委托中介 ins中介 = ins委托要指向的具体函数;
+            double res =ins中介(num委托所指向的调用函数要接收的参数);
+            return res;
+        }
+
+        static void Main(string[] args)
+        {
+            //我们可以将委托变量, 和它的参数, 都传进另一个函数中组装起来
+            Console.WriteLine(fn组装工厂(fn圆面积, 5)); //78.53981633974483
+
+        }
+    }
+}
+----
+
+image:img/0087.svg[,50%]
+
+---
+
+== Action泛型委托 (无返回值)
+
+c# 帮我们内置了几种委托, 可以直接使用. 包括 Action类型委托, 与Func委托. +
+C＃包含内置的泛型委托类型 Func 和 Action，因此在大多数情况下您不需要手动定义自定义委托。
+
+除了我们自己定义委托类型，微软的类库中也为我们内置Action<T>和Func<T>的泛型委托，这样就可以免得我们自己去定义委托类型了，我们可以直接使用内置的委托类型。
+
+　　泛型Action<T>委托表示引用一个void返回类型的方法，该委托内存在不同的变体，它最多可传递16 个参数。非泛型Action委托类型可以调用带无返回类型且无参数的方法。
+
+　　Func<T>委托类似于Action<T>委托，不同的是Func<T>调用的是带有返回类型的方法。Func<T>也定义了不同的变体，它最多可以传递16个参数和一个返回类型。Func<out TResult>委托类型可以调用带返回类型且无参数的方法。
+
+
+
+
+Action委托:
+
+- Action委托至少0个参数，至多16个参数，无返回值。
+- Action 表示无参，无返回值的委托。
+- Action<int,string> 表示有传入参数int,string，无返回值的委托。
+- Action<int,string,bool> 表示有传入参数int,string,bool，无返回值的委托。
+- Action<int,int,int,int> 表示有传入4个int型参数，无返回值的委托。
+- Action 委托与 Func 委托相同，只是 Action 委托 不返回任何内容。返回类型必须为 void。
+
+.标题
+====
+例如： Action类的变量, 指向一个无返回值, 也无参的 函数
+[source, java]
+----
+internal class Program
+{
+    static void fn无返回值函数()
+    {
+        Console.WriteLine("无返回值的函数");
+    }
+
+
+    static void Main(string[] args)
+    {
+        Action dlgAc = null; //Action类的变量, 只能指向"无返回值的函数"
+        dlgAc = fn无返回值函数;
+        dlgAc(); //无返回值的函数
+    }
+}
+
+----
+====
+
+
+
+.标题
+====
+例如： Action类的变量, 指向一个无返回值, 但"有参"的函数
+
+[,subs=+quotes]
+----
+internal class Program
+{
+    static void fn无返回值函数(string name)
+    {
+        Console.WriteLine("{0}, 我是无返回值的函数",name);
+    }
+
+    static void Main(string[] args)
+    {
+        *Action<string> dlgAc* = null; //Action类是泛型的, 它可以指向你"给定参数类型"的函数
+        *dlgAc = fn无返回值函数*;
+        dlgAc("zrx"); //zrx, 我是无返回值的函数
+    }
+}
+----
+====
+
+
+.标题
+====
+例如：
+如果要指向有两个参数的函数呢?
+
+[,subs=+quotes]
+----
+    internal class Program
+    {
+        static void *fn无返回值函数(string name, int age)*
+        {
+            Console.WriteLine("{0}, {1}岁, 我是无返回值的函数",name, age);
+        }
+
+
+        static void Main(string[] args)
+        {
+            *Action<string, int> dlgAc* = null;
+            dlgAc = fn无返回值函数;
+            *dlgAc("zrx",19)*; //zrx, 19岁, 我是无返回值的函数
+        }
+    }
+----
+====
+
+
+---
+
+== Func委托 (有返回值)
+
+Func 委托代表有返回类型的委托。
+
+- Func 至少0个输入参数，至多16个输入参数，根据返回值泛型返回。必须有返回值，不可void。
+- Func<int> 表示没有输入参数，返回值为int类型的委托。
+- Func<object,string,int> 表示传入参数为object, string ，返回值为int类型的委托。
+- Func<object,string,int> 表示传入参数为object, string， 返回值为int类型的委托。
+- Func<T1,T2,,T3,int> 表示传入参数为T1,T2,,T3(泛型)，返回值为int类型的委托。
+
+
+.标题
+====
+例如：
+[,subs=+quotes]
+----
+internal class Program
+{
+    static *string fn有返回值函数(string name, int age)*
+    {
+        return string.Format("{0}, {1}岁, 我是有返回值的函数", name, age);
+    }
+
+
+    static void Main(string[] args)
+    {
+        *Func<string, int, string> dlgAc = fn有返回值函数*; //注意, 这里 Func<> 泛型中指定它参数的类型时, 别忘了要把返回值的类型也写在里面! 比如这里, 前两个是输入参数的类型, 第三个是返回值的类型 string. *千万别忘了返回值类型也要写, 否则报错!*
+
+        string res = dlgAc("zrx", 19);
+        Console.WriteLine(res); //zrx, 19岁, 我是有返回值的函数
+    }
+}
+----
+
+image:img/0078.png[,]
+
+====
+
+
+---
+
+== 多播委托
+
+委托也可以包含多个方法，这种委托称为多播委托。
+
+当调用多播委托时，它连续调用每个方法。在调用过程中，委托必须为同类型，返回类型一般为void，这样才能将委托的单个实例合并为一个多播委托。如果委托具有返回值和/或输出参数，它将返回最后调用的方法的返回值和参数。（有些书上和博客说多播委托返回类型必须为void，并且不能带输出参数，只能带引用参数，是错误的）。
+
+
+[,subs=+quotes]
+----
+internal class Program
+{
+    static void fn1()
+    { Console.WriteLine("fn1"); }
+
+    static void fn2()
+    { Console.WriteLine("fn2"); }
+
+    static void fn3()
+    { Console.WriteLine("fn3"); }
+
+
+
+    static void Main(string[] args)
+    {
+        *Action ins多播委托* = fn1; //只指向一个函数体, 相当于"单播委托"
+        ins多播委托(); //fn1
+
+
+        //下面, 让委托变量, 指向两个函数
+        *ins多播委托 += fn2*;
+        ins多播委托(); //输出两行: fn1,fn2
+
+
+        *ins多播委托 -= fn1*; //将fn1方法, 从委托里删除
+        ins多播委托();//fn2  ← 原来委托同时指向fn1, fn2两个方法, 现在指针指向删除掉fn1后, 就只剩下 fn2了
+
+        //可以连续多次添加同一个方法
+        ins多播委托 += fn3;
+        ins多播委托 += fn3;
+        ins多播委托 += fn3;
+        ins多播委托(); //连续输出三次 fn3
+
+        //另外, 多播委托,如果有返回值的话, 也只能返回最后一个函数的返回值. 即：多播委托的返回类型不是void类型时，只能获取最后一个被调用方法的返回值，前面的所有方法会被抛弃。
+
+
+        //*多播委托是一个集合, 我们可以拿到这个集合. 该集合是 Delegate[]类型的*, 注意, D是大写!
+        *Delegate[] arrDlg多播委托集合 = ins多播委托.GetInvocationList();* //GetInvocationList()方法是: 按照调用顺序, 返回此多路广播委托的调用列表。GetInvocationList() 能够返回 这个委托的方法链表。
+
+        foreach (var item in arrDlg多播委托集合)
+        {
+            *item.DynamicInvoke()*; //遍历执行多播委托集合里面的每一个函数.
+                                  //DynamicInvoke() 方法 :动态调用（后期绑定的）当前委托列表中的所有方法。 可以依次全部调用 ，也可以指定调用其中的某一条。
+        }
+
+
+    }
+}
+----
+
+
+.标题
+====
+多播委托, 可以用在让一个人a, 帮一堆人(b,c,d...)做他们本该做的事上面. 如 每个人都能自己买东西, 但我们可以让一个人a, 来代理其他所有人, 一起买东西 (a是总采购, 来代理他们来买东西). 即, a会调用其他人身上的"购买"方法.
+
+例如:
+
+Cls采购员:
+[,subs=+quotes]
+----
+namespace ConsoleApp2
+{
+
+    //委托
+    #delegate void dlg采购员身上的委托(); //声明一个委托#
+
+    internal class Cls采购员
+    {
+        public string Name { get; set; }
+        #public dlg采购员身上的委托 ins采购员身上的委托函数指针 = null; //创建一个委托变量.#
+
+        //构造函数
+        public Cls采购员(string name)
+        {
+            Name = name;
+        }
+
+        public void fn外出采购()
+        {
+            Console.WriteLine("{0}外出采购了", Name); //注意, 这里因为用了Name属性, 而非name字段, 所以要用大写的Name了
+
+            if (ins采购员身上的委托函数指针 != null)
+            {
+                #ins采购员身上的委托函数指针();#
+            }
+        }
+    }
+}
+----
+
+Cls普通员工
+[,subs=+quotes]
+----
+namespace ConsoleApp2
+{
+    internal class Cls普通员工
+    {
+        public string Name { get; set; }
+
+        public Cls普通员工(string name) //构造函数
+        {
+            Name = name;
+        }
+
+        *public void fn买吃的()*
+        {
+            Console.WriteLine("普通员工{0}买吃的", Name);
+        }
+
+        *public void fn买喝的()*
+        {
+            Console.WriteLine("普通员工{0}买喝的", Name);
+        }
+
+    }
+}
+----
+
+主文件
+[,subs=+quotes]
+----
+internal class Program
+{
+
+
+    static void Main(string[] args)
+    {
+        Cls采购员 ins采购员 = new Cls采购员("zrx");
+        Cls普通员工 ins普通员工1 = new Cls普通员工("slf");
+        Cls普通员工 ins普通员工2 = new Cls普通员工("wyy");
+        Cls普通员工 ins普通员工3 = new Cls普通员工("zzr");
+
+
+        //我们把"采购员实例"身上的"委托指针", 指向其他三个实例身上的函数方法. 即, 委托指针, 就同时指向了三个普通员工实例各自身上的方法. 相当于采购员, 会帮三个员工去做(代理了)他们本身该做的事情(方法)了
+        *ins采购员.ins采购员身上的委托函数指针 += ins普通员工1.fn买吃的;*
+        ins采购员.ins采购员身上的委托函数指针 += ins普通员工2.fn买喝的;
+        ins采购员.ins采购员身上的委托函数指针 += ins普通员工3.fn买吃的;
+
+        *ins采购员.fn外出采购();*
+        /* 输出:
+         zrx外出采购了
+        普通员工slf买吃的
+        普通员工wyy买喝的
+        普通员工zzr买吃的
+        */
+
+
+    }
+}
+----
+
+
+====
+
+
+
+
+
+
+
 

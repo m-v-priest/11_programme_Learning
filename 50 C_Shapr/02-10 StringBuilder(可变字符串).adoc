@@ -1,0 +1,98 @@
+
+= StringBuilder
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+- 类 String 表示字符串， 比如“ abc ”.
+- 类 StringBuilder 表示可改变大小的字符序列（ sequence of characters ）.
+
+String 类型的字符串是常量，字符串创建出来后不允许修改。而 *StringBuilder 类型的字符串是可修改的。*
+
+string的缺点就是每次字符串变量的内容发生变化时，都必须重新分配内存。比如，如果创建一个迭代100000次的循环，每次迭代都将一个字符连接到字符串，这样内存 中就会有100000个字符串，每个字符串仅仅与前一个字符串相伴只是有一个字符不同，性能影响是很大的。
+
+StringBuilder通过分配一个缓存，就是一个工作区来解决这些问题，在工作区中队字符串应用StringBuilder类的相关方法。包括添加，删除，移除，
+插入和替换字符等等。执行完之后，将调用ToString方法把工作区中的内容转换为一个 字符串，方便赋给一个字符串变量。这样StringBuilder会提升一些性能。
+
+企业项目中用的比较多，经常SQL连接。StringBuilder的对象是动态的，可以改变字符
+串的内容。
+
+---
+
+== 增
+
+==== 给可变字符串,增加一段内容 ->  objStringBuilder.Append(newString)
+
+[source, java]
+----
+StringBuilder str = new StringBuilder("zrx");
+
+//objStringBuilder.Append() : 将新的内容,追加到当前StringBuilder对象的结尾
+str.Append("1981");
+str.Append("male"); //可以多次添加
+Console.WriteLine(str); //zrx1981male
+----
+
+---
+
+==== 插入新内容 -> objStringBuilder.Insert(index, newStrValue)
+
+[source, java]
+----
+StringBuilder str = new StringBuilder("zrx");
+
+str.Insert(1, "000"); //在索引1的位置,插入一段新字符串.
+Console.WriteLine(str); //z000rx
+----
+
+
+
+---
+
+== 删
+
+==== 移除字符串中的部分内容 -> objStringBuilder.Remove(index, 移除的字符数量)
+
+[source, java]
+----
+StringBuilder str = new StringBuilder("z000rx");
+
+str.Remove(1, 3); //从索引1开始, 移除3个字符
+Console.WriteLine(str); //zrx
+----
+
+
+---
+
+
+== 改
+
+==== 将字符串里面的部分内容, 替换掉 -> objStringBuilder.Replace(oldSubString, newString)
+
+[source, java]
+----
+StringBuilder str = new StringBuilder("z000rx");
+
+str.Replace("rx", "999"); //将老的子字符串rx, 替换成新的内容999
+Console.WriteLine(str); //z000999
+
+StringBuilder str2 = new StringBuilder("1100100110");
+str2.Replace("1", "2"); //把所有的"1", 替换成"2"
+Console.WriteLine(str2); //2200200220
+----
+
+
+
+---
+
+== 查
+
+---
+
+
+
+
+
+

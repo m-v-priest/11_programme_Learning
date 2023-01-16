@@ -1,12 +1,29 @@
 
-
-= visual studio 常用快捷键
+= 快捷键
 :sectnums:
 :toclevels: 3
 :toc: left
 
 ---
 
+
+== jetbrain rider 快捷键
+
+自动格式化代码: ctrl + Alt + L
+
+
+
+
+
+---
+
+== visual studio 常用快捷键
+
+== 官方文档
+
+https://learn.microsoft.com/zh-cn/dotnet/csharp/methods
+
+---
 
 == 折叠代码
 

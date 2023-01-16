@@ -1,0 +1,105 @@
+
+= 匿名方法
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+== 匿名方法
+
+委托是用于引用与其具有相同标签的方法。换句话说，您可以使用委托对象调用可由委托引用的方法。
+
+匿名方法（Anonymous methods） 提供了一种传递代码块作为委托参数的技术。匿名方法是没有名称只有主体的方法。
+
+在匿名方法中您不需要指定返回类型，它是从方法主体内的 return 语句推断的。
+
+匿名方法是通过使用 delegate 关键字, 创建委托实例来声明的
+
+
+[,subs=+quotes]
+----
+internal class Program
+{
+    static void fn1()
+    { Console.WriteLine("fn1"); }
+
+
+    static void Main(string[] args)
+    {
+        //匿名方法
+        *Func<int, int, int> ins委托 = delegate (int a, int b) { return a + b; };* //等号左边, 我们声明了一个委托类型的变量, 它指向的函数, 会接收两个int参数, 返回一个int参数.
+        //等号右边, 我们定义了一个匿名方法. 该匿名方法没有函数名. 匿名函数, 是通过使用 delegate 关键字创建的委托实例, 来声明的. 匿名方法,一般都要跟委托结合使用.
+        //注意，匿名函数的主体后面需要使用;结尾。
+
+        Console.WriteLine(*ins委托(4, 5)*); //9
+
+    }
+}
+----
+
+
+== lambda 表达式
+
+就是"匿名方法"简写的一种形式.
+
+[,subs=+quotes]
+----
+static void Main(string[] args)
+{
+    //等号右边, 用lambda表达式, 来写匿名方法
+    Func<int, int, int> ins委托 =#(a,b) => { return a + b; }#;
+
+    Console.WriteLine(ins委托(4, 5)); //9
+
+
+    //如果lambda表达式的函数体, 只有一条语句, 则大括号和return关键词, 可以省略掉
+    Func<int, int, int> ins委托2 = #(a, b) =>  a + b#;
+    Console.WriteLine(ins委托2(4, 5)); //9
+
+
+    //当如果lambda表达式的函数体, 只有一个参数, 那么参数的括号也可以不用写了
+    Func<double, double> fn平方 = #x => x * x#;
+    Console.WriteLine(fn平方(4)); //16
+}
+----
+
+
+
+Lambda表达式本质上就是匿名函数
+
+使用lambda声明运算符 =>（读作 goes to）的表达式就是Lambda表达式
+
+创建Lambda表达式，需要在 Lambda 运算符左侧指定输入参数（如果有），然后在另一侧输入表达式或语句块。
+即是说我们使用形如 "(参数1, 参数2)=> {函数体}" 这样的格式, 就可以创建Lambda表达式
+
+任何 Lambda 表达式都可以转换为"委托类型"。 Lambda 表达式可以转换的委托类型, 由其参数和返回值的类型定义。 如果 Lambda 表达式不返回值，则可以将其转换为 Action 委托类型之一；否则，可将其转换为 Func 委托类型之一。
+
+---
+
+==== lambda函数, 可以访问它外部的变量
+
+[,subs=+quotes]
+----
+internal class Program
+{
+    static void fn1()
+    { Console.WriteLine("fn1"); }
+
+
+    static void Main(string[] args)
+    {
+        #int a = 3;#
+
+        //lambda函数, 可以访问它外部的变量
+        Func<int,int> fn委托函数 = #x => a+x#;
+        Console.WriteLine(fn委托函数(4)); //7
+
+    }
+}
+----
+
+但是, 这种方式要小心, 因为函数内直接使用函数外的部变量, 就意味着外部变量的值, 非函数体可控, 每次调用时, 该外部变量的值都可能会变化. 这就造成lambda函数的输出值, 也跟着不稳定了.
+
+---
+
