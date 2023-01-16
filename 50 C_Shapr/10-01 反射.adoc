@@ -1,0 +1,72 @@
+
+= 反射
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+== 反射
+
+反射, 能查看一个类中本身的信息(就像x光线扫描一样, 内透)
+
+[source, java]
+----
+// See https://aka.ms/new-console-template for more information
+
+
+using System.Reflection;
+using ConsoleApp1;
+
+Type t = typeof(ClsPerson); //通过typeof()方法, 我们就能来查看ClsPerson类里面的信息了.
+
+/*上面这句代码等号左边的t, 也可以通过 实例.GetType()来获得. 即:
+ClsPerson insP = new ClsPerson();
+Type t =insP.GetType();
+*/
+
+
+
+Console.WriteLine(t); //ConsoleApp1.ClsPerson
+Console.WriteLine(t.Name); //ClsPerson
+Console.WriteLine(t.Namespace); //ConsoleApp1
+Console.WriteLine(t.Assembly); //ConsoleApp1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+
+
+
+//获取类中的字段
+FieldInfo[] arrF = t.GetFields(); //获取ClsPerson类中的字段等信息
+foreach (FieldInfo itemInfo in arrF)
+{
+    Console.WriteLine(itemInfo.Name); //name  ←只获取到了类中的public字段, 因为private字段是私有的. 即使用反射也无法被访问到.
+}
+
+
+//获取类中的属性(含有get, set方法的)
+PropertyInfo[] arrProp = t.GetProperties();
+foreach (PropertyInfo itemProp in arrProp)
+{
+    Console.WriteLine(itemProp.Name); //获取到了属性: Job, Money
+}
+
+
+//获取类中的方法
+MethodInfo[] arrMeth = t.GetMethods();
+foreach (MethodInfo itemMeth in arrMeth)
+{
+    Console.WriteLine(itemMeth.Name);
+}
+/* 打印出
+fn类方法
+fn打印本类实例信息
+GetType
+ToString
+Equals
+GetHashCode
+*/
+----
+
+
+image:img/0088.png[,]
+
+---

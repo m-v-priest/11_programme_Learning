@@ -1,0 +1,104 @@
+
+= 特性 attribute
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+
+
+== 对某函数,提示用户"请弃用" -> [Obsolete("你给出的提示信息"), bool是否完全禁用本函数]
+
+[,subs=+quotes]
+----
+namespace ConsoleApp2
+{
+    internal class Program
+    {
+
+        *[Obsolete("本方法已经弃用, 请使用最新的 newFn()方法")]* //给下面的静态方法, 添加一个特性: 弃用(表示下面这个函数, 太老了, 或有不足, 而不推荐使用)
+        static void fn测试1()
+        {
+            Console.WriteLine("fn测试1");
+        }
+
+
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Hello, World!");
+            fn测试1();
+        }
+    }
+}
+----
+
+image:img/0089.png[,]
+
+
+[Obsolete("提示信息",true)] //如果你第二个参数设为 ture, 它所标识的方法, 就完全被禁用了, 你使用会报错.
+
+[,subs=+quotes]
+----
+namespace ConsoleApp2
+{
+    internal class Program
+    {
+
+        *[Obsolete("本方法已经弃用, 请使用最新的 newFn()方法",true)]* //如果你第二个参数设为 ture, 它所标识的方法, 就完全被禁用了, 你使用会报错.
+        static void fn测试1()
+        {
+            Console.WriteLine("fn测试1");
+        }
+
+
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Hello, World!");
+            *//fn测试1(); ← 这个方法就完全不能使用了, 会报错*
+        }
+    }
+}
+----
+
+
+---
+
+== "是否执行某函数"的开关
+
+比如, 我们为了查看程序的各阶段输出, 安插了很多脚手架输出函数. 最后, 我们要同一关闭它们, 就可以用这个方法:
+
+[,subs=+quotes]
+----
+*#define 开关*
+
+using System.Diagnostics;
+
+namespace ConsoleApp2
+{
+    internal class Program
+    {
+
+        *[Conditional("开关")]*  //对脚手架函数上方, 添加一个"Conditional"特性, 给他一个字符串参数, 把写在本文件最顶端的 #define 处. 只要该 "#define 开关" 不被注释掉的话, 脚手架函数就能生效, 可以被执行. 如果该 "#define 开关"被注释掉的话, 脚手架函数就会失效, 不会被执行. 所以"#define 开关"这句代码, 就相当于是一个开关功能了.
+        static void fn脚手架()
+        {
+            Console.WriteLine("脚手架, 用来查看输出的临时信息");
+        }
+
+
+        static void Main(string[] args)
+        {
+            fn脚手架();
+            Console.WriteLine("正式内容的输出...");
+            fn脚手架();
+        }
+    }
+}
+----
+
+image:img/0090.png[,]
+
+image:img/0091.png[,]
+
+#define...  其实是个"宏".
+
