@@ -1,0 +1,277 @@
+
+= 文件&目录操作
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+== 文件操作
+
+=== 增
+
+==== 在硬盘上新建文件 -> insFileInfo.Create()
+
+[,subs=+quotes]
+----
+static void Main(string[] args)
+{
+
+    //创建一个文件 newtxt.txt, 到d盘上去.
+    *FileInfo insFileInfo = new FileInfo(@"D:\newtxt.txt");*
+
+    if(!insFileInfo.Exists)
+    {
+        *insFileInfo.Create();* //创建文件
+    }
+
+}
+----
+
+---
+
+==== 拷贝文件 -> insFileInfo.MoveTo(str拷贝到的路径, bool是否覆盖已有文件)
+
+[,subs=+quotes]
+----
+static void Main(string[] args)
+{
+
+    FileInfo insFileInfo = new FileInfo(@"D:\my.txt");
+
+    *insFileInfo.CopyTo(@"d:\my2.txt", false);* //将my.txt文件, 复制一份到 my2.txt上. 第二个参数是:是否覆盖已有文件.
+}
+----
+
+如果你不想创建"文件类的实例对象"的话, 也可以直接通过 Fle类, 调用其"类方法"Copy(源文件地址, 拷贝到的新文件地址)来复制文件.
+
+[,subs=+quotes]
+----
+File.Copy(@"d:\my2.txt", @"d:\000\my4.txt");
+----
+
+
+
+
+
+
+---
+
+=== 删
+
+==== 删除文件 → insFileInfo.Delete()
+
+[,subs=+quotes]
+----
+static void Main(string[] args)
+{
+    FileInfo insFileInfo = new FileInfo(@"D:\000\my3.txt");
+
+    *insFileInfo.Delete();* //删除文件. 注意, 回收站中也不会存在.
+}
+----
+
+
+
+
+---
+
+=== 改
+
+==== 移动文件到另一个路径位置, 并重命名 -> insFileInfo.MoveTo(str新的路径, bool是否覆盖已有文件)
+
+[,subs=+quotes]
+----
+static void Main(string[] args)
+{
+    FileInfo insFileInfo = new FileInfo(@"D:\my.txt");
+
+    *insFileInfo.MoveTo(@"d:\000\my3.txt", false);* //将my.txt文件, 移动到新的位置, 并重命名为 my3.txt. 注意: 你要移动的目标文件夹, 必须已经存在才行. 否则报错. 第二个参数, 同样是问: 是否覆盖已有文件.
+}
+----
+
+
+---
+
+=== 查
+
+==== 获取文件的相关信息
+
+[,subs=+quotes]
+----
+static void Main(string[] args)
+{
+
+    FileInfo insFileInfo = new FileInfo(@"D:\\my2.txt");
+
+    if(insFileInfo.Exists)
+    {
+        //获取文件全路径
+        Console.WriteLine(*insFileInfo.FullName*); //D:\my2.txt
+
+        //获取文件名称
+        Console.WriteLine(*insFileInfo.Name*); //my2.txt
+
+        //获取文件所在目录的实例对象的名称
+        Console.WriteLine(*insFileInfo.Directory*); //D:\
+
+        //获取文件所在目录
+        Console.WriteLine(*insFileInfo.DirectoryName*); //D:\
+
+        //获取文件字节大小
+        Console.WriteLine(*insFileInfo.Length*); //10
+
+        //获取文件是否是"只读属性"
+        Console.WriteLine(*insFileInfo.IsReadOnly*); //False
+    }
+
+    else
+    {
+        Console.WriteLine("{0}不存在!",insFileInfo.FullName);
+    }
+
+}
+----
+
+---
+
+== ----- -----
+
+
+---
+
+
+== 目录操作
+
+=== 增
+
+==== 创建文件夹 -> insDirectoryInfo.Create()
+
+[,subs=+quotes]
+----
+static void Main(string[] args)
+{
+    *DirectoryInfo insMyFolder = new DirectoryInfo(@"d:\000\dir1");*
+
+    *insMyFolder.Create();* //创建 d:\000\dir1 这个文件夹
+
+}
+----
+
+也可以用 Directory类的 类方法CreateDirectory()来创建目录:
+[,subs=+quotes]
+----
+ Directory.CreateDirectory(@"d:\123");
+----
+
+
+
+---
+
+=== 删
+
+---
+
+=== 改
+
+
+=== 移动目录
+
+[,subs=+quotes]
+----
+static void Main(string[] args)
+{
+
+    DirectoryInfo insDirectoryInfo = new DirectoryInfo(@"d:\000");
+
+    *insDirectoryInfo.MoveTo(@"d:\zrx\333");* //将 d:\000 目录, 整体移动到 d:\zrx下, 并改名为 333 文件夹. 注意: 不能写成 insDirectoryInfo.MoveTo(@"d:\zrx"), 因为这相当于是将 000 目录 移动到 d盘下并改名为zrx了!
+
+}
+----
+
+
+
+---
+
+=== 查
+
+==== 查看目录的基本信息
+
+[,subs=+quotes]
+----
+static void Main(string[] args)
+{
+
+    //下面, 将一个目录, 包装成 DirectoryInfo类的实例对象, 方便我们对该目录做操作.
+    *DirectoryInfo insMyFolder = new DirectoryInfo(@"d:\000");*
+
+
+    //判断目录是否存在
+    Console.WriteLine(*insMyFolder.Exists*); //True
+
+    //获取目录或文件的完整目录
+    Console.WriteLine( *insMyFolder.FullName*); //d:\000
+
+    //获取指定子目录的父目录
+    Console.WriteLine( *insMyFolder.Parent*); //d:\
+
+    //获取此 DirectoryInfo 实例的名称, 即目录名
+    Console.WriteLine( *insMyFolder.Name*); //000
+
+    //获取当前 FileSystemInfo 对象的创建日期和时间
+    Console.WriteLine( *insMyFolder.CreationTime*); //2023/1/17 15:55:46
+
+    //最后的写入时间：insMyFolder.LastWriteTime
+
+    //Root： insMyFolder.Root
+
+}
+----
+
+
+==== 获取目录中的所有文件名 -> insDirectoryInfo.GetFiles()
+
+[,subs=+quotes]
+----
+static void Main(string[] args)
+{
+    DirectoryInfo insDirectoryInfo = new DirectoryInfo(@"d:\000\dir1");
+
+    *FileInfo[] arr = insDirectoryInfo.GetFiles();*
+    foreach (var item in arr)
+    {
+        Console.WriteLine(item.Name); //输出 d:\000\dir1 这个目录中的所有文件的名字, 不包括文件夹
+    }
+}
+----
+
+
+
+
+
+---
+
+==== 获取目录的"子目录"内容 -> insDirectoryInfo.GetDirectories()
+
+[,subs=+quotes]
+----
+static void Main(string[] args)
+{
+
+    DirectoryInfo insDirectoryInfo = new DirectoryInfo(@"d:\000\dir1");
+
+    *DirectoryInfo[] arr = insDirectoryInfo.GetDirectories();*
+    foreach (var item in arr)
+    {
+        Console.WriteLine(item.Name); //输出 d:\000\dir1 这个目录中的所有子目录的名字, 不包括文件
+    }
+}
+----
+
+
+---
+
+
+
+
+

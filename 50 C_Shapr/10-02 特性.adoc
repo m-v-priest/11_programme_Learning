@@ -102,3 +102,77 @@ image:img/0091.png[,]
 
 #define...  其实是个"宏".
 
+---
+
+== 自定义"特性类"
+
+"特性"本质上都是一个类。所有我们自定义的"特性", 都派生于Attribute基类。
+
+有很多种方式,来检测"特性"的存在. 我们聚焦于System.Reflection.CustomAttributeExtensions类定义的扩展方法。该类定义了三个静态方法来获取与目标关联的特性： IsDefined, GetCustomAttributes和GetCustomAttribute。每个方法都有几个重载版本。例如：每个方法都有一个版本能操作类型成员（类、结构、枚举、接口、委托、构造器、方法、属性、字段、事件和返回类型）。
+
+你自定义"特性", 要写在一个类里面.
+[,subs=+quotes]
+----
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp2
+{
+    *[AttributeUsage(AttributeTargets.Class)]* //你自定义的特性类, 也要加上"特性", 以指出你自定义的这个特性类, 作用的目标是什么? 这里, 我们的目标是 "其他的类Class". 即你自定义的特性类,会作用到"其他的类"上面去.
+    *internal sealed class Cls自定义的特性Attribute : Attribute* //1.你自定义的特性(其实是个类), 类名必须以 Attribute 结尾.
+                                                         //2. 并且,特性类, 必须继承自 Attribute这个父类.
+                                                         //3. 特性类, 必须是密封类 sealed, 即它不允许再被继承. (密封类不能同时又是抽象类，因为密封类不能用作基类、也不能被继承，而抽象类总是希望被继承的。)
+                                                         //4. 特性类, 里面只需要一些字段, 而不需要方法.
+    {
+        public string info开发者;
+        public string info版本号;
+        public string info描述信息;
+
+        public Cls自定义的特性Attribute(string info开发者, string info版本号, string info描述信息)
+        {
+            this.info开发者 = info开发者;
+            this.info版本号 = info版本号;
+            this.info描述信息 = info描述信息;
+        }
+    }
+}
+----
+
+image:img/0092.png[,]
+
+
+这个"特性"被引用到下面的类上:
+
+[,subs=+quotes]
+----
+namespace ConsoleApp2
+{
+    *[Cls自定义的特性("开发者名字zrx","1.0版本","你对此版本的说明信息,这个版本是我2023年初开发的")]*  //比如, 我们把你自定义的特性类, 加在这个Program类上. 给它的构造方法传入参数.
+    //注意: 虽然你在自定义"特性类"时, 类名起的是"Cls自定义的特性Attribute", 但你在使用它时, 名字是不需要加上 "Attribute"这个后缀的.
+    internal class Program
+    {
+
+
+        static void Main(string[] args)
+        {
+            //我们来判断一下, Program类, 是否被施加了某个"特性"存在?
+            Type t = typeof(Program);
+            bool res = *t.IsDefined(typeof(Cls自定义的特性Attribute), false)*; //如果只是想判断目标是否应用了一个"特性"，那么应该调用IsDefined().
+            Console.WriteLine(res); //True
+
+
+            //得到"特性"中的内容
+            object[] arr属性 = *t.GetCustomAttributes(false)*;
+
+        }
+    }
+}
+----
+
+image:img/0093.png[,]
+
+
+---
