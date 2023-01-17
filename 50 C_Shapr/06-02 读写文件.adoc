@@ -1,0 +1,232 @@
+
+= 读写文件
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+== 拼接"目录"和"文件"成完整的路径 -> Path.Combine()
+
+[,subs=+quotes]
+----
+//Path类的Combine()方法, 能帮而我们拼接"目录"和"文件"成完整的路径
+string strPath = Path.Combine(@"c:\my\son\","123.txt");
+Console.WriteLine(strPath); //c:\my\son\123.txt
+----
+
+
+---
+
+== 读取文件
+
+==== 读取文件中的所有内容 -> File.ReadAllText(filePath)
+
+如果你要读取的文件内容不是很多，可以使用 File.ReadAllText(filePath) 或指定编码方式 File.ReadAllText(FilePath, Encoding)的方法。它们都一次性将文本内容全部读完，并返回一个包含全部文本内容的字符串.
+
+[,subs=+quotes]
+----
+string str1 = File.ReadAllText(@"c:\temp\a.txt");
+
+//也可以指定编码方式
+string str2 = File.ReadAllText(@"c:\temp\a.txt", Encoding.ASCII);
+----
+
+实例化StreamReader类有很多种方式。下面我罗列出几种：
+[,subs=+quotes]
+----
+StreamReader sR1 = new StreamReader(@"c:\temp\a.txt");
+
+// 同样也可以指定编码方式
+StreamReader sR2 = new StreamReader(@"c:\temp\a.txt", Encoding.UTF8);
+
+FileStream fS = new FileStream(@"C:\temp\a.txt", FileMode.Open, FileAccess.Read, FileShare.None);
+StreamReader sR3 = new StreamReader(fS);
+StreamReader sR4 = new StreamReader(fS, Encoding.UTF8);
+
+FileInfo myFile = new FileInfo(@"C:\temp\a.txt");
+// OpenText 创建一个UTF-8 编码的StreamReader对象
+StreamReader sR5 = myFile.OpenText();
+// OpenText 创建一个UTF-8 编码的StreamReader对象
+StreamReader sR6 = File.OpenText(@"C:\temp\a.txt");
+----
+
+
+
+
+[,subs=+quotes]
+----
+//读取文件中的所有内容
+string filePath = @"c:\temp\出师表.txt";
+string str = *File.ReadAllText(filePath);*
+Console.WriteLine(str);
+----
+
+---
+
+
+==== 读取文件, 返回一个字符串数组 -> File.ReadAllLines()
+
+也可以使用方法File.ReadAllLines()，该方法一次性读取文本内容的所有行，返回一个字符串数组，数组元素是每一行的内容.
+
+
+[,subs=+quotes]
+----
+//读取文件中的所有内容
+string filePath = @"c:\temp\出师表.txt";
+
+//File.ReadAllLines()，该方法一次性读取文本内容的所有行，返回一个字符串数组，数组元素是每一行的内容
+*string[] arrStr = File.ReadAllLines(filePath);*
+
+foreach (string line in arrStr)
+{
+    Console.WriteLine(line);
+}
+----
+
+
+---
+
+==== 读取文件(按指定字符数)
+
+[,subs=+quotes]
+----
+string filePath1 = @"c:\temp\出师表.txt";
+
+StreamReader sr1 = new StreamReader(filePath1);
+
+// 读一行
+*string str = sr1.ReadLine();*
+
+//读20个字符
+char[] arrChar = new char[20];
+*sr1.Read(arrChar, 0, 20);* //从index=0开始,读取20个字符, 存到arrChar 字符数组中.
+Console.WriteLine(arrChar);
+
+// 全部读完
+*string strAll = sr1.ReadToEnd();*
+Console.WriteLine(strAll);
+
+sr1.Close(); //使用完StreamReader之后，不要忘记关闭它： sR.Close();
+----
+
+
+
+假如我们需要一行一行的读，将整个文本文件读完
+
+[,subs=+quotes]
+----
+string filePath1 = @"c:\temp\出师表.txt";
+
+StreamReader sr1 = new StreamReader(filePath1);
+
+//假如我们需要一行一行的读，将整个文本文件读完
+string strNextLine ;  //用来存放读取到的一行的内容
+int count = 1; //用来作为行号提示用
+
+*while ((strNextLine = sr1.ReadLine())!=null)* //只要读取到的行, 内容不为空,就循环读下一行
+{
+    Console.WriteLine("num {0}",count);  //输出行号
+    *Console.WriteLine(strNextLine);*
+    count++;
+}
+
+sr1.Close(); //使用完StreamReader之后，不要忘记关闭它： sR.Close();
+----
+
+
+
+---
+
+==== 写入文件
+
+当文本的内容比较大时，我们就不要将文本内容一次性读完，而应该采用流（Stream）的方式来读取内容。.Net为我们封装了StreamReader类，它旨在以一种特定的编码从字节流中读取字符。StreamReader类的方法不是静态方法，所以要使用该类读取文件首先要实例化该类，在实例化时，要提供读取文件的路径。
+
+
+---
+
+== 写入文件
+
+==== 写入文件(会覆盖目标文件中的老内容) -> File.WriteAllText(filePath, str要写入的内容)
+
+写文件和读文件一样，如果你要写入的内容不是很多，可以使用File.WriteAllText方法来一次将内容全部写如文件。如果你要将一个字符串的内容写入文件，可以用File.WriteAllText(FilePath) 或指定编码方式 File.WriteAllText(FilePath, Encoding)方法.
+
+[,subs=+quotes]
+----
+string filePath = @"c:\temp\aaa.txt";
+string strContents = "白日依山尽 \n 黄河入海流 \n";
+*File.WriteAllText(filePath, strContents);* //将字符串内容, 写入文件中. 下面会覆盖目标文件中的原内容.
+----
+
+---
+
+==== 将字符串数组中的内容, 写入文件中 (会覆盖目标文件中的老内容) -> File.WriteAllLines(filePath, allStr)
+
+如果你有一个字符串数组，你要把数组的每一个元素作为一行写入文件中，可以用File.WriteAllLines方法.
+
+*使用File.WriteAllText或File.WriteAllLines方法时，如果指定的文件路径不存在，会创建一个新文件；如果文件已经存在，则会覆盖原文件.*
+
+[,subs=+quotes]
+----
+string filePath = @"c:\temp\aaa.txt";
+
+string[] allStr = { "111", "222", "333" };
+*File.WriteAllLines(filePath, allStr);* //将字符串数组中的内容, 写入文件中. 会覆盖目标文件中的原内容.
+----
+
+---
+
+==== 写入文件 : 用 "Stream流" 的方式 (可追加写入)
+
+当要写入的内容比较多时，同样也要使用流（Stream）的方式写入. .Net为我们封装了StreamWriter类，它以一种特定的编码向字节流中写入字符。StreamWriter类的方法同样也不是静态方法，所以要使用该类写入文件首先要实例化该类.
+
+实例化StreamWriter类同样有很多方式：
+
+[,subs=+quotes]
+----
+// 如果文件不存在，创建文件； 如果存在，覆盖文件
+StreamWriter sW1 = new StreamWriter(@"c:\temp\a.txt");
+
+// 也可以指定编码方式, *true 是 Appendtext*, false 为覆盖原文件
+StreamWriter sW2 = *new StreamWriter(@"c:\temp\a.txt", true, Encoding.UTF8);*
+
+// FileMode.CreateNew: 如果文件不存在，创建文件；如果文件已经存在，抛出异常
+FileStream fS = new FileStream(@"C:\temp\a.txt", FileMode.CreateNew, FileAccess.Write, FileShare.Read);
+StreamWriter sW3 = new StreamWriter(fS);
+StreamWriter sW4 = new StreamWriter(fS, Encoding.UTF8);
+
+// 如果文件不存在，创建文件； 如果存在，覆盖文件
+FileInfo myFile = new FileInfo(@"C:\temp\a.txt");
+StreamWriter sW5 = myFile.CreateText();
+----
+
+初始化完成后，可以用StreamWriter对象一次写入一行，一个字符，一个字符数组，甚至一个字符数组的一部分:
+
+[,subs=+quotes]
+----
+// 写一个字符
+sw.Write('a');
+
+// 写一个字符数组
+char[] charArray = new char[100];
+sw.Write(charArray);
+
+// 写一个字符数组的一部分(10~15)
+sw.Write(charArray, 10, 15);
+----
+
+同样，StreamWriter对象使用完后，不要忘记关闭。sW.Close(); 最后来看一个完整的使用StreamWriter一次写入一行的例子：
+
+[,subs=+quotes]
+----
+FileInfo myFile = new FileInfo(@"C:\temp\a.txt");
+StreamWriter sW = myFile.CreateText();
+string[] strs = { "早上好", "下午好" ,"晚上好};
+foreach (var s in strs)
+{
+    sW.WriteLine(s);
+}
+sW.Close();
+----
+
+
