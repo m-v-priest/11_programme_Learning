@@ -6,6 +6,157 @@
 
 ---
 
+== ★★ 将函数作为参数传递给另一个函数
+
+函数没有返回值, 其类型就是 Action (单纯的动作, 不需要交互) +
+函数有返回值, 其类型就是 Func (函数. 需要沟通交互)
+
+
+==== 要传递的函数A"没有返回值, 也没有参数"的情况 -> fnB(Action fnA的函数名)
+
+[,subs=+quotes]
+----
+//无参函数, 无返回值
+static void fn你好() {
+    Console.WriteLine("你好");
+}
+
+//这个函数(A)会接受另一个函数B(无参的)作为参数传入. B无参的话, A对其参数的类型, 要写成Action
+static void fn计算耗时(*Action fn传入的函数*) {
+    fn传入的函数();
+    Console.WriteLine("耗时, 100秒");
+}
+
+fn计算耗时(fn你好);
+----
+
+image:img/0110.png[,]
+
+
+---
+
+==== 要传递的函数A"没有返回值, 但有参数"的情况 -> fnB(fnA的参数1, fnA的参数2,..., Action<fnA的参数1的类型, fnA的参数2类型,...> fnA的函数名)
+
+[,subs=+quotes]
+----
+internal class Program
+{
+    //无返回值, 但有参的函数. 下面这个A函数, 之后会被作为参数传入函数B中
+    static void fnA(string argA1, int argA2)
+    {
+        Console.WriteLine("fnA:{0},{1}", argA1, argA2);
+    }
+
+
+    //B函数会接受"有参的A函数"作为参数传入. 其参数类型, 要写成 Action<A函数的参数类型>. 同时,A函数自己的参数值, 也要传给B函数, 这样, 在B函数体内, 才能把A函数名, 和A函数的参数, 组装起来, 运行该A函数.
+    static void fnB(*string argA函数的参数1, int argA函数的参数2, Action<string, int> fn函数指针*)
+    {
+        *fn函数指针(argA函数的参数1, argA函数的参数2); //"fn函数指针"会指向A函数的函数体. 因为在调用B函数时, 我们会传入A函数的函数名. 由"fn函数指针"来接收它. 这样, 两个函数名的指针,就都指向A函数的函数体了.*
+    }
+
+
+
+    //下面是main函数
+    static void Main(string[] args)
+    {
+        *fnB("zrx", 19, fnA); //要把A函数自己的函数名, 和A函数的实际参数值, 都送进B函数中.*
+
+    }
+}
+----
+
+image:img/0111.png[,]
+
+
+
+
+---
+
+==== 要传递的函数A"有返回值, 但没有参数"的情况 -> fnB(Func<fnA的返回值类型> fnA的函数名)
+
+[,subs=+quotes]
+----
+internal class Program
+{
+    //A函数, 有返回值, 但无参. 它之后会被作为参数传入函数B中
+    static string fnA()
+    {
+       return string.Format("fnA 无参, 有返回值");
+    }
+
+
+    //B函数会接受"无参, 有返回值的A函数"作为参数传入. 函数A的类型, 要写成 Func<A函数的返回值类型 >.
+    static void fnB(*Func<string> fn函数指针*)
+    {
+        string strRes = fn函数指针(); //"fn函数指针"会指向A函数的函数体. 因为在调用B函数时, 我们会传入A函数的函数名. 由"fn函数指针"来接收它. 这样, 两个函数名的指针,就都指向A函数的函数体了.
+        Console.WriteLine(strRes);
+    }
+
+
+    //下面是main函数
+    static void Main(string[] args)
+    {
+        *fnB(fnA)*; //只需把A函数自己的函数名,送进B函数中即可. 因为A函数是无参数的, 所以就不需要给函数B 送进"函数A的参数"了.
+    }
+}
+----
+
+image:img/0113.png[,]
+
+
+
+
+
+---
+
+==== 要传递的函数A"有返回值, 有参数"的情况 -> fnB(fnA的参数1, fnA的参数2, Func<fnA的参数1类型, fnA的参数2类型, ..., fnA的返回值类型> fnA的函数名)
+
+[,subs=+quotes]
+----
+internal class Program
+{
+    //A函数, *有返回值*, 也有参. 它之后会被作为参数传入函数B中
+    static *string* fnA(string argA1, int argA2)
+    {
+       return string.Format("fnA:{0},{1}", argA1, argA2);
+    }
+
+
+    //B函数会接受"有参, *有返回值的A函数"作为参数传入. 其参数类型, 要写成 Func<A函数的参数1类型, A函数的参数2类型, ... A函数的返回值类型 >.* 同时,A函数自己的参数值和返回值, 也要传给B函数, 这样, 在B函数体内, 才能把A函数名, 和A函数的参数, 组装起来, 运行该A函数.
+    static void fnB(*string argA函数的参数1, int argA函数的参数2,  Func<string, int,string> fn函数指针*)
+    {
+        string strRes = *fn函数指针(argA函数的参数1, argA函数的参数2);* //"fn函数指针"会指向A函数的函数体. 因为在调用B函数时, 我们会传入A函数的函数名. 由"fn函数指针"来接收它. 这样, 两个函数名的指针,就都指向A函数的函数体了.
+        Console.WriteLine(strRes);
+    }
+
+
+
+    //下面是main函数
+    static void Main(string[] args)
+    {
+        *fnB("zrx", 19, fnA);* //要把A函数自己的函数名, 和A函数的实际参数值, 都送进B函数中.
+    }
+}
+----
+
+image:img/0112.png[,]
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+
+
+
 == 委托  (相当于一个指针, 指向另一个函数体)
 
 C# 中的委托（Delegate）类似于 C 或 C++ 中函数的指针。委托（Delegate） 是存有对某个方法的引用的一种"引用类型变量"。引用可在运行时被改变。

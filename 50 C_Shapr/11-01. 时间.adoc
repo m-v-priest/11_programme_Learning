@@ -1,0 +1,43 @@
+
+= 时间
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+== 获取当前时间 -> DateTime.Now
+
+[,subs=+quotes]
+----
+Console.WriteLine(*DateTime.Now*); // 获取当前时间.  输出: 2023/1/18 9:53:01
+----
+
+---
+
+== 获取程序运行的耗时
+
+[,subs=+quotes]
+----
+static void Main(string[] args)
+{
+    *DateTime time开始时间 = DateTime.Now;* // 获取当前时间.
+
+
+    for (int i = 0; i < 100; i++)
+    {
+
+    }
+
+    *DateTime time结束时间 = DateTime.Now;*  //获取结束时间
+
+    *TimeSpan time时段 = time结束时间.Subtract(time开始时间);*  //前后两个时间点之间的差, 就是这个. subtract (v.) : ~ sth (from sth) : to take a number or an amount away from another number or amount 减；减去
+
+    Console.WriteLine(*time时段.TotalSeconds*); //总的秒数 0.0019783
+    Console.WriteLine(*time时段.TotalMilliseconds*); //总的毫秒数 1.9783
+
+}
+----
+
+
+
