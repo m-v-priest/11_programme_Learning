@@ -1,0 +1,141 @@
+
+= LINQ
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+== LINQ
+
+LINQ的英文全称是Language Integrated Query,中文翻译为“语言集成查询”。LINQ作为一种查询技术，首先要解决数据源封装的问题，在.NET框架库中，大致使用三大组件来实现这个封装，分别是LINQ to Objects、LINQ to ADO.NET 、LINQ to XML.
+
+LINQ 用于保存和检索来自不同数据源的数据，从而消除了编程语音和数据库之间的不匹配，以及为不同类型的数据源提供单个查询接口。
+
+LINQ总是使用对象，因此可以使用相同的查询语法来查询和转换XML、对象集合、SQL数据库、ADO.NET数据库以及任何其他可用的LINQ提供程序格式的数据
+
+LINQ主要包含三个部分：
+1、LINQ to Objects     主要负责对象的查询。 +
+2、LINQ to XML          主要负责XML的查询。 +
+3、LINQ to ADO.NET  主要负责数据库的查询。 +
+         LINQ to SQL +
+         LINQ to DataSet +
+         LINQ to Entities +
+
+
+微软官方linq教程 +
+https://learn.microsoft.com/zh-cn/dotnet/csharp/programming-guide/concepts/linq/basic-linq-query-operations
+
+
+==== 查询某类的n个实例中, "某个字段值>某个值" 的所有实例
+
+.标题
+====
+
+ClsPerson类
+[,subs=+quotes]
+----
+namespace ConsoleApp1;
+
+public class ClsPerson
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public int Ablity政治能力 { get; set; }
+
+
+    public override string ToString()
+    {
+        return $"{nameof(Id)}: {Id}, {nameof(Name)}: {Name}, {nameof(Age)}: {Age}, {nameof(Ablity政治能力)}: {Ablity政治能力}";
+    }
+}
+----
+
+主文件:
+[,subs=+quotes]
+----
+using Newtonsoft.Json;
+using System.Diagnostics;
+
+namespace ConsoleApp1
+{
+    internal class Program
+    {
+
+        static void Main(string[] args)
+        {
+            //创建一个列表, 在大括号里直接对它赋值元素, 而不设每一个实例的变量名
+            List<ClsPerson> listInsPerson = new List<ClsPerson>() {
+                new ClsPerson(){Id=01,Name="刘备",Age=40,Ablity政治能力=8},
+                new ClsPerson(){Id=02,Name="诸葛亮",Age=20,Ablity政治能力=10},
+                new ClsPerson(){Id=03,Name="曹操",Age=40,Ablity政治能力=10},
+                new ClsPerson(){Id=04,Name="荀彧",Age=20,Ablity政治能力=7},
+                new ClsPerson(){Id=05,Name="孙权",Age=10,Ablity政治能力=8}
+            };
+
+
+            //创建并赋值各种政治能力的实例, 将所有实例存入一个list中.
+            List<Cls政治能力> listIns政治能力 = new List<Cls政治能力>()
+            {
+                new Cls政治能力(){Id=01,Name="情商",weight权重重要性=10},
+                new Cls政治能力(){Id=02,Name="智商",weight权重重要性=9},
+                new Cls政治能力(){Id=03,Name="钱商",weight权重重要性=8},
+                new Cls政治能力(){Id=04,Name="人际能力",weight权重重要性=10},
+                new Cls政治能力(){Id=05,Name="融资能力",weight权重重要性=9}
+            };
+
+
+            //查询所有 Ablity政治能力>=8的 insPerson
+            *var listRes = from ins in listInsPerson*  //form后面, 为你要查询的集合
+                          *where ins.Ablity政治能力>=8* //where后面, 跟上查询的条件
+                          *select ins;* //select语句会将找到的结果,放在一个集合里,返回给 listRes.
+
+            //然后,我们就能遍历这个linq返回的集合, 来查看里面的元素了.
+            foreach (var item in listRes)
+            {
+                Console.WriteLine(item);
+            }
+
+        }
+    }
+}
+----
+
+输出:
+....
+Id: 1, Name: 刘备, Age: 40, Ablity政治能力: 8
+Id: 2, Name: 诸葛亮, Age: 20, Ablity政治能力: 10
+Id: 3, Name: 曹操, Age: 40, Ablity政治能力: 10
+Id: 5, Name: 孙权, Age: 10, Ablity政治能力: 8
+....
+
+image:img/0122.png[,]
+
+如果你指向返回满足查询条件的 所有insPerson 的name字段的话, 就这样写:
+[,subs=+quotes]
+----
+//查询所有 Ablity政治能力>=8的 insPerson
+var listRes = from ins in listInsPerson  //form后面, 为你要查询的集合
+              where ins.Ablity政治能力>=8 //where后面, 跟上查询的条件
+              select *ins.Name*; //select语句会将找到的结果,放在一个集合里,返回给 listRes.
+----
+
+就会输出:
+....
+刘备
+诸葛亮
+曹操
+孙权
+....
+
+====
+
+
+
+
+
+
+
+
+

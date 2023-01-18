@@ -260,6 +260,96 @@ image:img/0120.png[,]
 
 ---
 
+==== 读取有嵌套数据的json文件
+
+json.json文件:
+[,subs=+quotes]
+----
+{
+    "country": "蜀",
+    "officerPrimeMinister": "诸葛亮",
+    "listOfficer": [
+        {"id": 01, "name": "蒋琬"},
+        {"id": 02, "name": "姜维"}
+    ]
+}
+----
+
+
+ClsPerson.cs类
+[,subs=+quotes]
+----
+namespace ConsoleApp1;
+
+public class ClsPerson
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+
+}
+----
+
+ClsCountry类
+[,subs=+quotes]
+----
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp1
+{
+    internal class ClsCountry
+    {
+
+        public string Country { get; set; }
+        public string OfficerPrimeMinister { get; set; }
+
+        public List<ClsPerson> listOfficer { get; set; } //注意, 这个列表中的元素, 是ClsPerson类型的.
+    }
+}
+----
+
+主文件:
+[,subs=+quotes]
+----
+using Newtonsoft.Json;
+using System.Diagnostics;
+
+namespace ConsoleApp1
+{
+    internal class Program
+    {
+
+        static void Main(string[] args)
+        {
+
+            string pathJson = @"C:\learn_C_sharp\ConsoleApp1\ConsoleApp1\json.json";
+            *string strJson = File.ReadAllText(pathJson);* //读取json文件中的全部内容, 返回一个字符串
+
+            //反序列化
+            *ClsCountry insCountry = JsonConvert.DeserializeObject<ClsCountry>(strJson);* //将json内容字符串传进去. 因为我们json文件中, 只有一个数据, 只需赋给一个ClsCountry类的实例就行了, 就没用列表来接收了.
+            Console.WriteLine(insCountry.Country);
+            Console.WriteLine(insCountry.OfficerPrimeMinister);
+
+            //*因为 insCountry.listOfficer 属性的值, 依然是个数组, 我们继续遍历,来输出里面的元素*
+            foreach (var insPerson in insCountry.listOfficer)
+            {
+                Console.WriteLine("id:{0},name:{1}",insPerson.Id,insPerson.Name);
+            }
+
+        }
+    }
+}
+----
+
+
+
+
+
+---
+
 
 
 == 序列化 (obj -> string), 和"反序列化"(string -> obj)
