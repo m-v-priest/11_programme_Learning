@@ -1,0 +1,167 @@
+
+其实也无状态加入
+
+
+类
+[,subs=+quotes]
+----
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp2 {
+    internal class ClsPlayer {
+        private string Name { get; set; }
+        //   private int State { get; set; }
+        private int Num精力 { set; get; }
+        private int Num压力 { set; get; }
+        private int Num人生机会 { get; set; }
+        private int Num见识 { get; set; }
+        private int NumMoney { set; get; }
+        private int Num吃饱度 { set; get; }
+
+
+
+        //构造函数
+        public ClsPlayer(string name, int num精力 = 100, int num压力 = 0, int num人生机会 = 50, int num见识 = 0, int numMoney = 50, int num吃饱度 = 100) {
+            Name = name;
+
+            Num精力 = num精力;
+            Num压力 = num压力;
+            Num人生机会 = num人生机会;
+            Num见识 = num见识;
+            NumMoney = numMoney;
+            Num吃饱度 = num吃饱度;
+        }
+
+
+        public void fn输出信息() {
+            Console.WriteLine(this);
+        }
+
+        //直接打印实例对象, 可以输出下面的文本. 即输出实例对象中的键值对.
+        public override string ToString() {
+            return $"{nameof(Name)}: {Name}, {nameof(Num精力)}: {Num精力}, {nameof(Num压力)}: {Num压力}, {nameof(Num人生机会)}: {Num人生机会}, {nameof(Num见识)}: {Num见识}, {nameof(NumMoney)}: {NumMoney}, {nameof(Num吃饱度)}: {Num吃饱度}";
+        }
+
+
+        public void fnStart启动() {
+            if (Num精力 >= 60) {
+                fn学习();
+                fn输出信息();
+            }
+            else {
+                fn睡觉();
+                Console.WriteLine("--------------------------");
+                Console.WriteLine();
+                fn输出信息();
+            }
+
+            if (Num压力 > 80) {
+                fn娱乐();
+                fn输出信息();
+            }
+
+            if (NumMoney < 40) {
+                fn工作();
+                fn输出信息();
+            }
+
+            if (Num吃饱度 < 30) {
+                fn生活刚需支出();
+                fn输出信息();
+            }
+
+
+        }
+
+
+
+
+
+        public void fn学习() {
+            Num精力 -= 5;
+            Num压力 += 2;
+            Num人生机会 += 1;
+            Num见识 += 3;
+            NumMoney -= 5;
+            Num吃饱度 -= 5;
+            Console.WriteLine("{0} 在学习", Name);
+        }
+
+        public void fn工作() {
+            Num精力 -= 10;
+            Num压力 += 5;
+            Num人生机会 += 2;
+            Num见识 += 1;
+            NumMoney += 10;
+            Num吃饱度 -= 10;
+            Console.WriteLine("{0} 在工作", Name);
+        }
+
+
+        public void fn生活刚需支出() {
+            Num精力 -= 2;
+            Num压力 += 2;
+            Num人生机会 -= 1;
+            //Num见识 += 1;
+            NumMoney -= 10;
+            Num吃饱度 = 100;
+            Console.WriteLine("{0} 在生活刚需支出", Name);
+        }
+
+        public void fn睡觉() {
+            Num精力 = 90;
+            Num压力 -= 10;
+            Num人生机会 -= 1;
+            //Num见识 += 1;
+            //NumMoney -= 10;
+            Num吃饱度 -= 5;
+            Console.WriteLine("{0} 在睡觉", Name);
+        }
+
+        public void fn娱乐() {
+            Num精力 -= 10;
+            Num压力 -= 1;
+            Num人生机会 -= 2;
+            //Num见识 += 1;
+            NumMoney -= 5;
+            Num吃饱度 -= 5;
+            Console.WriteLine("{0} 在娱乐", Name);
+        }
+
+
+
+    }
+}
+----
+
+
+主文件
+[,subs=+quotes]
+----
+using ConsoleApp2;
+using System.Diagnostics;
+
+namespace ConsoleApp1
+{
+    internal class Program
+    {
+
+        static void Main(string[] args)
+        {
+            ClsPlayer insPlayer = new ClsPlayer("zrx");
+            while (true) {
+                insPlayer.fnStart启动();
+
+                Thread.Sleep(200);
+            }
+
+
+        }
+    }
+}
+----
