@@ -1,0 +1,107 @@
+
+= sqlite 数据库
+:sectnums:
+:toclevels: 3
+:toc: left
+''''
+
+== 官方文档
+
+https://www.sqlite.org/index.html
+
+
+SQLite，是一款轻型的关系型数据库。它的设计目标是嵌入式。
+
+它能够支持Windows/Linux/Unix等等主流的操作系统，同时能够跟很多程序语言相结合，比如 C++、C#、Object-C、PHP、Java等。
+
+手游开发，在手机上使用SQLite 存储数据是很方便的。
+
+
+== sqlite 下载
+
+https://www.sqlite.org/download.html
+
+1.下载下面两个文件
+
+image:/img/003.png[]
+
+2.创建文件夹 C:\sqlite，并在此文件夹下解压上面两个压缩文件，将得到 sqlite3.def、sqlite3.dll 和 sqlite3.exe 文件。
+
+3.然后, 我的电脑右击->属性, 搜索"环境变量",
+
+image:/img/004.png[]
+
+到这一步，安装和配置已经完成了，接下来就要验证是否安装成功了。打开 CMD 命令版，输入 sqlite3，出现版本信息，则表示安装成功. +
+如果输入出现提示 sqlite3 不是内部命令，那就是环境变量没有生效，配置环境变量后要重新启动电脑才能生效.
+
+image:/img/005.png[]
+
+新建一个文本将文件, 扩展名改为 db ，这样我们就能本地访问这个数据库.
+
+
+
+
+== visual studio 中的安装
+
+安装 System.Data.SQLite 库，用于在C#中操作SQLite的dll文件。
+
+
+
+image:/img/002.png[]
+
+image:/img/001.png[]
+
+'''
+
+== 可视化工具 SQLiteStudio
+
+官网下载 +
+https://www.sqlitestudio.pl/
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|添加数据库
+|
+
+|创建你表格的骨架
+|image:/img/008.png[]
+
+image:/img/009.png[]
+
+|添加具体数据
+|image:/img/010.png[]
+
+
+
+|===
+
+
+
+
+
+
+'''
+
+== 第一步教程
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|查看各种重要的 SQLite "点命令" -> 输入 `.help`
+|image:/img/006.png[]
+
+|查看 SQLite 命令提示符的默认设置 -> `.show`
+|image:/img/007.png[]
+
+|===
+
+
+
+
+
+
+
+

@@ -1,0 +1,141 @@
+
+= 获取鼠标键盘操作
+:sectnums:
+:toclevels: 3
+:toc: left
+''''
+
+
+== 获取鼠标点击
+
+[,subs=+quotes]
+----
+// Update is called once per frame
+void Update() {
+
+    *//检测鼠标的点击(只会触发一次). 0代表左键, 1是右键, 2是滚轮.*
+    if (*Input.GetMouseButtonDown(0)*) {
+        Debug.Log("左键被点击");
+    }
+
+    if(Input.GetMouseButtonDown(1)) {
+        Debug.Log("右键被点击");
+    }
+
+
+    //持续按下鼠标(会持续检测)
+    if (*Input.GetMouseButton(0)*) {
+        Debug.Log("左键已被按下");
+    }
+
+
+    //抬起鼠标(只会触发一次)
+    if (*Input.GetMouseButtonUp(0)*) {
+        Debug.Log("左键已被抬起");
+    }
+
+}
+----
+
+
+
+
+
+'''
+
+== 获取键盘点击
+
+[,subs=+quotes]
+----
+// Update is called once per frame
+void Update() {
+
+    //监测键盘的按下
+    if(*Input.GetKeyDown(KeyCode.A)*) {
+        Debug.Log("A键被按下");
+    }
+
+    if (*Input.GetKeyDown(KeyCode.Escape)*) {
+        Debug.Log("esc键被按下");
+    }
+
+    //监测持续按下某个键
+    if (*Input.GetKey(KeyCode.A)*) {
+        Debug.Log("A键被持续按下");
+    }
+
+    //监测某个键被抬起
+    if (*Input.GetKeyUp(KeyCode.A)*) {
+        Debug.Log("A键被抬起");
+    }
+
+}
+----
+
+
+'''
+
+
+== 手机触摸屏
+
+
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class crip时间脚本 : MonoBehaviour {
+
+
+
+    // Start is called before the first frame update
+    void Start() {
+
+        //开启"多点触摸"
+        *Input.multiTouchEnabled = true;*
+
+
+    }
+
+
+    // Update is called once per frame
+    void Update() {
+
+        //判断当前是否是"单点触摸"
+        *if (Input.touchCount == 1)* { //Input.touchCount获取当前的触摸点数目，若为1则是"单点触控"，大于1则是"多点触控"
+            *Touch touch = Input.touches[0];* //Input.touches结构，这是一个触摸数组，每个记录代表着手指在屏幕上的触碰状态。每个手指触控都是通过Input.touches来描述的.
+            Debug.Log(touch.position); //你触摸屏幕的位置
+
+
+            //"触摸动作"的阶段
+            switch (*touch.phase*) { //phase（状态,相位，也即屏幕操作状态）有以下这几种
+                case *TouchPhase.Began*: //手指刚刚触摸屏幕
+                    break;
+                case *TouchPhase.Moved*: //手指在屏幕上移动
+                    break;
+                case *TouchPhase.Stationary*: //手指触摸屏幕，但自最后一阵没有移动
+                    break;
+                case *TouchPhase.Ended*: //手指离开屏幕
+                    break;
+                case *TouchPhase.Canceled*: //系统取消触控跟踪，原因如把设备放在脸上或同时超过5个触摸点(屏幕沾水了)
+                    break;
+            }
+
+        }
+
+
+        //判断当前是否是"多点触摸"
+        if(*Input.touchCount == 2* ) { //是否触摸了两个点
+            Touch touch1 = *Input.touches[0]*; //既然触摸了两个点, 那就有两个点各自的信息了.
+            Touch touch2 = *Input.touches[1]*;
+        }
+
+    }
+}
+
+----
+
+
+

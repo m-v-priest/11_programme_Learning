@@ -138,7 +138,27 @@ fn遍历数组(list1); //indx [0]=1, indx [1]=2, indx [2]=3,
 
 == 改
 
----
+==== 修改某一个index处元素的值
+
+曲线救国法: 先删除某个index处的元素, 再在某个index处添加一个新元素.
+[,subs=+quotes]
+----
+List<int> listInt = new List<int>() { 1, 2, 3, 4 };
+
+//先删除某个index处的元素
+*listInt.RemoveRange(2,1); //删除从index=2开始的 1个数量的元素. 即删除 index=2出的元素 (本例即3)*
+
+//再添加某个index处的元素
+*listInt.Insert(2,100); //在index=2处,添加一个新元素100*
+
+foreach (var item in listInt) {
+    Console.Write(item+",");  // 1,2,100,4
+}
+----
+
+
+
+'''
 
 ==== 用新列表, 覆盖老列表 → list1.AddRange(list2)
 
@@ -153,11 +173,32 @@ fn遍历数组(list2); //indx [0]=91, indx [1]=92, indx [2]=93,
 ----
 
 
----
+[,subs=+quotes]
+----
+List<int> listInt = new List<int>() { 1, 2, 3, 4 ,5,6,7};
+List<int> listInt2 = new List<int>() { 100,101,102 };
+
+//先删除某个index处的元素
+*listInt.RemoveRange(2,3); //删除从index=2开始的 3个数量的元素.  (本例即 3,4,5 这三个元素被删除)*
+
+//再从某个index处开始, 添加多个新的元素. 注意, 这里用的方法是 InsertRange(), 而不是 Insert().
+*listInt.InsertRange(2,listInt2); //在index=2处开始,添加一个新的list中的所有元素*
+
+foreach (var item in listInt) {
+    Console.Write(item+",");  // 1,2,*100,101,102*,6,7,
+}
+----
+
+
+
+'''
+
 
 == ---------- ----------
 
----
+
+'''
+
 
 == 查
 

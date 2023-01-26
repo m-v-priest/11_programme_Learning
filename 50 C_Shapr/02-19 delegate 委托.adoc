@@ -6,6 +6,41 @@
 
 ---
 
+委托类型, 本身是个类Classs, 所以要和其他的类, 并排的写, 而不要写在类里面.
+
+ClsTest类:
+[,subs=+quotes]
+----
+namespace ConsoleApp2 {
+    internal class ClsTest {
+
+        //下面这个委托类, 应该写在ClsTest类的外面, 如果你像下面这样写在另一个类里面的话, 调用它时, 就要把它当做类的字段来使用了.
+        *public delegate int del委托指针(int a, int b);*
+
+
+        public static *int fn求和(int a, int b)* {
+            return a+b;
+        }
+    }
+}
+----
+
+
+主文件
+[,subs=+quotes]
+----
+*ClsTest.del委托指针 ins委托指针 = new ClsTest.del委托指针(ClsTest.fn求和);* //"del委托指针"因为写在了"ClsTest"类的里面, 所以我们就只能把它当做类的字段来进行调用. 写成"ClsTest.del委托指针", 然后,我们创建出这个委托类的实例对象"ins委托指针",让它指针指向"ClsTest.fn求和"函数.
+
+Console.WriteLine(*ins委托指针.Invoke(4, 6)*); //10
+Console.WriteLine(*ins委托指针(4, 6)*); //10 ← 也可以这样传参,并执行委托指针指向的函数.
+----
+
+image:img/0140.png[,]
+
+'''
+
+
+
 == ★★ 将函数作为参数传递给另一个函数
 
 函数没有返回值, 其类型就是 Action (单纯的动作, 不需要交互) +
@@ -675,14 +710,161 @@ internal class Program
     }
 }
 ----
-
-
 ====
 
+'''
+
+== 委托,除了当做指向另一个函数的函数指针外, 还可以用在"回调函数 callback"上
+
+函数指针的调用，即是一个通过函数指针调用的函数；
+
+如果你把函数的指针（地址）作为参数传递给另一个函数，当这个指针被用来调用其所指向的函数时，就说这是回调函数。
+
+In computer programming, a callback is any executable code that is passed as an argument to other code, which is expected to call back (execute) the argument at a given time. This execution may be immediate as in a synchronous callback, or it might happen at a later time as in an asynchronous callback.
+
+即：把一段可执行的代码像参数传递那样传给其他代码，而这段代码会在某个时刻被调用执行，就叫做回调。如果代码立即被执行就称为同步回调，如果在之后晚点的某个时间再执行，则称为异步回调。
+
+
+
+使用回调函数，和普通函数调用区别：
+
+1）在主入口程序中，*把回调函数像参数一样传入库函数。这样一来，只要我们改变传进库函数的参数，就可以实现不同的功能，且不需要修改库函数的实现，变的很灵活，这就是"解耦"。*
 
 
 
 
 
 
+
+'''
+
+== 函数指针, 用在模板函数里. 作为一个参数, 用来指向任何它想指向的函数. 即接收"任何它所指向函数的返回值".
+
+[,subs=+quotes]
+----
+
+namespace ConsoleApp1 {
+
+
+    //下面这个类, 专门定义"产品设计图方案"的信息. 和设计公司无关.
+    class Cls产品设计图 {
+        public string Name硬件产品名字 { get; set; }
+        public string Name外包的设计公司名字 { get; set; }
+    }
+
+
+    //苹果公司 = box
+    class Cls苹果公司 {
+        public Cls产品设计图 Ins产品设计图 { get; set; }
+        public string Name外包的制造商名字 { get; set; } //苹果公司内部留档, 第三方制造商的信息.
+
+    }
+
+
+    //我们的委托指针(函数指针), 定义在"富士康类"里面的方法上
+    class Cls富士康 {
+
+        public string name = "富士康";
+
+        //*下面这个函数方法, 返回值类型是"Cls苹果公司"类的, 这个函数接收一个参数, 这个参数的类型是个委托类型, 即是一个函数指针, 这个指针指向的函数, 会返回"Cls产品设计类"的返回值.*
+        //换言之, 这个函数, 输入一个"产品设计图方案", 进行内部加工后, 输出一个"苹果公司产品的实例". 即, 富士康会拿到(输入)设计图纸, 然后制造出(输出)iphone苹果产品.
+        *public Cls苹果公司 fn代工厂进行生产(Func<Cls产品设计图> del委托指针) {*
+            //先拿到"产品设计图"的实例. 这个实例, 会由另一个函数返回给我们. 但"另一个函数"究竟是哪一个函数, 我们现在还不知道. 所以就先用一个"委托指针",来代表那个函数.
+            Cls产品设计图 ins外包机构设计出来的产品设计图 = del委托指针.Invoke(); //del委托指针, 所指向的函数, 返回值是"Cls产品设计图"类型的.
+
+
+            Cls苹果公司 ins苹果公司 = new Cls苹果公司();
+
+
+            ins苹果公司.Ins产品设计图 = ins外包机构设计出来的产品设计图; //我们从外包公司, 拿到了他们设计的"产品设计方案图", 交给苹果公司
+            ins苹果公司.Name外包的制造商名字 = this.name; //富士康(本类)将自己的公司名字, 交给苹果公司存档.
+
+            return ins苹果公司; //富士康,将制造好的苹果硬件, 交还给苹果公司.
+        }
+    }
+
+
+
+    class Cls第三方设计公司甲 {
+        public Cls产品设计图 fn设计公司进行设计() {
+            Cls产品设计图 ins产品设计图 = new Cls产品设计图();
+            ins产品设计图.Name硬件产品名字 = "iphone手机"; //第三方设计公司甲, 给苹果公司做iPhone手机的设计方案.
+            ins产品设计图.Name外包的设计公司名字 = "设计公司甲"; //第三方设计公司甲,把自己的名字, 交给"产品设计类"的实例中的字段,存档.
+            return ins产品设计图; //把设计出了的方案, 交还给苹果公司
+        }
+    }
+
+
+    class Cls第三方设计公司乙 {
+        public Cls产品设计图 fn设计公司进行设计() {
+            Cls产品设计图 ins产品设计图 = new Cls产品设计图();
+            ins产品设计图.Name硬件产品名字 = "apple watch 苹果手表"; //第三方设计公司甲, 给苹果公司做另一个硬件的设计方案.
+            ins产品设计图.Name外包的设计公司名字 = "设计公司乙";
+            return ins产品设计图; //把设计出了的方案, 交还给苹果公司
+        }
+    }
+
+
+
+
+
+    //下面是main函数
+    internal class Program {
+        static void Main(string[] args) {
+
+            // 先创建出富士康, 和第三方设计公司的实例对象
+            Cls第三方设计公司甲 ins第三方设计公司甲 = new Cls第三方设计公司甲();
+            Cls第三方设计公司乙 ins第三方设计公司乙 = new Cls第三方设计公司乙();
+            Cls富士康 ins富士康 = new Cls富士康();
+
+
+            //我们来新建一个委托指针, 之后会传给富士康类里面的"fn代工厂进行生产"方法, 因为这个方法, 就是要接收一个"委托指针类型"的参数的.
+            Func<Cls产品设计图> del委托指针_指向甲设计公司中的函数 = new Func<Cls产品设计图>(ins第三方设计公司甲.fn设计公司进行设计); //这个"del委托指针_指向甲设计公司中的函数",会指向"ins第三方设计公司甲.fn设计公司进行设计"函数, 后者这个函数, 正好是返回"Cls产品设计图"类型的东西. 符合"del委托指针"的参数和返回值类型要求.
+
+
+            Func<Cls产品设计图> del委托指针_指向乙设计公司中的函数 = new Func<Cls产品设计图>(ins第三方设计公司乙.fn设计公司进行设计); //再创建一个委托指针, 指向"乙设计公司"中的函数.
+
+
+            //下面, 我们就可以给富士康实例中的"fn代工厂进行生产"方法,, 传入"委托指针"类型的参数了.
+            Cls苹果公司 ins苹果产品1 = ins富士康.fn代工厂进行生产(del委托指针_指向甲设计公司中的函数); //富士康中的这个函数, 会返回"return ins苹果公司"类型的东西.
+            Console.WriteLine(ins苹果产品1.Ins产品设计图.Name硬件产品名字); //iphone手机
+            Console.WriteLine(ins苹果产品1.Ins产品设计图.Name外包的设计公司名字); //设计公司甲
+            Console.WriteLine(ins苹果产品1.Name外包的制造商名字); //富士康
+
+
+            Console.WriteLine("------------");
+
+
+            Cls苹果公司 ins苹果产品2 = ins富士康.fn代工厂进行生产(del委托指针_指向乙设计公司中的函数); //富士康中的这个函数, 会返回"return ins苹果公司"类型的东西.
+            Console.WriteLine(ins苹果产品2.Name外包的制造商名字); //富士康
+            Console.WriteLine(ins苹果产品2.Ins产品设计图.Name硬件产品名字); //apple watch 苹果手表
+            Console.WriteLine(ins苹果产品2.Ins产品设计图.Name外包的设计公司名字); //设计公司乙
+
+        }
+    }
+}
+
+----
+
+image:img/0141.svg[,]
+
+image:img/0142.png[,]
+
+**所以, 回调就是, 我预留这个函数指针位置. 之后我想指针指向谁, 就能调用那个目标函数来执行.
+**
+
+
+
+'''
+
+== 隐式异步调用
+
+- 同步: 是指 你做完了, 我再在你的基础上,接着做. (即单线程)
+- 异步: 是指 我们几个同时做. (即多线程)
+
+image:img/0143.png[,]
+
+Invoke和BeginInvoke都是调用委托实体的方法，前者是同步调用，即它运行在主线程上，当Invode处理时间长时，会出现阻塞的情况，而BeginInvke是异步操作，它会从新开启一个线程，所以不会租塞主线程，在使用BeginInvoke时，如果希望等待执行的结果 ，可以使用EndInvoke来实现，这在.net framework4.5之后，被封装成了async+await来实现，代码更简洁，更容易理解。
+
+java语言, 则完全使用接口 interface, 来取代一些对委托的使用.
 

@@ -1,0 +1,27 @@
+
+= 发布软件
+:sectnums:
+:toclevels: 3
+:toc: left
+''''
+
+== 发布pc端
+
+image:img/0063.png[,]
+
+image:img/0064.png[,]
+
+image:img/0066.png[,]
+
+image:img/0065.png[,]
+
+
+
+'''
+
+== 发布 ios 端
+
+image:img/0067.png[,]
+
+pc段似乎无法发布, 只能在 mac上执行了.
+

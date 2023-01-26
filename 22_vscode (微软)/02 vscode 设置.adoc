@@ -27,4 +27,22 @@ image:img/004.png[,]
 
 安装插件 Remove Comments
 
----
+'''
+
+==== 缩放代码
+
+打开 文件>首选项>设置
+
+搜索栏搜索 ：Font Ligatures
+
+点击在 settings.json 中编辑
+
+加入 "editor.mouseWheelZoom": true
+
+image:img/005.png[,]
+
+image:img/006.png[,]
+
+保存修改后, 就能用鼠标滚轮, 来缩放代码了
+
+'''

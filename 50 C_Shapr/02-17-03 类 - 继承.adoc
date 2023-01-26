@@ -256,7 +256,177 @@ static void Main(string[] args)
 一般, 我们不会在子类中, 去覆盖父类中的同名数据, 只会去覆盖同名方法(函数). 比如, 同样是 "fn_工作()", 子类的工作生态, 可能和父类的工作生态不一致. 所以可以在子类中, 重写父类的同名方法.
 
 
----
+'''
+
+== 里式转换 -> 1."父类变量", 可以指向"子类的实例". 但无法记得子类中的函数方法. 2.但你可以将"父类变量", 强制类型转换为"子类类型"后, 父类变量, 就既能记得父类中的函数方法, 也能记得子类中的函数方法了.
+
+1、里氏转换
+     1)、子类可以赋值给父类
+     2)、如果父类中装的是子类对象，那么可以讲这个父类强转为子类对象。
+
+2、子类对象可以调用父类中的成员，但是父类对象永远都只能调用自己的成员。
+
+3、
+
+- is：表示类型转换，如果能够转换成功，则返回一个true，否则返回一个false
+- as：表示类型转换，如果能够转换则返回对应的对象，否则返回一个null
+
+
+[,subs=+quotes]
+----
+
+namespace ConsoleApp1
+{
+
+    public class ClsFather {
+        public  void fnFatherPrint() {
+            Console.WriteLine("我是父类");
+        }
+    }
+
+
+    public class ClsSon:ClsFather { //子类继承子父类
+        public  void fnSonPrint() {
+            Console.WriteLine("我是子类-男");
+        }
+    }
+
+
+    public class ClsDaughter : ClsFather { //子类继承子父类
+        public  void fnDaughterPrint() {
+            Console.WriteLine("我是子类-女");
+        }
+    }
+
+
+
+
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+            ClsSon insSon = new ClsSon();
+            insSon.fnSonPrint(); //我是子类-男
+            insSon.fnFatherPrint(); //我是父类 ←子类可以调用"从父类上继承来的方法".
+
+
+            ClsFather  insFather =new ClsFather();
+            //insFather.fnSonPrint();  //报错. ← 但父类实例, 无法调用只属于子类的方法.
+
+
+            *//1.子类可以赋值给父类. 即, 父类实例的变量, 可以指针指向子类实例.*
+            insFather = insSon; //这有什么用处呢? 比如, 如果一个地方, 需要使用父类来作为参数, 则我们可以用一个子类来代替它. (可以木兰替父从军)
+
+            ClsFather insFather2 = new ClsSon(); //上面一句的代码就相当于这句. "父类实例"的变量,可以指向"子类实例".
+            insFather2.fnFatherPrint();  *//但是, 父类变量, 依然不会忘记自己的本源出处, 即脑袋里只会记得父类中的方法, 而不会记得子类中的方法. 即, 它访问不到子类中的方法.*
+                                         // insFather2.fnSonPrint(); //报错.
+
+
+            *//2.如果父类变量中, 指向的是子类实例, 那么我们就可以将这个父类变量, 强制转换为"子类类型"的实例对象.*
+            ClsSon  insFather2toSon = (ClsSon)insFather2; *//将指向子类的"父类变量", 强制类型转换为子类类型.*
+            insFather2toSon.fnSonPrint(); *//然后, 该父类变量, 就能记得子类中的方法了.*
+            insFather2toSon.fnFatherPrint(); *//同时, 该父类变量, 也不会忘记父类中的方法. 即, 现在它拥有了双重记忆, 一个是父类中的记忆, 一个是子类中的记忆.*
+
+        }
+    }
+}
+----
+
+
+'''
+
+==== 转换类型前, 先用 is 判断 "变量a, 与B类型, 是否相符?". 类型相符, 才能将a变量 转成 B类型.
+
+其实, 将父类变量, 强制类型转换成某个子类类型之前, 我们应该先做一个类型判断:
+
+is判断一个对象是否兼容于指定的类型，才考虑里氏代换。
+
+[,subs=+quotes]
+----
+ClsFather ins父类实例 = new ClsFather();
+ClsSon ins子类男实例= new ClsSon();
+ClsDaughter ins子类女实例 = new ClsDaughter();
+
+
+ins父类实例 = ins子类男实例;
+
+*//下面的判断, 能成功, 因为上面一行代码, 我们的确是将父类变量, 指向子类类型的. 即父类变量, 的确是属于子类类型.*
+*if(ins父类实例 is ClsSon) { //is运算符, 用来判断对象是不是某种类型. 比如, x is double*
+    ClsSon ins父类实例转子类类型 = (ClsSon)ins父类实例;
+    ins父类实例转子类类型.fnSonPrint();
+}
+else {
+    Console.WriteLine("a变量不属于B类型, 所以无法将a变量\"强制类型转换\"成B类型");
+}
+
+
+*//下面的判断, 会判定为类型不符. 因为父类变量, 并不指向"子类女"的类型. 所以就无法强制类型转换成"子类女"的类型.*
+if (ins父类实例 is ClsDaughter) { //is运算符, 用来判断对象是不是某种类型. 比如, x is double
+    ClsDaughter ins父类实例转子类女类型 = (ClsDaughter)ins父类实例;
+}
+else {
+    Console.WriteLine("a变量不属于B类型, 所以无法将a变量\"强制类型转换\"成B类型");
+}
+----
+
+'''
+
+==== 也可以用 as, 来做类型转换. a变量, 与B类型相符, 则能转换成功.  如果a变量, 与B类型不相符, 则 as 会返回一个 null.
+
+as 与强制类型转换一样，区别是使用as是安全的。使用as如果转换失败，返回Null，不会抛出异常。
+
+[,subs=+quotes]
+----
+ClsFather ins父类实例 = new ClsFather();
+ClsSon ins子类男实例= new ClsSon();
+ClsDaughter ins子类女实例 = new ClsDaughter();
+
+
+*ClsSon ins父类变量转男子类 = ins父类实例 as ClsSon; //"父类变量", 强制类型转成"子类类型". 即, as的用法, 如果转换成功, 则就把转换后的实例返回给你. 如果转换失败, 则返回null.*
+ins父类变量转男子类.fnSonPrint(); //ok
+ins父类变量转男子类.fnFatherPrint();  //ok
+
+
+ClsFather ins父类实例2 = new ClsSon(); //父类变量,指向子类男实例
+ClsDaughter ins父类变量转女子类 = ins父类实例2 as ClsDaughter;  /*/这里, 会转换失败, 返回null. 因为上面我们将父类变量, 指向了"子类男", 显然就不能再将父类变量, 转成"子类女"了*
+ins父类变量转女子类.fnDaughterPrint(); //报错.提示: ins父类变量转男子类 是 null.
+----
+
+
+
+
+
+强制类型转换，有可能会导致异常。is与as就是为了解决这一问题，is与as永远不会抛出异常。
+
+使用is和as可以取代强制类型转换，分别如下：　
+
+使用is
+[,subs=+quotes]
+----
+if(a is Dog)
+{
+　　Dog d = (Dog)a;
+　　...
+}
+----
+
+使用as
+[,subs=+quotes]
+----
+Dog d = a as Dog;
+if(d!=null)
+{
+    ...
+}
+----
+
+注意：二者效果一样，但是效率差别很大，**使用is会检查两次对象的类型，一次是核实，一次是强制转换。使用as只进行了一次对象类型的检查。**检查对象的类型，是个耗费资源的操作，首先要判断对象的实际类型，然后必须遍历继承树结构（层次结构），去与每个基类核对。
+
+
+
+'''
 
 == 查看类图 (类的继承关系图)
 

@@ -1,0 +1,105 @@
+
+
+= unity
+:sectnums:
+:toclevels: 3
+:toc: left
+
+
+
+''''
+
+
+
+
+== 安装
+
+英语官网下载地址
+https://unity.com/download
+
+
+'''
+
+
+== unity 中打开  vs, 没有代码提示
+
+在unity中 Edit->preferences ->External Tools中
+
+External Script Editor 选择VS2019， 并点击Regenerate project files.
+
+image:img/0003.png[,]
+
+
+'''
+
+== 快捷键
+
+下面几个最常用移动缩放旋转等功能的快捷键: 就是键盘左上角连续的几个键位: q,w,e,r,t,y
+
+image:img/0004.png[,]
+
+
+'''
+
+== 手动调整多个脚本的执行顺序
+
+随便选中一个脚本, 按 execution order
+
+image:img/0005.png[,]
+
+image:img/0006.png[,]
+
+image:img/0007.png[,]
+
+
+---
+
+== 预设体(相当于 illustrator中的"符号")
+
+image:img/0008.png[,]
+
+image:img/0009.png[,]
+
+image:img/0010.png[,]
+
+image:img/0011.png[,]
+
+image:img/0012.png[,]
+
+image:img/0013.png[,]
+
+
+'''
+
+==== 创建一个有自己独立修改属性的预设体"符号"
+
+image:img/0014.png[,]
+
+
+
+
+
+''''
+
+== 图片资源无法拖动到场景里, 怎么办?
+
+image:img/0001.png[,]
+
+更改纹理类型 选择Sprite 2d , 再 apply 应用一下, 就能拖动到场景里了.
+
+image:img/0002.png[,]
+
+
+
+'''
+
+== 无法显示中文的解决办法
+
+image:img/0028.png[,]
+
+
+
+
+== 查找脚本到底挂载在了哪些物体上
+
+image:img/0060.png[,]

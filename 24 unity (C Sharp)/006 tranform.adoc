@@ -1,0 +1,109 @@
+
+= thransform
+:sectnums:
+:toclevels: 3
+:toc: left
+''''
+
+
+== 让物体, 永远面向另一个坐标
+
+[,subs=+quotes]
+----
+public class my脚本1 : MonoBehaviour {
+
+    *GameObject ins当前物体;*
+
+    // Start is called before the first frame update
+    void Start() {
+        //拿到当前脚本所挂载的游戏物体实例
+        **ins当前物体 = this.gameObject;  **
+    }
+
+    // Update is called once per frame
+    void Update() {
+
+        //让当前物体, 永远面向原点(0,0,0,)处.
+        *ins当前物体.transform.LookAt(Vector3.zero);*
+    }
+}
+
+----
+
+'''
+
+== 让物体自身旋转 (相当于地球的自转)
+
+[,subs=+quotes]
+----
+public class my脚本1 : MonoBehaviour {
+
+    GameObject ins当前物体;
+
+    // Start is called before the first frame update
+    void Start() {
+        //拿到当前脚本所挂载的游戏物体实例
+        ins当前物体 = this.gameObject;
+    }
+
+    // Update is called once per frame
+    void Update() {
+
+        //让当前物体, 旋转. 相当于地球的自转.
+        *ins当前物体.transform.Rotate(Vector3.up,1);* //第二个参数是每帧旋转多少度. 此处,我们每帧旋转1度.
+    }
+}
+----
+
+
+'''
+
+== 让当前物体, 绕其他物体旋转. (相当于地球绕太阳公转)
+
+[,subs=+quotes]
+----
+public class my脚本1 : MonoBehaviour {
+
+    GameObject ins当前物体;
+
+    // Start is called before the first frame update
+    void Start() {
+        //拿到当前脚本所挂载的游戏物体实例
+        ins当前物体 = this.gameObject;
+    }
+
+    // Update is called once per frame
+    void Update() {
+
+        //让当前物体, 绕其他物体旋转. (相当于地球绕太阳公转)
+        *ins当前物体.transform.RotateAround(Vector3.zero, Vector3.up, 0.1f);* //transform.RotateAround(圓心座標, 繞行軸向, 每帧旋转的角度);
+    }
+}
+----
+
+'''
+
+== 让物体移动
+
+[,subs=+quotes]
+----
+public class my脚本1 : MonoBehaviour {
+
+    GameObject ins当前物体;
+
+    // Start is called before the first frame update
+    void Start() {
+        //拿到当前脚本所挂载的游戏物体实例
+        ins当前物体 = this.gameObject;
+    }
+
+    // Update is called once per frame
+    void Update() {
+
+        //让当前物体, 移动
+        *ins当前物体.transform.Translate(Vector3.forward * 0.01f);* //让物体向前方(0,0,1), 每帧移动0.01
+    }
+}
+----
+
+

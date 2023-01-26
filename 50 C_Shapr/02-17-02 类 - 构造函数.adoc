@@ -13,7 +13,8 @@
 
 注意: 构造函数有这几个特点: +
 - 构造函数的函数名, 要和类名一致. +
-- 构造函数不需要返回值.
+- 构造函数不需要返回值. 构造函数没有返回值, 连 void 也不能写.
+- 构造函数的修饰符, 必须是 public.
 - 构造函数中, 要使用this关键词, 来代表"实例对象"自己.
 - 如果你不手动显式的写一个构造函数, 则程序会自动帮你在类里面, 创建一个"无参的构造函数". +
 
@@ -206,7 +207,66 @@ image:img/0031.png[,]
 ====
 
 
+'''
+
+== 构造函数, 调用另一个字段赋值最全的构造函数
+
+但是, 上面的多个构造函数, 里面有同名的字段, 在每个构造函数里面我们都给它赋值了(比如 this.age = age, 在每个构造函数里都写了这句代码), 这造成了代码的重复编写. 太麻烦了
+
+所以, 我们要让后面的构造函数, 去调用前面那个"赋值已经写的比较全的构造函数". 比如, 你第一个构造函数, 字段已经都赋值过了. 那么你第二个函数就能直接调用第一个构造函数, 以免重复赋值. 方法如下:
 
 
----
+.标题
+====
+例如：
+
+ClsPerson类:
+
+[,subs=+quotes]
+----
+public class ClsPerson
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public int Ablity政治能力 { get; set; }
+
+
+    public ClsPerson(int id, string name, int age, int ablity政治能力) {
+        Id = id;  //这句其实就是 this.Id = id; 的简化写法.
+        Name = name;
+        Age = age;
+        Ablity政治能力 = ablity政治能力;
+    }
+
+
+    //下面, 我们就让下面的构造函数, 来调用上面的构造函数. 注意: 下面的构造函数中, 只写了两个字段(id 和 age), 所以另两个字段(name 和 "Ablity政治能力"), 你就可以给它们赋默认值. 即 name="",  Ablity政治能力=0. 然后, *this这个关键词, 就代表调用上面那个写的最全的构造函数. 即把我们的两个需要用户赋值的字段 id 和 age, 和我们赋予了默认值的字段 name 和 政治能力, 都传进上面的最全的构造函数中来处理.  即, 下面这个只有两个参数的构造函数, 其实是调用了上面那个最全的4个参数的构造函数来处理的!*
+    public ClsPerson(int id, int age) *: this(id,"",age,0)* {
+
+    }
+
+    public override string ToString()
+    {
+        return $"{nameof(Id)}: {Id}, {nameof(Name)}: {Name}, {nameof(Age)}: {Age}, {nameof(Ablity政治能力)}: {Ablity政治能力}";
+    }
+}
+----
+
+主文件中:
+[,subs=+quotes]
+----
+ClsPerson insP = new ClsPerson(1,19);  *//只传两个参数的值, 即 id=1, age=19. 则另两个参数, 就会使用默认值.*
+Console.WriteLine(insP); //Id: 1, Name: , Age: 19, Ablity政治能力: 0
+----
+
+image:img/0145.png[,]
+
+====
+
+
+
+
+
+
+'''
 

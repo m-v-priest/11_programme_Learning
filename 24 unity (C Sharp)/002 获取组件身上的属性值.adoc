@@ -1,0 +1,652 @@
+
+= 获取组件身上的属性值
+:sectnums:
+:toclevels: 3
+:toc: left
+''''
+
+== 官方文档
+
+https://docs.unity3d.com/cn/2021.1/Manual/ScriptingTransform.html
+
+https://docs.unity3d.com/cn/2021.1/ScriptReference/Transform.html
+
+
+'''
+
+== 增
+
+==== 类中的字段, 就是组件身上的参数
+
+比如, 你脚本中写以下字段, 权限要 public, 才能暴露给组件中. 如果是 private, 则不会暴露出来.
+[,subs=+quotes]
+----
+public class crip时间脚本 : MonoBehaviour {
+
+
+ public enum enumSex {
+        male,female
+    };
+
+//下面这些类中的字段, 都会显示在该脚本的组件上
+    public string name;
+    public int age;
+    public enumSex sex;
+    public bool is是否已婚;
+    public string[] arr亲密好友;
+
+
+
+    // Start is called before the first frame update
+    void Start() {
+
+    }
+
+
+    // Update is called once per frame
+    void Update() {
+    }
+}
+----
+
+image:img/0061.png[,]
+
+
+
+
+'''
+
+==== 添加组件(给当前物体, 添加组件)
+
+[,subs=+quotes]
+----
+// Start is called before the first frame update
+void Start() {
+    //拿到当前脚本所挂载的游戏物体实例
+    GameObject ins当前物体 = this.gameObject;
+
+    //给我们的当前物体, 添加一个button组件.
+    *ins当前物体.AddComponent<Button>();*
+}
+----
+
+'''
+
+==== 在字段中, 还可以有Class类型
+
+[,subs=+quotes]
+----
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+
+*[System.Serializable]*  //必须用这个标签, 来放在你的"Class类"前面, 这样后, 这个类, 才能作为字段(的类型), 放在另一个类中.
+public class ClsPerson {
+    public string name;
+    public int age;
+    public List<string> arr亲朋友好;
+}
+
+
+public class crip时间脚本 : MonoBehaviour {
+
+    *public ClsPerson insPerson;*  //使用"Class类型"的字段
+
+
+    // Start is called before the first frame update
+    void Start() {
+
+    }
+
+
+    // Update is called once per frame
+    void Update() {
+
+
+    }
+
+
+}
+
+----
+
+image:img/0062.png[,]
+
+
+'''
+
+
+==== 让 public字段, 不显示在脚本组件中; 或, 让 private字段, 显示在脚本组件中.
+
+[,subs=+quotes]
+----
+public class crip时间脚本 : MonoBehaviour {
+
+ public enum enumSex {
+        male,female
+    };
+
+    public string name;
+
+    *[HideInInspector]* //添加这个标签代码后, 就会将下面的public字段, 在脚本组件中隐藏. 不暴露出来.
+    public int num存折余额;
+
+
+    *[SerializeField]* //添加这个代码后, 会将即使是 private 的字段, 也在脚本组件中暴露出来. 即,只让"脚本组件"能访问到, 但别的模块访问不到.
+    private string str心情日记;
+
+
+
+    // Start is called before the first frame update
+    void Start() {
+
+    }
+
+
+    // Update is called once per frame
+    void Update() {
+
+
+    }
+
+
+}
+----
+
+
+
+
+
+
+'''
+
+
+== 删
+
+
+'''
+
+== 改
+
+==== ★ 一部到位找到某个特定物体上的组件, 并赋值某个字段
+
+
+
+[,subs=+quotes]
+----
+/*
+//先找到 Panel物体, 再获取该物体下的重孙物体, 载获取该重孙物体上的TMP_Text组件, 在给该组件上的 text字段重新赋值. 这整套动作做下来,太麻烦了
+GameObject ob_Panel计算器 = GameObject.Find("Panel计算器");
+
+
+UnityEngine.Transform tf输入框1 = ob_Panel计算器.transform.Find("my输入框1/Text Area/Placeholder");
+TMP_Text tmp = tf输入框1.GetComponent<TMP_Text>();
+tmp.text = "hello zrx";
+*/
+
+
+*//不如一部到位: 直接全局查找到该重孙物体,并同时找到TMP_Text组件, 直接赋值其text字段.*
+*GameObject.Find("Panel计算器/my输入框1/Text Area/Placeholder").GetComponent<TMP_Text>().text* = "hello slf";
+----
+
+image:img/0076.png[,]
+
+
+
+'''
+
+
+==== 将当前物体设置为"非激活"状态. -> ins当前物体.SetActive(false)
+
+
+[,subs=+quotes]
+----
+    // Start is called before the first frame update
+    void Start() {
+        //拿到当前脚本所挂载的游戏物体实例
+        GameObject ins当前物体 = this.gameObject;
+
+        *ins当前物体.SetActive(false);* //将当前物体设置为"非激活"状态.
+    }
+----
+
+image:/img/0018.png[,]
+
+'''
+
+
+==== 将物体上的脚本组件, 关闭(即不激活)
+
+[,subs=+quotes]
+----
+//下面, 我们关闭"go空物体"上的"crip时间脚本".
+
+GameObject go空物体 =  GameObject.Find("go空物体"); //先全局查找到 "go空物体"
+Debug.Log(go空物体.name);
+
+//获取到 "go空物体"身上挂载的 "crip时间脚本". *注意: 你获取的脚本, 其类型, 就是你自定义的脚本名称"crip时间脚本".*
+*crip时间脚本 myScript1 =  go空物体.GetComponent<crip时间脚本>();*
+*myScript1.enabled= false;* //将该脚本禁用, 即该脚本组件上, 取消掉打钩状态
+----
+
+image:img/0068.png[,]
+
+
+
+'''
+
+== 查
+
+
+==== ★ 获取当前物体, & 查看组件的名称, 和是否处于激活(显示)状态.
+
+[,subs=+quotes]
+----
+    void Start()
+    {
+        //拿到当前脚本所挂载的游戏物体实例
+        *GameObject ins = this.gameObject;* //获取当前物体
+
+        Debug.Log(*ins.name*); //获取当前组件的"名称"
+        Debug.Log(ins.tag); //获取当前组件的"tag名"
+        Debug.Log(ins.layer); //获取当前组件的"layer图层索引", 注意是索引值.
+
+        Debug.Log(*ins.activeInHierarchy*); //true  ← 判断当前实例, 是否是激活状态 (注意, 如果其父组件是不激活状态, 即使本组件激活, 该方法也会返回 false.)
+        Debug.Log(*ins.activeSelf*); //← 判断当前实例, 是否是激活状态(而无关其父组件是否处在激活状态. 即, 即使其父组件不激活, 本组件是激活的, 这个方法也能返回ture. 但我没实验成功. 如果父物体被关闭, 则子物体上的输出语句直接就都没了.)
+
+    }
+----
+
+'''
+
+==== 查看图片的 transform属性上 的信息
+
+
+现在, 我们的脚步挂在 中间一层物体 sthMy 上. 它有父物体(sthFather), 也有子物体(sthSon).
+
+image:img/0038.png[,]
+
+
+[,subs=+quotes]
+----
+// Start is called before the first frame update
+void Start() {
+    //拿到当前脚本所挂载的游戏物体实例
+    *GameObject ins当前物体 = this.gameObject;*
+
+    Debug.Log(*ins当前物体.transform.position*);
+    Debug.Log(*ins当前物体.transform.localPosition*);
+
+    Debug.Log(*ins当前物体.transform.rotation*);
+    Debug.Log(ins当前物体.transform.localRotation);
+
+    Debug.Log(*ins当前物体.transform.localScale*);
+
+}
+----
+
+image:img/0039.png[,]
+
+
+
+
+
+
+
+
+
+
+又例如
+
+[,subs=+quotes]
+----
+// Start is called before the first frame update
+void Start()
+{
+    //拿到当前脚本所挂载的游戏物体实例
+    GameObject ins = this.gameObject;
+
+    Debug.Log(ins.name); //获取当前组件的"名称"
+
+    *Transform insTrans = ins.transform;* //拿到本组件的 "transform 属性"的实例对象. 其实: *虽然Transform组件也可以用GetCompment（）获得，但由于该组件太常见，因此可以通过transform字段 直接访问到Transform组件。* 并且，Unity为了方便，在同一物体上，从任何一个组件出发都可以直接获得其他组件，可以不需要先获得先获得游戏体。
+    Debug.Log(*insTrans.position*);  //获取 transform属性中的: 世界空间中的变换位置。
+    Debug.Log(*insTrans.localPosition*);  //相对于父变换的变换位置
+
+    Debug.Log(*insTrans.rotation*); //一个 Quaternion，用于存储变换在世界空间中的旋转。
+    Debug.Log(*insTrans.localRotation*); //相对于父级变换旋转的变换旋转。
+
+    Debug.Log(*insTrans.localScale*);//相对于 GameObjects 父对象的变换缩放。
+
+}
+----
+
+image:img/0015.png[,]
+
+'''
+
+
+==== 获取图片身上的颜色, 及翻转等信息
+
+[,subs=+quotes]
+----
+// Start is called before the first frame update
+void Start() {
+    //拿到当前脚本所挂载的游戏物体实例
+    GameObject ins = this.gameObject;
+
+    //获取 本图片实例身上的 SpriteRenderer 组件
+    *SpriteRenderer insSp = ins.GetComponent<SpriteRenderer>();*
+    Debug.Log(*insSp.color*); //拿到 SpriteRenderer 组件实例身上的 颜色属性
+    Debug.Log(*insSp.flipY*); //拿到 翻转属性, y轴上是否翻转? 即图片是否上下倒置?
+
+}
+
+// Update is called once per frame
+void Update() {
+
+}
+----
+
+image:img/0016.png[,]
+
+'''
+
+==== ★ 获取父物体 -> transform.parent -> 返回一个 Transform类型的对象
+
+
+[,subs=+quotes]
+----
+//获取当前物体的父物体 transform.parent
+*Transform tf = transform.parent;*
+Debug.Log(tf.name);
+
+//获取当前物体的根物体(即直系祖先,而非直系祖先的兄弟) transform.root
+*Transform tf2 = transform.root;*
+Debug.Log(tf2.name);
+----
+
+image:img/0075.png[,]
+
+
+'''
+
+
+==== ★ 获取父物体 -> ins当前物体.transform.parent.gameObject -> 返回一个 GameObject类型的对象
+
+
+[,subs=+quotes]
+----
+    void Start() {
+        //拿到"当前脚本所挂载的游戏物体"的父物体
+        ins当前物体 = this.gameObject; //先获取当前物体
+        *GameObject ins父物体 = ins当前物体.transform.parent.gameObject; //获取当前物体的父物体. 这是曲线救国啊, 先获取到当前物体的 transform组件, 然后从该组件上溯到父物体上去.*
+        Debug.Log(ins父物体.name); // 打印出父物体的名字
+        Debug.Log(ins父物体.transform.position); //拿到父物体的位置
+    }
+----
+
+image:img/0040.png[,]
+
+
+
+
+'''
+
+==== ★ 获取子物体
+
+
+[,subs=+quotes]
+----
+// Start is called before the first frame update
+void Start() {
+    //拿到"当前脚本所挂载的游戏物体"的父物体
+    ins当前物体 = this.gameObject; //先获取当前物体
+
+
+    // int num子物体的个数 = ins当前物体.transform.childCount; //获取当前物体的子物体的个数, 有几个子物体
+    Debug.Log(num子物体的个数);
+
+
+    //*解出当前物体与"所有子物体"的父子关系.* 所有子物体会到最顶层的层级上去, 而不是只向上升一级.
+    *ins当前物体.transform.DetachChildren();*
+
+
+    //*获取某一个特定的子物体*
+    *Transform ins子物体 = ins当前物体.transform.Find("sthSon2");* //transform.Find()方法的返回值, 是一个Transform类型. 虽然返回的是Transform类型, 但其实这个物体, 就是子物体.
+                                                          //Transform.Find()方法只查找自己本身以及自己的子对象，效率比较高. 而另一个GameObject.Find()方法会遍历整个当前场景，挨个查找，效率偏低. 另外, Transform.Find()可以获取处于 激活/ 非激活状态 的游戏对象，返回值类型是Transform 类型。GameObject.Find()只能获取处于 激活状态 的游戏对象，返回值类型是一个GameObject类型。
+
+    Debug.Log(ins子物体.name);
+    Debug.Log(ins子物体.transform.position);
+
+
+    *//判断一个物体是否是另一个物体的子物体*
+    *bool res = ins子物体.IsChildOf(ins当前物体.transform); //必须这样写, 因为从上面可知, ins子物体 的类型是 Transform. 所以这个IsChildOf()方法只能判断两个 Transform类型之间的父子关系.*
+    Debug.Log(res);
+
+    //Debug.Log(ins子物体.IsChildOf(ins当前物体)); //这样写会报错, 会提示无法从GameObject 转成Transform.
+}
+----
+
+image:img/0041.png[,]
+
+
+在Unity中有以下两个Find方法，都是通过游戏对象名称来查找游戏对象的。
+
+public static GameObject Find(string name);
+
+public Transform Find(string name);
+
+
+仔细观察以下，这两个还是有区别的。第一个返回值是一个GameObject类型的，第二个返回值类型是Transform 类型的。
+
+区别：
+
+public static GameObject Find(string name);
+适用于整个游戏场景中名字为name的**所有处于活跃状态的游戏对象。**如果在场景中有多个同名的活跃的游戏对象，在多次运行的时候，结果是固定的。
+
+public Transform Find(string name);
+适用于查找游戏对象子对象名字为name的游戏对象，**不管该游戏对象是否是激活状态，都可以找到。**只能是游戏对象直接的子游戏对象。
+
+'''
+
+
+==== 获取所有子物体 (包括本物体) -> GetComponentsInChildren<Transform>()
+
+[,subs=+quotes]
+----
+//获取所有子物体（包括"本脚本"挂载的物体本身）
+*Transform[] arrTF = GetComponentsInChildren<Transform>();*
+
+foreach (var item in arrTF) {
+    Debug.Log(item.name);
+----
+
+image:img/0071.png[,]
+
+
+'''
+
+====  ★ 查找一级子物体中的一个 -> transform.Find(子物体名字)
+
+[,subs=+quotes]
+----
+//只能寻找一级子物体，不能寻找再下层的孙物体
+*Transform tf = transform.Find("obMy1");*
+Debug.Log(tf.name);
+----
+
+image:img/0072.png[,]
+
+
+*transform.Find()能找到失活的儿子; 而GameObject相关的查找 是找不到失活对象的.*
+
+'''
+
+==== ★ 查找孙物体中的一个, 要写上路径  -> transform.Find(子物体名/孙物体名字)
+
+[,subs=+quotes]
+----
+//如果想要寻找二级或者更下级子物体，需要将路径全标注。
+*Transform tf = transform.Find("obMy2/obSon22");*
+Debug.Log(tf.name);
+----
+
+image:img/0073.png[,]
+
+
+Find()得出结论：
+
+- 只能找其子物体，不能找其同级或更高层级物体
+- 找子物体时不考虑是否被禁用（隐藏）
+- 找多层子物体时需写全路径（否则即使存在也找不到）
+
+'''
+
+
+
+
+
+==== 用索引, 来查找某个子物体或孙物体 -> transform.GetChild(子物体的索引值).GetChild(孙物体的索引值)
+
+[,subs=+quotes]
+----
+//transform.GetChild(), 可以根据子物体的序号来获取子物体，只能获取一级的子物体，但是可以通过连续两次获取，获取到二级的子物体。
+
+Transform tf0 = *transform.GetChild(0);*
+Debug.Log(tf0.name);
+
+Transform tf1 = *transform.GetChild(1);*
+Debug.Log(tf1.name);
+
+Transform tf1_0 = *transform.GetChild(1).GetChild(0);*
+Debug.Log(tf1_0.name);
+----
+
+image:img/0074.png[,]
+
+
+transform.GetChild()使用总结：
+
+- 以自身为基础，查找子物体（注意索引从0开始，写多报错）
+- *可以使用transform.parent.parent 的形式无限向上，然后再GetChild()，就达到了查找父层级或更高层级物体的目的*
+- 弊端是依赖游戏物体的层级关系，使用时需确保层级关系相对稳定。若不稳定会导致每次修改游戏体时还要修改代码，这就加大了工作量了。
+
+
+'''
+
+==== 将另一个物体, 设置为自己的父物体
+
+[,subs=+quotes]
+----
+//获取某一个特定的子物体
+Transform trans子物体 = ins当前物体.transform.Find("sthSon2"); //transform.Find()方法的返回值, 是一个Transform类型. 虽然返回的是Transform类型, 但其实这个物体, 就是子物体.
+
+GameObject go物体 =  GameObject.Find("go空物体"); //全局查找"go空物体"
+
+//设置为父物体
+*trans子物体.SetParent(go物体.transform); //将 "go物体.transform" 设置为 "trans子物体" 的父物体*
+----
+
+image:img/0042.png[,]
+
+
+'''
+
+
+==== 全局搜索某物体 (低效) -> GameObject.Find()
+
+[,subs=+quotes]
+----
+// Start is called before the first frame update
+void Start() {
+    //拿到当前脚本所挂载的游戏物体实例
+    GameObject ins当前物体 = this.gameObject;
+
+    *GameObject ins父物体 = GameObject.Find("sthFather"); //全局查找名字是"sthFather"的物体*
+    Debug.Log(ins父物体.name);
+
+    //获取父物体身上的 Transform组件. 必须先创建一个 Transform 实例, 然后再来访问该实例里面的字段.
+    Transform insTF = ins父物体.GetComponent<Transform>();
+    Debug.Log(insTF.position);
+}
+----
+
+image:img/0017.png[,]
+
+但这个GameObject.Find() 方法有两个弊端:
+
+1. 无法找到未激活的物体.
+2. 需要遍历场景的所有物体，性能上看是十分低效的.
+
+GameObject.Find()
+这个方法没有其他重载的方法。通过的名字来查找一个不是特定的物体，*简而言之，当一个场景有多个名字相同的物体的时候，无法找到你想要的那一个*，该函数的返回值是一个GameObject类的对象.
+
+总结：
+
+- 1）函数的返回值是一个被查找到的对象（GameObject类），*如果存在多个同名的物体，也只是返回其中一个。（可能不是你想要的那一个）*
+- 2）*物体需要处于active()处于true状态, 才能被找到。*
+- 3）*Find()非常消耗性能，不建议在Update()方法里面使用。*
+- 4）该函数也可以查找子游戏物体对象。*如果多个游戏场景同时运行，那么Find()查找的范围是所有场景。*
+
+
+'''
+
+==== 通过 "tag名" 来查找物体 -> GameObject.FindGameObjectWithTag(你的标签名) 和  GameObject.FindGameObjectsWithTag(你的标签名)
+
+[,subs=+quotes]
+----
+// Start is called before the first frame update
+void Start() {
+    //拿到当前脚本所挂载的游戏物体实例
+    GameObject ins当前物体 = this.gameObject;
+
+
+    *//通过tag名来查找. 只返回第一个找到的物体*
+    *GameObject resOb = GameObject.FindGameObjectWithTag("tag我重点关注的物体"); //这里用 GameObject.FindWithTag() 方法也行.*
+    Debug.Log(resOb.name);
+
+
+    *//通过tag名来查找. 返回所有找到的物体, 返回一个数组*
+    *GameObject[] arrResObj = GameObject.FindGameObjectsWithTag("tag我重点关注的物体");*
+
+    foreach (GameObject obj in arrResObj) {
+        Debug.Log(obj.name);
+    }
+
+}
+----
+
+GameObject.FindWithTag() +
+该方法与Find()用法比较相似，区别就是该方法是通过"标签"来查找一个不是特定的游戏物体，如果找到，则返回一个游戏物体对象，没有找到会传一个空字符或者null.抛出一个异常.
+
+GameObject.FindGameObjectsWithTag() +
+这个函数也是根据标签来查找游戏物体对象，它返回的是一个游戏物体对象数组，场景中存在相同标签的物体都将被返回。物体需要处于active()处于true状态, 才能被找到。
+
+'''
+
+== 例子
+
+==== 制作一个计算器
+
+首先, 要对输入框 InputField, 限定只能输入数字 int类型.
+
+image:img/0077.png[,]
+
+若只限制输入整数，将此属性修改为Intefer Number即可 +
+若要输入小数，将此属性设置为Decimal Number即可
+
+
+
+
+
+
+
+[,subs=+quotes]
+----
+# #
+----
+
