@@ -59,8 +59,35 @@ image:../img/0048.png[,]
 
 ---
 
+== 添加一个新的窗体
+
+image:../img/0150.png[,]
+
+image:../img/0151.png[,]
+
+image:../img/0152.png[,]
+
+比如, 你可以添加3个窗体, 但运行的时候, 只会运行在main函数中 new出来的那个窗体实例.
+[,subs=+quotes]
+----
+static void Main() {
+    Application.EnableVisualStyles();
+    Application.SetCompatibleTextRenderingDefault(false);
+
+    *Application.Run(new Form1()); //主函数中, 创建了一个窗体Form1 的实例, 即调用了该类的构造函数. ← 这个是打开程序时, 会运行的窗体(即主界面), 而其他的窗体, 是通过按钮才点击出来的.*
+}
+----
+
+
+
+'''
 
 == 手动创建一个窗体类, 并运行它的实例对象
+
+
+在main函数中创建的窗体对象, 称为这个窗体应用程序的"主窗体". 当你关闭"主窗体",则整个引用程序都会关闭.
+
+
 
 .标题
 ====
@@ -123,8 +150,138 @@ image:../img/0049.png[,]
 ====
 
 
+'''
 
----
+==== 案例: 窗体3(Form3)上的按钮, 来关闭掉主窗体(Form1)
+
+效果:
+
+image:../img/0154.png[,]
+
+
+image:../img/0153.png[,]
+
+
+
+image:../img/0155.svg[,]
+
+
+
+
+Form1代码:
+[,subs=+quotes]
+----
+namespace WindowsFormsApp1 {
+    public partial class Form1 : Form {
+        public Form1() { //窗体 form1 类的构造函数, 默认情况下只做了一件事, 调用了下面的函数方法. 这个InitializeComponent()方法, 也是属于 form1类中的, 只不过写在了另一个文件里.
+            InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e) {
+
+            *Form2 form2 = new Form2();* //现在内存中,创建出窗体2的实例对象.
+            *form2.Show();* //然后在前台, 实际展现出这个窗体.
+        }
+
+
+
+        //我们让Form1窗体一加载, 就把它传给 "Cls全局变量"类中,保存在那里面的静态"Form1寄存处"字段(作为全局变量)中. 这样, 这个字段, 就能被Form3窗体实例, 调用到了. 然后窗体3实例上的按钮, 就能关掉我们这里的 Form1窗体.
+        private void Form1_Load(object sender, EventArgs e) {
+            *Cls全局变量.Form1寄存处= this; //this关键词, 就代表本窗体实例, 即form1*
+        }
+    }
+}
+----
+
+
+Form2代码:
+[,subs=+quotes]
+----
+namespace WindowsFormsApp1 {
+    public partial class Form2 : Form {
+        public Form2() {
+            InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e) {
+
+            Form3 form3 = new Form3(); //现在内存中,创建出窗体3的实例对象.
+            form3.Show(); //然后在前台, 实际展现出这个窗体.
+        }
+
+
+
+        private void button2_Click(object sender, EventArgs e) {
+
+            *this.Close(); //this就是指本窗体实例, 所以这句代码, 会将本窗体关掉.*
+        }
+    }
+}
+----
+
+
+Form3代码
+[,subs=+quotes]
+----
+namespace WindowsFormsApp1 {
+    public partial class Form3 : Form {
+        public Form3() {
+            InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e) {
+
+            *//只要关闭"主窗体", 就能关闭掉所有打开的窗体了. 主窗体就是写在main函数中的new出来的窗体. 本例中, 主窗体是Form1*
+           ** Cls全局变量.Form1寄存处.Close();** //因为我们的Form1, 被"Cls全局变量.Form1寄存处"这个字段指针指向了, 所以我们就能调用到Form1, 来关闭它.
+
+        }
+    }
+}
+----
+
+Cls全局变量类
+[,subs=+quotes]
+----
+namespace WindowsFormsApp1 {
+
+    //设为静态类
+    public static class Cls全局变量 {
+
+        *public static Form1 Form1寄存处;* //我们声明一个Form1类的变量, 用来存储form1窗体实例对象, 这样, 这个主窗体form1实例, 就能被全局都访问到了, 相当于一个全局变量. 我们就能在 form3实例中, 来访问到 form1实例, 从而就能调用 from1.Close()方法, 来关闭掉这个主窗体.
+
+    }
+}
+----
+
+
+主函数文件:
+[,subs=+quotes]
+----
+namespace WindowsFormsApp1 {
+    internal static class Program {
+        /// <summary>
+        /// 应用程序的主入口点。
+        /// </summary>
+        [STAThread]
+        static void Main() {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+           ** Application.Run(new Form1()); //主函数中, 创建了一个窗体Form1 的实例, 即调用了该类的构造函数.**
+        }
+    }
+}
+----
+
+
+
+
+
+'''
+
+== ----- -----
+
+'''
 
 == 设置窗体在屏幕上的显示位置
 
