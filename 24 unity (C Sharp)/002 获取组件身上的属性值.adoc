@@ -168,6 +168,36 @@ public class crip时间脚本 : MonoBehaviour {
 == 删
 
 
+==== 删除某物体 -> Transform.Destroy(某物体)
+
+[,subs=+quotes]
+----
+public class my脚本2 : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+        *//Transform.Destroy() 是Transform类中的静态方法. 可以用类名来直接调用, 不需要创建出实例对象.*
+        *Transform.Destroy(GameObject.Find("ob爷爷/my我的圆圈/my子物体3"));  //查找到"my子物体3"物体, 并删除它.*
+
+
+        *Transform.Destroy(this.gameObject); //删除本脚本所挂载的物体, 连同子物体一并删除. this.gameObject 就是指本脚本组件,所挂载着的游戏物体.*
+
+    }
+
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+}
+----
+
+
+
+
+
 '''
 
 == 改
@@ -257,6 +287,46 @@ image:img/0068.png[,]
 '''
 
 == 查
+
+==== 你的类(脚本)中, 有一个字段, 指向某个游戏物体, 则, 你可以在类(脚本)中, 直接调用该字段, 来获取到它所指向的游戏物体上的属性值.
+
+比如,
+
+image:img/0087.png[,]
+
+my脚本1:
+[,subs=+quotes]
+----
+public class my脚本1 : MonoBehaviour
+{
+
+    *//本类中, 我们定义一个字段, 用来指向游戏物体的圆圈(Circle)类型.*
+    *public GameObject ins圆圈实例;  //只要在unity中, 把圆圈物体, 拖到这个字段上, 就相等于是给这个字段赋值了. 这个字段就有值了.*
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        Debug.Log(*this.name*);  *//打印出本脚本挂载的物体的名字*
+        Debug.Log(*ins圆圈实例.name*); *//可以直接调用字段名, 来获取到"该字段变量"指向的"实例对象"中的属性. ← 会打印出本类字段"ins圆圈实例"所指针指向的实例对象("my我的圆圈")身上的name名字.*
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+}
+
+----
+
+
+
+
+
+
+
 
 ==== ★★★ 获取其他物体身上的组件(即"Class类")中的字段值.
 
@@ -463,6 +533,133 @@ image:img/0015.png[,]
 
 '''
 
+
+==== 可以同过物体身上的transform组件, 来直接获得该物体的名字.
+
+[,subs=+quotes]
+----
+public class my脚本1 : MonoBehaviour
+{
+
+    //本类中, 我们定义一个字段, 用来指向游戏物体的圆圈(Circle)类型.
+    public GameObject ins圆圈实例;
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        Debug.Log(*ins圆圈实例.transform.position*.ToString()); //打印出了本类的"ins圆圈实例"字段所指向的游戏物体"my我的圆圈"的transform组件上的position位置坐标值.
+
+
+        Debug.Log(ins圆圈实例.name); //打印出"my我的圆圈"
+        Debug.Log(*ins圆圈实例.transform.name*); //"my我的圆圈" *← 通过物体的transform组件, 一样能拿到"挂载了该组件的物体"的名字.*
+
+
+        Debug.Log(*string.Format("本类字段\"ins圆圈实例\"指向的游戏物体的名字是: {0}", ins圆圈实例.transform.name)*);  //可以这样输出
+
+
+        *//但下面这样写, 却会出错!* 会提示: 无法从"string"转换为"UnityEngine.Object"
+        //Debug.Log("本类字段\"ins圆圈实例\"指向的游戏物体的名字是: {0}", ins圆圈实例.transform.name);
+
+        Debug.Log(*ins圆圈实例.gameObject*); //my我的圆圈  ← *即会输出本类的"ins圆圈实例"字段, 所指针指向的游戏物体是哪个.*
+
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+}
+----
+
+'''
+
+==== 获取脚本类中, "某个字段"所指向的"游戏物体"下面的子物体的数量
+
+[,subs=+quotes]
+----
+public class my脚本1 : MonoBehaviour
+{
+
+    //本类中, 我们定义一个字段, 用来指向游戏物体的圆圈(Circle)类型.
+    public GameObject ins圆圈实例;
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        *Debug.Log(ins圆圈实例.transform.childCount); // 有3个子物体.  ← 获取本类的"ins圆圈实例"字段所指向的游戏物体"my我的圆圈"下面的子物体的数量.*
+    }
+
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+}
+----
+
+
+image:img/0088.png[,]
+
+'''
+
+==== 获取到子物体身上的transform组件中的属性
+
+脚本, 我们就直接挂到父物体身上.
+[,subs=+quotes]
+----
+public class my脚本2 : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+        Debug.Log(*this.transform.Find("my子物体2").position*); //获取到this物体(即当前脚本所挂载的物体)下的叫做"my子物体2"的子物体 身上的transform组件中的position值. 注意: transform.Find() 只能找到所在物体的子辈, 而不包括孙辈.
+
+        *Debug.Log(this.transform.GetChild(0).position); //获取到this物体下索引值是0的子物体 身上的transform组件中的position值.*
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+}
+----
+
+'''
+
+==== 查看本物体, 在同辈的兄弟中, 索引值排在第几?
+
+[,subs=+quotes]
+----
+public class my脚本2 : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+        Debug.Log(*this.transform.GetSiblingIndex()*); //GetSiblingIndex：可以得到当前物体在同一层级游戏物体的中的索引. 即, 假设当前物体是儿子的话,就是看这个儿子, 在他爸爸生的所有儿子里, 排名老几?
+
+    }
+
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+}
+----
+
+image:img/0089.png[,]
+
+
+
+
+'''
 
 ==== 获取图片身上的颜色, 及翻转等信息
 
