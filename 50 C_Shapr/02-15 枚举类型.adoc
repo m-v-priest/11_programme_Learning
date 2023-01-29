@@ -33,6 +33,97 @@ Console.WriteLine(status诸葛亮); //丞相
 image:img/0002.png[,]
 ====
 
+
+
+.标题
+====
+
+类:
+[,subs=+quotes]
+----
+namespace ConsoleApp4 {
+
+    *//枚举也是个类, 要写在其他类的外面*
+    enum Enm级别枚举类 {
+        皇帝,
+        丞相,
+        大都督,
+        刺史,
+        太守,  *//最后一个元素后,逗号可加可不加, 但一般都加着, 方便你扩充枚举元素*
+    }
+
+
+
+    internal class ClsPerson {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        *public Enm级别枚举类 enm级别 { get; set; }  //这个字段, 我们是用枚举类型*
+
+
+        public ClsPerson(int id, string name, Enm级别枚举类 enm级别) {
+            Id = id;
+            Name = name;
+            this.enm级别 = enm级别;
+        }
+    }
+}
+----
+
+主文件:
+[,subs=+quotes]
+----
+namespace ConsoleApp4 {
+    internal class Program {
+        static void Main(string[] args) {
+
+            ClsPerson insP = new ClsPerson(1,"曹操", Enm级别枚举类.皇帝); //第三个参数, 只能填我们自定义的枚举类里面的值, 你可以按空格, 来获得代码提示.
+
+
+            *//直接打印枚举类中的元素, 会得到该元素的字符串.*
+            Console.WriteLine(*Enm级别枚举类.皇帝*); //皇帝
+
+
+            *//如果想看该枚举元素背后代表的int值, 就要先强制类型转换. 输出的结果, 就相当于是枚举元素的index值. 不过, 枚举元素的数值, 你可以手动来改.*
+            Console.WriteLine(*(int) Enm级别枚举类.皇帝*); //0
+            Console.WriteLine((int) Enm级别枚举类.丞相); //1
+            Console.WriteLine((int) Enm级别枚举类.大都督); //2
+            Console.WriteLine((int) Enm级别枚举类.刺史); //3
+            Console.WriteLine((int) Enm级别枚举类.太守); //4
+
+
+        }
+    }
+}
+----
+
+下面, 我们把枚举类型中的元素, 手动来赋数值
+
+[,subs=+quotes]
+----
+//枚举也是个类, 要写在其他类的外面
+enum Enm级别枚举类 {
+    皇帝 = 100,
+    丞相 = 90,
+    大都督 = 70,
+    刺史 = 50,
+    太守 = 20,
+}
+----
+
+然后输出就是:
+[,subs=+quotes]
+----
+Console.WriteLine((int) Enm级别枚举类.皇帝); //100
+Console.WriteLine(*(int) Enm级别枚举类.丞相*); //90
+Console.WriteLine((int) Enm级别枚举类.大都督); //70
+Console.WriteLine((int) Enm级别枚举类.刺史); //50
+Console.WriteLine((int) Enm级别枚举类.太守); //20
+----
+
+
+====
+
+
 ---
 
 
