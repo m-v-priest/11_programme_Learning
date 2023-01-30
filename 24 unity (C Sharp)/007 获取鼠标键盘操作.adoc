@@ -37,6 +37,112 @@ void Update() {
 }
 ----
 
+'''
+
+==== onMouseDown()
+
+若要实现“点击某一游戏对象触发事件”这一功能，则可以使用onMouseDown方法（属于MonoBehaviour类的静态方法）。注意：该游戏对象必须添加Collider组件，否则无法触发onMouseDown方法。
+
+2D碰撞体对应的是2D的游戏对象，不能将3D和2D混用；
+
+这个组件可以定义物理碰撞的2D游戏对象的形状；
+形状不需要与游戏对象完全相同，粗略近似的方法在游戏运行中更有效。
+
+2D碰撞体都有以下8种类型
+
+Box Collider 2D 盒型碰撞体
+它就是一个矩形的碰撞盒。
+
+[,subs=+quotes]
+----
+public class my脚本1 : MonoBehaviour {
+
+    // Start is called before the first frame update
+    void Start() {
+
+    }
+
+    // Update is called once per frame
+    // Update is called once per frame
+    void Update() {
+
+    }
+
+    *private void OnMouseDown() {*
+        Debug.Log("你鼠标点击了本物体");
+    }
+}
+
+----
+
+image:img/0099.png[,]
+
+
+'''
+
+==== OnMouseDrag()
+
+当用户鼠标在GUIElement或Collider上拖拽时OnMouseDrag被调用 。
+
+OnMouseDrag is called every frame while the mouse is down.
+
+*OnMouseDrag在鼠标按下的每一帧被调用。*
+
+OnMouseDrag 可以被作为协同程序，在函数体内使用yield语句，这个事件将发送到所有附在Collider或GUIElement的脚本上。
+
+[,subs=+quotes]
+----
+*private void OnMouseDrag() {*
+    Debug.Log("你鼠标拖拽了本物体");
+}
+----
+
+
+'''
+
+==== 鼠标移入a物体上方时, 就让b物体(比如文本提示信息)显示出来(激活它); 鼠标移出a物体时, 就让b物体文本信息, 隐藏掉(取消激活)
+
+下面的脚本, 挂载到你的图片物体上.
+
+[,subs=+quotes]
+----
+public class my脚本1 : MonoBehaviour {
+
+    *GameObject insGo提示信息; //我们先设一个字段, 之后会用来存储"文本提示信息"物体.*
+
+    // Start is called before the first frame update
+    void Start() {
+        *insGo提示信息 = GameObject.Find("inof提示信息"); //先找到这个"文本提示信息"物体.*
+        *insGo提示信息.SetActive(false); //先把这个"文本提示信息"的组件, 取消激活状态.*
+    }
+
+    // Update is called once per frame
+    // Update is called once per frame
+    void Update() {
+
+    }
+
+
+    *private void OnMouseEnter() {*  //只检测一次
+        Debug.Log("你鼠标进入了本物体");
+
+        *insGo提示信息.SetActive(true); //鼠标移入图片上方时, 就激活该"文本提示信息"的组件.*
+    }
+
+
+    *private void OnMouseExit() {* //只检测一次
+        Debug.Log("你鼠标移出了本物体");
+
+        *insGo提示信息.SetActive(false); //鼠标移出物体时, 就让文本提示信息取消激活. 隐藏掉.*
+
+    }
+
+
+}
+----
+
+image:img/0100.png[,]
+
 
 
 
@@ -138,4 +244,22 @@ public class crip时间脚本 : MonoBehaviour {
 ----
 
 
+
+== 对物体的鼠标点击事件
+
+对图片, 添加鼠标点击事件, 先要给图片这个物体, 添加组件
+
+image:img/0107.png[,]
+
+然后, 添加 pointerDown 事件, 也是"鼠标点击"的意思.
+
+image:img/0108.png[,]
+
+image:img/0106.png[,]
+
+*但注意: 你自定义的函数, 有超过1个参数的话, 在 onclick里就看不到了. 无参数的函数可以看到, 1个参数的也可以看到, 但2个参数就看不到了. 另外, 如果参数是数组类型, 也看不到.*
+
+注意, 也不能将函数定义为 static静态方法的!
+
+image:img/0109.png[,]
 

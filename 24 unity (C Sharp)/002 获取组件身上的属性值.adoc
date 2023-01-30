@@ -16,6 +16,136 @@ https://docs.unity3d.com/cn/2021.1/ScriptReference/Transform.html
 
 == 增
 
+
+==== 创建游戏物体 GameObject
+
+
+注意: GameObject 和 gameObject的区别:
+
+Gameobject是一个类型，所有的游戏物件都是这个类型的对象。
+
+gameobject是一个对象， 就跟java里面的this一样， 指的是这个脚本所附着的游戏物件
+
+
+小写的 gameObject 就是你脚本挂着的那个物体。这个实例化过程是Unity帮你实现的，不用在写代码实例化。this.gameObject默认函数，脚知本一创建直接就get到了。
+例如，有一个A物体。你给它挂载一个脚本里写this.gameObject。那就等于是直接获取（实例化）A这个物体了，你直接可以引用它下面挂载的属性。
+
+Transform是一个类，用来描述物体的位置，大小，旋转等等信息。
+transform是Transform类的对象，依附于每一个物体。也是当前游戏对象的一个组件(每个对象都会有这个组件)
+
+
+
+transform与gameObject
+1>二者的含义
+        transform :  当前游戏对象的transform组件
+   　  gameobject ：当前游戏对象的实例
+
+
+2>两者的联系和区别
+        * *在unity中每个游戏对象都是一个gameobject.* monodevelop中的**gameobject就代表着本脚本所依附的对象.** 每个gameobject都包含各种各样的组件，但从这点可以看出transform是gameobject的一个组件，控制着gameobject的位置，缩放，和旋转，而且每个gameobject都有而且必有一个transform组件
+        * gameobject.find用来获取场景中那个我们需要查找的对象(object).  而transform.find方法则是获取当前对象的子对象下我们需要获取的目标对象位置信息。
+
+        * 注意:  在update() 中尽量不使用find() 方法，影响性能.
+
+
+3>gameobject.transform与transform.gameobject
+
+        *  gameobject.transform,是获取当前游戏对象的transform组件.
+            所以在start函数中 **gameobject.transform 和this.transform,指向的都是同一个对象。**即：gameobject.transform == this.transform == transform
+
+
+
+        * transform.gameobject:可以这么理解为：获取当前transform组件所在的gameobect
+           所以在start()函数中transform.gameobject == this.gameobject == gameobect
+
+ 　　所以他们可以无限的引用下去
+
+意思就是。gameobject.transform == this.transform == gameobject.transform.gameobject.tranform == tranform.gameobect.transform
+
+
+
+[,subs=+quotes]
+----
+public class my脚本1 : MonoBehaviour {
+
+    // Start is called before the first frame update
+    void Start() {
+
+
+        *//创建空物体, 直接能在界面上看到该物体.*
+        *GameObject insObj1 = new GameObject("my空物体1");*
+        Debug.Log(insObj1);
+
+
+        *//克隆出另一个物体*
+        *GameObject insObj2 = GameObject.Instantiate(insObj1); //进行实例化，也就是对一个对象进行复制操作. Instantiate函数实例化是将original对象的所有子物体和子组件完全复制，成为一个新的对象。这个新的对象拥有与源对象完全一样的东西，包括坐标值等。*
+
+
+
+        Vector3 v3坐标 = new Vector3(50, -7, 85);
+
+        *GameObject insObj3 = GameObject.Instantiate(insObj1, v3坐标, Quaternion.identity);*
+        //Instantiate（GameObject,position,rotation）, 有三个参数
+        //GameObject 指生成克隆的游戏对象，也可以是Prefab预制体.
+        //position 指生成克隆的游戏对象的初始位置，类型是Vector3.
+        //rotation 指生成克隆的游戏对象的初始角度，类型是Quaternion.  你可以设置成: *Quaternion.identity, 就是指Quaternion(0,0,0,0),就是每旋转前的初始角度,是一个确切的值.*
+
+    }
+
+    // Update is called once per frame
+    void Update() {
+
+    }
+
+}
+----
+
+'''
+
+==== 对预制体, 进行克隆
+
+[,subs=+quotes]
+----
+public class my脚本1 : MonoBehaviour {
+
+    *public GameObject ins预制体指针; //这个变量的值, 会在unity界面里, 将预制体拖到该字段上, 来得到赋值*
+
+
+    // Start is called before the first frame update
+    void Start() {
+
+        *GameObject ins我的预制体 = GameObject.Instantiate(ins预制体指针);*
+
+    }
+
+    // Update is called once per frame
+    void Update() {
+
+    }
+
+}
+----
+
+image:img/0103.png[,]
+
+
+'''
+
+
+==== 创建unity中自带的几何物体
+
+[,subs=+quotes]
+----
+GameObject.CreatePrimitive(PrimitiveType.Plane); //比如, 创建出平面
+----
+
+
+
+
+
+'''
+
+
 ==== 类中的字段, 就是组件身上的参数
 
 比如, 你脚本中写以下字段, 权限要 public, 才能暴露给组件中. 如果是 private, 则不会暴露出来.
@@ -195,6 +325,17 @@ public class my脚本2 : MonoBehaviour
 ----
 
 
+[,subs=+quotes]
+----
+void Start() {
+
+    insMy物体1 = GameObject.Find("my物体1");
+    insMy物体2 = GameObject.Find("my物体2");
+
+    *GameObject.Destroy(insMy物体1); //直接删除(销毁)游戏物体*
+    *GameObject.Destroy(insMy物体2, 2); //第二个参数, 设定几秒后再执行删除操作. 本处, 2秒后, 再删除"insMy物体2"*
+}
+----
 
 
 
@@ -1281,13 +1422,71 @@ image:img/0077.png[,]
 若要输入小数，将此属性设置为Decimal Number即可
 
 
+'''
 
-
-
-
+==== 随机显示图片
 
 [,subs=+quotes]
 ----
-# #
+public class my脚本1 : MonoBehaviour {
+
+    *public Sprite[] arr精灵图头像集; //这个字段, 之后会从unity中来给它赋值一堆精灵图*
+
+
+    // Start is called before the first frame update
+    void Start() {
+
+
+        fn随机显示头像(arr精灵图头像集); //执行函数
+
+    }
+
+    // Update is called once per frame
+    void Update() {
+
+    }
+
+
+    //下面的函数, 只要输入一个参数:头像集(精灵类型的集合)即可.
+    public void fn随机显示头像(Sprite[]  arr精灵图头像集) {
+
+        //获取一个随机数, 范围在0到头像数组长度之间. 这个随机数, 将作为索引值, 来指明要让数组中的哪个index的图片激活
+        int index = UnityEngine.Random.Range(0, arr精灵图头像集.Length);
+
+
+        **//创建一个空物体, 将随机选出的 要激活的单张精灵图组件, 挂载到这个空物体上. **
+        *GameObject obj当前激活的精灵图头像 = new GameObject("头像物体"); //给这个空物体, 起名叫"头像物体"*
+
+        *obj当前激活的精灵图头像.AddComponent<SpriteRenderer>().sprite = arr精灵图头像集[index]; //将单张精灵图, 挂载(赋值)到空物体的SpriteRenderer组件上的sprite字段中. 空物体就能显示出头像图片了.*
+
+        //注意, 上面两句代码不过你连起来写成一句, 否则会报错, 说UnityEngine.Sprite类型 无法转换为GameObject类型. 但像现在这样分成两句写, 却没问题. 原因未知.
+
+        //设置显示出的图片的坐标位置, x,y坐标为一个随机数
+        obj当前激活的精灵图头像.transform.position = new Vector3(UnityEngine.Random.Range(0, 1000), UnityEngine.Random.Range(0, 500));
+
+
+        //设置图片的缩放比例, 原图太小了. Transform.localScale 为：The scale of the transform relative to the GameObjects parent.转换相对于GameObjects父对象的比例
+        obj当前激活的精灵图头像.transform.localScale = new Vector3(30, 30, 30);
+
+    }
+
+}
 ----
 
+image:img/0104.png[,]
+
+image:img/0105.png[,]
+'''
+
+
+Sprite 精灵 是一种 2D 图形对象，图形是从位图图像 Texture2D 获取的。Sprite 类主要标识应该用于特定精灵的图像部分。然后，*GameObject 上的 SpriteRenderer 组件可以使用该信息来实际显示图形。*
+
+
+官方文档: +
+https://docs.unity3d.com/cn/2021.1/ScriptReference/Sprite.html
+
+运算符
+
+- bool	该对象是否存在？
+- operator !=	比较两个对象是否引用不同的对象。
+- operator ==	比较两个对象引用，判断它们是否引用同一个对象。

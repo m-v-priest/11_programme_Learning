@@ -1,0 +1,79 @@
+
+= 延迟调用
+:sectnums:
+:toclevels: 3
+:toc: left
+'''
+
+== 延迟调用 ->  Invoke() 方法
+
+
+Invoke() 方法,应该在 脚本的生命周期里的（Start、Update、OnGUI、FixedUpdate、LateUpdate）中被调用.
+
+Invoke(); 不能接受含有参数的方法. 注意Invoke调用的方法必须是void类型且必须无参。
+
+在 Time.ScaleTime = 0; 时， Invoke() 无效，因为它不会被调用到.
+
+== 每隔一段时间, 重复调用某函数 -> InvokeRepeating(nameof(你的函数名), 首次延迟调用的秒数 , 每隔几秒重复调用);
+
+Invoke() 也支持重复调用：如
+[,subs=+quotes]
+----
+InvokeRepeating("SendMsg", 2 , 3);   //意思是指：2 秒后调用 SendMsg() 方法，并且之后每隔 3 秒调用一次 SendMsg () 方法
+----
+
+每隔一段时间重复调用某个函数, 不就是可以实现"自动定时存档"了吗?
+
+[,subs=+quotes]
+----
+public class my脚本1 : MonoBehaviour {
+
+    public void fn输出信息() {
+        Debug.Log("输出信息...");
+    }
+
+    // Start is called before the first frame update
+    void Start() {
+
+        //Invoke()是延时调用函数
+        *Invoke(nameof(fn输出信息), 2); //2秒之后, 再调用"fn输出信息"函数.*
+
+        *InvokeRepeating(nameof(fn输出信息), 2, 1); //2秒后, 调用"fn输出信息"函数. 并且每隔1秒,就重复调用一次"fn输出信息"函数.*
+    }
+
+    // Update is called once per frame
+    void Update() {
+
+    }
+}
+----
+
+在重复调用某函数时, 为了防止前一个函数在执行完成之前, 后一个函数就开始调用, 导致同一个变量被多个函数同时篡改. 我们可以给代码加个判断语句:
+
+[,subs=+quotes]
+----
+void Start() {
+
+    *//如果"fn输出信息"函数, 还没有被 Invoke()方法调用的话, 我们才让它调用"fn输出信息"函数. 换言之, 只有当前一个"fn输出信息"函数执行完后, 我们才继续做下一次调用. 这样, 就不会同一时间段中, 有两个"fn输出信息"函数在执行了.*
+
+    //IsInvoking( "func")，判断"func"函数, 是否正在调度中.
+    *if (!IsInvoking(nameof(fn输出信息))) {*
+        InvokeRepeating(nameof(fn输出信息), 2, 1); //2秒后, 调用"fn输出信息"函数. 并且每隔1秒,就重复调用一次"fn输出信息"函数.
+    }
+}
+----
+
+'''
+
+== 关闭对"某函数"的延迟执行 -> CancelInvoke(nameof(你的函数名))
+
+[,subs=+quotes]
+----
+//CancelInvoke( "func" )，取消调度、从调度队列中移除
+*CancelInvoke(nameof(fn输出信息)); //关闭对"fn输出信息"函数的延迟执行.*
+----
+
+'''
+
+
+
