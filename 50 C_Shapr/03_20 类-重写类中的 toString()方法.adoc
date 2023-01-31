@@ -1,0 +1,57 @@
+﻿
+
+= 重写类中的 toString()方法
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+== 你打印"类的实例对象", 其实是调用的它的 toString()方法
+
+我们可以重写类中的 toString()方法, 让它直接给我们显示"实例内部的所有字段信息".
+
+[,subs=+quotes]
+----
+//类
+internal class ClsPerson
+{
+    private string name;
+    private int age;
+
+    public ClsPerson(string name, int age)
+    {
+        this.name = name;
+        this.age = age;
+    }
+
+    *//重写类从积累Object中继承下来的 toString()方法. 这样, 你在实例化后, 直接打印实例对象时 即 Console.WriteLine(insObj)时, 会自动调用该 ToString()方法, 而不需要手动的来写 insOBj.ToString() 了. 这很棒, 就很像python中, 能直接打印出对象中的数据了*
+
+    public *override string ToString()*
+    {
+        string str = string.Format("name:{0}, age;{1}",name,age);
+        return str;
+    }
+}
+
+
+
+//主文件
+static void Main(string[] args)
+{
+    ClsPerson insP = new ClsPerson("zrx", 19);
+    *Console.WriteLine(insP); //name:zrx, age;19*
+}
+----
+
+'''
+
+
+
+
+
+
+
+
+
+

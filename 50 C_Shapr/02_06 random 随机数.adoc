@@ -1,0 +1,90 @@
+﻿
+= 随机数
+:sectnums:
+:toclevels: 3
+:toc: left
+---
+
+== 伪随机数
+
+*什么是伪随机数 psreudorandom number ? 这些数, 是使用一些称为种子（seed）的初始值, 通过某种算法得到的。由于这个算法是确定的，所以产生的数字序列, 在统计上并不是随机的.* 不过, 除非你知道这些算法和种子，否则就不大能推测出这个序列.
+
+image:img/0149.webp[,]
+
+要产生真正的随机数，就应当在每次调用rand()之前, 设定不同的种子.
+
+C# 中的 Random类, 用来产生伪随机数字. 它的构造函数有两种:
+
+[options="autowidth"]
+|===
+|实例化时 |Header 2
+
+|-> 直接New Random()
+|根据触发那刻的"系统时间", 做为种子，来产生一个随机数字
+
+|-> New Random(Int32 Seed)
+|可以自己设定触发的种子
+|===
+
+
+
+'''
+
+== 生成 [minValue ,int maxValue) 之间的随机数 (注意: 包头不包尾). -> insRandom.Next(int minValue, int maxValue)
+
+insRandom.Next(int minValue, int maxValue) :
+
+- 左闭右开区间，即生成的数的取值范围, 能包含minValue，不包含maxValue. 
+- 可以包含负数.
+
+[,subs=+quotes]
+----
+*Random insRandom = new Random(); //必须先new出"随机数生成器rnd"，我们才能用来生成随机数.*
+
+for (int i = 0; i < 10; i++) {
+    Console.Write(*insRandom.Next(0,10)*); //生成 0-9 之间的随机数.
+}
+----
+
+'''
+
+== 生成 "小于<maxValue" 中的非负数随机数 -> insRandom.Next(int maxValue)
+
+insRandom.Next(int maxValue) :
+
+- 随机数的取值范围, 是 < maxValue 的(因为包头不包尾).
+- 只能生成"非负整数". 相当于 insRandom.Next(0, maxValue)
+- 如果你设定的maxValue的值, 为0或1，那么生成的随机数只能是0。
+
+
+[,subs=+quotes]
+----
+Random insRandom = new Random(); //随机数生成器rnd，它可以用来生成随机数.
+
+for (int i = 0; i < 50; i++) {
+    Console.Write(*insRandom.Next(10)*); //生成 0-9 之间的随机数.
+}
+----
+
+'''
+
+== ★ 生成 [0.0, 1.0) 之间的随机浮点数(注意:包头不包尾) -> insRandom.NextDouble()
+
+[,subs=+quotes]
+----
+Random insRandom = new Random(); //随机数生成器rnd，它可以用来生成随机数.
+
+for (int i = 0; i < 50; i++) {
+    Console.WriteLine(*insRandom.NextDouble()*); //生成 0.0 到 9.999... 之间的随机数.
+}
+----
+
+....
+输出:
+0.8126272900227055
+0.14759010558562524
+0.9602942326551503
+....
+
+'''
+

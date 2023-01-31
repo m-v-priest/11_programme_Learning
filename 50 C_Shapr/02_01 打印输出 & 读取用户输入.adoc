@@ -1,0 +1,210 @@
+﻿
+
+= 打印输出, and 读取用户输入
+:sectnums:
+:toclevels: 3
+:toc: left
+---
+
+
+== 读取用户输入 -> Console.ReadLine() ← 返回 string 类型.
+
+[,subs=+quotes]
+----
+string str = Console.ReadLine(); //获取用户的键盘输入内容
+----
+
+'''
+
+
+== 打印输出
+
+==== 在输出语句中, 使用变量
+
+
+同时输出多个变量: 在字符串中, 用 {0},{1},{2}这些索引,来代表要引用的多个变量.
+
+[,subs=+quotes]
+----
+string name = "zrx";
+string sex = "male";
+int age = 18;
+
+*Console.WriteLine("姓名:{0}, 性别:{1}, 年龄:{2}",name,sex,age);* //姓名:zrx, 性别:male, 年龄:18
+----
+
+'''
+
+==== 用"字符串的格式化",输出变量 -> string.Format()
+
+
+[,subs=+quotes]
+----
+string str = *string.Format("name:{0}, age;{1}",name,age);*
+----
+
+
+'''
+
+
+== 让"转义"失效 -> 在字符串前面加@
+
+不转义字符, 按原始内容直接输出: 在字符串前面加@ 即可.
+
+[,subs=+quotes]
+----
+Console.WriteLine("a\\b\\c");    // 输出: a\b\c
+
+Console.WriteLine(#@#"a\\b\\c");   *//字符串前面加了@后, 意思就是让后面的"转义功能"失效. 按原始字符串输出.* 本处会输出 a\\b\\c
+
+Console.WriteLine(@"c:\my\document"); *//所以我们比如想输出路径, 可以用这个方法, 更方便. 本处输出 c:\my\document*
+----
+
+'''
+
+==== 用@来让"转义"失效后, 如何输出双引号(") ?
+
+用两个引号(""), 来代表输出1个引号(")
+
+[,subs=+quotes]
+----
+Console.WriteLine(@"aaa #""引号里的内容""# bbb");
+//在使用了@后, 如何再输出引号呢? 就要用两个引号"", 来代表1个引号" . 本处输出 : aaa"引号里的内容"bbb
+----
+
+'''
+
+
+== 打印输出时, 来对数字做格式化
+
+==== 格式化成货币  -> :C
+
+[,subs=+quotes]
+----
+int money = 100;
+
+//将money变量(索引处在第一个, 即index=0处), 格式化为人民币或美元, 用 :C
+*Console.WriteLine("{0:C}", money); //￥100.00*
+----
+
+
+
+==== 保留n位小数  -> :F
+
+[,subs=+quotes]
+----
+//将第一个变量, 保留4位小数, 会自动的四舍五入
+Console.WriteLine("{0:F4}", Math.PI); //3.1416
+----
+
+
+==== 转换成百分比 -> :P
+
+[,subs=+quotes]
+----
+//转换成百分比, 保留2位小数, 用 :P
+Console.WriteLine("{0:P2}", Math.PI); //314.16%
+----
+
+
+'''
+
+== 打印输出时, 来对数字做格式化 -> 使用 intObj.ToString(格式) 方法
+
+==== 三位一逗号显示, 即转换为千分位格式 -> intObj.ToString("n")
+
+[,subs=+quotes]
+----
+int a = 123456789;
+Console.WriteLine(*a.ToString("n")*); //123,456,789.00
+----
+
+
+'''
+
+==== 转百分号 -> intObj.ToString("p")
+
+[,subs=+quotes]
+----
+double b = 987.654321;
+Console.WriteLine(*b.ToString("p")*); //98,765.43%
+----
+
+
+
+'''
+
+
+==== 转科学计数法 -> intObj.ToString("e")
+ 
+[,subs=+quotes]
+----
+int a = 123456789;
+Console.WriteLine(*a.ToString("e")*); //1.234568e+008
+----
+
+
+'''
+
+
+==== 保留n位小数点. 并四舍五入
+
+[,subs=+quotes]
+----
+int a = 123456789;
+double b = 987.654321;
+
+Console.WriteLine(a.ToString("f3")); //123456789.000 <- 保留3位小数点. 四舍五入
+Console.WriteLine(*b.ToString("f3")*); //987.654
+----
+
+'''
+
+==== 只保留整数, 去掉小数点, 四舍五入 -> intObj.ToString("f0")
+
+[,subs=+quotes]
+----
+double b = 987.654321;
+Console.WriteLine(*b.ToString("f0")*); //988
+----
+
+
+'''
+
+==== 数字前补足0
+
+[,subs=+quotes]
+----
+int c = 456;
+Console.WriteLine(*c.ToString("d6")*); //000456
+----
+
+
+
+'''
+
+==== 转货币 -> intObj.ToString("c")
+
+[,subs=+quotes]
+----
+int a = 123456789;
+Console.WriteLine(*a.ToString("c")*); //￥123,456,789.00
+----
+
+'''
+
+
+==== 转16进制 -> intObj.ToString("x")
+
+[,subs=+quotes]
+----
+int a = 123456789;
+Console.WriteLine(*a.ToString("x")*); //75bcd15
+----
+
+
+'''
+
+
+
+

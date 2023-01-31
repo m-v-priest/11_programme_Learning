@@ -1,0 +1,98 @@
+﻿
+= 类: 静态类, 静态方法
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+== 静态类
+
+"静态类"不能被实例化.
+
+静态类的主要特性：
+
+- 是密封的。
+- *无法实例化。*
+- 不能包含实例构造函数。
+- *仅包含静态成员。*
+- 静态类可以有静态构造函数，*静态构造函数不可继承；*
+- 静态构造函数无访问修饰符、无参数，只有一个 static 标志；
+- 静态构造函数不可被直接调用，当创建类实例或引用任何静态成员之前，静态构造函数被自动执行，并且只执行一次。
+
+
+'''
+
+
+== 静态方法
+
+类中的静态成员, 和静态方法, 只能被类自己调用, 不能被实例对象调用. 相当于是"类"私人使用的方法, 就跟老婆一样, 不外借.
+
+这样, 非静态类, 就可以包含静态的方法、字段、属性或事件了. 即, 虽然这个类可以被实例化, 但里面的静态字段, 是留给该类自己私人使用的 (相当于老爸的私人存款).
+
+[,subs=+quotes]
+----
+internal class ClsPersonl
+{
+    public string name;
+    public *static* string v国籍;  //设为了"静态"成员.  类中的静态成员, 只能被类直接调用, 而不能被实例对象来调用, 相当于是类的私人方法了, 不开放给实例使用.
+
+    public ClsPersonl(string name)
+    {
+        this.name = name;
+    }
+}
+
+//主文件
+internal class Program
+{
+    static void Main(string[] args)
+    {
+        *ClsPersonl.v国籍 = "china"; //← 类中的静态方法, 可以直接被类调用.*
+        Console.WriteLine(ClsPersonl.v国籍);  // china
+    }
+}
+----
+
+
+'''
+
+==== "静态方法"内部, 要使用变量时, 只能使用同为 static 的"静态变量", 不能使用普通变量.
+
+[,subs=+quotes]
+----
+internal class ClsPersonl
+{
+    public string name;
+    public static string v国籍;  //设为了"静态"成员.  类中的静态成员, 只能被类直接调用, 而不能被实例对象来调用, 相当于是类的私人方法了, 不开放给实例使用.
+
+
+    //构造函数
+    public ClsPersonl(string name)
+    {
+        this.name = name;
+    }
+
+
+    //类的静态方法
+    public static void fn静态方法()
+    {
+        *//Console.WriteLine(name);  //这句会报错, 因为在静态方法里, 只能使用静态变量, 不能使用普通变量*
+        *Console.WriteLine(v国籍);  //这个没问题, 因为"v国籍"就是静态变量.*
+    }
+}
+
+
+//主文件
+internal class Program
+{
+    static void Main(string[] args)
+    {
+        ClsPersonl.v国籍 = "china"; //← 类中的静态方法, 可以直接被类调用.
+        *ClsPersonl.fn静态方法(); //输出 china  ← 静态方法, 只能被类直接调用.*
+    }
+}
+----
+
+'''
+

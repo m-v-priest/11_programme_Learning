@@ -1,0 +1,243 @@
+﻿
+= 类
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+C# 中, 习惯上, 一个"类" 就放在一个cs文件里. (文件名, 就跟你的类名保持一致就行了.) 而不要把多个类写在一个文件中.
+
+添加"类文件"的方法
+
+image:img/0004.png[,]
+
+image:img/0005.png[,]
+
+'''
+
+== 类
+
+==== 访问权限
+
+[options="autowidth"]
+|===
+|Header 1 |本类 |子类| 实例对象 | 外部 |具体说明
+
+|public
+|√
+|√
+|√
+|√
+|
+
+
+|protected
+|√
+|√
+|×
+|
+|在類的內部或者在派生類中訪問，無論該類和派生類是否是在同一程序集(本项目)中.
+
+
+|private
+|√
+|
+|
+|
+|
+
+
+|internal
+|
+|
+|
+|
+|只能在同一程序集(Assembly)中訪問.
+
+
+|protected internal
+|
+|
+|
+|
+|受保護的內部： +
+-> 若是繼承關係，無論是否是在同一程序集中, 均可以訪問； +
+-> 若不是繼承關係, 则只能在同一程序集中訪問對象.
+|===
+
+在类中, 我们一般把所有数据, 都设为private私有的, 然后通过 get 和 set方法, 来暴露给用户, 来修改私有的属性值. 你就可以在这些函数方法里, 添加"验证代码"了.  +
+比如 , 用户想修改密码, 就先验证用户的身份信息, 正确了才能继续使用set函数来修改密码这个数据.
+
+
+[,subs=+quotes]
+----
+namespace ConsoleApp1
+{
+  //创建一个"人"类
+  internal class ClsPerson
+  {
+      private string name = "";
+      private string id身份证号="000"; //默认为000
+      private string password = "123456"; //默认密码为123456
+
+
+      *public void fnGetPassword() // get函数*
+      {
+          Console.WriteLine("你的当前password 是: {0}",password);
+      }
+
+
+      *public void fnSetPassword()  // set函数. 里面可以设置"验证代码"*
+      {
+          while (true)
+          {
+              Console.WriteLine("输入你正确的身份证号, 才能更改密码");
+              string tempID= Console.ReadLine();
+
+              if (tempID == id身份证号)
+              {
+                  Console.WriteLine("验证身份通过");
+                  break; //跳出while循环
+              }
+              else
+              {
+                  Console.WriteLine("你输入的身份证号码错误!");
+              }
+          }
+
+          Console.WriteLine("请输入新密码");
+          password  = Console.ReadLine(); //上面的验证通过后, 就允许用户来更改密码了
+      }
+
+  }
+}
+----
+
+
+'''
+
+==== 属性
+
+对每一个类中的 private数据, 都要设置 get和set函数, 太麻烦了! 所以 C# 提供了一种简单的方法来实现这个功能 --- 这就是"属性". +
+类中的"属性", 其功能 相当于把get和set函数, 总和到一起了. 其实就是将get 和set函数 打包的简便写法.
+
+
+[,subs=+quotes]
+----
+internal class ClsPerson{
+  private string name;  //没有get, set方法的, 只能叫"字段"
+  private int age;
+
+  *public int Age  //定义"属性". 注意习惯上要大写, 以区别上面的"数据成员".*
+  {
+      *get //这里相当于是 fnGet函数*
+      {
+          return age;
+      }
+
+      *set //这里相当于是 fnSet函数. 这里的set功能块, 默认会接收一个叫value的参数*
+      {
+          age = value;
+      }
+  }
+
+  //构造函数
+  public ClsPerson(string name, int age) {
+      this.name = name;  //this就代表你之后实例化本类对象时, 当时创建出的那一个实例对象
+      this.age = age;
+  }
+
+  public void fnInfo()
+  {
+      Console.WriteLine("info : 姓名:{0}, 年龄:{1}",name,age);
+  }
+}
+----
+
+即: +
+image:img/0008.png[,]
+
+
+主页面中, 这样写: +
+[,subs=+quotes]
+----
+ClsPerson p1 = new ClsPerson("zrx",19);
+*p1.Age = 10;  //赋值, 会直接调用类中"Age属性"中的 get块(功能相当于get函数)*
+Console.WriteLine(p1.Age); //10  ←读取, 会直接调用类中"Age属性"的set块
+----
+
+你会发现, 虽然"Age属性"的体内是函数功能, 但我们在使用它时, 可以把它当做一个普通的"数据成员"变量来使用, 直接赋值. 很方便.
+
+'''
+
+== 查看类图 (类的继承关系图)
+
+
+先在 visual studio 的菜单:  工具 -> 获取工具和功能
+
+image:img/0015.png[,]
+
+安装 "扩展开发"
+
+image:img/0016.png[,]
+
+然后, 在"单个组件"中, 搜索"类", 勾选"类设计器".
+
+image:img/0017.png[,]
+
+然后, 点整个界面右下角的"修改" (相当于是安装功能)
+
+选菜单: 视图 -> 类视图
+
+image:img/0018.png[,]
+
+image:img/0019.png[,]
+
+image:img/0020.png[,]
+
+image:img/0021.png[,]
+
+
+'''
+
+
+== 实例对象
+
+==== "实例对象"的变量名, 只是个指针
+
+由类实例化出来 的对象, 其变量名, 只是个指针而已.
+
+[,subs=+quotes]
+----
+ClsPerson p1 = new ClsPerson("zrx"); // p1变量, 只是个指针, 它指向 ClsPerson实例化出来的一个对象.
+Console.WriteLine(p1.Name); //zrx
+
+
+ClsPerson p2;  //创建p2对象, 这里没有对它进行初始化赋值
+p2 = p1; // 让 p2 指针指向p1对象, 现在, p2和p1这两个指针, 都指向同一块内存地址了.
+Console.WriteLine(p2.Name); //zrx  ← 现在, p2就完全接收了p1里面的数据.
+
+
+p2.Name = "wyy";  //由于p2指针指向了p1, 所以我们修改p2对象的name数据(Name属性), 就相当于是修改了 p1对象的name数据.
+Console.WriteLine(p1.Name); //wyy
+
+
+*p1 = null; // 断开p1的指针, 不再指向任何具体对象了.*
+//Console.WriteLine(p1.Name);  // 这里就会报错了, 因为 p1指针, 指向了空的内存地址.
+Console.WriteLine(p2.Name); //wyy  ← p2不受影响
+----
+
+
+'''
+
+
+
+
+
+
+
+
+
+
+

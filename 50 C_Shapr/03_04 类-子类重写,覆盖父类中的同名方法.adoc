@@ -1,0 +1,111 @@
+﻿
+
+= 子类重写, 覆盖 父类中的同名方法
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+
+== 子类中, 重写父类的同名方法, 就会"覆盖掉"父类的方法. (父类中该方法依然存在, 只不过被子类的同名方法屏蔽了) 
+
+[,subs=+quotes]
+----
+internal class ClsSon2: ClsFather {
+    public string language; //添加一个子类2自己的数据
+
+    *public void fnCan2() //重写继承自父类的 fnCan2方法. 会覆盖掉父类的同名方法.*
+    {
+        Console.WriteLine("会走(子类2专属)");
+    }
+}
+----
+
+'''
+
+
+== 虚方法 virtual ← 也是 在子类中,重写父类中的同名方法
+
+[,subs=+quotes]
+----
+namespace ConsoleApp4 {
+
+    //父类
+    internal class ClsFather {
+        public *virtual* void fnTalking() *//virtual 让本方法, 变成了"虚方法"*
+        {
+            Console.WriteLine("父类的口才");
+        }
+    }
+
+
+    //子类
+    internal class ClsSon : ClsFather {
+        public *override* void fnTalking() { *// 在子类中, 你要重写父类的同名方法, 只要先输入 "override+空格", 软件就会提示你要重写哪个父方法.*
+            Console.WriteLine("子类的口才");
+        }
+    }
+
+
+    //主函数
+    internal class Program {
+        static void Main(string[] args) {
+            ClsSon insSon = new ClsSon();
+            insSon.fnTalking(); //子类的口才
+        }
+    }
+}
+----
+
+
+'''
+
+
+==  隐藏方法 ← 即子类覆盖父类的同名方法
+
+在子类中, 要覆盖父类的同名方法, 要在子类这个方法前 使用关键词 new.
+
+[,subs=+quotes]
+----
+namespace ConsoleApp4 {
+
+    //父类
+    internal class ClsFather {
+        public void fnTalking() {
+            Console.WriteLine("父类的口才");
+        }
+    }
+
+
+    //子类
+    internal class ClsSon : ClsFather  //子类继承自父类
+    {
+        public *new* void fnTalking()  *//要覆盖父类中的同名方法, 在这里要加 new 关键词*
+        {
+            Console.WriteLine("子类的口才");
+        }
+    }
+
+
+    //主函数
+    internal class Program {
+        static void Main(string[] args) {
+            ClsSon insSon = new ClsSon();
+            insSon.fnTalking(); //子类的口才
+
+            ClsFather insFather = new ClsSon();  // 父类变量, 指向子类的实例对象
+            insFather.fnTalking(); //父类的口才  ← 你发现, 虽然父类中有子类的同名方法, 但是父类变量指向子类实例后, 调用该同名方法时, 依然执行的是父类中的方法, 而不是子类中的方法. 这就是本"隐藏函数"和"虚函数"在重写父类方法的区别所在.
+                                   //即, *子类中, 用"虚函数"方式 重写的父类方法, 父类变量指向子类对象, 再调用子类的方法, 会执行"子类中的方法". 而屏蔽掉执行"父类中的方法".*
+                                   // *如果用"隐藏函数"的方法, 来改写的父类方法. 父类变量指向子类对象, 再调用子类的方法, 会执行"父类中的方法". 而屏蔽掉执行"子类中的方法".*
+
+        }
+    }
+}
+----
+
+image:img/0027.png[,]
+
+'''
+
+

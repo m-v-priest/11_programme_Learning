@@ -1,0 +1,166 @@
+﻿
+= 字典
+:sectnums:
+:toclevels: 3
+:toc: left
+''''
+
+
+== Dictionary 字典
+
+Dictionary 和 hashTable 的区别
+
+[options="autowidth"]
+|===
+||Dictionary<K,V> |hashTable
+
+|
+|必须在创建时指定key和value的类型
+|
+
+|Key不存在时
+|抛异常
+|返回null
+
+|数据检索
+|快
+|慢
+
+|
+|是顺序存储, 会保持存储的value 的插入顺序
+|不维护插入的"键值数据"的任何顺序
+
+|
+|非线程安全, 必须人为使用 lock 语句进行保护
+|
+|===
+
+'''
+
+
+== 增
+
+==== insDic.Add(key, value)
+
+[,subs=+quotes]
+----
+//创建"字典泛型集合"类的实例, new出来 
+*Dictionary<string, string> dic我的字典 = new Dictionary<string, string>();*
+
+
+//添加元素
+*dic我的字典.Add("曹操", "魏王");* //即 key是"曹操", value是"魏王"
+dic我的字典.Add("刘备", "汉中王");
+dic我的字典.Add("孙权", "吴王");
+----
+
+
+'''
+
+== 删
+
+
+'''
+
+== 改
+
+'''
+
+== 查
+
+==== 以key取value -> insDic[key]
+
+
+[,subs=+quotes]
+----
+Console.WriteLine(*dic我的字典["刘备"]*); //汉中王 ← 输出该key对应的value值
+----
+
+'''
+
+== 判断
+
+==== 判断字典中是否存在某key -> insDic.ContainsKey(key)
+
+[,subs=+quotes]
+----
+Console.WriteLine(*dic我的字典.ContainsKey("孙权")*); //True
+----
+
+'''
+
+==== 判断字典中是否存在某value -> insDic.ContainsValue(value)
+
+[,subs=+quotes]
+----
+Console.WriteLine(*dic我的字典.ContainsValue("魏王")*);//True
+----
+
+'''
+
+== 遍历
+
+==== 遍历键值对 -> foreach()
+
+[,subs=+quotes]
+----
+foreach (var item in dic我的字典) {
+    Console.WriteLine("{0},{1}", *item.Key, item.Value*);
+}
+----
+
+其实, 上面的写法, 是下面代码的简化写法:
+[,subs=+quotes]
+----
+foreach (*KeyValuePair<string,string> itemKV* in dic我的字典) {
+    Console.WriteLine("{0},{1}",*itemKV.Key,itemKV.Value*);
+}
+----
+
+'''
+
+==== 只遍历 key -> dic我的字典.Keys  
+
+所返回的集合类型, 是 Dictionary<key的类型, value的类型>.KeyCollection 类型.
+
+[,subs=+quotes]
+----
+foreach (var itemKey in *dic我的字典.Keys*) {
+    Console.WriteLine("key={0},value={1}",itemKey, dic我的字典[itemKey]);
+}
+----
+
+下面是另一种写法:
+
+[,subs=+quotes]
+----
+//只遍历 key.
+*Dictionary<string,string>.KeyCollection allKey = dic我的字典.Keys;*
+
+foreach (string key in allKey) {
+    Console.WriteLine(key);
+}
+----
+
+'''
+
+==== 只遍历 value. → dic我的字典.Values 
+
+所返回的集合类型, 是 Dictionary<key的类型, value的类型>.ValueCollection 类型.
+
+[,subs=+quotes]
+----
+//只遍历 value.
+*Dictionary<string, string>.ValueCollection allValue = dic我的字典.Values;*
+
+foreach (var value in allValue) {
+    Console.WriteLine(value);
+}
+----
+
+'''
+
+
+
+
+

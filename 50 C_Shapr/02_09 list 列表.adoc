@@ -1,0 +1,250 @@
+﻿
+= list 列表
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+== list 类型
+
+- array 数组 : 长度是固定的. 
+- list 列表: 长度是可变的.
+
+在数组的两个数据间插入数据是很麻烦的. 为了解决这个问题, 就有了 ArrayList类型. 后者可以动态扩充与收缩.
+
+'''
+
+== 创建列表 List → new 出 List类的实例对象
+
+[,subs=+quotes]
+----
+*List<int> list1 = new List<int>() { 1, 2, 3 };* //创建一个List, 里面的元素是 int类型的. 并且我们直接赋予它3个元素, 值是1,2,3.
+----
+
+
+'''
+
+== 增
+
+==== 加元素 -> listObj.Add(value)
+
+[,subs=+quotes]
+----
+List<int> list1 = new List<int>() { 1, 2, 3 }; //创建一个List, 里面的元素是 int类型的.
+
+//添加元素, 用Add()方法
+*list1.Add(5);*
+list1.Add(8);
+----
+
+
+'''
+
+==== 在index位置添加一个元素 → listObj.Insert(index, value)
+
+[,subs=+quotes]
+----
+list1.Insert(2, 999); // 在index2 处, 添加一个999
+----
+
+
+'''
+
+== 删
+
+==== 删除某个元素 (通过值) → listObj.Remove(value)
+
+[,subs=+quotes]
+----
+list1.Remove(99); //删除 元素值=99 的那个元素
+----
+
+注意: 如果你的list中有两个相同value值的元素, 则 listObj.Remove(value) 方法, 只会删除第一个元素.
+
+'''
+
+==== 删除下标为index的元素 → listObj.RemoveAt(index)
+
+[,subs=+quotes]
+----
+list1.RemoveAt(2); //将index=2 处的元素删掉
+----
+
+'''
+
+==== 清空列表 → listObj.Clear()
+
+[,subs=+quotes]
+----
+List<int> list1 = new List<int>() { 1,3,55,7,9 };
+
+*list1.Clear(); //清空列表*
+fn遍历数组(list1);   //空
+----
+
+
+
+'''
+
+==== 从下标index开始，删除count个元素. → listObj.RemoveRange(从哪个index处开始删, 要删除的元素数量)
+
+List. RemoveRange(int index, int count)
+
+[,subs=+quotes]
+----
+list1.RemoveRange(3, 2); //将从 index=3开始往后的2元素, 都删掉
+----
+
+'''
+
+== 改
+
+==== 修改"特定一个index处"的元素的值 (注意, 这里只能修改1个元素的值, 而非多个元素的值)
+
+只能曲线救国法: 先删除某个index处的元素, 再在某个index处添加一个新元素.
+
+[,subs=+quotes]
+----
+List<int> listInt = new List<int>() { 1, 2, 3, 4 };
+
+//先删除某个index处的元素
+*listInt.RemoveRange(2,1); //删除从index=2开始的 1个数量的元素. 即删除 index=2出的元素 (本例即3)*
+
+//再添加某个index处的元素
+*listInt.Insert(2,100); //在index=2处,添加一个新元素100*
+
+foreach (var item in listInt) {
+    Console.Write(item+",");  // 1,2,100,4
+}
+----
+
+'''
+
+==== 修改"多个index处"的元素的值 -> listA.InsertRange(int index, IEnumerable<T> collectionB)
+
+
+List集合类中的InsertRange()方法的作用, 就是将集合B, 插入到另一个集合A的指定位置中.
+
+InsertRange(int index, IEnumerable<T> collection): 
+
+- index 代表要插入到A的指定位置.
+- collection 表示集合B.
+
+
+[,subs=+quotes]
+----
+List<int> listInt = new List<int>() { 1, 2, 3, 4 ,5,6,7};
+List<int> listInt2 = new List<int>() { 100,101,102 };
+
+//先删除某个index处的元素
+*listInt.RemoveRange(2,3); //删除从index=2开始的 3个数量的元素.  (本例即 3,4,5 这三个元素被删除)*
+
+//再从某个index处开始, 添加多个新的元素. 注意, 这里用的方法是 InsertRange(), 而不是 Insert().
+*listInt.InsertRange(2,listInt2); //在index=2处开始,添加一个新的list中的所有元素*
+
+foreach (var item in listInt) {
+    Console.Write(item+",");  // 1,2,*100,101,102*,6,7,
+}
+----
+
+
+
+'''
+
+==== 用新列表, 完全覆盖掉老列表 → listOld.AddRange(listNew)
+
+[,subs=+quotes]
+----
+List<int> list1 = new List<int>() { 1, 2, 3,4,5 };
+List<int> list2 = new List<int> { 91, 92, 93 }; 
+
+*list1.AddRange(list2);  //将list2, 添加到 list1里面. 注意, 会完全覆盖掉 list1 中的全部内容.*
+
+fn遍历数组(list2); //indx [0]=91, indx [1]=92, indx [2]=93,
+----
+
+'''
+
+== 查
+
+
+==== 查看数组的长度 -> listObj.Count属性  (← 注意, 首字母是大写!)
+
+[,subs=+quotes]
+----
+Console.WriteLine(*list1.Count*); //5  ←目前, list1列表中, 有5个元素.
+----
+
+
+'''
+
+==== 查看某个item元素的 index索引值 → listObj.IndexOf(value)
+
+[,subs=+quotes]
+----
+List<int> list = new List<int>() { 1, 2, 3, 99, 3, 0 };
+
+//查找列表中, 某个元素的索引值index
+Console.WriteLine(*list.IndexOf(99)*);  //3
+Console.WriteLine(list.IndexOf(999));  //-1  *← 如果查找的元素值不存在, 则返回 -1*
+
+*//在列表中, 从后往前来查找某元素的index值*
+Console.WriteLine(*list.LastIndexOf(3)*);  //4
+----
+
+'''
+
+==== 判断某个元素是否在该List中 → listObj.Contains(value)
+
+[,subs=+quotes]
+----
+Console.WriteLine(*list1.Contains(2)*);  //True ← 判断元素值2, 是否在列表中.
+----
+
+
+
+'''
+
+== 遍历
+
+==== foreach() 遍历
+
+[,subs=+quotes]
+----
+*foreach (var item in list1)*
+{
+    Console.WriteLine(item); //能直接遍历出list中的每个元素值
+}
+----
+
+'''
+
+== 排序
+
+==== 按元素值, 从小到大, 升序排列. → listObj.Sort()
+
+[,subs=+quotes]
+----
+List<int> list1 = new List<int>() { 7, 2, 57, 99, 14 };
+
+*list1.Sort(); //从小到大, 升序排列. 会直接修改原list.*
+fn遍历数组(list1);   //indx [0]=2, indx [1]=7, indx [2]=14, indx [3]=57, indx [4]=99,
+----
+
+'''
+
+==== 给List里面元素, 反转顺序 → listObj.Reverse()
+
+[,subs=+quotes]
+----
+List<int> list1 = new List<int>() { 1,3,55,7,9 };
+
+*list1.Reverse(); //按列表中元素的原顺序, 反转顺序排列*
+fn遍历数组(list1);   //indx [0]=9, indx [1]=7, indx [2]=55, indx [3]=3, indx [4]=1,
+----
+
+
+'''
+
+
