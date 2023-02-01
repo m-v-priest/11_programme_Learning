@@ -9,7 +9,11 @@
 
 ==== str + int = str
 
-数字+字符串, 这个操作, 会把数字int, 也自动转成字符串string类型.
+数字+字符串, 这个操作, 会把数字int, 也自动转成字符串string类型. 即, string + int 会调用 int的 ToString()方法.
+
+
+
+
 
 [,subs=+quotes]
 ----

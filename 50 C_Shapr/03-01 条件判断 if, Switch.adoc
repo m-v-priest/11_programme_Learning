@@ -67,3 +67,26 @@ switch (num)
 
 ---
 
+== 三元运算符
+
+三元条件运算符, 使用 q ? a : b 的形式. 即: 它在q为真时就计算a, 否则计算b.
+
+[,subs=+quotes]
+----
+internal class Program
+{
+    static void Main(string[] args) {
+        Console.WriteLine(fnMax(4,6)); //6
+    }
+
+
+    public static int fnMax(int a, int b) {
+        *return (a > b) ? a : b;  //三元运算符, 这里的意思是, 若(a>b) 为true, 则返回前面的 a. 若为false, 则后面的返回b*
+    }
+}
+----
+
+条件运算符在LINQ语句中尤其有用.
+
+
+'''
