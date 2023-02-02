@@ -18,6 +18,86 @@ image:img/0005.png[,]
 
 == 类
 
+==== 字段 field
+
+[,subs=+quotes]
+----
+class ClsPerson
+{
+    private string name; //这个就是字段
+    private int age;
+}
+----
+
+字段不一定要初始化。没有初始化的字段, 就均为默认值（0、\0、null、false)。 +
+字段初始化的逻辑, 要在构造器之前运行。
+
+public int Age = 10;
+
+
+字段, 可用以下修饰符进行修饰:
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|静态修饰符
+|static
+
+|访问权限修饰符
+|public, internal, private, protected
+
+|继承修饰符
+|new
+
+|不安全代码修饰符
+|unsafe
+
+|只读修饰符
+|readonly +
+**readonly修饰符, 可以防止字段在构造后, 被变更。**只读字段只能在声明时, 或在其所属的类构造器中来赋值。
+
+
+|线程访问修饰符
+|volatile
+|===
+
+'''
+
+==== 方法函数
+
+方法可以用以下修饰符修饰:
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|静态修饰符
+|static
+
+|访问权限修饰符
+|public, internal, private, protected
+
+|继承修饰符
+|new, virtual, abstract, override, sealed
+
+|部分方法修饰符
+|partial
+
+|非托管代码修饰符
+|unsafe, extern
+
+|异步代码修饰符
+|async
+|===
+
+
+
+
+
+'''
+
+
 ==== 访问权限
 
 [options="autowidth"]
@@ -77,7 +157,7 @@ namespace ConsoleApp1
   //创建一个"人"类
   internal class ClsPerson
   {
-      private string name = "";
+      private string name = "";  //字段 field
       private string id身份证号="000"; //默认为000
       private string password = "123456"; //默认密码为123456
 

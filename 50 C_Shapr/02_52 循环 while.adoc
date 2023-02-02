@@ -1,0 +1,45 @@
+
+
+= 循环 while
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+== while 循环
+
+例子: 从1加到100
+
+[,subs=+quotes]
+----
+int i = 1;
+int total = 0;
+
+*while (i <= 100)*
+{
+  total = total + i;
+  Console.WriteLine(total);
+  i++;
+} //5050
+----
+
+'''
+
+== do while 循环
+
+[,subs=+quotes]
+----
+int i = 0;
+
+*//do-while循环, 是先做了一遍后, 再来做条件判断 (先上车, 后买票).*
+do {
+    i++;
+}
+while (i <= 3);
+
+Console.WriteLine(i); //4
+----
+
+
+'''

@@ -140,6 +140,19 @@ Console.WriteLine(*string.Join("",arrChar)*); //abc  ← 第一个参数, 是每
 Console.WriteLine(*string.Join("-",arrChar)*); //a-b-c
 ----
 
+
+
+*这个方法好, 可以不用foreach循环, 来直接打印出数组中的所有元素.*
+
+[,subs=+quotes]
+----
+int[] arr = { 0, 1, 2, 3, 4, 5 };
+*Console.WriteLine(string.Join(",",arr));*  //0,1,2,3,4,5
+----
+
+
+
+
 '''
 
 ==== 拆分 →  strObj.Split(拆分点的标识)

@@ -206,3 +206,24 @@ Console.WriteLine(arrLength); //4
 
 '''
 
+==== 如果只是想打印观看一下数组里的所有元素的话, 可以使用 ->  string.Join("连接符",你的数组)
+
+[,subs=+quotes]
+----
+int[] arr = { 0, 1, 2, 3, 4, 5 };
+*Console.WriteLine(string.Join(",",arr));*  //0,1,2,3,4,5
+----
+
+'''
+
+==== 使用 Array.ForEach(你的数组,item => Console.Write(item + ",")) 方法
+
+[,subs=+quotes]
+----
+int[] arr你的数组 = { 0, 1, 2, 3, 4, 5 };
+*Array.ForEach(arr你的数组, item => Console.Write(item + ","));* //0,1,2,3,4,5,
+----
+
+
+'''
+

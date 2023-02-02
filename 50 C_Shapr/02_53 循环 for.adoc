@@ -1,0 +1,46 @@
+
+= for 循环
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+
+== for循环
+
+例子: 从1加到100
+
+[,subs=+quotes]
+----
+int total = 0;
+int length = 100;
+
+*for (int i = 0; i <= length; i++)*
+{
+  total = total+ i; //i是从0循环到100的, 所以这里就是从0加到100
+}
+
+Console.WriteLine(total); //5050
+----
+
+'''
+
+== for(;;) -> 无限循环
+
+如果把for语句中的三个部分都省略掉, 就会导致无限循环.
+
+[,subs=+quotes]
+----
+*for (;;) { //会无限循环*
+    Console.WriteLine("无限循环中...");
+}
+----
+
+'''
+
+
+
+
+
+
