@@ -16,9 +16,9 @@ image:img/0005.png[,]
 
 '''
 
-== 类
 
-==== 字段 field
+
+== 字段 field
 
 [,subs=+quotes]
 ----
@@ -29,8 +29,8 @@ class ClsPerson
 }
 ----
 
-字段不一定要初始化。没有初始化的字段, 就均为默认值（0、\0、null、false)。 +
-字段初始化的逻辑, 要在构造器之前运行。
+字段不一定要初始化. 没有初始化的字段, 就均为默认值（0、\0、null、false).  +
+字段初始化的逻辑, 要在构造器之前运行. 
 
 public int Age = 10;
 
@@ -55,7 +55,7 @@ public int Age = 10;
 
 |只读修饰符
 |readonly +
-**readonly修饰符, 可以防止字段在构造后, 被变更。**只读字段只能在声明时, 或在其所属的类构造器中来赋值。
+**readonly修饰符, 可以防止字段在构造后, 被变更. **只读字段只能在声明时, 或在其所属的类构造器中来赋值. 
 
 
 |线程访问修饰符
@@ -64,7 +64,7 @@ public int Age = 10;
 
 '''
 
-==== 方法函数
+== 方法函数
 
 方法可以用以下修饰符修饰:
 
@@ -98,7 +98,7 @@ public int Age = 10;
 '''
 
 
-==== 访问权限
+== 访问权限
 
 [options="autowidth"]
 |===
@@ -197,7 +197,7 @@ namespace ConsoleApp1
 
 '''
 
-==== 属性
+== 属性 Property
 
 对每一个类中的 private数据, 都要设置 get和set函数, 太麻烦了! 所以 C# 提供了一种简单的方法来实现这个功能 --- 这就是"属性". +
 类中的"属性", 其功能 相当于把get和set函数, 总和到一起了. 其实就是将get 和set函数 打包的简便写法.
@@ -248,6 +248,165 @@ Console.WriteLine(p1.Age); //10  ←读取, 会直接调用类中"Age属性"的s
 ----
 
 你会发现, 虽然"Age属性"的体内是函数功能, 但我们在使用它时, 可以把它当做一个普通的"数据成员"变量来使用, 直接赋值. 很方便.
+
+"属性 Property"和"字段"的声明很类似，但是"属性"比字段多出了get/set 代码块. 
+
+读取属性时, 会调用 get访问器. +
+给属性赋值时, 会调用 set访问器. 它有一个名为value的隐含参数，其类型和属性的类型相同. 
+
+*如果只定义了get 访问器，那么该属性就是"只读"的.* +
+如果只定义了set访问器，那么该属性就是"只写"的. 但一般很少使用只写属性.
+
+[,subs=+quotes]
+----
+internal class Program {
+    class ClsPerson {
+        public string name;
+        public int num存款;
+
+        //将 "num存款"字段, 设置成"属性"
+        *public int Num存款 { //对某个字段添加get/set访问器时, 在这里该字段名的首字母, 必须强制改成大写!*
+            *get { //你可以在get方法中动手脚, 让外界访问该字段时, 什么都得不到.*
+                Console.WriteLine("你无权查看我的存款额");
+                return 0;
+            }
+            set { }
+        }
+
+        //构造函数
+        public ClsPerson(string name, int num存款) {
+            this.name = name;
+            this.num存款 = num存款;
+        }
+    }
+
+
+    //主函数
+    static void Main(string[] args) {
+        ClsPerson insP = new ClsPerson("zrx", 8888);
+        Console.WriteLine(insP.Num存款); //先输出"你无权查看我的存款额",然后输出0
+    }
+}
+----
+
+属性可以简写成:
+
+image:img/0204.png[,]
+
+==== 可以给"属性"赋初始化的值
+
+[,subs=+quotes]
+----
+internal class Program {
+
+    class ClsPerson {
+        public string name;
+        p**ublic int Num存款 { get; set; } = 800; //给属性, 赋初始化的值**
+
+        //构造函数
+        public ClsPerson(string name) {
+            this.name = name;
+        }
+
+        public ClsPerson(string name, int num存款) {
+            this.name = name;
+            Num存款 = num存款;
+        }
+    }
+
+
+    //主函数
+    static void Main(string[] args) {
+        ClsPerson insP = new ClsPerson("zrx"); *//实例化时, 没有传入"Num存款"字段的值, 那么就用该字段在类中定义过的初始化的值.*
+        Console.WriteLine(insP.Num存款); //800
+
+        insP.Num存款 = 3000;
+        Console.WriteLine(insP.Num存款); //3000
+
+    }
+}
+----
+
+可以给"只读属性"的值, 做初始化:
+[,subs=+quotes]
+----
+public int num数值上限 { get; } = 999;  //只有一个get访问器存在, 该属性就是"可读,而不可写"了.
+----
+
+'''
+
+==== get和set访问器, 可以有不同的访问级别
+
+典型操作是: 将 public 的属性 的set访问器, 设置成 internal 或 private 的:
+
+[,subs=+quotes]
+----
+
+----
+
+*注意，属性本身, 应当声明具有较高的访问级别(本例中为public)，然后在需要较低级别的访问器上, 添加相应的访问权限修饰符。*
+
+
+'''
+
+==== 属性支持以下的修饰符:
+
+- 静态修饰符: static
+- 访问权限修饰符: public, internal, private, protected
+- 继承修饰符: new, virtual, abstract, override, sealed
+- 非托管代码修饰符: unsafe, extern
+
+
+
+
+
+
+
+'''
+
+
+== this引用, 指代实例本身
+
+[,subs=+quotes]
+----
+internal class Program
+{
+    class ClsPerson
+    {
+        public string name;
+        public ClsPerson ins婚姻伴侣; //另一半(妻子或丈夫),当然也是人类 ClsPerson类型的.
+
+        //构造函数
+        public ClsPerson(string name, ClsPerson ins婚姻伴侣)
+        {
+            this.name = name;
+            *this.ins婚姻伴侣 = ins婚姻伴侣;*
+        }
+
+        public void fn结婚(ClsPerson ins结婚对象)
+        {
+            ins婚姻伴侣 = ins结婚对象; //先把结婚对象, 赋值到自己实例的"另一半"字段里.
+            *ins结婚对象.ins婚姻伴侣 = this; //this就指代实例本身. ← 再把你自己(你这个实例对象), 赋值到你结婚对象实例的"另一半"字段里.  即互相赋值了.*
+        }
+    }
+
+
+    //主函数
+    static void Main(string[] args)
+    {
+        ClsPerson ins丈夫 = new ClsPerson("zrx", null);
+        ClsPerson ins妻子 = new ClsPerson("slf", null);
+
+        ins丈夫.fn结婚(ins妻子);
+        Console.WriteLine(ins丈夫.ins婚姻伴侣.name); //slf
+        Console.WriteLine(ins妻子.ins婚姻伴侣.name); //zrx
+
+    }
+}
+----
+
+image:img/0203.svg[,]
+
 
 '''
 

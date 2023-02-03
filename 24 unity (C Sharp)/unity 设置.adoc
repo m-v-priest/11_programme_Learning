@@ -10,7 +10,13 @@
 ''''
 
 
+== unity 个人证书过期, 打不开软件
 
+进入C盘ProgramData>Unity>找到后缀名为ulf的lic文件删除，重启unity即可正常运行。
+
+
+
+'''
 
 == 安装
 

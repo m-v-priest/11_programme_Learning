@@ -5,6 +5,24 @@
 :toc: left
 ''''
 
+
+== canvas
+
+image:img/0146.png[,]
+
+第二个, 是把ui画在相机上, 所以要给它赋值一个相机.
+
+image:img/0147.png[,]
+
+image:img/0148.png[,]
+
+image:img/0149.png[,]
+
+
+
+
+'''
+
 == 画布的尺寸设置, 设置成你手机屏幕的大小
 
 先创建画布. ui界面必须画在canvas上. 你创建了画布后, 系统会自动帮你创建出"事件系统 eventSystem"
@@ -92,6 +110,151 @@ image:img/0055.png[,]
 
 图片的缩放, 旋转, 都是以"轴心点"为中心点的.
 
+
+==== 控制轴心点的位置 pivot
+
+....
+pivot   /ˈpɪvət/
+
+1.the central point, pin or column on which sth turns or balances 支点；枢轴；中心点
+
+2.the central or most important person or thing 最重要的人（或事物）；中心；核心
+• West Africa was the pivot of the cocoa trade. 西非是可可豆贸易的中心。
+• The pivot on which the old system turned had disappeared. 维系旧制度的支柱已经消失了。
+
+来自古法语pivot,绞链，门合页。引申词义中心，枢轴，核心等。
+....
+
+
+pivot, 能控制轴心点的位置. 数值范围在0-1之间. 比如, x=0, 则轴心点在图片的最左侧, x=1, 轴心点在最右侧.
+
+image:img/0110.png[,]
+
+比如, 你要让图片(作为子物体), 与它的父物体, 左下角点对齐, 就把图片的pivot 的x,y都设为0. 然后,
+
+image:img/0111.png[,]
+
+image:img/0112.png[,]
+
+还能同时移动"锚点"和"轴心点" -> 同时按住 shift + alt + 再来点击位置.
+
+
+'''
+
+== image 和 RawImage
+
+RawImage 适合用在大背景图,头像图,Icon显示等静态展示的地方,效率更高. 而Image (精灵图)功能更加丰富,所以适合用在进度条,需要拉伸的背景框等需要动态改变的地方.
+
+image:img/0113.png[,]
+
+image:img/0114.png[,]
+
+
+
+image:img/0116.png[,]
+
+image:img/0117.png[,]
+
+下面, 先把图片的九宫格去掉, 然后再选 tiled:
+
+image:img/0118.png[,]
+
+filled, 可以用来做血条, 数据图
+
+image:img/0119.png[,]
+
+image:img/0144.png[,]
+
+
+'''
+
+==== ★ 用代码, 来给 rawImage物体 加载图片
+
+[,subs=+quotes]
+----
+//先找到rawImage物体, 比如它的名字叫"my背景图"
+GameObject  go背景图1 =  GameObject.Find("my背景图");
+
+//然后,获取该物体身上的 RawImage 组件, 给它的 texture 字段赋值, 即让该字段指向一张图片.
+*//注意!! 使用Resources.Load<Texture>(图片地址); 来加载图片时, 该图片必须放在 Resources目录下才行！不能放在其他目录中. 如果没有 Resources目录, 你就自己新建一个该目录, 让后把图片放里面.*
+*//另外, 图片路径, 只要写相对于 Resources目录的路径就行了, 即前面不要加上Resources目录自己.*
+
+*go背景图1.GetComponent<RawImage>().texture = Resources.Load<Texture>("imgFace/sanguo");* //在你图片上, 按ctrl+alt+c, 就能复制到图片的路径. 拷过来就行了. 注意: 这里代码上, 图片不需要带上扩展名
+----
+
+image:img/0138.png[,]
+
+'''
+
+
+== Sprite Atlas
+
+....
+atlas n.   /ˈætləs/
+a book of maps 地图册；地图集
+
+• a world atlas 世界地图册
+• a road atlas of Europe 欧洲交通地图册
+
+来自拉丁语Ātlās, 来自古希腊语Ἄτλας.
+....
+
+相比Sprite Packer，Sprite Atlas将对精灵更多的控制权交还给用户。
+
+Sprite Atlas主要实现了以下三个功能:
+
+- a.创建、编辑图集以及设定图集参数
+- b.添加图集Variant（变种）
+- c.运行时访问图集
+
+创建创建和编辑图集: Sprite Atlas
+
+image:img/0139.png[,]
+
+image:img/0140.png[,]
+
+点击Pack Preview, 可以看到生成的图集:
+
+image:img/0141.png[,]
+
+image:img/0142.png[,]
+
+其实, 也可以把装有图片的文件夹, 拖进去.
+
+'''
+
+==== ★ 用代码, 来获取精灵图集中的图片
+
+[,subs=+quotes]
+----
+//先找到要放你精灵图的空物体
+GameObject ob我的物体2 = GameObject.Find("my空物体2");
+
+//给该物体, 添加 sprite renderer组件, 精灵图只能挂载在该组件上
+ob我的物体2.AddComponent<SpriteRenderer>();
+
+*//载入精灵图集. 注意, 你创建出来的精灵图集, 也必须放在 resources目录下, 才能被加载到!*
+*SpriteAtlas sprMy精灵图集 = Resources.Load("my精灵图册") as SpriteAtlas;*
+
+*//将精灵图集中的某张图片, 赋给你"my空物体2"物体上的SpriteRenderer组件中. 即给该空物体, 挂载一张精灵图.*
+*ob我的物体2.GetComponent<SpriteRenderer>().sprite = sprMy精灵图集.GetSprite("face02");*
+----
+
+image:img/0143.png[,]
+
+
+
+'''
+
+== text
+
+image:img/0120.png[,]
+
+image:img/0121.png[,]
+
+
+
+
 '''
 
 == ★ 让文本能显示出中文
@@ -106,7 +269,14 @@ image:img/0058.png[,]
 
 '''
 
-== 按钮
+== button 按钮
+
+image:img/0122.png[,]
+
+image:img/0123.png[,]
+
+
+
 
 用按钮, 控制"文本框"中的文本内容的改变
 
@@ -147,6 +317,74 @@ public class crip时间脚本 : MonoBehaviour {
     }
 }
 ----
+
+
+'''
+
+== toggle 单选框 / 多选框
+
+....
+tog·gle   /ˈtɒɡl/
+
+1.a short piece of wood, plastic, etc. that is put through a loop of thread to fasten sth, such as a coat or bag, instead of a button （大衣或袋子等上木质或塑料的）栓扣钉，棒形纽扣，套索扣
+
+2. ( computing 计) ( also ˈtoggle switch ) a key on a computer that you press to change from one style or operation to another, and back again 转换键；切换键
+....
+
+image:img/0124.png[,]
+
+如何让多个独立的 toggle 成组?  先创建一个空对象, 作为三个toggle的父物体. 然后,在这个空对象(父物体)上, 添加组件,选择“Toggle Group”组件.
+
+image:img/0125.png[,]
+
+image:img/0126.png[,]
+
+这样后, 一组中的 n个toggle, 就只能仅仅选则其中一个了, 即成了单选框.
+
+image:img/0127.png[,]
+
+'''
+
+==== ★ 给单选框, 添加点击事件
+
+image:img/0145.png[,]
+
+
+'''
+
+== input field 输入框
+
+image:img/0128.png[,]
+
+image:img/0129.png[,]
+
+image:img/0130.png[,]
+
+image:img/0131.png[,]
+
+'''
+
+== 布局组件 grid layout group
+
+image:img/0132.png[,]
+
+image:img/0133.png[,]
+
+image:img/0134.png[,]
+
+image:img/0135.png[,]
+
+image:img/0136.png[,]
+
+image:img/0137.png[,]
+
+
+'''
+
+== event system
+
+
+
 
 
 '''
