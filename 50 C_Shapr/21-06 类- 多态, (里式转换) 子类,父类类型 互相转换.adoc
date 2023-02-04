@@ -6,6 +6,190 @@
 
 ---
 
+
+== 子类的访问权限, 不能比父类的访问权限更高
+
+[,subs=+quotes]
+----
+class Cls父类 {}
+
+public class Cls子类 : Cls父类 *//报错. 因为 父类的访问权限, 默认是 internal的. 而子类的权限, 你这里设成了 public, 比父类的权限还高! 这是不行的. 子类权限只能 小于等于 ≤ 父类的权限.*
+{ }
+----
+
+image:img/0215.png[,]
+
+
+== 多态
+
+引用是多态的。意味着x类型的变量, 可以指向x子类的对象。
+
+....
+asset n.   /ˈæset/
+
+1.~ (to sb/sth)a person or thing that is valuable or useful to sb/sth 有价值的人（或事物）；有用的人（或事物）
+
+•She'll be an asset to the team. 她将是这个队的骨干。
+•In his job, patience is an invaluable asset. 他干的这份工作，耐心是无价之宝。
+
+2.[ usually pl.] a thing of value, especially property, that a person or company owns, which can be used or sold to pay debts 资产；财产
+
+•the net asset value of the company 公司的资产净值
+•Her assets include shares in the company and a house in France. 她的财产包括公司的股份和在法国的一座房子。
+•asset sales/management 资产销售╱管理
+•financial/capital assets 金融╱资本资产
+
+英语单词asset原本是个法律术语，表示“足以清偿债务的财产”。该单词来自拉丁文ad satis，其中，ad=to，astis=enough，如satisfy（满足），所以该单词的字面意思就是“足够的”。
+....
+
+....
+mort·gage   /ˈmɔːɡɪdʒ/
+
+( also informal ˌhome ˈloan )
+( also informal also ˌhome ˈloan ) a legal agreement by which a bank or similar organization lends you money to buy a house, etc., and you pay the money back over a particular number of years; the sum of money that you borrow 按揭（由银行等提供房产抵押借款）；按揭贷款
+
+•to apply for/take out/pay off a mortgage 申请╱取得╱还清抵押贷款
+•mortgage rates (= of interest) 按揭贷款利率
+
+ -mort-死 + -gage-(承诺,抵押) → 抵押人(mortgagor)到期如果不能清还贷款,其被抵押的财产就会死(丧失) 同源词：wed, wage, engage 搭配：in mortgage 在抵押中on mortgage 以抵押方式place a mortgage on… 以…作抵押
+....
+
+
+[,subs=+quotes]
+----
+*public class ClsFather资产*
+{
+    public string str资产名字;
+
+    public ClsFather资产(string str资产名字) {
+        //构造函数
+        this.str资产名字 = str资产名字;
+    }
+}
+
+
+//子类1
+*public class ClsSon股票 : ClsFather资产*
+{
+    public long num持有的股份数额;
+
+    public ClsSon股票(string str资产名字, long num持有的股份数额) : base(str资产名字) {
+        //构造函数
+        this.num持有的股份数额 = num持有的股份数额;
+    }
+}
+
+
+//子类2
+*public class ClsSon房产 : ClsFather资产*
+{
+    public long num房屋抵押贷款金额;
+
+    public ClsSon房产(string str资产名字, long num房屋抵押贷款金额) : base(str资产名字) {
+        //构造函数
+        this.num房屋抵押贷款金额 = num房屋抵押贷款金额;
+    }
+}
+
+
+internal class Program
+{
+    *//你自定义的函数. 传入一个"ClsFather资产"类型的变量, 作为参数.*
+    *public static void fn输出资产名称(ClsFather资产 ins父类资产) {*
+        Console.WriteLine(ins父类资产.str资产名字);
+    }
+
+
+    //主函数
+    static void Main(string[] args) {
+        ClsSon股票 ins股票 = new ClsSon股票("苹果股票", 1000);
+        ClsSon房产 ins房产 = new ClsSon房产("纽约别墅", 90000);
+
+        *fn输出资产名称(ins股票); //苹果股票  ← 注意: 这个函数, 参数是接收的"父类"对象, 但我们却给该函数传入了其"子类的实例", 这说明: 父类变量, 可以指向其子类的实例. 即: 引用是"多态"的.*
+        fn输出资产名称(ins房产); //纽约别墅
+
+
+    }
+}
+----
+
+image:img/0208.png[,]
+
+image:img/0207.svg[,]
+
+**多态之所以能够实现，即"父类变量"只所以能指针指向"子类实例", 是因为子类(Stock和House)具有基类(Asset)的全部特征，反过来则不正确。即"子类变量",不能指针指向"父类实例".**
+
+'''
+
+
+== 类型转换和引用转换
+
+"对象引用"可以:
+
+- "隐式"向上转换为"基类"的引用;
+- "显式"向下转换为"子类"的引用。
+
+*类型转换, 会生成一个新的引用(即指针), 指向同一个对象.*
+
+
+
+==== 父类变量, 降级成"子类类型"后, 就能看到子类中的成员
+
+"向上"类型转换, 会创建一个父类的指针, 指向子类:
+
+[,subs=+quotes]
+----
+ClsSon股票 ins股票 = new ClsSon股票("苹果股票", 1000);
+ClsSon房产 ins房产 = new ClsSon房产("纽约别墅", 90000);
+
+ClsFather资产 ins父类变量 = new ClsFather资产("父类的资产名字");
+*ins父类变量 = ins股票; //父类变量指针, 指向子类实例, 就是子类的"向上转换". 注意: 这里, 父类变量只是指针指向子类实例, 这个"父类变量"依然是属于父类类型的. 而没有被类型转换为"子类类型".*
+
+*//所以, 对于引用来说, 虽然父类变量, 指针指向了子类实例, 但"父类变量"(依然是父类类型)只会记得父类中的成员, 不会记得子类中多出来的成员. 即"父类变量"无法调用"只属于子类中的成员".
+//如果要"父类变量"能访问到子类中的成员, 必须把父类变量, 强制类型转换为"子类类型"后才行.*
+
+**//将"父类类型", 强转成"子类类型"后, 就能调用到子类中的成员
+ClsSon股票 ins父类变量强转成子类类型 = (ClsSon股票)ins父类变量; **
+Console.WriteLine(ins父类变量强转成子类类型.num持有的股份数额);  // ok!
+----
+
+image:img/0209.png[,]
+
+image:img/0210.svg[,]
+
+
+'''
+
+==== as 和 is
+
+向下转换, 是"子类变量"指针指向一个"父类被强制降级成子类"后的"原父类变量".
+
+即:
+....
+Cls子类 ins子类实例 = (Cls子类)ins父类变量;
+....
+
+如果"向下转换"失败，会抛出 InvalidCastException.
+
+as运算符, 在"向下类型转换"出错时, 返回 null (而不是抛出异常):
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
+
+
+
 == 里式转换
 
 ==== (1)"父类变量", 可以指向"子类的实例". 但无法记得子类中的函数方法. (2)但你可以将"父类变量", 强制类型转换为"子类类型"后, 父类变量, 就既能记得父类中的函数方法, 也能记得子类中的函数方法了.

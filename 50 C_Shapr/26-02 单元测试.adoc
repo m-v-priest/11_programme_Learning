@@ -1,0 +1,133 @@
+
+= 单元测试
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+== 单元测试
+
+首先, 我们要测试的代码是:
+
+[,subs=+quotes]
+----
+
+namespace ConsoleApp4 {
+
+    //接口
+    *public interface Itf电源类的接口 {*
+        int fn获取电池电量值();
+    }
+
+
+
+    //电源类
+    *public class Cls电源 :Itf电源类的接口{ //要实现接口*
+        public int fn获取电池电量值() {
+            return 100;
+        }
+    }
+
+
+    //电扇类
+    public class Cls电扇 {
+        *private Itf电源类的接口 ins电源; //类型是"实现了电源类的接口(相当于是行业标准认证证书)"的类(拿到了"行业认证证书"的企业生产的电源, 有国家认证资质的企业生产的电源)*
+
+        //构造函数
+        public Cls电扇(Itf电源类的接口 ins电源) {
+            this.ins电源 = ins电源;
+        }
+
+        public string fn电扇当前工作状态() {
+            int num当前电量 = ins电源.fn获取电池电量值();
+
+            if (num当前电量 <= 0) {
+                return "电量为0, 电扇无法工作";
+            }
+            else if (num当前电量 <100) {
+                return "电量所剩不多, 电扇只能开小档";
+            }
+            else if (num当前电量 < 200) {
+                return "电量正常, 电扇工作正常";
+            }
+            else {
+                return "电池损坏, 电扇无法工作";
+            }
+
+        }
+    }
+
+
+
+    //主函数
+    internal class Program {
+        static void Main(string[] args) {
+
+        }
+    }
+}
+----
+
+image:img/0170.svg[,]
+
+
+在项目上, 右键, 新建项目, 搜索 test, 新建msTest 测试项目.
+
+image:img/0166.png[,]
+
+image:img/0167.png[,]
+
+image:img/0168.png[,]
+
+
+在菜单"测试"里面, 打开"测试资源管理器"
+
+image:img/0169.png[,]
+
+具体方法件: https://blog.csdn.net/zp19860529/article/details/115047604
+
+现在, 我们在测试页面中(也是个类文件), 写:
+
+[,subs=+quotes]
+----
+using ConsoleApp4;
+
+namespace TestProject1 {
+
+    [TestClass]
+    *public class UnitTest1 {*  //专门用来"做测试"的类
+        [TestMethod]
+        public void fn电量等于0的测试() {
+
+            Cls电扇 ins电扇 = new Cls电扇(new Cls电量等于0()); *//"Cls电扇"这个类, 实例化时, 要传入一个"实现了电源类接口"的类的实例对象. 而我们在本测试页面上写的 "Cls电量等于0"类, 就是实现了这个"Itf电源类的接口"的类, 符合要求, 所以可以传给 "Cls电扇"类的实例中, 作为里面字段的赋值.*
+
+
+            *//下面, assert.AreEqual(你期望会有的结果值, 实际的值）*
+            string str期望的值 = "电量为0, 电扇无法工作";
+            string str实际的值 = ins电扇.fn电扇当前工作状态();
+            *Assert.AreEqual(str期望的值, str实际的值);* // true
+
+
+        }
+    }
+
+
+
+    class Cls电量等于0 : Itf电源类的接口 {
+        public int fn获取电池电量值() {
+            return 0;  //将电量直=0, 返回回去.
+        }
+    }
+}
+----
+
+image:img/0171.png[,]
+
+为了一次性测试"程序对多个输入值的不同反应", 我们要使用 moq
+
+继续, 下载 moq
+
+image:img/0172.png[,]
+
+

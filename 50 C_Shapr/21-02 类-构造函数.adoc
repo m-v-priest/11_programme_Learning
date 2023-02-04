@@ -82,7 +82,58 @@ namespace ConsoleApp4 {
 
 '''
 
-==== 子类的构造函数, 给父类的构造函数中的字段, 传参 -> 子类的这个构造函数, 要加上 ": base(父类中字段)" 这句代码 
+==== 子类的构造函数, 给父类的构造函数中的字段, 传参 -> 子类的这个构造函数, 要加上 ": base(父类中字段)" 这句代码
+
+
+子类虽然可以访问父类的构造器, 但并非自动继承, 所以子类必须声明自己的构造函数. +
+子类可以通过 base 关键字, 来调用父类的构造器.
+
+base关键字, 和this 关键字很像，但 *base关键字调用的是基类的构造器。*
+
+[,subs=+quotes]
+----
+public class Cls父类
+{
+    public int num;
+
+    //无参构造函数
+    public Cls父类() {
+    }
+
+    //有参构造函数
+    *public Cls父类(int num) {*
+        this.num = num;
+    }
+}
+
+
+public class Cls子类 : Cls父类
+{
+    *//子类中, 调用父类的有参构造函数*
+    *public Cls子类(int num) : base(num) {*
+    }
+}
+
+
+internal class Program
+{
+    //主函数
+    static void Main(string[] args) {
+        Cls子类 ins子类 = new Cls子类(100);
+        Console.WriteLine(ins子类.num); //100
+
+    }
+}
+----
+
+
+
+
+
+
+
+
+
 
 [,subs=+quotes]
 ----
@@ -269,6 +320,81 @@ image:img/0145.png[,]
 
 
 '''
+
+== 静态构造函数
+
+- *每个class类的"静态构造器", 只会执行一次，而不是每个实例执行一次.*
+- 一个class类, 只能定义一个"静态构造器"，名称必须和类型同名，且没有参数.
+
+以下两种行为, 可以触发静态构造器执行: +
+1. 实例化类型 +
+2. 访问类型的静态成员
+
+[,subs=+quotes]
+----
+public class ClsP
+{
+    public static string strInfo = "我是静态字段"; //静态字段
+
+    *//静态构造函数*
+    *static ClsP() {*
+        Console.WriteLine("我是静态构造函数");
+    }
+}
+
+internal class Program
+{
+    //主函数
+    static void Main(string[] args) {
+        Console.WriteLine(1);
+        ClsP ins1 = new ClsP(); //我是静态构造函数 *← 下面都没执行静态构造器, 说明静态构造函数, 只会在第一个实例化时, 执行一次.*
+
+        Console.WriteLine(2);
+        ClsP ins2 = new ClsP(); //空
+
+        Console.WriteLine(3);
+        Console.WriteLine(ClsP.strInfo); *//静态构造函数已经执行了后, 即使调用静态字段, 也不会再执行静态构造函数了.*
+    }
+}
+----
+
+上面的例子, 如果倒过来, 先执行静态字段, 再执行实例化的话:
+
+[,subs=+quotes]
+----
+public class ClsP
+{
+    public static string strInfo = "我是静态字段"; //静态字段
+
+    *//静态构造函数*
+    *static ClsP() {*
+        Console.WriteLine("我是静态构造函数");
+    }
+}
+
+internal class Program
+{
+    //主函数
+    static void Main(string[] args) {
+        Console.WriteLine(3);
+        *Console.WriteLine(ClsP.strInfo); //我是静态构造函数  ← 如果本类还没有被实例化过, 直接调用静态字段, 则"静态构造函数"也会被执行一次. 执行完后, 下面再实例化本类, 或调用静态成员时, 就不会再执行"静态构造函数"了.*
+
+        Console.WriteLine(1);
+        ClsP ins1 = new ClsP(); //空 ← 不会在执行"静态构造函数"
+
+        Console.WriteLine(2);
+        ClsP ins2 = new ClsP(); //空 ← 不会在执行"静态构造函数"
+
+        Console.WriteLine(4);
+        Console.WriteLine(ClsP.strInfo); //只会打印静态字段里的值, 不会在执行"静态构造函数"
+    }
+}
+----
+
+
+
+
+静态构造器, 只支持两个修饰符: unsafe 和 extern.
 
 
 

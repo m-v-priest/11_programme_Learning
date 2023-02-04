@@ -10,6 +10,10 @@
 
 Partial是"局部类型"的意思。允许我们将一个类、结构或接口分成几个部分，分别实现在几个不同的.cs文件中。C#编译器在编译的时候, 仍会将各个部分的局部类型, 合并成一个完整的类.
 
+可以在多个partial class 声明中指定基类，只要基类是同一个基类即可。此外，*每一个 partial class 组成部分, 可以独立指定要实现的接口。*
+
+
+
 
 [options="autowidth" cols="1a,1a"]
 |===
@@ -108,6 +112,54 @@ namespace ConsoleApp4 {
 
 '''
 
+== partial class 中, 可以包含"分部方法"(partial method) -> "分部方法"返回值类型必须是void, 且默认是 private 的.
+
+分部方法:
+
+- *它是个"私有方法". 私有方法只能在类的内部使用(即同一类中的函数, 才能访问该类的私有成员), 不能被实例对象使用.*
+- *"分部方法"不允许有返回值! 所以它只能是 void.*
+
+"分部方法"返回值类型必须是void，且默认是private的。
+
+
+[,subs=+quotes]
+----
+public partial class Cls分部类
+{
+    private string Str秘密 = "我的秘密";
+
+    //分部方法, 1.它是个"私有方法".私有方法只能在类的内部使用, 不能被实例对象使用. 且, 2.不允许有返回值! 所以它只能是 void.
+    *partial void fn分部方法(string str); //分部类中, 有一个分部方法, 注意, 这里只有类似"接口"中的函数声明, 还没有具体函数体.*
+    //注意:如果后面没有提供该"分部方法"的具体实现,则"分部方法"的定义, 就会被编译器清除.
+
+    public void fn调用私有的分部方法() {
+        fn分部方法(Str秘密);
+    }
+}
+
+
+public partial class Cls分部类
+{
+    *partial void fn分部方法(string str) {*
+        Console.WriteLine(Str秘密);
+    } //在这里的分部类中, 来写上"分布方法(函数)"的具体函数体
+}
+
+
+internal class Program
+{
+    //主函数
+    static void Main(string[] args) {
+        Cls分部类 ins分部类 = new Cls分部类();
+        *ins分部类.fn调用私有的分部方法(); //我的秘密*
+    }
+}
+----
+
+
+image:img/0206.svg[,]
+
+'''
 
 
 

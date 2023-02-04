@@ -8,6 +8,43 @@
 
 == abstract 抽象类
 
+*声明为抽象(abstract)的类, 不能够实例化*，只有抽象类的具体实现子类, 才能实例化。
+
+抽象类中, 可以定义"抽象成员". "抽象成员"和"虚成员"相似，只不过**"抽象成员"不提供默认的实现**。除非子类也声明为抽象类，否则其实现必须由子类提供:
+
+[,subs=+quotes]
+----
+public abstract class Cls抽象父类
+{
+    *public abstract void fn抽象方法(); //抽象方法, 不能有具体函数体! 只能让子类来实现它.*
+}
+
+
+public class Cls子类 : Cls抽象父类
+{
+    *//子类中, 要具体实现父类中的 abstract 抽象方法, 就必须加 override 关键字.*
+    *public override void fn抽象方法() {*
+        Console.WriteLine("子类具体实现了父类中的抽象方法");
+    }
+}
+
+
+internal class Program
+{
+    //主函数
+    static void Main(string[] args) {
+        Cls子类 ins子类 = new Cls子类();
+        ins子类.fn抽象方法(); //子类具体实现了父类中的抽象方法
+
+    }
+}
+----
+
+image:img/0210.png[,]
+
+
+
+
 类和函数, 能用 abstract 关键词, 把它们变成"抽象"的.
 
 抽象类:
