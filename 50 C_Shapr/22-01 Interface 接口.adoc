@@ -127,7 +127,7 @@ my.fn父接口中的方法(); //Cls我, 实现了"父接口"中的方法
 
 '''
 
-==== 如果父接口, 和子接口中, 有同名的方法, 则你可以通过在类中, 来"显式指定要实现哪个接口中的方法"(explicitly implementing),来解决冲突.
+== 如果父接口, 和子接口中, 有同名的方法, 则你可以通过在类中, 来"显式指定要实现哪个接口中的方法"(explicitly implementing),来解决冲突.
 
 [,subs=+quotes]
 ----
@@ -176,7 +176,158 @@ image:img/0216.png[,]
 
 '''
 
-==== C#中的类, 允许同时继承多个接口.
+== 接口中声明的方法, 有class来实现它时, 这个方法, 在类中, 默认会是"密封"的.
+
+默认情况下，"隐式实现"的接口成员是"密封"的。为了重写，必须在基类中, 将其标识为virtual或者abstract:
+
+[,subs=+quotes]
+----
+interface Itf {
+    void fn();
+}
+
+class Cls父类 : Itf {
+    public void fn() {
+        //实现接口中的方法
+        Console.WriteLine("父类中的fn方法");
+    }
+}
+
+class Cls子类 : Cls父类 {
+    public *override* void fn() { *//报错! 无法重写. 因为父类实现接口中的方法时, 在父类中, 这个方法默认就是"密封"的了.*
+        Console.WriteLine("子类中的fn方法");
+    }
+}
+----
+
+那么如何在子类中, 重写父类从接口中继承下来的方法呢? 只要在父类中, 把这个方法标识成 virtual 或 abstract 就行了.
+
+标识成 virtual:
+[,subs=+quotes]
+----
+interface Itf {
+    void fn();
+}
+
+class Cls父类 : Itf {
+    public *virtual*  void fn() { *//将父类中,从接口中继承下来的方法, 标识成 virtual 虚拟的. 这样该方法就能被子类重写了.*
+        //实现接口中的方法
+        Console.WriteLine("父类中的fn方法");
+    }
+}
+
+class Cls子类 : Cls父类 {
+    public *override* void fn() { *//子类能重写父类的同名方法了*
+        Console.WriteLine("子类中的fn方法");
+    }
+}
+
+
+internal class Program {
+    //主函数
+    static void Main(string[] args) {
+        Cls子类 ins子类 = new Cls子类();
+        ins子类.fn(); //子类中的fn方法
+
+        *((Itf)ins子类).fn();* //子类中的fn方法
+        *((Cls父类)ins子类).fn();* //子类中的fn方法 ← override重写后, 再调用就永远是显示子类中的方法了, 哪怕你转了更上级的类型都没用.
+    }
+}
+----
+
+image:img/0217.png[,]
+
+或用 abstract 来标识父类中的该方法, 然后让子类去具体实现它:
+
+[,subs=+quotes]
+----
+interface Itf {
+    void fn();
+}
+
+*abstract* class Cls父类 : Itf { *//注意: 本类必须被标识成抽象类, 因为里面的"抽象方法", 只能存在于"抽象类"中.*
+     //实现接口中的方法
+    *public abstract void fn(); //将父类中,从接口中继承下来的方法, 标识成 abstract 抽象的. 这样该方法就能被子类去具体实现了.*
+}
+
+class Cls子类 : Cls父类 {
+    public *override* void fn() { *//必须标识成 override后, 子类才能具体实现父类中的抽象同名方法.*
+        Console.WriteLine("子类中的fn方法");
+    }
+}
+
+
+internal class Program {
+    //主函数
+    static void Main(string[] args) {
+        Cls子类 ins子类 = new Cls子类();
+        ins子类.fn(); //子类中的fn方法
+    }
+}
+----
+
+image:img/0218.png[,]
+
+
+"显式实现"的接口成员, 不能标识为virtual，也不能实现通常意义的"override 重写"，但是它可以被重新实现(reImplemented)。
+
+
+'''
+
+== 父类不用virtual, 子类也不用override, 子类就可以重新实现"父类从接口中继承下来的方法". 即: 子类可以重新实现"接口中声明的方法", 而不管父类是怎么实现它的.
+
+子类可以重新实现"基类(即父类)实现过的任意一个接口成员"。
+
+*而且, 这种方式, 不会屏蔽掉父类中的方法.* 即, 子类中的方法, 和父类中的方法, 都能被调用到.
+
+[,subs=+quotes]
+----
+interface Itf {
+    void fn();
+}
+
+abstract class Cls父类 : Itf {
+    *//实现接口中的方法*
+    public void fn() {  *// ← 不需要写virtual*
+        Console.WriteLine("父类中的fn方法");
+    }
+}
+
+class Cls子类 : Cls父类 {
+    public void fn() {   *//← 不需要写override.  子类能重新实现"父类所实现过的接口中的方法"*
+        Console.WriteLine("子类中的fn方法");
+    }
+}
+
+
+internal class Program {
+    //主函数
+    static void Main(string[] args) {
+        Cls子类 ins子类 = new Cls子类();
+        *ins子类.fn(); //子类中的fn方法*
+
+        *((Itf)ins子类).fn(); //父类中的fn方法*
+        *((Cls父类)ins子类).fn(); //父类中的fn方法*
+    }
+}
+----
+
+image:img/0219.png[,]
+
+
+'''
+
+== 类中, 如果"显式地声明(即带上接口名字的)来实现接口中的某方法", 则在类中, 该方法就不能标识为 public的.
+
+image:img/0220.png[,]
+
+
+
+
+
+'''
+
+== C#中的类, 允许同时继承多个接口.
 
 C#中的类, 不允许同时继承多个父类, 但允许同时继承多个接口.
 

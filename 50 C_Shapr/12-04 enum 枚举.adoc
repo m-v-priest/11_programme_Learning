@@ -118,6 +118,41 @@ Console.WriteLine((int) Enm级别枚举类.大都督); //70
 
 '''
 
+== 枚举类型的实例, 可以与它对应的整数值, 相互显式转换
+
+[,subs=+quotes]
+----
+public enum enm四边值 {
+    Left = 1,
+    Right = 4,
+    Top = 10,
+    Bottom = 17
+} *//相当于 strKey-intValue 对*
+
+
+internal class Program {
+    //主函数
+    static void Main(string[] args) {
+        Console.WriteLine(*enm四边值.Right*); //Right ← *打印出的是 strKey*
+        Console.WriteLine(*(int)enm四边值.Right*); //4 ← *打印出的是 intValue*
+
+        int intValue = (int)enm四边值.Bottom; //枚举元素的 intValue 数值, 转换为 int数值
+        Console.WriteLine(intValue); //17
+
+        *enm四边值 strKey = (enm四边值)intValue; //强制类型转换. 把int数值, 重新转为枚举类中,元素的 strKey.*
+        Console.WriteLine(strKey); //Bottom
+    }
+}
+----
+
+image:img/0221.png[,]
+
+
+
+
+
+'''
+
 == 可以在枚举类中的元素上, 做变量计算
 
 [,subs=+quotes]
