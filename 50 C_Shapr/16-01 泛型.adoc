@@ -87,15 +87,208 @@ Stack<T> 具有 0bjectStack 和 IntStack 的全部优点: +
 
 == 泛型方法
 
+[,subs=+quotes]
+----
+internal class Program {
+    //下面的函数, 接收泛型类型的参数
+    static void fn交换两个数<T>(ref T a, ref T b) {
+        T temp = a;
+        a = b;
+        b = temp;
+    }
+
+    //主函数
+    static void Main(string[] args) {
+        int x = 3;
+        int y = 5;
+        *fn交换两个数(ref x, ref y); // 通常, 调用泛型方法时, 不需要提供类型参数，因为编译器可以隐式推断得出。当然, 你也可以显示的指明类型, 就写成: fn交换两个数<int>(ref x, ref y);* 不过, ide会提示你: Type argument specification is redundant. 指定"参数类型"是多余的.
+
+
+        Console.WriteLine(x); //5
+        Console.WriteLine(y); //3
+    }
+}
+----
+
+image:img/0229.png[,]
+
+
+'''
+
+== 只有方法和类(就包括结构体类, 接口, 委托), 可以引入"类型(泛型)参数"
+
+**唯有方法和类(就包括结构体类, 接口, 委托), 可以引入类型参数。属性、索引器、事件、字段、构造器、运算符等, 都不能声明类型参数，虽然它们可以参与使用所在类型中已经声明的类型参数。**例如，在泛型的栈中, 我们可以写一个索引器返回一个泛型项。
+
+....
+public T this [int index] => data [index];
+....
+
+类似的，构造器可以参与使用已经存在的类型参数，但是不能引入新的类型参数:
+
+....
+//构造函数
+public stack<T>() {} //Illegal
+....
+
+*类中的属性, 虽不能引入类型参数，但可以使用类型参数。*
+
+[,subs=+quotes]
+----
+//类, 可以有多个泛型类型的参数:
+public class **Cls类<T1, T2> **{
+    public T1 var1 { get; set; } //"泛型类型"的属性
+
+
+    //方法, 也可以有多个泛型类型的参数:
+    public void fn方法(T2 var2) {
+        Console.WriteLine(var1);
+        Console.WriteLine(var2);
+    }
+}
+
+
+internal class Program {
+    //主函数
+    static void Main(string[] args) {
+        *Cls类<int, string> ins实例 = new Cls类<int, string>();*
+        ins实例.var1 = 99;
+        ins实例.fn方法("zrx"); //99, zrx
+    }
+}
+----
 
 
 
+'''
 
+== typeof 和 未绑定泛型类型
+
+image:img/0230.png[,]
+
+
+
+'''
+
+== 泛型类型的默认值 ->  可用 default(T) 来获得.
+
+image:img/0231.png[,]
+
+
+'''
+
+== 可以对"泛型类型", 指定它是属于"哪些具体类型" (而不是所有的类型都能替代该泛型)
+
+image:img/0232.png[,]
+
+像上面这种对"泛型类型"的约束语句, 可以写在 "class" 或 "函数方法" 这些地方.
+
+- 基类约束: 要求"类型参数"必须是子类(或者匹配基类).
+- 接口约束: 要求"类型参数"必须实现特定的接口。
+
+这些约束, 要求"类型参数"的实例, 可以隐式转换为相应的类和接口。
+
+
+'''
+
+== 泛型类, 可以有子类
+
+
+[,subs=+quotes]
+----
+class Cls泛型父类<T> {
+}
+
+//下面的子类, 继承自上面的"泛型父类"
+*class Cls泛型子类<T> : Cls泛型父类<T> {*
+}
+
+//子类, 也可以用具体的类型,来封闭(代替)泛型参数:
+*class Cls泛型子类2 : Cls泛型父类<int> {*
+}
+
+//子类,还可以引入新的泛型类型参数:
+*class Cls泛型子类3<T, T2> : Cls泛型父类<T> {*
+    //本处, 除了继承了父类中的"泛型类型"T外, 子类又引入了一个新的"泛型类型" T2.
+}
+----
+
+image:img/0233.png[,]
+
+技术上，子类型中所有的类型参数, 都是新的: 可以说, 子类型封闭后, 又重新开放了基类的类型参数。这表明子类可以为其重新打开的类型参数, 使用更有意义的新名称:
+
+[,subs=+quotes]
+----
+class Cls泛型父类<T> {
+}
+
+//下面的子类, 继承自上面的"泛型父类"
+class Cls泛型子类<T的别名, T2> : Cls泛型父类<T的别名> { //子类可以重新给父类中的"泛型类型"名字,改个新名字, 也没问题.
+
+}
+----
+
+image:img/0234.png[,]
+
+'''
+
+== 泛型类, 可以把这个类的自身类型, 来具体指代"泛型"的类型. 相当于类型的"递归". 自己调用自己的类型.
+
+[,subs=+quotes]
+----
+//泛型接口
+*public interface Itf本人身份验证<T> {*
+    bool fn判断是否本人真身还是假冒的(T obj); *//声明了一个泛型方法, 其返回值是 bool类型的.*
+}
+
+
+//下面的类, 来实现上面的泛型接口.
+*public class Cls人类 : Itf本人身份验证<Cls人类> {*
+    *//把这个类自己的类型"Cls人类",作为具体类型, 来代替掉"泛型类型T"了. 可以这样做, 没问题.*
+    public string Str指纹数据 { get; set; }
+    public string Str基因数据 { get; set; }
+
+    //下面的方法, 就是来具体实现"接口"中所声明的方法
+    *public bool fn判断是否本人真身还是假冒的(Cls人类 ins人类) {*
+        //这个方法, 会传入一个新的人类实例, 来判断, 传进来的人类实例, 是否和你用本类创建出来的人类实例, 字段的数据值是否相等, 即是否是同一个人?
+        if (ins人类 == null) {
+            return false;
+        }
+        else {
+            return (ins人类.Str指纹数据 == this.Str指纹数据 && ins人类.Str基因数据 == this.Str基因数据);
+        }
+    }
+}
+
+
+internal class Program {
+    //主函数
+    static void Main(string[] args) {
+        Cls人类 ins我 = new Cls人类();
+        ins我.Str指纹数据 = "zrx的指纹";
+        ins我.Str基因数据 = "zrx的基因";
+
+        Cls人类 ins假冒者 = new Cls人类();
+        ins假冒者.Str指纹数据 = "假冒者的指纹";
+        ins假冒者.Str基因数据 = "假冒者的基因";
+
+        bool bolRes = ins我.fn判断是否本人真身还是假冒的(ins假冒者); //把假冒者传进去, 和你的实例中的字段数据作比较. 假冒者实例中的字段值, 肯定和你的实例中的字段值,不一样, 所以会返回 false.
+        Console.WriteLine(bolRes); //False
+
+        Console.WriteLine(ins我.fn判断是否本人真身还是假冒的(ins我)); //True
+    }
+}
+----
+
+image:img/0235.png[,]
+
+image:img/0236.png[,]
 
 
 
 
 '''
+
+== other
 
 我们在编程程序时，经常会遇到功能非常相似的模块，只是它们处理的数据不一样。但我们没有办法，只能分别写多个方法来处理不同的数据类型。这个时候，那么问题来了，有没有一种办法，用同一个方法来处理传入不同种类型参数的办法呢？泛型的出现就是专门来解决这个问题的。
 
@@ -135,6 +328,8 @@ static void Main(string[] args)
     Console.WriteLine(ins泛型实例2.fn求和()); //8.64
 }
 ----
+
+
 
 '''
 
