@@ -271,13 +271,43 @@ image:img/0248.png[,]
 上面的例子说明了, *委托的目标方法, 可以返回比"委托声明的返回值类型"更加"特定"的返回值类型,这称为"协变"。* +
 委托类型, 期望返回一个object。但若返回object子类也是可以的，这是因为委托的返回类型是"协变"的。
 
+- *协变 out : 是用一个"窄类型"替换"宽类型". 这样记忆, 从小的地方, 出来到(out)大世界的里.*
+- *逆变 in : 则是用"宽类型"覆盖"窄类型". 这样记忆: 大的物体, 钻进(in)小的空间里.*
+
+'''
+
+
+==== "泛型委托类型"的参数的协变
+
+
+[,subs=+quotes]
+----
+    *delegate T dlg委托类<out T>(); //用到泛型的委托. 无参, 返回值是T类型. 这里用了 out, 表明可以用T的子类类型(小的), 来代替该T类型(大的).*
+
+    internal class Program {
+        public static string fn返回字符串() {
+            return "";
+        }
+
+        public static object fn返回obj对象() {
+            object obj = "";
+            return obj;
+        }
+
+
+        static void Main(string[] args) {
+            dlg委托类<string> ins委托指针str = fn返回字符串;
+            dlg委托类<object> ins委托指针obj = fn返回obj对象;
+
+            *ins委托指针obj = ins委托指针str; // 从右往左看: str这个小的类型, 赋值给了 大的obj类型 (即从小地方, 进入了大空间中). 就是 out 协变.*
+        }
+    }
+----
+
+image:img/0249.png[,]
 
 
 
-
-
-
-151
 
 
 

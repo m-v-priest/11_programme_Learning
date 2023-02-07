@@ -364,6 +364,20 @@ image:img/0131.png[,]
 
 '''
 
+
+
+==== 制作一个计算器
+
+首先, 要对输入框 InputField, 限定只能输入数字 int类型.
+
+image:img/0077.png[,]
+
+若只限制输入整数，将此属性修改为Intefer Number即可 +
+若要输入小数，将此属性设置为Decimal Number即可
+
+
+'''
+
 == 布局组件 grid layout group
 
 image:img/0132.png[,]

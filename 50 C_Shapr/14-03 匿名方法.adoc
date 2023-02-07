@@ -103,3 +103,32 @@ internal class Program
 
 ---
 
+==== Lambda 表达式, 是一种可以替代"委托实例"的匿名方法
+
+Lambda 表达式, 是一种可以替代"委托实例"的匿名方法。编译器会立即将Lambda表达式, 转换为以下两种形式之一:
+
+- 一个委托实例。
+- 一个类型为 Expression<TDelegate> 的表达式树。该表达式树将Lambda表达式内部的代码, 表现为一个可遍历的对象模型，因此**Lambda表达式的解释, 可以延迟到运行时。**
+
+[,subs=+quotes]
+----
+delegate int dlg委托类(int i);
+
+internal class Program {
+    static void Main(string[] args) {
+
+        *dlg委托类 ins委托指针 = x => x * x; //lambda表达式, 可以直接作为"委托变量要指向的具体函数体".*
+
+        Console.WriteLine(ins委托指针(2)); //4
+    }
+}
+----
+
+*编译器在内部, 将这种Lambda表达式 编译为一个 private 私有的方法*，并将表达式代码转移到该方法中。
+
+image:img/0250.png[,]
+
+image:img/0251.png[,]
+
+
+161
