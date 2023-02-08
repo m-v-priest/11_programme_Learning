@@ -1,0 +1,69 @@
+
+= 技能系统
+:sectnums:
+:toclevels: 3
+:toc: left
+''''
+
+== 技能系统
+
+我们创建两个类:
+
+[,subs=+quotes]
+----
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+public enum enm做事枚举类 {
+    发展商业,
+    发展农业,
+    发展教育,
+    发展医疗,
+    发展养老,
+    发展防灾,
+    发展文化,
+}
+
+*[Serializable] //在unity里，自定义的数据类型, 无法显示在inspectior面板里，需要对定义数据类型的类, 或者结构体 ,使用 [System.Serializable].*
+public class Cls做事 **//注意: 加了[Serializable] 的类, 千万不要继承 **默认的MonoBehaviour! 否则[Serializable]的功能就会失效.
+{
+    public int field_做事id;
+    public enm做事枚举类 field_做事name;
+    public string field_该做事id的介绍说明;
+    public  float field_商业值增减;
+    public  float field_农业值增减;
+    public  float field_教育值增减;
+    public  float field_医疗值增减;
+    public  float field_养老值增减;
+    public  float field_防灾值增减;
+    public  float field_文化值增减;
+
+}
+
+----
+
+对上面"做事类"的管理类
+[,subs=+quotes]
+----
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+public class Cls做事管理器:MonoBehaviour
+{
+    public Cls做事[] arrCls做事;
+
+}
+
+----
+
+image:img/0173.png[,]
+
+image:img/0174.png[,]
+
+
