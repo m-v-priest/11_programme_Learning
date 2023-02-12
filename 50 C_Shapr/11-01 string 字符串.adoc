@@ -169,6 +169,39 @@ foreach (string item in arrStr) {
 ----
 
 
+可以有多个切割符:
+
+[,subs=+quotes]
+----
+string str1 = "zrx,slf.wyy \t, zzr  : hr ";
+
+*//可以把多个切割符, 放在一个数组中, 传给Split()方法.*
+char[] arr切割符 = { ',', '.', '\t', ':', ' ' };
+
+*string[] arrStr = str1.Split(arr切割符);*
+
+foreach (var item in arrStr)
+{
+    Console.WriteLine(item);
+}
+
+Console.WriteLine(arrStr.Length); //12 *← 但注意: 空格似乎也会被放到数组中. 所以对字符串, 一开始要先去除掉里面的空格.*
+
+
+
+
+*//也可以直接把多个切割符, 直接传给Split()方法*
+*string[] arrStr2 = str1.Split( ',', '.', '\t', ':', ' ' );*
+
+foreach (var item in arrStr2)
+{
+    Console.WriteLine(item);
+}
+----
+
+
+
+
 '''
 
 

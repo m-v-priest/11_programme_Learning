@@ -188,6 +188,17 @@ image:img/0232.png[,]
 这些约束, 要求"类型参数"的实例, 可以隐式转换为相应的类和接口。
 
 
+- where T : struct 这表明T必须是一个值类型，像是int,decimal这样的
+- where T : class 这表明T必须是一个引用类型，像是自定义的类、接口、委托等
+- where T : new() 这表明T必须有无参构造函数，且如果有多个where约束，new()放在最后面
+- where T : [基类] 这表明T必须是base class类获其派生类
+- where T : [接口] 这表明T必须实现了相应的接口
+
+教程 +
+https://blog.csdn.net/Ericafyl/article/details/106378320
+
+https://www.bilibili.com/read/cv15897739/
+
 '''
 
 == 泛型类, 可以有子类
