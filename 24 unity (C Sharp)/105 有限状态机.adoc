@@ -5,6 +5,374 @@
 :toc: left
 '''
 
+== 有限状态机(FSM)
+
+Finite State Machine,  FSM定义: 有限状态机系统，是指**在不同阶段会呈现出不同的运行状态**的系统,这些状态是有限的、不重叠的。*这样的系统, 在某一时刻, 一定会处于其所有状态中的一个状态，此时它接收一部分允许的输入，产生一部分可能的响应, 并且迁移到一部分可能的状态。*
+
+白话:一个东西，有几个不同的状态，它可以在这几个状态转换。(人:睡觉、静止、走路、跑步、开车)
+
+
+
+=== "有限状态机的"最简单逻辑框架
+
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ClsFSM简单状态机 : MonoBehaviour
+{
+
+    *//各种状态, 我们定义成枚举类*
+    public enum EnmState状态
+    {
+        Idle空闲,
+        Patrol巡逻,
+        Chase追逐,
+        Attack攻击,
+    }
+
+
+    *//静态字段*
+    *static EnmState状态 enmState当前状态 = EnmState状态.Idle空闲; //角色的当前状态, 我们先设为"空闲"*
+
+
+
+
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        *//状态切换判断*
+        *switch (enmState当前状态)*
+        {
+            *case EnmState状态.Idle空闲:*
+                *fn空闲状态时的行为ProcessStateIdle();*
+                break;
+
+            case EnmState状态.Patrol巡逻:
+                fn巡逻状态时的行为();
+                break;
+
+            case EnmState状态.Chase追逐:
+                fn追逐状态时的行为();
+                break;
+
+            case EnmState状态.Attack攻击:
+                fn攻击状态时的行为();
+                break;
+        }
+    }
+
+
+
+
+    *void fn空闲状态时的行为ProcessStateIdle()*
+    {
+        //to do
+
+        if (condition条件) //如果满足某个条件, 就切换状态.
+        {
+            enmState当前状态 = EnmState状态.Chase追逐; //将当前状态, 重新切换成进入另一个状态.
+        }
+    }
+
+
+    void fn巡逻状态时的行为()
+    {
+        //1.当前状态下, 会做的行为
+        //2.当条件满足什么时, 就切换成另一种状态
+    }
+
+
+    void fn追逐状态时的行为()
+    {
+    }
+
+
+    void fn攻击状态时的行为()
+    {
+    }
+
+}
+
+----
+
+image:img/0230.png[,]
+
+
+'''
+
+=== 有限状态机(正式)
+
+
+image:img/0231.png[,]
+
+
+两个脚本如下
+
+==== ClsFsmState状态类
+
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+//枚举类, 让每个"状态"都有一个ID
+public enum EnmStateID
+{
+    Id_NullState = 0, //表示"空状态", 即不处在任何状态中.
+
+}
+
+//枚举类, 用来定义"状态间的转换条件"
+public enum EnmTransition转换条件
+{
+    NullTransition = 0, //空的"转换条件"
+
+}
+
+
+
+
+
+public abstract class ClsFsmState状态类 //这个类会作为父类使用. 所以我们把它设为抽象类, 由子类来实现里面的方法.
+{
+
+    protected EnmStateID enmStateID本状态的id = EnmStateID.Id_NullState;
+
+    //把上面的字段, 变成属性
+    public EnmStateID EnmStateID本状态的id属性
+    {
+        get { return enmStateID本状态的id; }
+    }
+
+    //下面的字典, 用来保存所有的转换条件. 键值对的 key的类型, 就是 "EnmTransition转换条件"类型, value的类型, 就是"EnmStateID"类型.
+    protected Dictionary<EnmTransition转换条件, EnmStateID> map字典 = new Dictionary<EnmTransition转换条件, EnmStateID>();
+
+    public ClsFsmSystem系统类 ins系统; //一个系统里面, 会包含多个state状态.
+
+
+
+    //构造方法. 即在实例化本类时, 要给它传入一个参数. 类型是"ClsFsmSystem系统类"类型的.
+    protected ClsFsmState状态类(ClsFsmSystem系统类 ins系统)
+    {
+        this.ins系统 = ins系统; //把传入的"ClsFsmSystem系统类"实例对象, 由自己身上的"ins系统"字段来指针指向它. 方便我们今后随时调遣该系统类的实例. (相当于在你自己身上, 存了个对方的电话号码, 以后可以随时召唤他.)
+    }
+
+
+
+
+
+    public void fn添加转换条件AddTransition(EnmTransition转换条件 key转换条件trans, EnmStateID value状态的id)
+    {
+        if (key转换条件trans == EnmTransition转换条件.NullTransition)
+        {
+            Debug.LogError("不允许空的转换条件!");
+            return;
+        }
+
+        if (value状态的id == EnmStateID.Id_NullState)
+        {
+            Debug.LogError("不允许空的状态ID!");
+            return;
+        }
+
+        //再判断, 你添加进来的转换条件, 是否已经在字典中存在了.
+        if (map字典.ContainsKey(key转换条件trans))
+        {
+            Debug.LogError($"字典中, 该 {key转换条件trans} 转换条件已经存在了");
+            return;
+        }
+
+        //上面三个判断条件都通过后, 就能继续执行下面的代码了:
+        map字典.Add(key转换条件trans, value状态的id); //给字典, 添加一个新的键值对.
+    }
+
+
+    //如果你要从字典中, 删除某个键值对, 就调用下面的函数
+    public void fn删除转换条件DeletTransition(EnmTransition转换条件 key转换条件trans)
+    {
+        if (key转换条件trans == EnmTransition转换条件.NullTransition)
+        {
+            Debug.LogError("不允许空的转换条件!");
+            return;
+        }
+
+        //如果字典中, 该key存在的话, 才能删除它的键值对
+        if (map字典.ContainsKey(key转换条件trans) == false)
+        {
+            Debug.LogError("该key(转换条件)在字典中不存在, 无法删除该 key-value对");
+            return;
+        }
+
+        map字典.Remove(key转换条件trans);
+
+    }
+
+
+
+    //下面的函数, 作用是, 输入"转换条件"(即字典中的 key), 并返回当满足该条件时, 会转换到的新的目标状态(即字典中的 value).
+    public EnmStateID fn拿到新的目标状态GetOutState(EnmTransition转换条件 key转换条件trans)
+    {
+        if (map字典.ContainsKey(key转换条件trans)) //包含该key,就返回value
+        {
+            return map字典[key转换条件trans]; //将该key对应的value返回. 这个value
+        }
+        else
+        {
+            //如果不包含该key, 就返回"空状态"
+            return EnmStateID.Id_NullState;
+        }
+
+    }
+
+
+
+    //下面三个方法, 是进入某个状态的, 业务逻辑代码.
+
+    //虚方法, 子类可以选择重写.
+    public virtual void fnDoBeforeEntering刚进入某个状态时会有的行为() { }
+
+
+    //抽象方法. 这个方法, 会由子类去实现具体的"进入某个状态后, 该状态要做的具体的业务逻辑".
+    public abstract void fnAct行为(GameObject go敌人 ); //可以选择传参
+
+
+    //虚方法, 子类可以选择重写.
+    public virtual void fnDoAfterLeaving刚离开某个状态时会有的行为() { }
+
+
+
+    //下面的方法, 是"条件转换"代码
+    public abstract void fnCondition判断转换条件(GameObject go敌人); //可以选择传参
+
+
+
+
+}
+
+----
+
+
+
+'''
+
+==== ClsFsmSystem系统类 (还未写完)
+
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ClsFsmSystem系统类 //该系统类, 用来保存"所有的状态"
+{
+
+    //下面的字典,保存了所有状态的集合.
+    private Dictionary<EnmStateID, ClsFsmState状态类> dict全状态字典 = new Dictionary<EnmStateID, ClsFsmState状态类>();
+
+    private ClsFsmState状态类 ins当前状态CurrentState; //这个字段, 用来存放"当前的状态"是哪个状态.
+
+
+
+
+    public void fnAddState添加状态到字典中(ClsFsmState状态类 ins状态state)
+    {
+        if (ins状态state == null)
+        {
+            Debug.LogError("传入的状态不能为空");
+            return;
+        }
+
+        //下面, 如果"当前状态"是空的话, 我们就将新添加进来的状态, 作为"当前状态"来使用. 其实, 你可以给"当前状态"先在其他地方设置一个初始值. 就不需要再在本 add方法里来写这个逻辑了. 这个逻辑写在这里也是有点奇怪.
+        if (ins当前状态CurrentState == null)
+        {
+            ins当前状态CurrentState = ins状态state;
+        }
+
+
+        if (dict全状态字典.ContainsKey(ins状态state.EnmStateID本状态的id属性))
+        {
+            Debug.LogError($"状态[{ins状态state}]已经存在在全状态字典中, 不能重复添加");
+            return;
+        }
+
+        //上面都通过后, 就能正式添加进字典中了
+        dict全状态字典.Add(ins状态state.EnmStateID本状态的id属性, ins状态state);
+    }
+
+
+
+    public void fnDeletState将某状态从字典中删除(EnmStateID id)
+    {
+        if (id == EnmStateID.Id_NullState)
+        {
+            Debug.LogError("无法删除空状态");
+            return;
+        }
+
+        if (dict全状态字典.ContainsKey(id) == false)
+        {
+            Debug.LogError($"无此id:{id}, 所以无法删除不存在的'该状态'");
+            return;
+        }
+
+
+        dict全状态字典.Remove(id);
+    }
+
+
+
+
+    //下面的函数, 会根据你传入的"转换条件", 来进行状态的装换.
+    public void fnPerformTransition(EnmTransition转换条件 enm转换条件)
+    {
+        if(enm转换条件 == EnmTransition转换条件.NullTransition)
+        {
+            Debug.LogError("转换条件为空, 所以无法转换状态");
+            return;
+        }
+
+        //未完待续
+        // https://www.bilibili.com/video/BV1ZA411o7TB/?spm_id_from=333.999.0.0&vd_source=52c6cb2c1143f8e222795afbab2ab1b5   1.16.50秒
+
+
+    }
+
+
+
+}
+
+----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
+
+
+
 == 有限状态机
 
 有限状态机: 又称"有限状态自动机"，简称"状态机"。
