@@ -222,8 +222,8 @@ public abstract class ClsFsmState状态类 //这个类会作为父类使用. 所
 
 
 
-    //下面的函数, 作用是, 输入"转换条件"(即字典中的 key), 并返回当满足该条件时, 会转换到的新的目标状态(即字典中的 value).
-    public EnmStateID fn拿到新的目标状态GetOutState(EnmTransition转换条件 key转换条件trans)
+    //下面的函数, 作用是, 输入"转换条件"(即字典中的 key), 并返回当满足该条件时, 会转换到的新的目标状态(即字典中的 value), 该状态的id值.
+    public EnmStateID fn拿到新的目标状态的id值GetOutState(EnmTransition转换条件 key转换条件trans)
     {
         if (map字典.ContainsKey(key转换条件trans)) //包含该key,就返回value
         {
@@ -242,36 +242,38 @@ public abstract class ClsFsmState状态类 //这个类会作为父类使用. 所
     //下面三个方法, 是进入某个状态的, 业务逻辑代码.
 
     //虚方法, 子类可以选择重写.
-    public virtual void fnDoBeforeEntering刚进入某个状态时会有的行为() { }
+    public virtual void fnDoBeforeEntering刚进入某个状态时会有的行为() { } //这个函数动作, 相当于是新人入职时, 新人(新状态)要做的准备工作.
 
 
     //抽象方法. 这个方法, 会由子类去实现具体的"进入某个状态后, 该状态要做的具体的业务逻辑".
-    public abstract void fnAct行为(GameObject go敌人 ); //可以选择传参
+    public abstract void fnAct某状态下会做的具体行为(GameObject go敌人); //可以选择传参
 
 
     //虚方法, 子类可以选择重写.
-    public virtual void fnDoAfterLeaving刚离开某个状态时会有的行为() { }
+    public virtual void fnDoAfterLeaving刚离开某个状态时会有的行为() { } //这个函数动作, 相当于是老人的离职时, 老人(老状态)要做的收尾工作.
 
 
 
-    //下面的方法, 是"条件转换"代码
-    public abstract void fnCondition判断转换条件(GameObject go敌人); //可以选择传参
+    //下面的方法, 是"条件转换"代码. 作用: 判断传入的参数(这个敌人), 这个影响, 是否造成了条件的改变, 从而达到了满足"状态改变"的程度. 注意: 本函数只判断"条件是否达到了某个临界值", 从而会激起状态的改变. 本函数不去处理"状态改变"的事实. "状态改变"的具体操作, 会由 system类中的函数去做!   换言之, 本类中的这个函数, 只处理(心动), 不处理(行为上的行动)
+    public abstract void fnCondition判断转换条件是否满足临界值(GameObject go敌人); //可以选择传参
 
 
 
 
 }
-
 ----
+
+
 
 
 
 '''
 
-==== ClsFsmSystem系统类 (还未写完)
+==== ClsFsmSystem系统类
 
 [,subs=+quotes]
 ----
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -336,26 +338,61 @@ public class ClsFsmSystem系统类 //该系统类, 用来保存"所有的状态"
 
 
     //下面的函数, 会根据你传入的"转换条件", 来进行状态的装换.
-    public void fnPerformTransition(EnmTransition转换条件 enm转换条件)
+    public void fnPerformTransition着手执行实际的状态改变 (EnmTransition转换条件 enm转换条件trans)
     {
-        if(enm转换条件 == EnmTransition转换条件.NullTransition)
+        if (enm转换条件trans == EnmTransition转换条件.NullTransition)
         {
             Debug.LogError("转换条件为空, 所以无法转换状态");
             return;
         }
 
-        //未完待续
-        // https://www.bilibili.com/video/BV1ZA411o7TB/?spm_id_from=333.999.0.0&vd_source=52c6cb2c1143f8e222795afbab2ab1b5   1.16.50秒
+
+        //调用"状态类的实例对象"身上的 "fn拿到新的目标状态的id值GetOutState"函数, 能拿到 满足"本转换条件"时, 会转换到的新状态的"状态id值".
+        EnmStateID enm新状态的id =  ins当前状态CurrentState.fn拿到新的目标状态的id值GetOutState(enm转换条件trans);
+
+        if(enm新状态的id == EnmStateID.Id_NullState)
+        {
+            Debug.LogError("该状态的id值, 为空 = Id_NullState");
+            return;
+        }
 
 
+        //再来判断"全状态字典"中, 是否存在此key值(即id值).
+        if (dict全状态字典.ContainsKey(enm新状态的id) == false)
+        {
+            Debug.LogError("全状态字典中, 无此id值的状态存在");
+            return;
+        }
+
+
+        //下面就能进行状态切换了. 即, 将当前状态currentState(老状态), 转换到 -> id值的那个状态(新状态)
+        ClsFsmState状态类 ins新状态 = dict全状态字典[enm新状态的id]; //先根据id值, 拿到该id值对应的状态(即满足条件后, 会转变到的这个新状态)
+
+        //然后执行"状态在发生了改变"时, 会立即执行的函数动作 (离开告别仪式).
+        ins当前状态CurrentState.fnDoAfterLeaving刚离开某个状态时会有的行为();
+
+        //"当前状态"的变量指针, 就重新指向了新状态
+        ins当前状态CurrentState = ins新状态;
+
+        //然后执行"在进入一个新状态时, 会立即执行的函数动作" (入职仪式)
+        ins当前状态CurrentState.fnDoBeforeEntering刚进入某个状态时会有的行为();
     }
 
 
+
+
+    public void fnUpdate升级(GameObject go敌人)
+    {
+        ins当前状态CurrentState.fnAct某状态下会做的具体行为(go敌人);
+        ins当前状态CurrentState.fnCondition判断转换条件是否满足临界值(go敌人);
+
+    }
 
 }
 
 ----
 
+image:img/0232.svg[,]
 
 
 
