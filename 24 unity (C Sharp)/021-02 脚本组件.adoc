@@ -580,3 +580,191 @@ public class my脚本2 : MonoBehaviour
 '''
 
 
+== ★ GameObject.Find()、Transform.Find查找游戏对象的方法总结
+
+
+image:img/0232.png[,]
+
+=== 1.通过对象名称
+
+==== (1).transform.Find (string name)
+
+说明：
+
+- transform.Find用于查找子节点，它并不会递归的查找物体，也就是说它只会查找它的子节点，并不会查找子节点的子节点。
+- *可以查找隐藏对象 （前提是transform所在的根节点必须可见，即active=true）*
+- 支持路径查找
+
+
+1.*可以查找隐藏对象 （前提是transform所在的根节点必须可见，即active=true）*
+
+2.支持路径查找
+
+
+....
+GameObject root = GameObject.Find("root");
+root.SetActive(false); // 根节点关闭激活
+
+// 就总是查找失败了
+root.transform.Find("root/AnyChildObjectName");
+....
+
+
+实际开发:
+*实际开发中, 会将功能预制体, 放到一个可见的GameObject目录下，将这个GameObject目录作为查找根节点，下面的所有对象(隐藏、非隐藏）都可以查找到。*
+
+*你可以把”map”节点放在一个active = true的MapRoot上，无论是关闭 或者 显示,  代码中写起来都很方便。 假如你的map节点就是顶级节点，那么它一旦天生acive = false ，那么你将无法得到它的对象，更无法设置它的属性了。*
+
+....
+GameObject root = GameObject.Find("MapRoot");
+GameObject map = root.transform.Find("map").gameObject;
+map.SetActive(true);
+....
+
+
+[,subs=+quotes]
+----
+*//只能查找直接子节点*
+*Transform trsfRes1 = this.transform.Find("go父2");* //← 通过名字查找子对象, 并返回它
+Debug.Log(*trsfRes1*); //go父2 (UnityEngine.Transform)
+Debug.Log(*trsfRes1.name*); //go父2
+Debug.Log(*trsfRes1.position*); //输出坐标
+
+
+*//不能查找孙节点.*
+Transform trsfRes2 = this.transform.Find("go子12");
+Debug.Log(trsfRes2); //null ← 找不到返回null
+
+
+*//但支持通过路径查找更深层的子孙节点*
+Debug.Log(*this.transform.Find("go父2/go子22/go孙222")*); //go孙222 (UnityEngine.Transform)
+----
+
+很多情况下我们不知道对象层级（比如模型过于复杂或者想灵活控制），可以用递归的方式去查找：
+
+[,subs=+quotes]
+----
+    void Start()
+    {
+        Debug.Log(*fnGetChild(this.transform, "go孙221")*);
+    }
+
+
+    //递归查找
+    public static Transform *fnGetChild(Transform parentTF, string childName)*
+    {
+        //先在子物体中查找
+        Transform childTF = parentTF.Find(childName);
+        if (childTF != null) return childTF;
+
+        //若没找到, 就在往下一层(孙物体)中去查找
+        for (int i = 0; i < parentTF.childCount; i++)
+        {
+            childTF = fnGetChild(parentTF.GetChild(i), childName);
+            if (childTF != null) return childTF;
+        }
+        return null;
+
+    }
+----
+
+'''
+
+==== (2). transform.GetChild(int index)
+
+通过索引, 返回一个变换的子对象（仅能找儿子对象）
+
+'''
+
+==== (3).transform.parent
+
+返回当前对象的父物体，也可通过这个属性, 给当前对象重新换个父物体.
+
+'''
+
+==== (4).GameObject.Find(string name)
+
+静态方法，直接用类去调用即可，和transform.Find (string name)的区别就是: 这个方法会从hierarchy面板中所有的对象去遍历查找第一个与参数相同的名称，显然这是一个及其消耗性能的事情，官方都说除非迫不得已，建议不要在每一帧中使用这个函数。
+
+同样, 这个方法也可以使用路径作为参数。eg:
+
+- 若无父物体参数写成：hand = GameObject.Find("/Monster/Arm/Hand");
+- 有的话写成：hand = GameObject.Find("Monster/Arm/Hand");
+
+说明：
+
+- *GameObject只能查找到active的物体* +
+- 如果name指定路径，则按路径查找；否则**递归查找**，直到查找到第一个符合条件的GameObject或者返回null
+
+通过名字或路径查找游戏对象。
+
+GameObject.Find("GameObject");
+
+GameObject.Find("GameObject/ChildGameObject);
+
+使用规范:
+
+1.**无法查找隐藏对象 ** +
+*隐藏对象包括查找路径的任何一个父节点隐藏(active=false)*
+
+2.如果查找不在最上层，建议合理使用路径查找，*路径查找是把双刃剑*
+
+优点1:解决查找中可能出现的重名问题。  +
+优点2:如果有完全的路径，减少查找范围，减少查找时间。
+
+*缺点: 路径或结构调整后，容易影响到程序中的查找，需要重新定位查找路径。*
+
+3.*如果路径查找中的任何一个父节点active=false，这个对象都将查找不到。*
+
+4.使用方便但效率低下  +
+*此查找相当于递归遍历查找，虽使用方便但效率堪忧，建议在Start()函数中查找对象并保存引用，切忌在Update()中动态查找。*
+
+
+
+
+'''
+
+=== 2.通过tag（标签）查找：
+
+==== (1).GameObject.FindWithTag(string tag);
+
+静态方法，返回标记为tag的第一个游戏对象.
+
+
+
+'''
+
+==== (2).GameObject.FindGameObjectsWithTag(string tag)
+
+静态方法，返回标记为tag的所有激活的游戏对象列表(GameObject[] )，如果没有找到则为空。
+
+标签这种标记方法真是太好了，不仅节约了查找时间，还能让游戏对象有具体的分类标记。
+
+
+'''
+
+=== 3.通过对象类型/组件查找游戏对象
+
+==== Object.FindObjectOfType (Type type);
+
+返回Type类型第一个激活的加载的对象。
+
+这个方法同样**会遍历所有的游戏对象, 去找第一个有参数组件的物体。**不推荐在每帧使用这个函数。
+
+'''
+
+==== Object.FindObjectsOfType (Type type);
+
+返回Type类型的所有激活的加载的物体列表( Object[] )。
+
+同样十分消耗性能。。。不推荐在每帧使用这个函数。
+
+'''
+
+获取组件的方式：
+GetComponent、GetComponentInChildren、GetComponentInParent、GetComponents、GetComponentsInChildren、GetComponentsInParent
+**获取到有关对象的组件后, 即可通过相应组件.gameObject属性获得想要的对象/对象列表。**不推荐在每帧使用这个函数.
+
+
+教程:
+https://petergao.blog.csdn.net/article/details/107285591?spm=1001.2101.3001.6650.1&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-107285591-blog-87893783.pc_relevant_3mothn_strategy_recovery&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-107285591-blog-87893783.pc_relevant_3mothn_strategy_recovery&utm_relevant_index=2
