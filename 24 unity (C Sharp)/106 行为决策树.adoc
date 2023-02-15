@@ -37,4 +37,22 @@ image:img/0243.png[,]
 https://blog.csdn.net/qq_38880380/article/details/127250106
 
 
+'''
+
+== Behavior Designer
+
+免费下载地址 https://unity3dassetsfree.club/78/
+
+选中玩家物体, 打开 Behavior Designer 的 editor
+
+image:img/0244.png[,]
+
+image:img/0245.png[,]
+
+
+
+
+
+
+
 
