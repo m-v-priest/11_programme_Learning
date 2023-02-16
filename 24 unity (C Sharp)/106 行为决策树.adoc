@@ -43,11 +43,430 @@ https://blog.csdn.net/qq_38880380/article/details/127250106
 
 免费下载地址 https://unity3dassetsfree.club/78/
 
+https://unityassets4free.com/behavior-designer-movement-pack/2/
+
+
 选中玩家物体, 打开 Behavior Designer 的 editor
 
 image:img/0244.png[,]
 
 image:img/0245.png[,]
+
+
+==== Actions : Log
+
+image:img/0246.png[,]
+
+然后运行, 就能在控制台, 看到输出了 : zrx
+
+Log, 专门用来输出文本, 就相当于是 unity中的 print()语句.
+
+Log is a simple task which will output the specified text and return
+success. It can be used for debugging.
+
+
+注意, 如果你在添加行为或节点时, 发现点不出来, 原因是你现在正在运行游戏中, BD就处在不可编辑的状态了. 你先要先把运行按钮关掉, 才能继续编辑BD.
+
+要平移BD界面, 按 alt + 鼠标左键, 就行了.
+
+
+
+==== Composites : Sequence
+
+image:img/0247.png[,]
+
+sequence任务, 只要它的一个子节点返回失败, 整个sequence就失败. 必须所有子节点都成功, 整个sequence才成功.  相当于 and 操作. 就好比求职,  99%的成功=0.  必须100%的成功才能上岸.
+
+The sequence task is similar to an "and" operation. It will return failure as soon as one of its child tasks return failure. If a child task returns success then it will sequentially run the next task. If all child tasks
+return success then it will return success.
+
+
+
+==== Actions : Idle
+
+image:img/0248.png[,]
+
+image:img/0249.png[,]
+
+Returns a TaskStatus of running. Will only stop when interrupted or a
+conditional abort is triggered.
+
+
+Idle动作, 会一直处在等待状态, 即会一直返回"running", 而不会返回成功或失败. 这就导致"挂起"的状态了.
+
+对于 Sequence来说, 只要它下面的子任务, 有一个失败, Sequence就会返回失败. 要子任务全部成功, Sequence才会返回成功.
+
+
+==== Actions : Wait
+
+image:img/0250.png[,]
+
+image:img/0251.png[,]
+
+
+==== Composites : Selector
+
+image:img/0252.png[,]
+
+selector任务, 只要子节点有一个成功, selector就成功了, 就结束动作了. 不需要所有子节点都成功. 所以, 只要有一个子节点成功了, 则其它子节点就不会再运行了. (就好像单位招聘, 招到一个人, 就不会再考虑其他应聘者了)
+
+The selector task is similar to an "or" operation. It will return success as soon as one of its child tasks return success. If a child task returns failure then it will sequentially run the next task. If no child task returns
+success then it will return failure.
+
+==== Conditionals - Unity - Math
+
+
+image:img/0253.png[,]
+
+image:img/0254.png[,]
+
+
+
+==== Behavior Designer Movement Pack 包 : 巡逻任务
+
+下面, 要安装 Behavior Designer Movement Pack 包, 然后, 你重新打开 BD, 会发现, 它的Conditions里面, 就多了 跟Movement 相关的东西.
+
+image:img/0255.png[,]
+
+image:img/0256.png[,]
+
+image:img/0257.png[,]
+
+image:img/0258.png[,]
+
+在游戏场景中，每一个GameObject都有"static"或者"动态"的两种状态，*当一个物体标记为static后，就确保这个物体在游戏场景中为静态的、不会移动的物体，进而在游戏的运行过程中让游戏有更加流畅的运行体验。*
+
+static下有很多的选项，例如 Lightmap Static，指的是使用光照贴图对场景中的静态物体进行优化；Occluder static 则是会在遮挡剔除中应用，当一个静态的物体被遮挡后，便不会渲染与之相关的信息。而如果我们希望物体进行移动，就不能勾选这一选项，否则就有可能会出现目标移动物体的碰撞体在移动，而其mesh信息一直保持静止的情况。
+
+*总之，对于场景中一直不动的物体，勾选上static是一个绝佳的选择。*
+
+然后打开 windows -> ai -> navigation
+
+image:img/0259.png[,]
+
+image:img/0260.png[,]
+
+然后, 给你的敌人物体, 添加 nav mesh agent 组件. 再运行游戏, 就能看到敌人在三个巡逻点之间不断移动(巡逻)的效果了.
+
+image:img/0261.png[,]
+
+image:img/0262.png[,]
+
+image:img/0263.png[,]
+
+
+注意Seek和Follow的区别。*Follow是一直运行的，返回TaskStatus.Running；而Seek是找到就停止运行的，返回TaskStatus.Success.*
+
+玩家物体身上, 也要添加 nav mesh agent 组件
+
+image:img/0264.png[,]
+
+image:img/0265.png[,]
+
+image:img/0266.png[,]
+
+image:img/0267.png[,]
+
+
+
+
+我们需要用到一个Selector（判断玩家是去往目标点走去，还是追寻怪物，二选一），一个Sequence（用来判断是否发现了怪物，发现了则追击），两个Action下的Seek（用处是去往目标点，一个是去往最初设定的目标点，一个是去往怪物的目标点），一个Conditionals下的Can See Object，判断是否发现了目标。
+
+
+
+image:img/0268.png[,]
+
+image:img/0269.png[,]
+
+image:img/0270.png[,]
+
+image:img/0271.png[,]
+
+如图所示：最初Can See Object一直是叉，但是有一个红圈，代表它一直在检测，此处就是因为我们将Sequence中的Type改为Lower Priotity，左边权重比右边高，则会打断右边。
+Abort模式还有Self和 Both。
+
+Self代表可以打断自身。例如最初检测到了怪物，玩家追寻怪物，但是玩家速度比怪物慢，因此没追上，脱离了视野，那么此时不满足Can See的条件，就会打断，而向最初设定的目标点走去。
+
+Both代表同时执行Self和Lower Priotity。
+
+
+
+
+
+
+
+
+
+
+*将Abort Type设置为Lower Priority，然后就能在满足条件时打断右边低优先级的seek, 直接执行Sequence下面的追击任务*
+
+
+Conditional aborts +
+中断有3种类型：Self，Lower Priority，Both
+
+- Self：中断自己；
+- Lower Priority：中断比自己低权限的节点，*在行为树种，右边的节点, 比左边的节点权限低；*
+- Both：中断自己和比自己低权限的节点。
+
+行为节点的摆放位置：
+
+*例，地震、吃饭、睡觉三个行为 地震要中断吃饭跟睡觉，吃饭要中断睡觉；地震的优先级最高，所以放在最左边，优先级最低的是睡觉；*
+
+
+image:img/0272.jpg[,]
+
+- self:当一直在执行Log1时,CanSeeObject发生改变,Sequence会中断自身,然后执行Log2
+- LowerPriority :当正在执行Log2时,CanSeeObject发生变化,会中断Log2然后去执行Sequence里面的
+- Both :两种情况都包含. (即, 我出错就做执行你的, 你出错就执行我的)
+
+
+
+
+
+在Sequence节点中的About Type属性中有三中类型：
+
+*1. Self +
+该方法将不断执行Sequence里面的任务，当返回错误时, 将中断该任务，此时将执行Sequence右边的Seek节点任务，即当敌人离开主角视线将继续往终点行走.*
+
+*2. Lower Priority +
+该方法也将不断执行Sequence里面的任务，当Sequence里面的的第一个任务返回正确值时, 将中断Sequence右边的Seek节点任务，进而执行Sequence里面的任务，即当主角在从起点到终点的过程中发现敌人将跟随敌人*
+
+3. Both +
+该方法也将不断执行Sequence里面的任务，它又<1>、<2>全部属性，即当主角在从起点到终点的过程中发现敌人将跟随敌人，当敌人离开主角视线将继续往终点行走
+
+注：以上三中方法都将不断的运行监测Sequence里面的任务，一旦符合，将中断选中的任务。
+
+
+
+
+
+
+1.AbortType：
+
+None:不被其它节点打断，非None时，每一个Tick都在判断其直接子节点中的条件节点的运行结果。
+
+Self：仅终结子节点中的操作，重新开始自己的第一个子节点
+
+Lower Priority:当前节点可以打断低优先级的行为（即：同级且在自己右边的节点）
+
+Both:多个节点间可以相互打断。
+
+如上图，所有的条件节点都有一个属性：Abort Type，也就是中止类型
+
+None
+无中止
+Self
+这是一种自包含中断类型。也就是会检测此节点下所有条件判断节点，即便是被执行过的节点，如果判断条件不满足则打断当前执行顺序从新回到判断节点判断，并返回判断结果！
+Lower Priority
+当运行到后续节点时，本节点的判断条件生效了的话则打断当前执行顺序，返回本节点执行！
+Both
+同时包含Self与LowerPriority
+
+只有复合节点（Composites标签中的那些节点，比如上面的Selector和Sequence）有"中断属性"。我们选中Sequence，在它的Inspector中可以看到Abort Type属性。
+
+条件中断，中断有3种类型：Self，Lower Priority，Both
+
+- Self：在**"当前分支中的"**任何任务处于活动状态时，将重新评估。
+- Lower Priority：当**"当前分支右侧的"任何任务处于活动状态时**，将重新评估。
+- Both：将在"右侧"或"当前"分支内的任何任务处于活动状态时, 重新评估。
+
+
+
+[options="autowidth"  cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|Self（打断自身）
+|- 当左侧树已经执行到Seek任务时，如果Sequence在没有Self中断类型的情况下，不论Can See Object的状态如何，Seek都不会被打断。
+- 如果有了Self类型，Can See Object会一直做检测，当不满足条件判断的时候，会打断Seek的执行，Sequence会直接返回false。
+
+|Lower Priority（打断低优先级）
+|- 假设当前行为树，左侧树已经返回false，执行右侧树Seek。
+- 如果Sequence在没有设置Lower Priority的情况下，左侧树是不会再进行判断的。
+- 但是如果设置了，当Can See Object发现了目标时，会立刻打断右侧树任务Seek，然后立即执行左侧树逻辑。行为树默认的优先级是从左到右依次降低，所以左侧最高，可以打算低优先级的任务。
+
+|
+|
+|===
+
+
+
+
+如何使用其他节点的数据(同一树中)?
+
+方法一
+1.在分享数据和使用数据的脚本中分别使用Share类型(例如:SharedBool,SharedTransform)的来定义数据变量;
+
+image:img/0273.jpg[,]
+
+share和普通类型的区别:share可以访问行为树中的局部变量,也方便为外部修改,普通类型只能在特定树特定节点去修改,share在使用的时候必须.Value去访问它的值,普通类型就不需要
+
+2.在分享数据的脚本中对分享数据进行赋值,
+3.在行为树面板中添加同样类型的数据变量
+
+image:img/0274.jpg[,]
+
+
+'''
+
+
+== 你可以自己给 BT插件, 添加上自己的脚本
+
+比如, 你的代码如下: +
+类名叫: go玩家追踪
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+*using BehaviorDesigner.Runtime.Tasks; //要引入这个命名空间*
+
+
+//下面这个类, 用来让A物体, 移动向B物体. 如果移动到目的地, 就返回"成功".
+*public class go玩家追踪 : Action //继承自 行为树中的Action类*
+{
+    public Transform target目标位置;  //这个用来存储玩家要去往的位置
+    public float speed移动速度 = 5f;
+    public float arriveDistance离目标点的距离 = 0.2f;
+
+
+    //重写Action类中的 OnUpdate()方法. 当进入到这个任务的时候, 就会一直调用这个 OnUpdate()方法, 直到任务结束位置 -- 即返回一个成功或失败的结果,则任务结束. 如果返回的是 running, 则说明任务还在继续中, 则这个OnUpdate()方法,依然会继续执行.
+    //这个方法的调用频率, 默认是与 unity中的帧 保持一致的.
+    public override TaskStatus OnUpdate()
+    {
+        //先判断一下, 目标位置是否为空? 即还未赋值. 如果为空, 则我们的玩家物体, 就没有去往的方向. 就让任务直接返回失败.
+        if (target目标位置 == null)
+        {
+            *return TaskStatus.Failure;*
+        }
+
+
+        //有目标的话, 就前往
+        transform.LookAt(target目标位置.position); //让本物体(即玩家物体), 直接面向目标点的位置.
+
+
+        //让本物体, 朝着那个目标位置移动. 该函数的返回值是物体当前所在的坐标点. 注意! 如果你只单纯写这个MoveTowards()函数, 它不会帮你把物体做移动的. 你必须把它的返回值, 重新赋值给物体的transform.position 字段上, 物体才会移动!
+        transform.position = Vector3.MoveTowards(transform.position, target目标位置.position, Time.deltaTime * speed移动速度);
+
+
+        //如果你的物体已经达到目标点, 则返回"任务成功"
+        if (Vector3.Distance(transform.position, target目标位置.position) < arriveDistance离目标点的距离)
+        {
+            *return TaskStatus.Success;*
+        }
+        else
+        {
+            *return TaskStatus.Running;*
+        }
+
+
+
+    }
+}
+
+----
+
+保存后, 你就能在 BT 的面板里面, 因为你的类继承自Action, 所以你就能在Action下面, 看到你写的脚本了.
+
+image:img/0272.png[,]
+
+image:img/0273.png[,]
+
+'''
+
+== 你自己编辑的 Cls_MyCanSeeObjecdt 类 脚本
+
+先回忆一下向量的减法:
+
+image:img/0274.png[,]
+
+image:img/0275.png[,]
+
+
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|计算A点与B点, 以世界坐标原点为夹角 的角度 +
+Vector3.Angle(A.posion, B.position);
+|image:img/0276.png[,]
+
+|计算以B点为顶点,  BA和BC为边 的夹角 +
+Vector3.Angle(B.position - A.posion,  B.position - C.position);
+|image:img/0277.png[,]
+
+|求两个向量的"法向量" +
+黄线为BA,BC法向量 +
+Debug.DrawLine(B.position,Vector3.Cross(B.position-A.posion,B.position-C.position));
+|image:img/0278.png[,]
+|===
+
+
+Cls_MyCanSeeObjecdt 类:
+
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using BehaviorDesigner.Runtime.ObjectDrawers;
+using BehaviorDesigner.Runtime.Tasks; //引入这个命名空间
+
+
+/// <summary>
+/// 用来判断目标是否在视野内
+/// </summary>
+public class Cls_MyCanSeeObjecdt : Conditional //要继承自 行为树中的 Conditional类
+{
+    public Transform[] arrTargets多个目标; //这个数组, 会用来存储我们看到的所有目标
+    public float numfieldOFViewAngel视野宽度 = 90; //默认设成90度
+    public float numviewDistance视距 = 7;  //默认设成7米
+
+
+    public override TaskStatus OnUpdate()
+    {
+        if (arrTargets多个目标 == null)
+        {
+            return TaskStatus.Failure;
+        }
+
+        foreach (var itemTarget in arrTargets多个目标)
+        {
+            float v_distance两者距离 = Vector3.Distance(transform.position, itemTarget.position);
+
+            float num两者的夹角 = Vector3.Angle(transform.forward, itemTarget.position - transform.position); //即你前进的方向(直线A), 和"你与对方距离的这条直线(直线B)", A与B这两直线之间的夹角.
+
+
+            //只有当你与敌人的距离, 小于你的视野距离, 并且, 你与它的角度, 小于你视野宽度的一半时, 则你就看到了它.
+            if (v_distance两者距离 < numfieldOFViewAngel视野宽度 && num两者的夹角 < numfieldOFViewAngel视野宽度 / 2)
+            {
+                return TaskStatus.Success;
+            }
+        }
+
+        return TaskStatus.Failure;
+
+    }
+}
+
+----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
