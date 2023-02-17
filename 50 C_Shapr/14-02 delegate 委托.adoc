@@ -1154,3 +1154,34 @@ Invoke和BeginInvoke都是调用委托实体的方法，前者是同步调用，
 
 java语言, 则完全使用接口 interface, 来取代一些对委托的使用.
 
+
+'''
+
+== 委托的兼容性
+
+==== 一个类型的委托类的实例, 不能指针指向另一个委托类的实例
+
+[,subs=+quotes]
+----
+static void fn1()
+{
+    Console.WriteLine("正在执行fn1函数");
+}
+
+delegate void DLGfn1(); //定义两个委托
+delegate void DLGfn2();
+
+static void Main(string[] args)
+{
+    DLGfn1 dlgFn1指针 = new DLGfn1(fn1);
+    //DLGfn2 dlGfn2 = dlgFn1; //报错, Cannot convert source type 'ConsoleApp3.Program.DLGfn1' to target type 'ConsoleApp3.Program.DLGfn2'. 说明两个委托类型, 是不能互相兼容的, 一个类型的委托类的实例, 不能指针指向另一个委托类的实例.
+
+    *DLGfn2 dlGfn2指针 = new DLGfn2(dlgFn1指针); //但这个是可以的!*
+    dlGfn2指针(); //正在执行fn1函数
+}
+----
+
+image:img/0272.png[,]
+
+
+

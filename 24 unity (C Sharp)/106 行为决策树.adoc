@@ -5,6 +5,15 @@
 :toc: left
 '''
 
+== 官方文档
+
+https://opsive.com/support/documentation/behavior-designer/tasks/
+
+https://opsive.com/support/documentation/behavior-designer/behavior-tree-component/create-a-behavior-tree-from-script/
+
+https://zhuanlan.zhihu.com/p/89647171
+
+
 == 行为决策树 Behavior Tree
 
 行为树是一种用于计算机科学、机器人、控制系统和电子游戏的计划执行的数学模型。
@@ -385,7 +394,7 @@ image:img/0273.png[,]
 
 '''
 
-== 你自己编辑的 Cls_MyCanSeeObjecdt 类 脚本
+== 你自己编辑的 Cls_MyCanSeeObjecdt 类 脚本 (代码未完成)
 
 先回忆一下向量的减法:
 
@@ -423,7 +432,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using BehaviorDesigner.Runtime.ObjectDrawers;
 using BehaviorDesigner.Runtime.Tasks; //引入这个命名空间
-
+using BehaviorDesigner.Runtime;
 
 /// <summary>
 /// 用来判断目标是否在视野内
@@ -435,8 +444,15 @@ public class Cls_MyCanSeeObjecdt : Conditional //要继承自 行为树中的 Co
     public float numviewDistance视距 = 7;  //默认设成7米
 
 
+    public SharedGameObject goTarget看到的目标; //这个字段, 会用来作为我们行为树的共享变量来用. 即,之后会传递给其他节点的脚本来使用. 注意: 要想共享的话, 类型必须是Shared开头的.
+
+    private  float numDistance两者距离;
+
+
     public override TaskStatus OnUpdate()
     {
+        Debug.Log($"两者距离: {numDistance两者距离}");
+
         if (arrTargets多个目标 == null)
         {
             return TaskStatus.Failure;
@@ -444,27 +460,95 @@ public class Cls_MyCanSeeObjecdt : Conditional //要继承自 行为树中的 Co
 
         foreach (var itemTarget in arrTargets多个目标)
         {
-            float v_distance两者距离 = Vector3.Distance(transform.position, itemTarget.position);
+            numDistance两者距离 = Vector3.Distance(transform.position, itemTarget.position);
+
 
             float num两者的夹角 = Vector3.Angle(transform.forward, itemTarget.position - transform.position); //即你前进的方向(直线A), 和"你与对方距离的这条直线(直线B)", A与B这两直线之间的夹角.
 
 
             //只有当你与敌人的距离, 小于你的视野距离, 并且, 你与它的角度, 小于你视野宽度的一半时, 则你就看到了它.
-            if (v_distance两者距离 < numfieldOFViewAngel视野宽度 && num两者的夹角 < numfieldOFViewAngel视野宽度 / 2)
+            if (numDistance两者距离 < numfieldOFViewAngel视野宽度 && num两者的夹角 < numfieldOFViewAngel视野宽度 / 2)
             {
+                this.goTarget看到的目标.Value = itemTarget.gameObject; //将你看到的目标物体, 赋值给你本类的字段"goTarget看到的目标". 注意: 因为你的 "goTarget看到的目标"字段, 是要"共享"的, 即"SharedGameObject"类型, 所以给它赋值时, 必须调用它的Value属性.
+
                 return TaskStatus.Success;
             }
+
         }
 
         return TaskStatus.Failure;
 
     }
 }
+----
+
+
+go玩家追踪 类的代码:
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using BehaviorDesigner.Runtime.Tasks; //要引入这个命名空间
+using BehaviorDesigner.Runtime;
+
+
+//下面这个类, 用来让A物体, 移动向B物体. 如果移动到目的地, 就返回"成功".
+public class go玩家追踪 : Action //继承自 行为树中的Action类
+{
+    public SharedGameObject target要追踪的目标;  //这个用来存储本物体要追踪的物体. 注意, 该变量的值, 会从其他节点上传进来,所以要设成"共享变量类型", 即 Shared 的开头.
+
+    public float speed移动速度 = 5f;
+    public float arriveDistance离目标点的距离 = 0.2f;
+
+
+    //重写Action类中的 OnUpdate()方法. 当进入到这个任务的时候, 就会一直调用这个 OnUpdate()方法, 直到任务结束位置 -- 即返回一个成功或失败的结果,则任务结束. 如果返回的是 running, 则说明任务还在继续中, 则这个OnUpdate()方法,依然会继续执行.
+    //这个方法的调用频率, 默认是与 unity中的帧 保持一致的.
+    public override TaskStatus OnUpdate()
+    {
+        //先判断一下, 目标位置是否为空? 即还未赋值. 如果为空, 则我们的玩家物体, 就没有去往的方向. 就让任务直接返回失败.
+        if (target要追踪的目标.Value.transform == null || target要追踪的目标 == null) //对于"共享的类型",要获取去它身上的组件,必须先调用 Value 属性. 再来调用组件.
+        {
+            return TaskStatus.Failure;
+        }
+
+
+        //有目标的话, 就前往
+        transform.LookAt(target要追踪的目标.Value.transform.position); //让本物体(即玩家物体), 直接面向目标点的位置.
+
+
+        //让本物体, 朝着那个目标位置移动. 该函数的返回值是物体当前所在的坐标点. 注意! 如果你只单纯写这个MoveTowards()函数, 它不会帮你把物体做移动的. 你必须把它的返回值, 重新赋值给物体的transform.position 字段上, 物体才会移动!
+        transform.position = Vector3.MoveTowards(transform.position, target要追踪的目标.Value.transform.position, Time.deltaTime * speed移动速度);
+
+
+        //如果你的物体已经达到目标点(追上目标), 则返回"任务成功"
+        float num两者距离 = Vector3.Distance(transform.position, target要追踪的目标.Value.transform.position);
+
+        if (num两者距离 < arriveDistance离目标点的距离)
+        {
+            return TaskStatus.Success;
+        }
+        else
+            return TaskStatus.Running;
+    }
+
+}
 
 ----
 
 
+image:img/0283.png[,]
 
+
+image:img/0281.png[,]
+
+image:img/0282.png[,]
+
+
+
+
+
+'''
 
 
 
