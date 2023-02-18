@@ -1,0 +1,1086 @@
+
+= ui toolkit
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+== ui toolkit 官方文档
+
+https://docs.unity.cn/cn/2022.1/Manual/UIE-HowTo-CreateRuntimeUI.html
+
+https://docs.unity3d.com/cn/2021.2/Manual/UIBuilder.htmlhttps://docs.unity3d.com/cn/2021.2/Manual/UIBuilder.html
+
+'''
+
+
+== 案例1
+
+==== ui 界面编辑
+
+image:img/0284.png[,]
+
+image:img/0285.png[,]
+
+image:img/0286.png[,]
+
+image:img/0287.png[,]
+
+image:img/0288.png[,]
+
+打开xuml文件后, 其实打开的是 ui builder 窗口. 我们就能在上面编辑ui了.
+
+image:img/0290.png[,]
+
+image:img/0291.png[,]
+
+image:img/0292.png[,]
+
+image:img/0293.png[,]
+
+image:img/0294.png[,]
+
+image:img/0295.png[,]
+
+image:img/0296.png[,]
+
+image:img/0296.png[,]
+
+image:img/0297.png[,]
+
+image:img/0298.png[,]
+
+image:img/0299.png[,]
+
+image:img/0300.png[,]
+
+image:img/0301.png[,]
+
+image:img/0302.png[,]
+
+image:img/0303.png[,]
+
+image:img/0304.png[,]
+
+image:img/0305.png[,]
+
+image:img/0306.png[,]
+
+脚本内容, 如下:
+[,subs=+quotes]
+----
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.UIElements;
+using UnityEditor.UIElements;
+
+
+public class mySceneUiToolkit : EditorWindow
+{
+    [MenuItem("Window/UI Toolkit/mySceneUiToolkit")]
+    public static void ShowExample()
+    {
+        mySceneUiToolkit wnd = GetWindow<mySceneUiToolkit>();
+        wnd.titleContent = new GUIContent("mySceneUiToolkit");
+    }
+
+    public void CreateGUI()
+    {
+        // Each editor window contains a root VisualElement object
+        VisualElement root = rootVisualElement;
+
+
+
+        // Import UXML
+        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Edior/mySceneUiToolkit.uxml");
+
+        *visualTree.CloneTree(root);*
+        //UXML是UI元素的布局文件，比如一个按钮其中包含背景图片和文字，可通过 VisualTreeAsset.CloneTree(VisualElement);形式实例化出来
+
+    }
+}
+----
+
+
+
+image:img/0307.png[,]
+
+image:img/0308.png[,]
+
+image:img/0309.png[,]
+
+image:img/0310.png[,]
+
+image:img/0311.png[,]
+
+image:img/0312.png[,]
+
+image:img/0313.png[,]
+
+image:img/0314.png[,]
+
+image:img/0315.png[,]
+
+image:img/0316.png[,]
+
+
+==== HelpBox 只起到"说明信息提示作用"的控件
+
+image:img/0317.png[,]
+
+
+编辑这个ui的 c# 脚本代码:
+[,subs=+quotes]
+----
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.UIElements;
+using UnityEditor.UIElements;
+
+
+public class mySceneUiToolkit : EditorWindow
+{
+    [MenuItem("Window/UI Toolkit/mySceneUiToolkit")]
+    public static void ShowExample()
+    {
+        mySceneUiToolkit wnd = GetWindow<mySceneUiToolkit>();
+        wnd.titleContent = new GUIContent("mySceneUiToolkit");
+    }
+
+    public void CreateGUI()
+    {
+        // Each editor window contains a root VisualElement object
+        VisualElement root = rootVisualElement;
+
+
+
+        // Import UXML
+        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Edior/mySceneUiToolkit.uxml");
+
+        visualTree.CloneTree(root);
+        //UXML是UI元素的布局文件，比如一个按钮其中包含背景图片和文字，可通过 VisualTreeAsset.CloneTree(VisualElement);形式实例化出来
+
+
+
+        //Makes a help box with a message to the user. helpBox1 就是一个单纯的给用户帮助说明的信息提示框, 仅此而已.
+        HelpBox helpBox1 = new HelpBox("This is a help box", HelpBoxMessageType.None);
+        HelpBox helpBox2 = new HelpBox("This is a help box", HelpBoxMessageType.Info);
+        HelpBox helpBox3 = new HelpBox("This is a help box", HelpBoxMessageType.Warning);
+        HelpBox helpBox4 = new HelpBox("This is a help box", HelpBoxMessageType.Error);
+
+
+
+        //先找到你ui界面中的"VisualElement_right"元素.
+        VisualElement result右侧元素  = root.Query<VisualElement>("VisualElement_right");
+        //Query returns a list of elements that match the selection rules.  Q is the shorthand for Query<T>.First(). It returns the first element that matches the selection rules.
+        //You can query elements by their name, their USS class, or their element type (C# type).
+
+        //将你的 helpBox元素, 添加到"VisualElement_right"元素里面, 作为子元素.
+        result右侧元素.Add(helpBox1);
+        result右侧元素.Add(helpBox2);
+        result右侧元素.Add(helpBox3);
+        result右侧元素.Add(helpBox4);
+
+
+    }
+}
+----
+
+关于 HelpBox类的 官方文档: +
+https://docs.unity3d.com/Packages/com.unity.ui@1.0/api/UnityEngine.UIElements.HelpBox.html
+
+
+Query()方法 的官方文档: +
+https://docs.unity3d.com/Manual/UIE-UQuery.html
+
+
+image:img/0318.png[,]
+
+
+
+
+
+==== ObjectField 控件 -> 能接收任何类型的物体.
+
+image:img/0319.png[,]
+
+脚本继续改为:
+
+[,subs=+quotes]
+----
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.UIElements;
+using UnityEditor.UIElements;
+
+
+public class mySceneUiToolkit : EditorWindow
+{
+
+    *ObjectField myObjectField; //这个字段, 之后会用来指针指向你 ui 界面中的 myObjectField 元素. ObjectField类型是什么？ 它的作用是： Makes a field to receive any object type.*
+
+
+
+
+    [MenuItem("Window/UI Toolkit/mySceneUiToolkit")]
+    public static void ShowExample()
+    {
+        mySceneUiToolkit wnd = GetWindow<mySceneUiToolkit>();
+        wnd.titleContent = new GUIContent("mySceneUiToolkit");
+    }
+
+    public void CreateGUI()
+    {
+        // Each editor window contains a root VisualElement object
+        VisualElement root = rootVisualElement;
+
+
+
+        // Import UXML
+        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Edior/mySceneUiToolkit.uxml");
+
+        visualTree.CloneTree(root);
+        //UXML是UI元素的布局文件，比如一个按钮其中包含背景图片和文字，可通过 VisualTreeAsset.CloneTree(VisualElement);形式实例化出来
+
+
+
+        //Makes a help box with a message to the user. helpBox1 就是一个单纯的给用户帮助说明的信息提示框, 仅此而已.
+        HelpBox helpBox1 = new HelpBox("This is a help box", HelpBoxMessageType.None);
+        HelpBox helpBox2 = new HelpBox("This is a help box", HelpBoxMessageType.Info);
+        HelpBox helpBox3 = new HelpBox("This is a help box", HelpBoxMessageType.Warning);
+        HelpBox helpBox4 = new HelpBox("This is a help box", HelpBoxMessageType.Error);
+
+
+
+        //先找到你ui界面中的"VisualElement_right"元素.
+        VisualElement result右侧元素  = root.Query<VisualElement>("VisualElement_right");
+        //Query returns a list of elements that match the selection rules.  Q is the shorthand for Query<T>.First(). It returns the first element that matches the selection rules.
+        //You can query elements by their name, their USS class, or their element type (C# type).
+
+
+        //将你的 helpBox元素, 添加到"VisualElement_right"元素里面, 作为子元素.
+        result右侧元素.Add(helpBox1);
+        result右侧元素.Add(helpBox2);
+        result右侧元素.Add(helpBox3);
+        result右侧元素.Add(helpBox4);
+
+
+
+        *//先找到你 ui界面中的 myObjectField 元素.*
+        myObjectField = root.Query<ObjectField>("myObjectField");
+        myObjectField.objectType= typeof(Texture2D); *//让你的 ObjectField类的实例变量, 限定它只接收(指针指向) Texture2D类型的实例.*
+
+    }
+}
+----
+
+
+image:img/0320.png[,]
+
+image:img/0321.png[,]
+
+如果改成 只能接收 GameObject类型的变量的话:
+
+[,subs=+quotes]
+----
+//先找到你 ui界面中的 myObjectField 元素.
+myObjectField = root.Query<ObjectField>("myObjectField");
+
+**myObjectField.objectType= typeof(GameObject); **//让你的 ObjectField类的实例变量, 限定它只接收(指针指向) GameObject类型的实例.
+----
+
+
+下面, 我们来给 "creat按钮", 添加上鼠标点击功能, 比如让它能克隆出传给"Object Field"字段中的值(即某个 GameObject类型的物体) 的n个克隆体来.
+
+现在, 代码为:
+
+[,subs=+quotes]
+----
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.UIElements;
+using UnityEditor.UIElements;
+
+
+public class mySceneUiToolkit : EditorWindow
+{
+
+    ObjectField myObjectField; //这个字段, 之后会用来指针指向你 ui 界面中的 myObjectField 元素. ObjectField类型是什么？ 它的作用是： Makes a field to receive any object type.
+
+    *Button myButtonCreat; //这个字段, 之后会用来指针指向你 ui 界面中的名叫"Button_Creat"的元素.*
+
+
+
+
+
+    [MenuItem("Window/UI Toolkit/mySceneUiToolkit")]
+    public static void ShowExample()
+    {
+        mySceneUiToolkit wnd = GetWindow<mySceneUiToolkit>();
+        wnd.titleContent = new GUIContent("mySceneUiToolkit");
+    }
+
+    public void CreateGUI()
+    {
+        // Each editor window contains a root VisualElement object
+        VisualElement root = rootVisualElement;
+
+        // Import UXML
+        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Edior/mySceneUiToolkit.uxml");
+
+        visualTree.CloneTree(root);
+        //UXML是UI元素的布局文件，比如一个按钮其中包含背景图片和文字，可通过 VisualTreeAsset.CloneTree(VisualElement);形式实例化出来
+
+
+        #region 添加 HelpBox 类的实例元素
+        //Makes a help box with a message to the user. helpBox1 就是一个单纯的给用户帮助说明的信息提示框, 仅此而已.
+        HelpBox helpBox1 = new HelpBox("This is a help box", HelpBoxMessageType.None);
+        HelpBox helpBox2 = new HelpBox("This is a help box", HelpBoxMessageType.Info);
+        HelpBox helpBox3 = new HelpBox("This is a help box", HelpBoxMessageType.Warning);
+        HelpBox helpBox4 = new HelpBox("This is a help box", HelpBoxMessageType.Error);
+
+
+
+        //先找到你ui界面中的"VisualElement_right"元素.
+        VisualElement result右侧元素  = root.Query<VisualElement>("VisualElement_right");
+        //Query returns a list of elements that match the selection rules.  Q is the shorthand for Query<T>.First(). It returns the first element that matches the selection rules.
+        //You can query elements by their name, their USS class, or their element type (C# type).
+
+
+        //将你的 helpBox元素, 添加到"VisualElement_right"元素里面, 作为子元素.
+        result右侧元素.Add(helpBox1);
+        result右侧元素.Add(helpBox2);
+        result右侧元素.Add(helpBox3);
+        result右侧元素.Add(helpBox4);
+        #endregion
+
+
+        //先找到你 ui界面中的 myObjectField 元素.
+        myObjectField = root.Query<ObjectField>("myObjectField");
+        myObjectField.objectType= typeof(GameObject); //让你的 ObjectField类的实例变量, 限定它只接收(指针指向) GameObject类型的实例.
+
+
+
+        *//先找到你 ui界面中的 名叫"Button_Creat" 的元素.*
+        myButtonCreat = root.Query<Button>("Button_Creat");
+
+        *//给上面找到的你的按钮元素, 添加点击事件*
+        *myButtonCreat.clicked += fn添加go类型的实例; //注意! 这里必须写 +=, 而不能直接写=, 否则报错.*
+
+    }
+
+    *void fn添加go类型的实例()*
+    {
+        GameObject goPrefab预制件 = myObjectField.value as GameObject; //先将ui界面中, 你的"myObjectField"元素中的值, 类型强制改为 GameObject类型.
+
+        GameObject goIns = GameObject.Instantiate<GameObject>(goPrefab预制件); //将你的从"myObjectField"元素中接收到的预制件物体, 实例化(克隆)它, 显示在游戏界面中 (而非ui界面中)
+
+        //将克隆出来的物体, 给他们赋予随机位置坐标
+        goIns.transform.position = new Vector3(Random.Range(-1f,1f),0, Random.Range(-1f, 1f));
+
+
+
+    }
+
+}
+----
+
+
+image:img/0322.png[,]
+
+
+
+
+
+==== 给按钮添加点击事件 的代码
+
+image:img/0323.png[,]
+
+image:img/0324.png[,]
+
+image:img/0325.png[,]
+
+
+
+==== ListView 可滚动的列表 -> 它需要有 makeItem() 和 bindItem() 方法, 才能生效
+
+下面, 我们给 refresh按钮, 添加功能, 点击它, 就能把场景中所有的物体列出来. 显示在ui界面左边的控件里.
+
+关于 ListView 的官方文档: +
+https://docs.unity3d.com/Packages/com.unity.ui@1.0/api/UnityEngine.UIElements.ListView.html#UnityEngine_UIElements_ListView_makeItem
+
+
+
+A ListView is a ScrollView with additional logic to display a list of vertically-arranged VisualElements. Each VisualElement in the list is bound to a corresponding element in a data-source list. 列表中的每一个 VisualElement, 都绑定到"数据源列表"中的相应元素. The data-source list can contain elements of any type. 数据源列表, 可以包含任何类型的元素.
+
+The logic required to create VisualElements, and to bind them to or unbind them from the data source, varies depending on the intended result. It's up to you to implement logic that is appropriate to your use case. 创建 VisualElements, 以及将它们绑定到数据源, 或从数据源解除绑定, 所需要的逻辑代码, 由你决定该如何编写。
+
+For the ListView to function correctly, you must supply at least the following: +
+要想使 ListView 正常运行，您必须至少提供以下内容：
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|- itemHeight
+|
+
+|- makeItem
+|The "makeItem" function is called when the ListView needs more items to render.
+
+|- bindItem
+|As the user scrolls through the list, the ListView object recycles elements created by the "makeItem" function, and invoke the "bindItem" callback to associate the element with the matching data item (specified as an index in the list).
+
+当用户滚动列表时，ListView控件, 会回收由"makeItem"函数创建的元素，并调用"bindItem"回调函数, 将元素与匹配的数据项(作为列表中的索引指定)关联起来。
+|===
+
+
+The ListView creates VisualElements for the visible items, and supports binding many more. As the user scrolls, the ListView recycles VisualElements and re-binds them to new data items. +
+ListView会为列表中可见的item项, 创建 VisualElements。当用户滚动该ListView 控件时，ListView 会循环 VisualElements虚拟元素, 并绑定新的数据项。
+
+Class ListView 的官方文档 :  +
+https://docs.unity3d.com/Packages/com.unity.ui@1.0/api/UnityEngine.UIElements.ListView.html?q=itemsSource
+
+官方的例子用法: +
+image:img/0327.png[,]
+
+
+image:img/0326.png[,]
+
+脚本改成:
+[,subs=+quotes]
+----
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.UIElements;
+using UnityEditor.UIElements;
+using UnityEngine.SceneManagement;
+using static UnityEditor.Progress;
+using System.Xml.Linq;
+
+public class mySceneUiToolkit : EditorWindow
+{
+
+    ObjectField myObjectField; //这个字段, 之后会用来指针指向你 ui 界面中的 myObjectField 元素. ObjectField类型是什么？ 它的作用是： Makes a field to receive any object type.
+    Button myButtonCreat; //这个字段, 之后会用来指针指向你 ui 界面中的名叫"Button_Creat"的元素.
+
+    Button myButtonRefresh;
+    ListView myListView;
+    GameObject[] arrSceneObjects场景里面的所有go物体;
+
+
+
+
+    [MenuItem("Window/UI Toolkit/mySceneUiToolkit")]
+    public static void ShowExample()
+    {
+        mySceneUiToolkit wnd = GetWindow<mySceneUiToolkit>();
+        wnd.titleContent = new GUIContent("mySceneUiToolkit");
+    }
+
+    public void CreateGUI()
+    {
+        // Each editor window contains a root VisualElement object
+        VisualElement root = rootVisualElement;
+
+        // Import UXML
+        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Edior/mySceneUiToolkit.uxml");
+
+        visualTree.CloneTree(root);
+        //UXML是UI元素的布局文件，比如一个按钮其中包含背景图片和文字，可通过 VisualTreeAsset.CloneTree(VisualElement);形式实例化出来
+
+
+        #region 添加 HelpBox 类的实例元素
+        //Makes a help box with a message to the user. helpBox1 就是一个单纯的给用户帮助说明的信息提示框, 仅此而已.
+        HelpBox helpBox1 = new HelpBox("This is a help box", HelpBoxMessageType.None);
+        HelpBox helpBox2 = new HelpBox("This is a help box", HelpBoxMessageType.Info);
+        HelpBox helpBox3 = new HelpBox("This is a help box", HelpBoxMessageType.Warning);
+        HelpBox helpBox4 = new HelpBox("This is a help box", HelpBoxMessageType.Error);
+
+
+
+        //先找到你ui界面中的"VisualElement_right"元素.
+        VisualElement result右侧元素 = root.Query<VisualElement>("VisualElement_right");
+        //Query returns a list of elements that match the selection rules.  Q is the shorthand for Query<T>.First(). It returns the first element that matches the selection rules.
+        //You can query elements by their name, their USS class, or their element type (C# type).
+
+
+        //将你的 helpBox元素, 添加到"VisualElement_right"元素里面, 作为子元素.
+        result右侧元素.Add(helpBox1);
+        result右侧元素.Add(helpBox2);
+        result右侧元素.Add(helpBox3);
+        result右侧元素.Add(helpBox4);
+        #endregion
+
+
+        //先找到你 ui界面中的 myObjectField 元素.
+        myObjectField = root.Query<ObjectField>("myObjectField");
+        myObjectField.objectType = typeof(GameObject); //让你的 ObjectField类的实例变量, 限定它只接收(指针指向) GameObject类型的实例.
+
+
+        //先找到你 ui界面中的 名叫"Button_Creat" 的元素.
+        myButtonCreat = root.Query<Button>("Button_Creat");
+
+        //给上面找到的你的按钮元素, 添加点击事件
+        myButtonCreat.clicked += fn添加go类型的实例;
+
+
+
+
+        //先找到你 ui界面中的 名叫"Button_Creat" 的元素.
+        myButtonRefresh = root.Query<Button>("Button_refresh");
+        //给上面找到的你的按钮元素, 添加点击事件
+        myButtonRefresh.clicked += fnOnRefresh列出场景中所有的物体;
+
+
+
+        //找到你 ui界面中的 名叫"myListView" 的控件元素(即ui中的左侧那一列).
+        myListView = root.Query<ListView>("myListView");
+
+        *//给 makeItem 绑定一个实际的方法*
+        *myListView.makeItem = fnMakeListItem创建出ui列表中的虚拟元素;* // makeItem: Callback for constructing the VisualElement that is the template for each recycled and re - bound element in the list.
+                                                         //This callback needs to call a function that constructs a blank VisualElement that is bound to an element from the list.
+                                                         //The ListView automatically creates enough elements to fill the visible area, and adds more if the area is expanded.As the user scrolls, the ListView cycles elements in and out as they appear or disappear.
+                                                         //This property must be set for the list view to function.
+
+        *//给 bindItem 绑定一个实际的方法*
+        *myListView.bindItem = fnBindListItem将数据源中的数据绑定到ui列表中的虚拟元素上;*
+        //bindItem: Callback for binding a data item to the visual element.
+
+
+
+    }
+
+
+
+    #region fn添加go类型的实例
+    void fn添加go类型的实例()
+    {
+        GameObject goPrefab预制件 = myObjectField.value as GameObject; //先将ui界面中, 你的"myObjectField"元素中的值, 类型强制改为 GameObject类型.
+
+        GameObject goIns = GameObject.Instantiate<GameObject>(goPrefab预制件); //将你的从"myObjectField"元素中接收到的预制件物体, 实例化(克隆)它, 显示在游戏界面中 (而非ui界面中)
+
+        //将克隆出来的物体, 给他们赋予随机位置坐标
+        goIns.transform.position = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+    }
+    #endregion
+
+
+
+    *void fnOnRefresh列出场景中所有的物体()*
+    {
+        Scene myScene当前激活的场景 = SceneManager.GetActiveScene(); //拿到当前激活的那个场景
+        arrSceneObjects场景里面的所有go物体 = myScene当前激活的场景.GetRootGameObjects(); //获取当前场景中所有的根物体, 返回一个数组, 该数组是 GameObject[] 类型的.
+
+        *myListView.itemsSource = arrSceneObjects场景里面的所有go物体;* //itemsSource	: The list of items to use as a data source. The data source for list items.
+                                                             //将你场景中所有的物体 (已经装在数组里), 作为数据源, 赋值给 你ui界面里的"myListView"控件的itemsSource属性上去.
+    }
+
+
+
+
+    *VisualElement fnMakeListItem创建出ui列表中的虚拟元素()*
+    {
+        Label myLabel标签 = new Label();
+        return myLabel标签;
+    }
+
+
+
+    *private void fnBindListItem将数据源中的数据绑定到ui列表中的虚拟元素上(VisualElement ve虚拟元素, int index)*
+    {
+        Label mylabel标签 = ve虚拟元素 as Label;
+        GameObject go = arrSceneObjects场景里面的所有go物体[index];
+        mylabel标签.text = go.name; //将go列表中的每一个go物体, 它的名字, 装到我们ui中 ListView中的虚拟元素(我们上面在"fnMakeListItem创建出ui列表中的虚拟元素"函数里, 已经设定了用Lable来充当虚拟元素)的text字段里. 即, "mylabel标签"这个虚拟元素中, 会显示出你go物体的名字.
+    }
+
+}
+----
+
+
+image:img/0328.png[,]
+
+image:img/0329.png[,]
+
+image:img/0330.png[,]
+
+image:img/0331.png[,]
+
+但是, 现在右侧的每一个虚拟元素(本例是lable元素)中的内容, 都只是左上角对齐, 我们可以修改一下它的样式. 写在 "fnMakeListItem创建出ui列表中的虚拟元素" 方法里.:
+
+[,subs=+quotes]
+----
+VisualElement fnMakeListItem创建出ui列表中的虚拟元素()
+{
+Label myLabel标签 = new Label();
+
+*myLabel标签.style.unityTextAlign = TextAnchor.MiddleCenter; //文字居中对齐*
+*myLabel标签.style.marginLeft= 10; //这一句可以不要.*
+
+
+return myLabel标签;
+}
+----
+
+image:img/0332.png[,]
+
+
+==== 给 ListView中的每个(虚拟)元素, 添加"点击事件"
+
+Selection类的用法, 件官网文档:  +
+https://docs.unity3d.com/ScriptReference/Selection.html
+
+只要增加下面的语句就行了:
+[,subs=+quotes]
+----
+    public void CreateGUI()
+    {
+        //...
+
+        //给 bindItem绑定方法
+        myListView.bindItem = fnBindListItem将数据源中的数据绑定到ui列表中的虚拟元素上;
+        //bindItem: Callback for binding a data item to the visual element.
+
+        *myListView.onSelectionChange += fnOnSelectItem选中LIstView中的某项后就执行此方法;*
+        //Callback triggered when the selection changes. This callback receives an enumerable that contains the item or items selected.   选择更改时, 会触发的回调函数。 定义 : public event Action<IEnumerable<object>> onSelectionChange
+    }
+
+
+
+    *private void fnOnSelectItem选中LIstView中的某项后就执行此方法(IEnumerable<object> obj可枚举的对象)*
+    {
+        foreach (var item in obj可枚举的对象)
+        {
+           *GameObject go已鼠标选中的物体 =  Selection.activeGameObject = item as GameObject;* //Selection.activeGameObject : Returns the active game object. (The one shown in the inspector).
+            //Selection类 : Access to the selection in the editor.
+
+            Debug.Log(go已鼠标选中的物体.name);
+
+        }
+    }
+----
+
+
+
+image:img/0334.png[,]
+
+image:img/0333.png[,]
+
+
+image:img/0335.png[,]
+
+==== 点击 ListView中的每个(虚拟)元素, 就将它封装的 go物体的名字和坐标值, 显示在 ui中的另两个控件中.
+
+image:img/0336.png[,]
+
+代码如下, 添加这些内容就行了:
+[,subs=+quotes]
+----
+public class mySceneUiToolkit : EditorWindow
+{
+
+  //...
+    TextField myGoName;
+    Vector3Field myGoPosition;
+
+
+    public void CreateGUI()
+    {
+        //...
+        *//找到你 ui界面中的 名叫"myGoName" 的TextField控件元素*
+        myGoName = root.Query<TextField>("myGoName");
+
+        *//找到你 ui界面中的 名叫"myGoPosition" 的Vector3Field控件元素*
+        myGoPosition = root.Query<Vector3Field>("myGoPosition");
+    }
+
+
+
+    private void fnOnSelectItem选中LIstView中的某项后就执行此方法(IEnumerable<object> obj可枚举的对象)
+    {
+        foreach (var item in obj可枚举的对象)
+        {
+
+            GameObject go已鼠标选中的物体 =  item as GameObject;
+
+            *//将你鼠标点中的ListView中的物体的 名字, 和坐标值, 赋值给 "myGoName"控件, 和 "myGoPosition"控件*
+            *myGoName.value = go已鼠标选中的物体.name;*
+            *myGoPosition.value = go已鼠标选中的物体.transform.localPosition;* //注意: 这里写的是 localPosition, 而不是 position, 当然, 你也可以试试输出 position
+                  }
+    }
+----
+
+
+==== 数据绑定
+
+https://www.bilibili.com/video/BV1y34y187QP/?spm_id_from=pageDriver&vd_source=52c6cb2c1143f8e222795afbab2ab1b5
+
+3.00
+
+image:img/0337.png[,]
+
+image:img/0338.png[,]
+
+image:img/0339.png[,]
+
+image:img/0340.png[,]
+
+image:img/0341.png[,]
+
+image:img/0342.png[,]
+
+image:img/0343.png[,]
+
+image:img/0344.png[,]
+
+image:img/0345.png[,]
+
+image:img/0346.png[,]
+
+image:img/0347.png[,]
+
+image:img/0348.png[,]
+
+image:img/0349.png[,]
+
+image:img/0350.png[,]
+
+image:img/0351.png[,]
+
+image:img/0352.png[,]
+
+image:img/0353.png[,]
+
+image:img/0354.png[,]
+
+image:img/0355.png[,]
+
+image:img/0356.png[,]
+
+image:img/0357.png[,]
+
+image:img/0358.png[,]
+
+image:img/0359.png[,]
+
+image:img/0360.png[,]
+
+image:img/0361.png[,]
+
+image:img/0362.png[,]
+
+image:img/0363.png[,]
+
+image:img/0364.png[,]
+
+image:img/0365.png[,]
+
+image:img/0366.png[,]
+
+image:img/0367.png[,]
+
+image:img/0368.png[,]
+
+image:img/0369.png[,]
+
+image:img/0370.png[,]
+
+image:img/0371.png[,]
+
+image:img/0372.png[,]
+
+image:img/0373.png[,]
+
+image:img/0374.png[,]
+
+image:img/0375.png[,]
+
+image:img/0376.png[,]
+
+image:img/0377.png[,]
+
+image:img/0378.png[,]
+
+image:img/0379.png[,]
+
+image:img/0380.png[,]
+
+image:img/0381.png[,]
+
+image:img/0382.png[,]
+
+image:img/0383.png[,]
+
+image:img/0384.png[,]
+
+image:img/0385.png[,]
+
+image:img/0386.png[,]
+
+image:img/0387.png[,]
+
+image:img/0388.png[,]
+
+image:img/0389.png[,]
+
+image:img/0390.png[,]
+
+image:img/0391.png[,]
+
+image:img/0392.png[,]
+
+image:img/0393.png[,]
+
+image:img/0394.png[,]
+
+image:img/0395.png[,]
+
+image:img/0396.png[,]
+
+image:img/0397.png[,]
+
+image:img/0398.png[,]
+
+image:img/0399.png[,]
+
+image:img/0400.png[,]
+
+image:img/0401.png[,]
+
+image:img/0402.png[,]
+
+image:img/0403.png[,]
+
+image:img/0404.png[,]
+
+image:img/0405.png[,]
+
+image:img/0406.png[,]
+
+image:img/0407.png[,]
+
+image:img/0408.png[,]
+
+image:img/0409.png[,]
+
+image:img/0410.png[,]
+
+image:img/0411.png[,]
+
+image:img/0412.png[,]
+
+image:img/0413.png[,]
+
+image:img/0414.png[,]
+
+image:img/0415.png[,]
+
+image:img/0416.png[,]
+
+image:img/0417.png[,]
+
+image:img/0418.png[,]
+
+image:img/0419.png[,]
+
+image:img/0420.png[,]
+
+image:img/0421.png[,]
+
+image:img/0422.png[,]
+
+image:img/0423.png[,]
+
+image:img/0424.png[,]
+
+image:img/0425.png[,]
+
+image:img/0426.png[,]
+
+image:img/0427.png[,]
+
+image:img/0428.png[,]
+
+image:img/0429.png[,]
+
+image:img/0430.png[,]
+
+image:img/0431.png[,]
+
+image:img/0432.png[,]
+
+image:img/0433.png[,]
+
+image:img/0434.png[,]
+
+image:img/0435.png[,]
+
+image:img/0436.png[,]
+
+image:img/0437.png[,]
+
+image:img/0438.png[,]
+
+image:img/0439.png[,]
+
+image:img/0440.png[,]
+
+image:img/0441.png[,]
+
+image:img/0442.png[,]
+
+image:img/0443.png[,]
+
+image:img/0444.png[,]
+
+image:img/0445.png[,]
+
+image:img/0446.png[,]
+
+image:img/0447.png[,]
+
+image:img/0448.png[,]
+
+image:img/0449.png[,]
+
+image:img/0450.png[,]
+
+image:img/0451.png[,]
+
+image:img/0452.png[,]
+
+image:img/0453.png[,]
+
+image:img/0454.png[,]
+
+image:img/0455.png[,]
+
+image:img/0456.png[,]
+
+image:img/0457.png[,]
+
+image:img/0458.png[,]
+
+image:img/0459.png[,]
+
+image:img/0460.png[,]
+
+image:img/0461.png[,]
+
+image:img/0462.png[,]
+
+image:img/0463.png[,]
+
+image:img/0464.png[,]
+
+image:img/0465.png[,]
+
+image:img/0466.png[,]
+
+image:img/0467.png[,]
+
+image:img/0468.png[,]
+
+image:img/0469.png[,]
+
+image:img/0470.png[,]
+
+image:img/0471.png[,]
+
+image:img/0472.png[,]
+
+image:img/0473.png[,]
+
+image:img/0474.png[,]
+
+image:img/0475.png[,]
+
+image:img/0476.png[,]
+
+image:img/0477.png[,]
+
+image:img/0478.png[,]
+
+image:img/0479.png[,]
+
+image:img/0480.png[,]
+
+image:img/0481.png[,]
+
+image:img/0482.png[,]
+
+image:img/0483.png[,]
+
+image:img/0484.png[,]
+
+image:img/0485.png[,]
+
+image:img/0486.png[,]
+
+image:img/0487.png[,]
+
+image:img/0488.png[,]
+
+image:img/0489.png[,]
+
+image:img/0490.png[,]
+
+image:img/0491.png[,]
+
+image:img/0492.png[,]
+
+image:img/0493.png[,]
+
+image:img/0494.png[,]
+
+image:img/0495.png[,]
+
+image:img/0496.png[,]
+
+image:img/0497.png[,]
+
+image:img/0498.png[,]
+
+image:img/0499.png[,]
+
+image:img/0500.png[,]
+
+image:img/0501.png[,]
+
+image:img/0502.png[,]
+
+image:img/0503.png[,]
+
+image:img/0504.png[,]
+
+image:img/0505.png[,]
+
+image:img/0506.png[,]
+
+image:img/0507.png[,]
+
+image:img/0508.png[,]
+
+image:img/0509.png[,]
+
+image:img/0510.png[,]
+
+image:img/0511.png[,]
+
+image:img/0512.png[,]
+
+image:img/0513.png[,]
+
+image:img/0514.png[,]
+
+image:img/0515.png[,]
+
+
+
+
+
+
+
+
+

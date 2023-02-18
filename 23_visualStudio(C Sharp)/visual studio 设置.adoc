@@ -29,6 +29,11 @@ image:img/002.png[,]
 
 ---
 
+==== 折叠代码块 -> 选中要注释的内容，按ctrl+K,S，选择#region
+
+#region快捷键：选中要注释的内容，按ctrl+K,S，选择#region
+
+
 
 ==== 修改注释的文字颜色
 
