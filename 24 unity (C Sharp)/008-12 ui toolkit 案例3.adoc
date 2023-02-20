@@ -1,0 +1,226 @@
+
+= ui toolkit 教程3
+:sectnums:
+:toclevels: 3
+:toc: left
+''''
+
+
+== 制作 ui
+
+
+image:img/0367.png[,]
+
+然后, 双击打开它.
+
+image:img/0368.png[,]
+
+image:img/0369.png[,]
+
+image:img/0370.png[,]
+
+image:img/0371.png[,]
+
+image:img/0372.png[,]
+
+image:img/0373.png[,]
+
+image:img/0374.png[,]
+
+image:img/0375.png[,]
+
+image:img/0376.png[,]
+
+image:img/0377.png[,]
+
+image:img/0378.png[,]
+
+image:img/0379.png[,]
+
+image:img/0380.png[,]
+
+image:img/0381.png[,]
+
+image:img/0382.png[,]
+
+image:img/0384.png[,]
+
+image:img/0385.png[,]
+
+image:img/0386.png[,]
+
+image:img/0383.png[,]
+
+菜单控制.cs 脚本的代码如下:
+[,subs=+quotes]
+----
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
+
+public class Cls菜单控制 : MonoBehaviour
+{
+    UIDocument myUiDocument;
+
+    Button myButtonMute; //这个变量, 之后会用来指针指向"用做静音功能的虚拟元素
+    bool bol静音状态;
+
+    [SerializeField]
+    Sprite sp静音中图片;
+
+    [SerializeField]
+    Sprite sp非静音中图片;
+
+
+
+
+    private void Awake()
+    {
+        bol静音状态 = false;
+        myUiDocument = GetComponent<UIDocument>();
+
+        Button myButtonPlay = myUiDocument.rootVisualElement.Q<Button>("myButtonPlay"); //查找到ui中的 "播放按钮"那个虚拟元素.
+        //EditorWindow.rootVisualElement : Retrieves the root visual element of this window hierarchy.
+
+        //查找到其他的按钮
+        Button myButtonSetting = myUiDocument.rootVisualElement.Q<Button>("myButtonSetting");
+
+        Button myButtonExit = myUiDocument.rootVisualElement.Q<Button>("myButtonExit");
+
+        myButtonMute = myUiDocument.rootVisualElement.Q<Button>("myButtonMute");
+
+
+        //给找到的元素, 添加上点击事件.
+        myButtonPlay.clicked += fnOnmyButtonPlay; //给播放按钮, 订阅(添加上)点击事件.
+
+        myButtonMute.clicked += fn对静音按钮的操作; //给静音按钮, 订阅(添加上)点击事件.
+
+
+    }
+
+
+
+    private void fnOnmyButtonPlay()
+    {
+        SceneManager.LoadScene("my场景2");
+    }
+
+
+    void fn对静音按钮的操作()
+    {
+        //将"静音按钮"当前的图片, 由bg变量来指针指向它.
+        var bg = myButtonMute.style.backgroundImage;
+
+        if (bol静音状态 == false) //如果目前处在静音状态, 鼠标点击按钮后, 就把它转成"非静音状态"
+        {
+
+            //Background.FromSprite() : 返回 A new background object. 该方法的参数就是 The sprite to use as a background.
+            bg.value = Background.FromSprite(sp静音中图片);
+            //将新的背景图,用在你的"静音按钮"上.
+            myButtonMute.style.backgroundImage = bg;
+            bol静音状态 = true;
+            Debug.Log("非静音中");
+        }
+        else  //如果目前处在非静音状态, 鼠标点击按钮后, 就把它转成"静音状态"
+        {
+            bg.value = Background.FromSprite(sp非静音中图片);
+            myButtonMute.style.backgroundImage = bg;
+            bol静音状态 = false;
+            Debug.Log("静音中");
+
+        }
+    }
+
+
+
+
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+}
+
+----
+
+image:img/0388.png[,]
+
+image:img/0387.png[,]
+
+image:img/0389.png[,]
+
+image:img/0390.png[,]
+
+
+
+image:img/0391.png[,]
+
+image:img/0392.png[,]
+
+image:img/0393.png[,]
+
+image:img/0394.png[,]
+
+image:img/0395.png[,]
+
+image:img/0396.png[,]
+
+image:img/0397.png[,]
+
+image:img/0398.png[,]
+
+image:img/0399.png[,]
+
+image:img/0400.png[,]
+
+image:img/0401.png[,]
+
+image:img/0402.png[,]
+
+image:img/0403.png[,]
+
+image:img/0404.png[,]
+
+image:img/0405.png[,]
+
+image:img/0406.png[,]
+
+image:img/0407.png[,]
+
+image:img/0408.png[,]
+
+image:img/0409.png[,]
+
+image:img/0410.png[,]
+
+image:img/0411.png[,]
+
+image:img/0412.png[,]
+
+image:img/0413.png[,]
+
+image:img/0414.png[,]
+
+image:img/0415.png[,]
+
+image:img/0416.png[,]
+
+image:img/0417.png[,]
+
+image:img/0418.png[,]
+
+image:img/0419.png[,]
+
+
+
