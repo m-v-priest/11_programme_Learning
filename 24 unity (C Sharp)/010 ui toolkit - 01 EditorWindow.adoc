@@ -1,0 +1,81 @@
+
+= ui toolkit - EditorWindow
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+== EditorWindow
+
+[,subs=+quotes]
+----
+using UnityEngine;
+using UnityEditor;
+
+*public class MyWindow类 : EditorWindow*
+{
+    string str用户输入的文本内容 = "zrx, slf";
+    bool groupEnabled;
+    bool bool打钩框当前的状态 = true;
+
+    float num滑块的当前值 = 1.23f;
+
+
+
+    // Add menu named "My Window" to the Window menu 把你这个类, 加入到 unity菜单中. 路径是: Window/_My Window/测试 EditorWindow. 之后, 你可以直接点击这个菜单, 来打开 EditorWindow ui面板了
+    [MenuItem("Window/_My Window/测试 EditorWindow")]
+    static void Init()
+    {
+        // Get existing open window or if none, make a new one:
+        MyWindow类 myWindow我的窗体 = (MyWindow类)EditorWindow.GetWindow(typeof(MyWindow类));
+        //EditorWindow.GetWindow() :Returns the first EditorWindow of type t which is currently on the screen. If there is none, creates and shows new window and returns the instance of it. 返回第一个找到的已存在的窗口, 如果没有, 就新建一个并实例化出它.
+        //注意,该方法的完整参数是:  GetWindow(Type t, bool utility = false, string title = null, bool focus = true); 其中, 创建出的窗体的抬头名字, 是由 title 参数的值决定的. 但如果你没有给它赋值, 那么窗体就会默认用你起的类名(这里是 MyWindow) 来作为窗体的抬头名字. 即, title参数 : If GetWindow creates a new window, it will get this title. If this value is null, use the class name as title.
+
+
+        myWindow我的窗体.Show(); //Show the EditorWindow window.
+    }
+
+
+
+    //EditorWindow.OnGUI() : Implement your own editor GUI here. 你的ui元素, 要编辑在这个函数里面.
+    void OnGUI()
+    {
+        GUILayout.Label("标签抬头的总说明, 写在这儿", EditorStyles.boldLabel);
+        // GUILayout.Label : Make an auto-layout 自动布局 label.
+        // GUILayout.Label()的参数有:
+        // - text : Text to display on the label.
+        //- style	The style to use. If left out, the label style from the current GUISkin is used. 本例中, 这个参数写了  EditorStyles.boldLabel, 就是把 lable中的文字加粗显示.
+        //Labels have no user interaction, do not catch mouse clicks and are always rendered in normal style. If you want to make a control that responds visually to user input, use a Box control. 标签没有用户交互，不会捕获鼠标点击, 并且始终以正常样式呈现。如果你想制作一个可以相应用户输入的控件，请使用 Box 控件.
+
+
+
+
+
+        str用户输入的文本内容 = EditorGUILayout.TextField("Text Field 的抬头", str用户输入的文本内容);
+        //EditorGUILayout :Auto laid out version of EditorGUI. 这是 EditorGUI 的自动布局版本.
+        //EditorGUILayout.TextField() : Make a text field. 该方法的返回值, 是一个string, 即: The text entered by the user. 即返用户输入的文字内容.
+
+
+
+        //下面, 会用到 ToggleGroup. 注意本例的 ToggleGroup 用了 BeginToggleGroup() 和 EndToggleGroup() 两个方法.
+        //Toggle Group 是可不见的功能性组件。属于同一个Toggle Group的多个Toggle，在同一时刻, 只能有一个处于被勾选的状态（IsOn == true）。当点击组内某个单选框时，该组内其它会自动取消勾选，所以它就是用来快速实现多选一的。Toggle Group只有一个属性：Allow Switch Off——是否允许全不选（若不勾选，则必有一个处于选中状态）
+        groupEnabled = EditorGUILayout.BeginToggleGroup("Optional Settings的抬头", groupEnabled);
+
+        bool打钩框当前的状态 = EditorGUILayout.Toggle("Toggle的抬头", bool打钩框当前的状态); //创建一个打钩框, 第一个参数是 放在打钩框前面的说明文字(即 可选的标签文字 Optional label in front of the toggle). 第二个参数是 The shown state of the toggle. 即 打钩框当前的状态, 是打钩状态, 还是不打勾状态? 该方法的返回值, 是 一个bool值, 即: The selected state of the toggle.
+
+        num滑块的当前值 = EditorGUILayout.Slider("Slider的抬头", num滑块的当前值, 1, 10); //创建一个滑动块, 该方法的第一个参数是 label	: Optional label in front of the slider. 第二个参数是 value	: 即滑块当前处在什么值. 后面两个参数是 滑块值范围的最小值, 和最大值.
+
+        EditorGUILayout.EndToggleGroup();
+    }
+}
+----
+
+image:img/0361.png[,]
+
+运行菜单中的该类后, 效果是 : +
+image:img/0360.png[,]
+
+
+'''
+

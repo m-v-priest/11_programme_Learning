@@ -1,0 +1,117 @@
+
+= ui toolkit - 数据绑定
+:sectnums:
+:toclevels: 3
+:toc: left
+
+---
+
+== 数据绑定
+
+什么叫 SerializedObject ? 在Unity编辑器中，所有对象（UnityEngine.Object）都会被转换为SerializedObject并进行处理。当我们在Inspector中编辑组件的值时，其实不是在编辑Component组件的实例，而是在编辑SerializedObject的实例.
+
+文件中的资源（.prefab、,scene）实际上是对象序列化后的格式，.meta文件是保存导入设置，在导入资源时，会从资源和.meta文件中生成SerializedObject（如果没有.meta文件，则默认自动生成一个），并转换为UnityEngine.Object.
+
+资产与 SerializedObject 的关系: +
+将 UnityEngine.Object(程序内存中的实体) 保存为资产(工程中的实体文件)时，它将另存为二进制或 YAML 格式的文本数据。 SerializedObject 会负责这些序列化操作。
+
+image:img/0363.png[,]
+
+资产是实际对象的序列化。 .meta 文件保存导入器设置等。
+
+在导入资产时，会从资产和.meta 文件生成 SerializedObject,（如果没有.meta 文件，则默认自动生成），并转换为 UnityEngine.Object。
+
+image:img/0364.png[,]
+
+我们的试验:
+
+[,subs=+quotes]
+----
+using UnityEditor;
+using UnityEngine;
+using UnityEditor.UIElements;
+using UnityEngine.UIElements;
+
+namespace UIToolkitExamples
+{
+    public class Cls数据绑定 : EditorWindow
+    {
+        TextField my文本框;
+
+
+        //将你的这个类, 加入到 unity的菜单: "Window/_My Window/Cls数据绑定" 中. 之后, 你就可以点击这个菜单, 来执行这个类.
+        [MenuItem("Window/_My Window/Cls数据绑定")]
+        public static void ShowDefaultWindow()
+        {
+            var my我的窗体 = GetWindow<Cls数据绑定>(); //创建出一个窗体.
+            my我的窗体.titleContent = new GUIContent("窗体的抬头文字");
+        }
+
+
+
+        //CreateGUI() is called when the EditorWindow's rootVisualElement is ready to be populated.(populate (v.) 居住在，构成…的人口；迁移，移居；在……中占有位置，占据). *Use CreateGUI() to add UIToolkit user interface elements to your window.*
+        public void CreateGUI()
+        {
+            my文本框 = new TextField("文本框前的tag文字");
+
+            *my文本框.bindingPath = "m_Name"; //将文本框的值, 绑定到硬盘上文件的名字上. 即, 文本框会显示硬盘上文件的名字.*
+            *//注意这句! C# 中GameObject物体的名字, 可以用name来调用它. 但序列化成硬盘上文件后, 文件的名字, 要用"m_Name"来调用.*
+            // Note: the "name" property of a GameObject is "m_Name" in serialization.
+
+            rootVisualElement.Add(my文本框);
+            OnSelectionChange();
+        }
+
+
+
+
+        public void OnSelectionChange()
+        {
+            *GameObject obj被选中的对象 = Selection.activeObject as GameObject; //拿到你在unity的 hierarchy中,被选中的GameObject物体.*
+            //Selection.activeObject: Returns the actual object selection. Includes Prefabs, non-modifiable objects. 尤其是 Scene 中的对象被选中时, 就推荐这个方法.
+
+
+            if (obj被选中的对象 != null)
+            {
+                SerializedObject so被序列化后的实例对象 = new SerializedObject(obj被选中的对象);
+                // Create the SerializedObject from the current selection.  将硬盘上(unity工程)中的被你选中的文件, 序列化为 c#程序中能实际运行的实例对象. 即, 这个"so被序列化的对象",才能在 c# 中来实际操作.
+
+
+                // Bind it to the root of the hierarchy. It will find the right object to bind to.
+                rootVisualElement.Bind(so被序列化后的实例对象); //因为上面, rootVisualElement中只添加了一个"my文本框"控件, 所以这里的绑定, 就是把"so被序列化后的实例对象",绑定到这个"my文本框"上.
+                //Binds a SerializedObject to fields in the element hierarchy.
+
+                // Alternatively you can instead bind it to the TextField itself.
+                // my文本框.Bind(so被序列化后的实例对象);  //← 也能反过来绑定, 就是用你的 "my文本框",来绑定"so被序列化后的实例对象".
+            }
+            else
+            {
+                // Unbind the object from the actual visual element that was bound.
+                rootVisualElement.Unbind();
+                // If you bound the TextField itself, you'd do this instead:
+                // my文本框.Unbind();
+
+                // Clear the TextField after the binding is removed
+                my文本框.value = "";
+            }
+        }
+    }
+}
+----
+
+image:img/0366.png[,]
+
+
+效果 : +
+image:img/0365.png[,]
+
+Select any GameObject in your scene
+. The name of the GameObject appears in your Editor window’s text field. If you change the name of the GameObject in the text field, the name of the GameObject changes.
+
+
+
+'''
+
+
+
+
