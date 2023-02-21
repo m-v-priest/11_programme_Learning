@@ -168,6 +168,67 @@ Console.WriteLine("a+b"+(age+money));  //a+b11
 // 该 Console.ReadLine()方法, 返回的是 string 类型的数据. 所以我们要用 Convert.ToInt32() 将"该string类型的数字", 转成 int 类型.
 ----
 
+
+'''
+
+==== str -> int,  方法 : int.Parse(strNum)
+
+[,subs=+quotes]
+----
+string strNum = "55";
+*int intNum = int.Parse(strNum); //将字符串形式的数字,转成int类型*
+
+Console.WriteLine(intNum); //55
+Console.WriteLine(intNum.GetType()); //System.Int32
+----
+
+int.Parse() 是一种类型转换;表示将数字内容的字符串转为int类型: +
+-> 如果字符串为空，则抛出ArgumentNullException异常;  +
+-> 如果字符串内容不是数字，则抛出FormatException异常;  +
+-> 如果字符串内容所表示数字, 超出int类型可表示的范围，则抛出OverflowException异常;
+
+'''
+
+==== str -> int , 方法 : int.TryParse(string, out intRes)
+
+[,subs=+quotes]
+----
+string strNum = "55";
+int intNum;
+
+*bool bolRes = int.TryParse(strNum, out intNum); //将字符串形式的数字,转成int类型, 并将转成后的值, 直接赋给 intNum变量. 而本函数的返回值, 是一个bool类型, 表示转换是否成功.*
+
+Console.WriteLine(intNum); //55
+Console.WriteLine(bolRes); //True
+
+
+//又如:
+int intNum2;
+*Console.WriteLine( int.TryParse("zrx", out intNum2)); //False ←如果转换失败, 则返回false, 并将转换后的值, 用0表示.*
+Console.WriteLine(intNum2);  //0
+----
+
+int.TryParse() 与 int.Parse() 较为类似，但**它不会产生异常，转换成功返回 true，转换失败返回 false。最后一个参数为输出值，如果转换失败，输出值为 0.**
+
+
+https://blog.csdn.net/u010033786/article/details/126593910
+
+'''
+
+==== str -> double , 方法: double.Parse(string)
+
+[,subs=+quotes]
+----
+string strNum = "4.5";
+*double dNum = double.Parse(strNum); //将字符串数字, 转换成浮点数*
+
+Console.WriteLine(dNum); //4.5
+Console.WriteLine(dNum.GetType()); //System.Double
+----
+
+
+
+
 '''
 
 == int
@@ -205,9 +266,115 @@ Console.WriteLine(i); //6
 ----
 
 
+==== 动态类型转换
+
+[,subs=+quotes]
+----
+*object x = Convert.ChangeType("34", typeof(int)); //转换成了int类型*
+
+Console.WriteLine(x); //34
+Console.WriteLine(x.GetType()); //System.Int32
+----
+
+上述方法的用途之一是 : 编写可以处理多种类型的反序列化器。它还能够将任意枚举类型, 转换为对应的整数类型.
+
+
+'''
+
+==== object, dynamic, var 的区别
+
+注意: object 和 var 的区别:
+
+
+[options="autowidth"]
+|===
+|object |dynamic  |var
+
+|可以存储任何类型的值
+|可以存储任何类型的值
+|可以存储任何类型的值
+
+|可以不初始化
+|可以不初始化
+|必须初始化
+
+|可以作为方法的参数传递，也可以作为方法的返回类型
+|可以作为方法的参数传递，也可以作为方法的返回类型
+|var 不行，只能作为局部变量使用
+
+|需要将变量转换为原始类型, 才能执行所需的操作
+|强制转换不是必需的
+|可以不用转换
+
+|运行时没有转换成原始类型, 会报错
+|访问错误的属性或方法时，则会出错
+|运行时没有转换成原始类型, 不会导致出错
+
+|在不需要知道具体数据类型时使用
+|在反射、动态语言或使用 COM 对象进行编码时很有用
+|在不知道实际类型下使用，即类型是匿名
+
+|object 类是所有类的基类；换句话说，所有派生类都是继承 object. 我们可以将任何类型的值赋给 object 类型变量（将值类型转换为 object 时称为“装箱”，将 object 类型转换为任何其他值类型时称为“拆箱”）
+|具有动态类型语言的特征，其本质其实就是object. 在编译时，dynamic 会被转换为 object ，这会受装箱和拆箱的影响.
+|
+
+|是弱类型，会涉及到类型转换.
+|
+|是强类型，是一个具体的类型，根据值去推理类型，是一个语法糖
+|===
+
+- object 类型
+
+[,subs=+quotes]
+----
+object objNum = 4;
+
+// Console.WriteLine(a - 3); //报错: Cannot apply operator '-' to operands of type 'object' and 'int'.  ← *object 和 int 之间不能进行运算符 '-' 操作*
+
+*Console.WriteLine((int)objNum - 3); //1  ← 将object类型强制类型转换成int后,可以进行操作.*
+
+object objStr = "zrx";
+*objStr = objNum; //可以把object类型的数字, 赋值给 object类型的字符串*
+Console.WriteLine(objStr); //4  ← 打印出的就是 objNum的值.
+----
+
+
+- dynamic 类型
+
+[,subs=+quotes]
+----
+dynamic dnmNum = 34;
+dynamic dnmStr = "slf";
+*dnmNum = dnmStr; //没问题 ← 无论 dynamic类型的值是什么, 都可以互相赋值*
+
+Console.WriteLine(dnmNum); //slf
+
+//再来做个实验
+dynamic dnmArr = new string[] { "a", "b", "c" };
+dnmNum = dnmArr;
+Console.WriteLine(dnmNum); //System.String[]  ← 依然是 dynamic类型的可以互相赋值
+
+//
+dynamic dnmNum2 = 55;
+*Console.WriteLine(dnmNum2 + 3); //58 ← 这个可以正常运行*
+----
 
 
 
+- var 类型
+
+[,subs=+quotes]
+----
+var intNum = 18; *//这里的var 其实就是等同于 int, 说明var并不是真正的动态类型, 它做的只不过是从数值身上,来自动推断其真正的类型, 然后就称为该具体类型. 所以var依然是"强类型"的.*
+
+//intNum = "zrx"; //报错: Cannot convert source type 'string' to target type 'int'
+
+
+//void fn(var arg){} *//编译错误! var 只能出现在局部变量中, 不能作为参数*
+----
+
+
+'''
 
 
 

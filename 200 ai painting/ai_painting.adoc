@@ -1,0 +1,28 @@
+
+= ai 绘画
+:sectnums:
+:toclevels: 3
+:toc: left
+''''
+
+==  模型网站 https://civitai.com/
+
+== 模型格式
+
+[options="autowidth"]
+|===
+|扩展名 |模型存放路径
+
+|cpkt, safetensors
+|E:\AI\models\Stable-diffusion
+
+|名字中带有vae : 美化模型
+|E:\AI\models\VAE
+
+|lora
+|E:\Al\extensions\sd-webui-additional-networks\models\lora
+
+|pt
+|E:\Al\embeddings
+|===
+
