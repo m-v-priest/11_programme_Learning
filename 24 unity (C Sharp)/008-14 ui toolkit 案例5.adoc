@@ -1,0 +1,196 @@
+
+
+
+= ui toolkit 教程5
+:sectnums:
+:toclevels: 3
+:toc: left
+''''
+
+== ui
+
+现在你的 Project工程面板里, 右键, create -> ui toolkit -> editor window
+
+
+
+image:img/0406.png[,]
+
+image:img/0407.png[,]
+
+image:img/0408.png[,]
+
+下面要用到 ListView 控件的代码, 官方文档: +
+https://docs.unity3d.com/ScriptReference/UIElements.ListView.html
+
+
+[,subs=+quotes]
+----
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.UIElements;
+using UnityEditor.UIElements;
+using System;
+using System.Collections;
+*using System.Collections.Generic; //要在 unity中使用List, 必须引入这个包*
+
+
+
+public class ui5 : EditorWindow
+{
+
+    List<GameObject> listGo卡片;
+
+
+
+    [MenuItem("Window/UI Toolkit/ui5")]
+    public static void ShowExample()
+    {
+        ui5 wnd = GetWindow<ui5>();
+        wnd.titleContent = new GUIContent("ui5");
+    }
+
+    public void CreateGUI()
+    {
+        // Each editor window contains a root VisualElement object
+        VisualElement root = rootVisualElement;
+
+        // Import UXML
+        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/ui5/ui5.uxml");
+        VisualElement labelFromUXML = visualTree.Instantiate();
+        root.Add(labelFromUXML);
+
+
+        fn创建CardList();
+
+
+    }
+
+
+    void fn创建CardList()
+    {
+        //1.读取所有的card, 是GameObject格式的.
+        listGo卡片 = fn读取所有的卡片(listGo卡片);
+
+        Debug.Log(listGo卡片);
+        Debug.Log(listGo卡片.Count);
+
+        //2.在ui界面的左边, 显示出所有的card
+        //先在你的ui中, 找到 veListView_CardList 控件,
+        ListView veListView_CardList = rootVisualElement.Q<ListView>("veListView_CardList");
+
+        // *makeItem是指ListView中每一项的模板.* The "makeItem" function is called when the ListView needs more items to render.
+        *veListView_CardList.makeItem = () => new Label();*
+
+
+        *//bindItem是指ListView中每一项的模板创建后的具体值是什么，e是每一个模板，i是这个模板对应List第几个.*
+        *//将每个go卡片的名字, 赋值给 Lable的text字段.*
+        *veListView_CardList.bindItem = (element, index) => { (element as Label).text = listGo卡片[index].name; };*
+
+
+        *veListView_CardList.itemsSource = listGo卡片;  //itemsSource	: The data source for collection items.This list contains the items that the BaseVerticalCollectionView displays.*
+
+        veListView_CardList.fixedItemHeight = 16; //fixedItemHeight	The height of a single item in the list, in pixels.
+
+        veListView_CardList.style.flexGrow = 0;
+
+        veListView_CardList.Rebuild(); //Rebuild :Clears the collection view, recreates all visible visual elements, and rebinds all items. Call this method whenever a structural change is made to the view.
+
+        veListView_CardList.selectedIndex = 0; //将ListView中的第一个元素, 作为默认选中状态. selectedIndex :	Returns or sets the selected item's index in the data source. If multiple items are selected, returns the first selected item's index. If multiple items are provided, sets them all as selected.
+
+
+        //你必须把你的veListView_CardList, 重新挂载到 根节点, 才能在ui中看到效果. 据说这是 unity的bug, 不加就看不到.
+        rootVisualElement.Add(veListView_CardList);
+
+
+
+
+
+        //3.在ui界面的右边, 显示选中的那张card 的 info信息.
+        veListView_CardList.onSelectionChange += (arg_enumerable) =>
+        {
+            //在显示选中的card之前, 先清空这块ui区域. 即清空 "veRight_CardInfo"区域.
+            VisualElement veRight_CardInfo = rootVisualElement.Q<VisualElement>("veRight_CardInfo"); //先找到这个区域
+
+            veRight_CardInfo.Clear(); //清空该虚拟元素它下面的所有子元素.VisualElement类实例 的  Clear()方法 : 	Remove all child elements from this element's contentContainer.
+
+
+            //将选中的卡片, 显示在 "veRight_CardInfo"这个虚拟元素区域上.
+            GameObject go被鼠标选中的 = null;
+            foreach (var item in arg_enumerable)
+            {
+                go被鼠标选中的 = item as GameObject;
+            }
+
+
+            //
+            SerializedObject soGo被鼠标选中的卡片 = new SerializedObject(go被鼠标选中的);
+
+            SerializedProperty so被选中的卡片的属性 = soGo被鼠标选中的卡片.GetIterator();
+            //SerializedProperty is primarily used to read or change the value of a property. It can also iterate through the properties of an object using Next. SerializedProperty 主要用于读取或更改属性的值。它还可以使用 Next 遍历对象的属性。
+
+            //移动到下一个属性
+            so被选中的卡片的属性.Next(true);
+
+
+            //SerializedProperty.NextVisible(): Move to next visible property.
+            while (so被选中的卡片的属性.NextVisible(false))
+            {
+                //PropertyField: A SerializedProperty wrapper VisualElement that, on Bind(), will generate the correct field elements with the correct bindingPaths.
+                PropertyField prop属性域 = new PropertyField(so被选中的卡片的属性);
+
+                prop属性域.Bind(soGo被鼠标选中的卡片);
+
+                veRight_CardInfo.Add(prop属性域);
+            }
+        };
+
+
+
+
+        List<GameObject> fn读取所有的卡片(List<GameObject> listGo卡片)
+        {
+            *//加载资源, 你的所有精灵图, 在 Resources/card 目录下.*
+            *var list精灵图 = Resources.LoadAll<Sprite>("card");*
+
+            foreach (Sprite item精灵图 in list精灵图)
+            {
+                //创建空对象, 给它添加上 SpriteRenderer组件, 才能把你的精灵图, 挂载上来.
+                GameObject insGo = new GameObject();
+                insGo.AddComponent<SpriteRenderer>().sprite = item精灵图;
+
+                listGo卡片.Add(insGo);
+            }
+
+            return listGo卡片;
+        }
+
+
+    }
+
+}
+----
+
+
+image:img/0409.png[,]
+
+image:img/0410.png[,]
+
+image:img/0411.png[,]
+
+image:img/0412.png[,]
+
+image:img/0413.png[,]
+
+image:img/0414.png[,]
+
+image:img/0415.png[,]
+
+image:img/0416.png[,]
+
+image:img/0417.png[,]
+
+image:img/0418.png[,]
+
+image:img/0419.png[,]
+
+

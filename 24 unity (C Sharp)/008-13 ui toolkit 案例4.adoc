@@ -1,0 +1,117 @@
+
+
+= ui toolkit 教程4
+:sectnums:
+:toclevels: 3
+:toc: left
+''''
+
+== ui toolkit runtime & editor 区别
+
+UI ToolKit 分为 Editor和Runtime. UIToolkit同时支持Editor和Runtime两种解决方案.
+
+Editor和Runtime几乎是一样的，这意味着我们所制作的uxml文件可以同时在这两者上使用.
+
+两者区别, 官网上的说明:  +
+https://docs.unity3d.com/Manual/UIB-getting-started-editor-ext.html
+
+
+
+
+
+
+== 制作 ui
+
+
+
+image:img/0391.png[,]
+
+image:img/0392.png[,]
+
+image:img/0393.png[,]
+
+image:img/0394.png[,]
+
+image:img/0395.png[,]
+
+image:img/0396.png[,]
+
+image:img/0397.png[,]
+
+image:img/0398.png[,]
+
+image:img/0399.png[,]
+
+image:img/0400.png[,]
+
+image:img/0401.png[,]
+
+image:img/0402.png[,]
+
+代码为:
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+public class myUi3 : MonoBehaviour
+{
+    int num = 0;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+
+
+    //MonoBehaviour.OnEnable() : This function is called when the object becomes enabled and active. Note: OnEnable cannot be a co-routine. 无法作为协程来用.
+    private void OnEnable()
+    {
+        //拿到 ui toolkit 中的根节点
+        VisualElement root = GetComponent<UIDocument>().rootVisualElement;
+
+
+        //拿到ui中的 button 和 用来显示数字的那个label
+        Label myLabelContent = root.Q<Label>("myLabelContent");
+        Button myButtonAdd = root.Q<Button>("myButtonAdd");
+
+
+        //给按钮, 添加上点击事件
+        //在视觉元素上调用 RegisterCallback<>() : 通过 RegisterCallback 注册回调适用于所有视觉元素，无论它们是否存储内部值。
+        //rootVisualElement.RegisterCallback<ChangeEvent<bool>>(OnBoolChangedEvent);
+        myButtonAdd.RegisterCallback<ClickEvent>(evt =>
+        {
+            num++;
+            myLabelContent.text = $"你当前的数字是: {num}";
+        });
+
+
+    }
+
+}
+
+----
+
+
+
+image:img/0403.png[,]
+
+image:img/0404.png[,]
+
+RegisterCallback<>() 的用法, 见官方文档: +
+https://docs.unity3d.com/cn/current/Manual/UIE-Change-Events.html
+
+给按钮绑定事件, 也可以用普通的方式, 如下图:
+
+image:img/0405.png[,]

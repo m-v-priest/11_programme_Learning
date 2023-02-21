@@ -187,5 +187,29 @@ Console.WriteLine(c);  //本例会打印出一个"g"
 '''
 
 
+== Convert类
+
+C# 中, 数据的基本类型有:  bool, char, string.System.DateTime, System.DateTimeOffset, 所有的C#数字类型.
+
+静态类Convert, 定义了将每一个"基本类型"转换为其他"基本类型"的方法。可是这些方法大部分都没有什么实际用处，要么抛出异常，要么是隐式转换的冗余方法。然而，其中有一些方法还是很有用的.
+
+**所有的基本类型, 都(显式)实现了 IConvertible，它定义了转换到其他基本类型的方法。**在大多数情况中，**每一种方法的实现, 都直接调用了Convert类的方法。**所以, 编写一个接受IConvertible类型的参数的方法, 在特定情况下是用处很大的。
+
+==== Conver类的数字转换方法, 总是使用 四舍五入, 而非直接截断
+
+[,subs=+quotes]
+----
+double d = 5.6;
+*int i = Convert.ToInt32(d);* //在转换类型的同时, 四舍五入了
+Console.WriteLine(i); //6
+----
 
 
+
+
+
+
+
+
+
+277

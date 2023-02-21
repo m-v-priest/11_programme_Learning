@@ -6,6 +6,60 @@
 
 '''
 
+== 资源类型
+
+ unity资源的类型：
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|Unity内置的常用asset
+| fbx\jpg...
+
+|text asset
+|txt、binary等，对应了它的TextAsset类，可以直接读入文本或者二进制byte.  +
+textasset 还通常用于资源的加密。
+
+|scriptable object
+|它是序列化的Object实例，例如把一个Object实例保存成scriptable object，读入进来后就直接在内存中变 成那个实例
+
+|asset bundle
+|它是一个资源压缩包，里面包含了一堆资源
+|===
+
+通常我们自定义的文件类型可以通过textasset 或scriptable object 来存储，区别在于前者是一个字节或文本流，后者要对应于程序中一个定义了的类型.
+
+
+
+动态load资源的几种途径:
+[options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|通过 Resources模块，调用它的load函数
+|可以直接load并返回某个类型的Object，前提是要把这个资源放在Resource命名的文件夹下，Unity不管有没有场景引用，都会将其全部打入到安装包中。
+
+Resources.Load就是从一个"缺省打进程序包里的AssetBundle里"加载资源.
+
+|通过 bundle 的形式
+|即将资源打成 asset bundle 放在服务器或本地磁盘，然后使用WWW模块get 下来，然后从这个bundle中load某个object。
+
+AssetBundle文件需要你自己创建，运行时动态加载，可以指定路径和来源的。其实场景里所有静态的对象也有这么一个加载过程，只是Unity后台替你自动完成.
+
+|通过 AssetDatabase.loadasset
+|这种方式只在editor范围内有效，游戏运行时没有这个函数，它通常是在开发中调试用的.
+|===
+
+Resources的方式需要把所有资源全部打入安装包，这对游戏的分包发布（微端）和版本升级（patch）是不利的.  所以unity推荐的方式是不用它，都用bundle的方式替代，把资源达成几个小的 bundle，用哪个就load哪个，这样还能分包发布和 patch.  +
+但是在开发过程中，不可能每更新一个资源就打一次 bundle，所以 editor环境下可以使用AssetDatabase来模拟，这通常需要我们封装一个 dynamic resource 的 loader 模块，在不同的环境下做不同实现。
+
+动态资源的存放: 有时我需要存放一些自己的文件在磁盘上，例如我想把几个bundle放在初始的安装里， unity有一个streaming asset的概念，用于提供存储接口的访问。我们需要在编辑器建立一个StreamingAssets名字的文件夹，把需要我们放在客户磁盘上的动态文件放在这个文件夹下面，这样安装后，这些文件会放在用户磁盘的指定位置，这个位置可以通过Application.streamingAssetsPath来得到。
+
+
+
+'''
+
 == 加载资源
 
 
@@ -88,6 +142,10 @@ foreach (Sprite item in arr精灵图集) {
 ----
 
 image:img/0094.png[,]
+
+image:img/0408.png[,]
+
+
 
 
 
