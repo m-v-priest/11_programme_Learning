@@ -1,0 +1,19 @@
+
+= 数学运算 Math
+:sectnums:
+:toclevels: 3
+:toc: left
+---
+
+
+== 静态Math类的方法
+
+image:img/0274.png[,]
+
+image:img/0275.png[,]
+
+image:img/0276.png[,]
+
+image:img/0277.png[,]
+
+

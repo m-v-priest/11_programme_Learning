@@ -6,6 +6,411 @@
 
 ---
 
+
+== LINQ 用法介绍 (官方文档中的例子)
+
+https://learn.microsoft.com/zh-cn/dotnet/csharp/programming-guide/concepts/linq/walkthrough-writing-queries-linq
+
+LINQ 支持查询任何实现了IEnumerable<T>接口的集合类型.
+
+LINQ数据的基本组成部分, 是"序列"和"元素"。序列是任何实现了IEnumerable<T>接口的对象，而其中的每一项, 称为一个元素。
+
+**查询运算符(query operator), 是LINQ中进行"序列转换"的方法。通常，查询运算符可接受一个"输入序列"，并将其转换为一个"输出序列"。**在System.Linq命名空间的Enumerable类中, 定义了约40种查询运算符。
+
+
+==== from... where... select...
+
+所有 LINQ 查询操作都由以下三个不同的操作组成：
+
+- 获取数据源。
+- 创建查询。
+- 执行查询。
+
+
+例如:
+[,subs=+quotes]
+----
+static void Main(string[] args)
+        {
+
+        //数据源
+        int[] arrNum = new int[7] { 6, 4, 8, 3, 7, 0, 9 };
+
+
+        //开始进行查找, 查找到的满足条件的数据, 会放到 "enum结果"这个可枚举的对象中. 本例, 该结果, 是个  IEnumerable<int> 类型.
+        var enum结果 =
+            *from item in arrNum*  //查找的数据源是哪个?
+            *where (item > 6)*  //要查找的什么条件的数据?
+            *select item*; //将满足条件的元素 item, 放到"enum结果"集合中.
+
+
+        //对拿到的结果, 进行遍历, 就行了.
+        foreach (int i in enum结果)
+        {
+            Console.Write(i+","); //8,7,9,
+
+        }
+
+
+        *//查看筛选(查找)出来的集合中的元素数量*
+        Console.WriteLine(*enum结果.Count()*); //3
+    }
+}
+----
+
+image:img/0288.png[,]
+
+从上例可知, *查询表达式包含三个子句：from、where 和 select。* （如果熟悉 SQL，会注意到这些子句的顺序与 SQL 中的顺序相反。）*from 子句指定数据源，where 子句应用筛选器，select 子句指定返回的元素的类型。*
+
+image:img/0289.png[,]
+
+上例中，数据源是一个数组，因此它隐式支持泛型 IEnumerable<T> 接口。 *支持 IEnumerable<T> 或派生接口（如泛型 IQueryable<T>）的类型, 称为"可查询类型" 。*
+
+查询还可以在返回这些信息之前, 指定如何对其进行排序、分组和结构化。
+
+
+==== 将查找到的结果, 放入一个list中
+
+[,subs=+quotes]
+----
+static void Main(string[] args)
+{
+    //数据源
+    int[] arrNum = new int[7] { 6, 4, 8, 3, 7, 0, 9 };
+
+
+    //开始进行查找, 查找到的满足条件的数据, 会放到 "enum结果"这个可枚举的对象中. 本例, 该结果, 是个  IEnumerable<int> 类型.
+    var enum结果 =
+        from item in arrNum //查找的数据源是哪个?
+        where (item > 6) //要查找的什么条件的数据?
+        select item; //将满足条件的元素 item, 放到"enum结果"集合中.
+
+
+    //你直接查看该结果集合, 是看不到内容的
+    Console.WriteLine(enum结果); //System.Linq.Enumerable+WhereArrayIterator`1[System.Int32]
+
+    //所以**我们在查询时, 就要用  ToList() 或 ToArray() 方法, 来把查询的结果, 存到一个列表或数组中.**
+    List<int> listRes =
+        (from item in arrNum
+            where (item > 7)
+            select item
+        )*.ToList();*  //← 将查询到的结果, 用ToList()转成列表, 存入一个列表变量listRes中.
+
+    foreach (var i in listRes)
+    {
+        Console.Write(i + ","); // 8,9,
+    }
+}
+
+----
+
+image:img/0290.png[,]
+
+上面, 用到了 ToList().  该方法就是 Enumerable.ToList<TSource>(IEnumerable<TSource>) 方法 : *Creates a List<T> from an IEnumerable<T>.*
+
+
+==== 在class类的n个实例中查找
+
+我们就用微软官方文档中的例子:
+
+[,subs=+quotes]
+----
+//学生类
+public class Cls学生类
+{
+    public string First { get; set; }
+    public string Last { get; set; }
+    public int ID { get; set; }
+    public List<int> Scores; //这个列表中,存放着n次考试的分数.
+}
+
+
+//主函数
+internal class Program
+{
+    static void Main(string[] args)
+    {
+        //创建一个列表, 里面存放n个学生类的实例
+        // Create a data source by using a collection initializer.
+        List<Cls学生类> list学生实例 = new List<Cls学生类>
+        {
+            new Cls学生类 { First = "Svetlana", Last = "Omelchenko", ID = 111, Scores = new List<int> { 97, 92, 81, 60 } },
+            new Cls学生类 { First = "Claire", Last = "O'Donnell", ID = 112, Scores = new List<int> { 75, 84, 91, 39 } },
+            new Cls学生类 { First = "Sven", Last = "Mortensen", ID = 113, Scores = new List<int> { 88, 94, 65, 91 } },
+            new Cls学生类 { First = "Cesar", Last = "Garcia", ID = 114, Scores = new List<int> { 97, 89, 85, 82 } },
+            new Cls学生类 { First = "Debra", Last = "Garcia", ID = 115, Scores = new List<int> { 35, 72, 91, 70 } },
+            new Cls学生类 { First = "Fadi", Last = "Fakhouri", ID = 116, Scores = new List<int> { 99, 86, 90, 94 } },
+            new Cls学生类 { First = "Hanying", Last = "Feng", ID = 117, Scores = new List<int> { 93, 92, 80, 87 } },
+            new Cls学生类 { First = "Hugo", Last = "Garcia", ID = 118, Scores = new List<int> { 92, 90, 83, 78 } },
+            new Cls学生类 { First = "Lance", Last = "Tucker", ID = 119, Scores = new List<int> { 68, 79, 88, 92 } },
+            new Cls学生类 { First = "Terry", Last = "Adams", ID = 120, Scores = new List<int> { 99, 82, 81, 79 } },
+            new Cls学生类 { First = "Eugene", Last = "Zabokritski", ID = 121, Scores = new List<int> { 96, 85, 91, 60 } },
+            new Cls学生类 { First = "Michael", Last = "Tucker", ID = 122, Scores = new List<int> { 94, 92, 91, 91 } }
+        };
+
+
+        *//创建查询(进行查询). LINQ查询的返回结果, 一定是 IEnumerable类型的数据*
+        IEnumerable<Cls学生类> res查询结果 =
+            from ins学生 in list学生实例
+            where ins学生.Scores[0] > 90 //查询第一次测试中,分数高于 90分 的学生
+            select ins学生; //最后的select, 别忘了加分号;
+
+
+        //执行查询(遍历查看你的 结果列表)
+        foreach (Cls学生类 ins学生 in res查询结果)
+        {
+            Console.WriteLine($"{ins学生.Last} {ins学生.First}"); //查看筛选出来的 所有这些学生的名字
+        }
+        //输出:
+        // Omelchenko Svetlana
+        // Garcia Cesar
+        // Fakhouri Fadi
+        // Feng Hanying
+        // Garcia Hugo
+        // Adams Terry
+        // Zabokritski Eugene
+        // Tucker Michael
+
+
+        *//查询时, 在 where 子句中，可以组合多个布尔条件，以便进一步细化查询*
+        //比如, 我们来查找: 第一个分数高于 90 分，并且最后一个分数低于 80 分的那些学生。
+        IEnumerable<Cls学生类> res查询结果2 =
+            from ins学生 in list学生实例
+            *where ins学生.Scores[0] > 90 && ins学生.Scores.Last() < 80 //这里的列表的 Last<TSource>(IEnumerable<TSource>) 方法: 返回序列的最后一个元素。*
+            select ins学生; //最后的select, 别忘了加分号;
+
+
+        Console.WriteLine();
+
+        //遍历查看结果
+        foreach (Cls学生类 ins学生 in res查询结果2)
+        {
+            Console.WriteLine($"{ins学生.Last} {ins学生.First}");
+        }
+
+        // 输出:
+        // Omelchenko Svetlana
+        // Garcia Hugo
+        // Adams Terry
+        // Zabokritski Eugene
+    }
+}
+----
+
+image:img/0291.png[,]
+
+
+
+====  对结果进行排序 :  orderby 目标字段  ascending
+
+[,subs=+quotes]
+----
+//创建查询(进行查询). LINQ查询的返回结果, 一定是 IEnumerable类型的数据
+IEnumerable<Cls学生类> res查询结果 =
+    from ins学生 in list学生实例
+    where ins学生.Scores[0] > 90 //查询第一次测试中,分数高于 90分 的学生
+    *orderby ins学生.Last ascending //按学生的姓氏,进行从 A 到 Z 的顺序排列. ← 注意, 这个 orderby 子句, 要紧跟 where 语句之后、select 语句之前, 才能将这里排列后的顺序, 加入到你的结果集合"res查询结果"中.*
+    select ins学生; //最后的select, 别忘了加分号;
+
+
+//执行查询(遍历查看你的 结果列表)
+foreach (Cls学生类 ins学生 in res查询结果)
+{
+    Console.WriteLine($"{ins学生.Last} {ins学生.First}"); //查看筛选出来的 所有这些学生的名字
+}
+//输出:
+// Adams Terry
+// Fakhouri Fadi
+// Feng Hanying
+// Garcia Cesar
+// Garcia Hugo
+// Omelchenko Svetlana
+// Tucker Michael
+// Zabokritski Eugene
+}
+----
+
+image:img/0292.png[,]
+
+要倒序的话, 就改为:
+
+[,subs=+quotes]
+----
+//创建查询(进行查询). LINQ查询的返回结果, 一定是 IEnumerable类型的数据
+IEnumerable<Cls学生类> res查询结果 =
+    from ins学生 in list学生实例
+    where ins学生.Scores[0] > 90 //查询第一次测试中,分数高于 90分 的学生
+    *orderby ins学生.Scores[0] descending //按第一次测试的分数以倒序（从最高分到最低分）排列。*
+    select ins学生;
+
+
+//执行查询(遍历查看你的 结果列表)
+foreach (Cls学生类 ins学生 in res查询结果)
+{
+    Console.WriteLine($"{ins学生.Last} {ins学生.First}  第一次分数 : {ins学生.Scores[0]}"); //查看筛选出来的 所有这些学生的名字
+}
+//输出:
+// Fakhouri Fadi  第一次分数 : 99
+// Adams Terry  第一次分数 : 99
+// Omelchenko Svetlana  第一次分数 : 97
+// Garcia Cesar  第一次分数 : 97
+// Zabokritski Eugene  第一次分数 : 96
+// Tucker Michael  第一次分数 : 94
+// Feng Hanying  第一次分数 : 93
+// Garcia Hugo  第一次分数 : 92
+
+}
+----
+
+image:img/0293.png[,]
+
+
+'''
+
+==== 对结果进行分组
+
+分组是查询表达式中的强大功能。** 包含 group 子句的查询将生成一系列组，每个组本身包含一个 Key 和一个序列，该序列由该组的所有成员组成。**
+
+[,subs=+quotes]
+----
+*//创建查询(进行查询). LINQ查询的返回结果, 一定是 IEnumerable类型的数据. 但因为用了 group...by...分组功能, 这个IEnumerable类型中的元素, 元素类型就是<char, Cls学生类>类型了.*
+*IEnumerable<IGrouping<char, Cls学生类>> res查询结果* =
+    from ins学生 in list学生实例
+    *group ins学生 by ins学生.Last[0]; //用学生的姓的第一个字母作为关键字, 对学生进行分组*
+    //注意: 因为这里我们只是做了分组, 而没有做筛选, 所以就不需要写 select语句了.
+
+
+//执行查询(遍历查看你的 结果列表)
+//注意,下面的 "ins学生"的类型, 是 IGrouping<char, Student>类型. 我们这里偷懒用 var来让它自动判断类型了.
+foreach (var group每个组 in res查询结果)
+{
+    Console.WriteLine(*group每个组.Key*); //把每个组的Key,数出来看看
+
+    *//再次遍历每个分组中的value, 即序列部分. 这个序列里面, 存放的就是属于该组的所有元素.*
+    *foreach (var ins学生 in group每个组)*
+    {
+        Console.WriteLine($"{ins学生.Last} {ins学生.First}"); //查看筛选出来的 所有这些学生的名字
+    }
+}
+//输出:
+// O
+//     Omelchenko Svetlana
+//     O'Donnell Claire
+// M
+//     Mortensen Sven
+// G
+// Garcia Cesar
+// Garcia Debra
+// Garcia Hugo
+// F
+//     Fakhouri Fadi
+//     Feng Hanying
+// T
+// Tucker Lance
+// Tucker Michael
+// A
+//     Adams Terry
+// Z
+// Zabokritski Eugene
+----
+
+image:img/0294.png[,]
+
+image:img/0295.svg[,]
+
+
+'''
+
+==== 对变量进行隐式类型化, 用 var 来让它自行推断你的 分组后的返回的数据的类型
+
+上面的"分组"例子, 我们可以看到, 分组后返回的数据, 其数据的类型很复杂. 层层嵌套. IGroupings 的显式编码 IEnumerables 将快速变得冗长。 所以, 我们可以使用 var 来更方便地编写相同的查询和 foreach 循环。 *var 关键字不会更改对象的类型；它仅指示编译器推断类型。*
+
+将上例的 studentQuery 和迭代变量 group 的类型更改为 var即可.
+
+[,subs=+quotes]
+----
+*var res查询结果 =*
+    from ins学生 in list学生实例
+    group ins学生 by ins学生.Last[0]; //用学生的姓的第一个字母作为关键字, 对学生进行分组
+
+
+foreach (*var group每个组* in res查询结果)
+{
+    Console.WriteLine(group每个组.Key);
+    foreach (var ins学生 in group每个组)
+    {
+        Console.WriteLine($"{ins学生.Last} {ins学生.First}");
+    }
+}
+----
+
+'''
+
+==== 按照"键值"对组进行排序
+
+上面的例子, 我们还发现, *这些组的key, 没按字母顺序排序。 如果你想要key也有排序，就必须在 group 子句后提供 orderby 子句。 但首先, 你需要一个标识符，来作为对 "group 子句创建的分组"的引用。 用 into 关键字提供该标识符.*
+
+[,subs=+quotes]
+----
+var res查询结果 =
+    from ins学生 in list学生实例
+    *group ins学生 by ins学生.Last[0] into group学生组 //用学生的姓的第一个字母作为关键字, 对学生进行分组. 并用"group学生组"这个变量, 来引用到这些分组.*
+    *orderby group学生组.Key //对每个分组中的key, 进行排序*
+    select group学生组;
+
+
+
+foreach (var group每个组 in res查询结果)
+{
+    Console.WriteLine(group每个组.Key);
+    foreach (var ins学生 in group每个组)
+    {
+        Console.WriteLine($"{ins学生.Last} {ins学生.First}");
+    }
+}
+//输出:
+// A
+//     Adams Terry
+// F
+// Fakhouri Fadi
+// Feng Hanying
+// G
+//     Garcia Cesar
+//     Garcia Debra
+//     Garcia Hugo
+// M
+// Mortensen Sven
+// O
+//     Omelchenko Svetlana
+//     O'Donnell Claire
+// T
+//     Tucker Lance
+//     Tucker Michael
+// Z
+// Zabokritski Eugene
+
+----
+
+image:img/0296.png[,]
+
+现在, 这些组, 就已按字母顺序排序了
+
+'''
+
+==== let子句 : 用来在LINQ表达式中存储子表达式的计算结果
+
+
+https://learn.microsoft.com/zh-cn/dotnet/csharp/programming-guide/concepts/linq/walkthrough-writing-queries-linq
+
+
+
+
+'''
+
+== ---------- ----------
+
+'''
+
 == LINQ
 
 LINQ的英文全称是Language Integrated Query,中文翻译为“语言集成查询”。LINQ作为一种查询技术，首先要解决数据源封装的问题，在.NET框架库中，大致使用三大组件来实现这个封装，分别是LINQ to Objects、LINQ to ADO.NET 、LINQ to XML.

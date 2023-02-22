@@ -60,6 +60,105 @@ internal class ClsPerson {
 
 '''
 
+==== 将枚举类型中的元素值, 转为string类型
+
+[,subs=+quotes]
+----
+//枚举类, 是个class, 不能写在函数里面.
+enum enm尺寸
+{
+    大,
+    中,
+    小
+}
+
+//主函数
+internal class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine(*enm尺寸.大*); //大  ← *注意, 单纯对枚举类中的元素进行输出, 输出的不是字符串类型! 而是该枚举类型*
+        Console.WriteLine(enm尺寸.大.GetType()); //ConsoleApp3.enm尺寸
+
+
+        Console.WriteLine(*enm尺寸.大.ToString()*); //大 ← *要转成string类型, 必须对枚举元素调用 toString()方法.*
+        Console.WriteLine(enm尺寸.大.ToString().GetType()); //System.String
+
+
+        Console.WriteLine(*enm尺寸.大.GetType().Name*); // enm尺寸 ← *拿到"枚举类成员"的所属"枚举类型"的名字*
+    }
+}
+----
+
+image:img/0278.png[,]
+
+
+'''
+
+== 枚举类的 [flags] 特性标签
+
+枚举类, 我们一般有两种用法:  +
+-> 表示唯一的元素序列，例如一周里的各天 +
+-> 还有就是**用来表示多种复合的状态, 这个时候一般需要为枚举加上[Flags]特性标记为位域. **
+
+[,subs=+quotes]
+----
+*[Flags]*
+enum enm职务
+{
+    尚书 = 1,
+    大将军 = 2,
+    丞相 = 4,
+}
+
+//主函数
+internal class Program
+{
+    static void Main(string[] args)
+    {
+        *//对于加了"[Flags]特性标记" 的枚举类, 我们就可以用"或"运算符组合多个状态. 即, 让该枚举类的变量, 能拥有该枚举类中的多个元素*
+        *enm职务 insEnm职务 = enm职务.尚书 | enm职务.大将军;*
+        //这时, 这个枚举变量的值, 将变成 1+2=3. 这就解释了, 枚举类中, 我们不应该让两个元素的值的和, 等于第三个元素. 这会造成混乱.
+        *//有一个比较简单的方法来解决上面的问题: 就是用2的n次方, 来依次为每一项赋值，例如 1,2,4,8,16,32,64 ...*
+
+        Console.WriteLine((int)insEnm职务); //3
+        Console.WriteLine(insEnm职务); //尚书, 大将军
+        Console.WriteLine(insEnm职务.ToString()); //尚书, 大将军
+
+
+        *//判断某个枚举类的实例变量, 是否包含该枚举类中的某个值元素.*
+        Console.WriteLine(*(insEnm职务 & enm职务.尚书) != 0*); //True ← 判断 "insEnm职务"这个枚举实例, 其值是否包含"enm职务.尚书".
+        Console.WriteLine((insEnm职务 & enm职务.丞相) != 0); //False
+    }
+}
+----
+
+image:img/0279.png[,]
+
+
+要将 int形式,或字符串形式的枚举值, 转换回"枚举类中的元素"类型, 就用 Enum.Parse() 方法.
+
+'''
+
+== 枚举值有三种表示形式, 及它们之间的互相转换
+
+枚举值有三种表示形式:
+
+- enum成员
+- 对应的整数
+- 字符串
+
+可以在这三种表达形式之间, 进行互相转换.
+
+
+
+
+
+
+
+
+'''
+
 == 枚举成员, 是有int值的
 
 ==== 成员的数值, 默认从0开始
@@ -239,6 +338,45 @@ static void Main(string[] args) {
     }
 }
 ----
+
+'''
+
+== 遍历你的枚举类中的所有成员 -> Enum.GetValues(typeof(你的枚举类))  或  Enum.GetNames(typeof(你的枚举类))
+
+[,subs=+quotes]
+----
+enum Enm职务
+{
+    尚书 = 1,
+    大将军 = 2,
+    丞相 = 4,
+}
+
+//主函数
+internal class Program
+{
+    static void Main(string[] args)
+    {
+        *//Enum.GetValues()方法, 能返回一个数组, 里面装的就是你枚举类型中的所有成员(value). "枚举类的成员"的类型, 是Enum类型的.*
+        *foreach (Enum value in Enum.GetValues(typeof(Enm职务)))*
+        {
+            Console.Write(value+","); //Enum类型形式的: 尚书,大将军,丞相,
+        }
+
+
+        *//Enum.GetNames() 也能执行相同的操作，但是返回的是一个字符串数组。*
+        *foreach (string name in Enum.GetNames(typeof(Enm职务)))*
+        {
+            Console.Write(name+","); //字符串形式的: 尚书,大将军,丞相,
+        }
+
+    }
+}
+----
+
+image:img/0280.png[,]
+
+
 
 '''
 

@@ -1,0 +1,65 @@
+
+
+= 相等比较
+:sectnums:
+:toclevels: 3
+:toc: left
+---
+
+== 相等比较 : 值相等 & 引用相等
+
+相等有两种:
+
+- 值相等: 两个"值"在某种意义上是相等的. *值类型只能使用"值相等"(除非被装箱).*
+- 引用相等: 两个"引用", 指向完全相同的对象. *"引用类型"默认采用"引用相等"的比较形式。*
+
+
+[,subs=+quotes]
+----
+class Cls
+{
+    public string name;
+
+    public Cls(string name)
+    {
+        this.name = name;
+    }
+}
+
+//主函数
+internal class Program
+{
+    static void Main(string[] args)
+    {
+        Cls ins1 = new Cls("zrx");
+        Cls ins2 = new Cls("zrx");
+
+        *Console.WriteLine(ins1 == ins2); //False ← 尽管这两个实例, 所指针指向的对象, 具有相同的内容, 但它们却不指向同一块内存区域.*
+    }
+}
+----
+
+'''
+
+
+
+
+
+
+
+== 类型的"等值比较"实现. 共有三种标准协议
+
+类型的"等值比较"实现, 共有三种标准协议:
+
+- == 和 != 运算符
+- object对象的 Equals()虚方法
+- IEquatable<T> 接口
+
+此外, 还有"等值比较"的扩展协议, 以及 IStructuralEquatable接口.
+
+
+
+
+
+
+
