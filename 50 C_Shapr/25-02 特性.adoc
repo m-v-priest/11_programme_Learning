@@ -6,9 +6,80 @@
 
 ---
 
+== 特性
 
+在 C# 中，*"特性"是继承自 Attribute 基类的类。 所有继承自 Attribute 的类都可以用作其他代码块的一种“标记”。*  +
+例如，有一个名为 ObsoleteAttribute 的特性。 它用于示意代码已过时，不得再使用。 可以将此"特性"应用于类（比如说，使用方括号）。
+
+
+[,subs=+quotes]
+----
+[Obsolete("ThisClass is obsolete. Use ThisClass2 instead.")]
+public class MyClass
+{
+}
+----
+
+*注意，虽然此类的名称为 ObsoleteAttribute，但只需在代码中使用 [Obsolete]。* 这是 C# 遵循一项约定。 如果愿意，也可以使用全名 [ObsoleteAttribute]。
+
+*按照约定，所有特性名称均以“Attribute”一词结尾，以便与 .NET 库中的其他项区分开来。 不过，在代码中使用特性时，无需指定特性后缀。* 例如，[DllImport] 等同于 [DllImportAttribute]，但 DllImportAttribute 是此特性在 .NET 类库中的实际名称。
+
+
+
+上例中, Obsolete()小括号中的字符串, 此字符串会作为自变量传递给 ObsoleteAttribute 构造函数，就像在编写 var attr = new ObsoleteAttribute("some string") 一样。
+
+*注意: 对于特性来说, 只能向"特性构造函数" 传递以下简单类型/文本类型参数：bool, int, double, string, Type, enums, etc和这些类型的数组。 不能使用表达式或变量。* 可以使用任何位置参数或已命名参数。
+
+
+'''
+
+== 创建你自己的特性类 -> 让它继承 Attribute类 即可
+
+[,subs=+quotes]
+----
+//创建你自己的特性,
+*public class Cls我的特性类 : Attribute //特性类, 一定要继承自 Attribute类*
+{
+}
+
+//现在, 你就可以使用你上面自定义的特性类了.
+*[Cls我的特性类]*
+public  class Cls类{}
+----
+
+'''
+
+== 将你的特性类, 限定它只能适用于某些目标 -> 只需对你的特性类, 使用 "AttributeUsageAttribute特性" 即可, 即将特性应用于特性！
+
+[,subs=+quotes]
+----
+//创建你自己的特性, 并且限定它只能应用于"类"和"结构体"上, 而不能应用于其他目标上.
+*[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]*
+public class Cls我的特性类 : Attribute //特性类, 一定要继承自 Attribute类
+{
+}
+
+//现在, 你就可以使用你上面自定义的特性类了.
+*[Cls我的特性类]*
+public  class Cls类{}
+
+
+//下面的应用特性, 就会报错, 提示: Attribute 'ConsoleApp1.Cls我的特性类' is not valid on this declaration type. It is valid on 'Class, Struct' declarations only.
+*[Cls我的特性类]*
+void fn(){}
+----
+
+image:img/0297.png[,]
+
+
+
+
+'''
 
 == 对某函数,提示用户"请弃用" -> [Obsolete("你给出的提示信息"), bool是否完全禁用本函数]
+
+[Obsolete] 特性,可以应用于类、结构、方法、构造函数等, 用于向用户声明"元素已过时"。
+
 
 [,subs=+quotes]
 ----
@@ -61,8 +132,10 @@ namespace ConsoleApp2
 }
 ----
 
+'''
 
----
+
+
 
 == "是否执行某函数"的开关
 
