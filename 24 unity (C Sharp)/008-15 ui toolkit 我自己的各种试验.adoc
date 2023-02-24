@@ -1,0 +1,686 @@
+
+= ui toolkit 我的试验
+:sectnums:
+:toclevels: 3
+:toc: left
+''''
+
+https://www.bilibili.com/video/BV14G411M778/?spm_id_from=333.788&vd_source=52c6cb2c1143f8e222795afbab2ab1b5
+
+== 创建 ui toolkit
+
+image:img/0410.png[,]
+
+image:img/0411.png[,]
+
+image:img/0412.png[,]
+
+image:img/0413.png[,]
+
+
+
+== 点击鼠标左键, 改变某Lable中的文本内容
+
+打开你的 ClsUI6 脚本文件, 代码如下:
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
+using UnityEngine.UIElements;
+using UnityEditor.UIElements;
+
+
+public class clsUI6 : MonoBehaviour
+{
+
+    [SerializeField]
+    Texture2D imgFace;
+
+    [SerializeField]
+    string strPersonName;
+
+    VisualElement veRoot根节点;
+    Label myLable;
+
+    private void Awake()
+    {
+        //因为本 clsUI6脚本, 是挂载在 UIDocument 物体上的, 它自带挂载一个 UIDocument脚本, 所以, 我们在本clsUI6脚本中 ,可以拿到那个UIDocument脚本中的元素, 即虚拟根节点.
+        veRoot根节点 = GetComponent<UIDocument>().rootVisualElement;
+
+        *//拿到Lable元素, 将其中的文字内容, 改成"zrx". 运行游戏后, 就可以看到这个效果.*
+        myLable =veRoot根节点.Q<Label>("myLabel");
+        myLable.text = "zrx";
+
+
+    }
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        *//点击鼠标左键, 将myLabel中文字内容, 改为"slf"*
+        if(Input.GetMouseButtonDown(0)) {
+        myLable.text = "slf";
+        }
+    }
+}
+
+----
+
+image:img/0414.png[,]
+
+
+== 点击鼠标左键, 更改某visualElement虚拟元素的背景图片
+
+ui中元素布局为:
+
+image:img/0415.png[,]
+
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
+using UnityEngine.UIElements;
+using UnityEditor.UIElements;
+
+
+public class clsUI6 : MonoBehaviour
+{
+
+    [SerializeField]
+    Texture2D img精灵头像;
+
+    [SerializeField]
+    string strPersonName;
+
+    VisualElement veRoot根节点;
+    Label myLable;
+    VisualElement veAllFace;
+
+
+    private void Awake()
+    {
+        //因为本 clsUI6脚本, 是挂载在 UIDocument 物体上的, 它自带挂载一个 UIDocument脚本, 所以, 我们在本clsUI6脚本中 ,可以拿到那个UIDocument脚本中的元素, 即虚拟根节点.
+        veRoot根节点 = GetComponent<UIDocument>().rootVisualElement;
+
+        //拿到Lable元素, 将其中的文字内容, 改成"zrx". 运行游戏后, 就可以看到这个效果.
+        myLable =veRoot根节点.Q<Label>("myLabel");
+        myLable.text = "zrx";
+
+    }
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        *//点击鼠标左键, 先找到所有名叫"veFace"的虚拟元素, 然后对其 index=1 处 (即第二个)的元素, 设置一下背景图像.*
+        if(Input.GetMouseButtonDown(0)) {
+        *VisualElement ve目标头像 = veRoot根节点.Query<VisualElement>("veFace").AtIndex(1);*
+            *ve目标头像.style.backgroundImage= img精灵头像;*
+        }
+    }
+}
+
+----
+
+image:img/0416.png[,]
+
+image:img/0417.png[,]
+
+image:img/0418.png[,]
+
+
+
+== 角色数据管理
+
+
+我们创建两个类:
+
+- 第一个类, 用来存储角色的所有数据, 相当于是一个数据库功能
+- 第二个类, 专门用来管理和操作上面"数据库类"中的数据.
+
+下面, 我们会用到 [CreateAssetMenu]特性, 它的语法是:
+
+....
+类上面添加一行, 例如:
+[CreateAssetMenu(fileName = "Bullet", menuName = "New Bullet", order = 1)]
+
+它的作用是 : 在 Assets 文件夹下，鼠标右键，菜单栏中添加一个按钮项，菜单名为 menuName，并执行生成名为 fileName 的脚本，order 为按钮显示顺序.
+....
+
+*注意: 要想实现这个功能, 这个类必须继承自 ScriptableObject 类才行*, 如果只是继承MonoBehaviour或者不继承, 是不会出现这个菜单的！
+
+
+
+
+其他添加自定义菜单的方法, 见:  +
+https://blog.csdn.net/qq_33461689/article/details/79107049
+
+
+image:img/0420.png[,]
+
+Cls角色数据类, 代码为:
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+*//让你的"存放角色数据"的这个类(视频教程中的起名是 CharacterData), 继承自 ScriptableObject 类. 这个基类, 对于"单纯存放游戏数据"的assets  最有用.*
+//下面的这个[CreateAssetMenu]特性, 我们之后单独说明
+*[CreateAssetMenu(menuName = ("myData/角色数据类"), fileName = ("Cls角色数据类"))]*
+public class Cls角色数据类 : ScriptableObject
+{
+    [SerializeField]
+    Texture2D img角色头像;
+
+    [SerializeField]
+    string str角色名字;
+
+    [SerializeField]
+    int num角色等级 = 1;
+
+
+    [SerializeField]
+    Cls角色属性值 ins角色属性值;
+
+
+    *//将上面的这些字段, 变成属性*
+    public Texture2D Img角色头像 {
+        get { return img角色头像; }
+        set { img角色头像= value; }
+        }
+
+    public string Str角色名字 { get => str角色名字; set => str角色名字 = value; }
+    public int Num角色等级 { get => num角色等级; set => num角色等级 = value; }
+    public Cls角色属性值 Ins角色属性值 { get => ins角色属性值; set => ins角色属性值 = value; }
+
+}
+
+----
+
+image:img/0421.png[,]
+
+
+Cls角色属性值, 代码为:
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+//(教程中, 该类起名为 CharacterStats)
+*[System.Serializable] //添加这个特性后, 下面的共有字段, 就可以暴露到 unity编辑器里. 但注意: 这个特性所修饰的类, 不能有任何继承! 否则本特性就会失效.*
+public class Cls角色属性值 *//注意, 这里不需要任何的继承!*
+{
+
+    public int numInitiative行动速度 ;
+    public int numMaxHP最大生命力 ;
+    public int numMinHP最小生命力 ;
+    public int numAttack攻击力 ;
+    public int numDefense防御力 ;
+
+}
+
+----
+
+image:img/0423.png[,]
+
+
+image:img/0419.png[,]
+
+image:img/0422.png[,]
+
+image:img/0424.png[,]
+
+asset扩展名的文件, 是Unity中的资源文件.
+
+Asset文件 : 泛指Unity可识别的资源文件，据可依具体分成 Native Asset 和 Non-Native Asset.
+
+- Native: 拥有可以被 Unity 直接识别的格式，例如MAT文件
+- Non-Native: 外部资源，需要导入（import）才能被Unity识别，例如FBX文件，PNG文件等等
+
+*每个 Asset文件 具有全局唯一的 File Guid，存放在相应的“.meta”文件中.*
+
+每个文件有全局唯一的File Guid。一个文件中有多个Object，每个Object有文件中唯一的local Id。所以，每个Object的全局唯一标识为File Guid + local Id。Unity编辑器会自动将文件路径和 FileGuid的映射关系保存在一张表里。
+
+
+
+
+
+一个Asset里面有多个Object. *Object是序列化了的，需要经过实例化，才会加载到内存中。*
+
+常见 Object如：Sprite, Texture, AudioClip, Material, Motion, GameObject, Component等等。*特殊的两个：MonoBehavior, ScriptableObject.*
+
+**c#代码可以分为三种，继承Monobehavior的，继承ScriptableObject的，以及c#原生的。**其应用场景和区别如下：
+
+[options="autowidth"  cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|继承自Monobehavior的
+|只有继承了 Monobehavior 的 component类，才可以往 gameObject上挂。
+
+|继承自 ScriptableObject 的
+|- *不需要挂在gameObject上，比如只为了存数据，可以用 ScriptableObject 或 c#原生类。* +
+- *若要求可序列化，则只有用 ScriptableObject。*
+- *ScriptableObject* 与 "c#原生类" 的区别还在于：前者**是一种Unity的资源，需要通过Destroy()或Resources.UnloadUnusedAssets()来释放，其不归 "c#的GC" 管理。**
+
+|c#原生的
+|
+|===
+
+
+
+*只有 Unity.Object 及其子类，才可以在 Unity 编辑器中拖放。*
+
+只有 Component(组件,即class类脚本) 及其子类，才可以附着到gameObject上。代码中访问的Component对象不可单独存在，必须要附着在某个gameObject上。
+
+
+回到教程: +
+下面, 我们还需要 队伍数据类, 用来管理这几个角色的数据.
+
+再创建一个脚本, 叫 Cls队伍数据
+
+Cls队伍数据:
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+//教程中, 这个类叫"PartyData", 用来管理所有角色的数据
+[CreateAssetMenu(menuName = ("myData/队伍数据管理类"), fileName = ("Cls队伍数据"))]
+**public class Cls队伍数据 : ScriptableObject //让它继承自 ScriptableObject. 脚本化对象(ScriptableObject)就是一个数据容器，可以用来存储大量的数据**
+{
+    [SerializeField]
+    *List<Cls角色数据类> listCls角色数据类;* //这个字段是一个列表, 里面的元素, 就是 "角色数据类"的实例对象.
+
+
+    //把上面的字段, 变成属性
+    public List<Cls角色数据类> ListCls角色数据类 { get => listCls角色数据类; set => listCls角色数据类 = value; }
+----
+
+image:img/0425.png[,]
+
+image:img/0426.png[,]
+
+*可见, 我们在脚本中继承的 ScriptableObject类, 可以让我们把在代码中的写代码赋值, 形式变成在 uinity编辑器中的手动拖动赋值.*
+
+
+现在, 回到你的 clsUI6类中, 加入以下代码:
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
+using UnityEngine.UIElements;
+using UnityEditor.UIElements;
+
+
+public class clsUI6 : MonoBehaviour
+{
+
+    [SerializeField]
+    Texture2D img精灵头像;
+
+    [SerializeField]
+    string strPersonName;
+
+    *[SerializeField]*
+    *Cls队伍数据 ins队伍数据;*
+
+    VisualElement veRoot根节点;
+    Label myLable;
+    VisualElement veAllFace;
+
+
+
+
+
+    private void Awake()
+    {
+        //因为本 clsUI6脚本, 是挂载在 UIDocument 物体上的, 它自带挂载一个 UIDocument脚本, 所以, 我们在本clsUI6脚本中 ,可以拿到那个UIDocument脚本中的元素, 即虚拟根节点.
+        veRoot根节点 = GetComponent<UIDocument>().rootVisualElement;
+
+        //拿到Lable元素, 将其中的文字内容, 改成"zrx". 运行游戏后, 就可以看到这个效果.
+        myLable = veRoot根节点.Q<Label>("myLabel");
+        myLable.text = "zrx";
+
+    }
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //点击鼠标左键, 将
+        if (Input.GetMouseButtonDown(0))
+        {
+            VisualElement ve目标头像 = veRoot根节点.Query<VisualElement>("veFace").AtIndex(1);
+
+            ve目标头像.style.backgroundImage = img精灵头像;
+        }
+
+    }
+}
+
+----
+
+
+image:img/0436.png[,]
+
+image:img/0437.png[,]
+
+
+== Custom Controls 自定义控件
+
+unity, 允许我们通过 C#脚本, 来创建拥有自定义逻辑的 复杂UI元素.
+
+官方文档: +
+
+https://docs.unity3d.com/Manual/UIE-create-custom-controls.html
+
+https://docs.unity3d.com/Manual/UIB-structuring-ui-custom-elements.html
+
+https://docs.unity3d.com/2021.1/Documentation/Manual/UIE-Controls.html
+
+
+新建一个 "Cls我的ve控件" 脚本文件, 代码如下(目前, 里面还没有任何实质性内容, 只是个空模板), 照抄即可:
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+*public class Cls我的ve控件 : VisualElement //必须继承VisualElement类*
+{
+    public new class UxmlFactroy : UxmlFactory<Cls我的ve控件> { }
+
+    //构造函数
+    public Cls我的ve控件()
+    {
+
+    }
+
+}
+
+----
+
+
+image:img/0438.png[,]
+
+image:img/0439.png[,]
+
+image:img/0440.png[,]
+
+image:img/0441.png[,]
+
+image:img/0442.png[,]
+
+image:img/0443.png[,]
+
+image:img/0444.png[,]
+
+image:img/0445.png[,]
+
+打开你的 "Cls我的ve控件"类文件:
+
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+public class Cls我的ve控件 : VisualElement //必须继承VisualElement类
+{
+
+    readonly TemplateContainer ins模板容器;
+
+    public new class UxmlFactroy : UxmlFactory<Cls我的ve控件> { }
+
+    //构造函数
+    public Cls我的ve控件()
+    {
+        //先加载你刚刚创建的"ui组合"模板(是个uxml文件), 该模板文件的名字, 是"veSingleCharacter". 然后实例化这个uxml文件中的ui.
+         ins模板容器 = Resources.Load<VisualTreeAsset>("veSingleCharacter").Instantiate();
+        //该实例化函数, 返回的是一个 TemplateContainer 类型的变量. 即"模板容器类"类型的. 这个模板容器, 其实就是一个模板特有的 visualElement 而已.
+        //TemplateContainer	: A template container.
+
+        //然后, 将这个模板容器的 Flex Grow 值, 设为1
+        ins模板容器.style.flexGrow= 1.0f;
+
+        //再将这个模板容器, 添加到 hierarchy里
+        hierarchy.Add(ins模板容器);
+
+    }
+
+}
+
+----
+
+
+== 数据绑定
+
+
+
+image:img/0446.png[,]
+
+image:img/0447.png[,]
+
+image:img/0448.png[,]
+
+打开"Cls我的ve控件", 继续编写:
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+
+//这个类, 在视频教学里面, 叫"CharacterDataPanel"类.
+public class Cls我的ve控件 : VisualElement //必须继承VisualElement类
+{
+
+    readonly TemplateContainer ins模板容器;
+
+    public  class UxmlFactroy : UxmlFactory<Cls我的ve控件> { }
+
+    //构造函数
+    public Cls我的ve控件()
+    {
+        //先加载你刚刚创建的"ui组合"模板(是个uxml文件), 该模板文件的名字, 是"veSingleCharacter". 然后实例化这个uxml文件中的ui.
+         ins模板容器 = Resources.Load<VisualTreeAsset>("veSingleCharacter").Instantiate();
+        //该实例化函数, 返回的是一个 TemplateContainer 类型的变量. 即"模板容器类"类型的. 这个模板容器, 其实就是一个模板特有的 visualElement 而已.
+        //TemplateContainer	: A template container.
+
+        //然后, 将这个模板容器的 Flex Grow 值, 设为1
+        ins模板容器.style.flexGrow= 1.0f;
+
+        //再将这个模板容器, 添加到 hierarchy里
+        hierarchy.Add(ins模板容器);
+
+    }
+
+    //下面的构造方法, 用了 :this(), 作用是用来继承本类的"无参时的构造函数".
+    //本"Cls我的ve控件", 在创建它的实例时, 需要接收一个"Cls角色数据类"的实例变量, 我们就能用拿到的角色实例身上的数据值, 来赋值给你的ui模板中的元素的值了. 即让你的ui元素, 呈现传进来的那一个角色实例中的数据.
+    public Cls我的ve控件(Cls角色数据类 ins角色数据):this()
+    {
+        ins模板容器.Q("veFace").style.backgroundImage = ins角色数据.Img角色头像;
+        ins模板容器.Q<Label>("label_VeData").text = ins角色数据.Str角色名字;
+
+
+
+
+    }
+}
+
+----
+
+
+https://www.bilibili.com/video/BV1YM4116757/?spm_id_from=333.788&vd_source=52c6cb2c1143f8e222795afbab2ab1b5
+
+image:img/0449.png[,]
+
+image:img/0450.png[,]
+
+image:img/0451.png[,]
+
+image:img/0452.png[,]
+
+image:img/0453.png[,]
+
+image:img/0454.png[,]
+
+image:img/0455.png[,]
+
+image:img/0456.png[,]
+
+image:img/0457.png[,]
+
+image:img/0458.png[,]
+
+image:img/0459.png[,]
+
+image:img/0460.png[,]
+
+image:img/0461.png[,]
+
+image:img/0462.png[,]
+
+image:img/0463.png[,]
+
+image:img/0464.png[,]
+
+image:img/0465.png[,]
+
+image:img/0466.png[,]
+
+image:img/0467.png[,]
+
+image:img/0468.png[,]
+
+image:img/0469.png[,]
+
+image:img/0470.png[,]
+
+image:img/0471.png[,]
+
+image:img/0472.png[,]
+
+image:img/0473.png[,]
+
+image:img/0474.png[,]
+
+image:img/0475.png[,]
+
+image:img/0476.png[,]
+
+image:img/0477.png[,]
+
+image:img/0478.png[,]
+
+image:img/0479.png[,]
+
+image:img/0480.png[,]
+
+image:img/0481.png[,]
+
+image:img/0482.png[,]
+
+image:img/0483.png[,]
+
+image:img/0484.png[,]
+
+image:img/0485.png[,]
+
+image:img/0486.png[,]
+
+image:img/0487.png[,]
+
+image:img/0488.png[,]
+
+image:img/0489.png[,]
+
+image:img/0490.png[,]
+
+image:img/0491.png[,]
+
+image:img/0492.png[,]
+
+image:img/0493.png[,]
+
+image:img/0494.png[,]
+
+image:img/0495.png[,]
+
+image:img/0496.png[,]
+
+image:img/0497.png[,]
+
+image:img/0498.png[,]
+
+image:img/0499.png[,]
+
+image:img/0500.png[,]
+
+image:img/0501.png[,]
+
+image:img/0502.png[,]
+
+image:img/0503.png[,]
+
+image:img/0504.png[,]
+
+image:img/0505.png[,]
+
+image:img/0506.png[,]
+
+image:img/0507.png[,]
+
+image:img/0508.png[,]
+
+image:img/0509.png[,]
+
+image:img/0510.png[,]
+
+image:img/0511.png[,]
+
+image:img/0512.png[,]
+
+image:img/0513.png[,]
+
+image:img/0514.png[,]
+
+image:img/0515.png[,]
+

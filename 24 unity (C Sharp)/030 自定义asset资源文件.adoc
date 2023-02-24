@@ -1,0 +1,45 @@
+
+Unity 创建和使用 自定义资源 .asset
+
+首先得有一个继承ScriptableObject的类，这是进行序列化为.asset文件必不可少的部分
+
+ForExample:
+....
+public class TestAsset : ScriptableObject
+{
+    [SerializeField] string name;
+}
+....
+
+接下来就是创建.asset文件了，有2种方式
+
+Way 1:
+....
+[MenuItem("CreateAsset/Test")]
+static void Create()
+{
+    ScriptableObject asset = ScriptableObject.CreateInstance<TestAsset>();
+    string savePath = "";
+    AssetDatabase.CreateAsset(asset, savePath);
+}
+....
+然后在菜单CreateAsset/Test来创建
+
+Way 2:
+
+我们在定义数据类时可以增加CreateAssetMenu特性
+....
+[CreateAssetMenu(fileName = "Test", menuName = "Test", order = 1)]
+public class TestAsset : ScriptableObject
+{
+    [SerializeField] string name;
+}
+....
+
+在Assets目录下任意文件夹内，鼠标右键，Create->Test
+
+然后是使用.asset文件
+
+- 如果是放在Resources里，就用Resrouces的方式加载
+- 如果是打成了AB包，就用AssetBundle的方式加载
+- 否则使用AssetDatabase的方式加载
