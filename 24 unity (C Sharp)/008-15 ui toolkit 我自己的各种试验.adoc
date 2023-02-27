@@ -550,33 +550,139 @@ public class Cls我的ve控件 : VisualElement //必须继承VisualElement类
 
 https://www.bilibili.com/video/BV1YM4116757/?spm_id_from=333.788&vd_source=52c6cb2c1143f8e222795afbab2ab1b5
 
-image:img/0449.png[,]
 
-image:img/0450.png[,]
-
-image:img/0451.png[,]
-
-image:img/0452.png[,]
-
-image:img/0453.png[,]
-
-image:img/0454.png[,]
-
-image:img/0455.png[,]
-
-image:img/0456.png[,]
-
-image:img/0457.png[,]
+下面, 我们重新开始, ui结构, 即各元素的名字, 如下图
 
 image:img/0458.png[,]
 
 image:img/0459.png[,]
+
+上图可能有点错误,
+
+最终正确布局如下:
 
 image:img/0460.png[,]
 
 image:img/0461.png[,]
 
 image:img/0462.png[,]
+
+
+Cls角色数据类
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+//让你的"存放角色数据"的这个类(视频教程中的起名是 CharacterData), 继承自 ScriptableObject 类. 这个基类, 对于"单纯存放游戏数据"的assets  最有用.
+//下面的这个[CreateAssetMenu]特性, 我们之后单独说明
+[CreateAssetMenu(menuName = ("myData/角色数据类"), fileName = ("Cls角色数据类"))]
+public class Cls角色数据类 : ScriptableObject  //要想将你的这个类的实例, 序列化成.asset文件, 就必须让这个类继承自 ScriptableObject类. 序列化出的 asset资源文件, 如何加载它呢? 如果是放在Resources里，就用Resrouces的方式加载. 如果是打成了AB包，就用AssetBundle的方式加载.
+{
+    [SerializeField]
+    Texture2D img角色头像;
+
+    [SerializeField]
+    string str角色名字;
+
+    [SerializeField]
+    int num角色等级 = 1;
+
+
+    [SerializeField]
+    Cls角色属性值 ins角色属性值;
+
+
+    //将上面的这些字段, 变成属性
+    public Texture2D Img角色头像 {
+        get { return img角色头像; }
+        set { img角色头像= value; }
+        }
+
+    public string Str角色名字 { get => str角色名字; set => str角色名字 = value; }
+    public int Num角色等级 { get => num角色等级; set => num角色等级 = value; }
+    public Cls角色属性值 Ins角色属性值 { get => ins角色属性值; set => ins角色属性值 = value; }
+
+}
+
+----
+
+
+Cls角色属性值
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+//(教程中, 该类起名为 CharacterStats)
+[System.Serializable] //添加这个特性后, 下面的共有字段, 就可以暴露到 unity编辑器里. 但注意: 这个特性所修饰的类, 不能有任何继承! 否则本特性就会失效.
+public class Cls角色属性值 //注意, 这里不需要任何的继承!
+{
+
+    public int numInitiative行动速度 ;
+    public int numMaxHP最大生命力 ;
+    public int numMinHP最小生命力 ;
+    public int numAttack攻击力 ;
+    public int numDefense防御力 ;
+
+}
+
+----
+
+
+Cls队伍数据
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+//教程中, 这个类叫"PartyData", 用来管理所有角色的数据
+[CreateAssetMenu(menuName = ("myData/队伍数据管理类"), fileName = ("Cls队伍数据"))]
+public class Cls队伍数据 : ScriptableObject //让它继承自 ScriptableObject. 脚本化对象(ScriptableObject)就是一个数据容器，可以用来存储大量的数据
+{
+    [SerializeField]
+    List<Cls角色数据类> listCls角色数据类; //这个字段是一个列表, 里面的元素, 就是 "角色数据类"的实例对象.
+
+    //把上面的字段, 变成属性
+    public List<Cls角色数据类> ListCls角色数据类 { get => listCls角色数据类; set => listCls角色数据类 = value; }
+
+}
+
+----
+
+
+CharacterDataPanell类 (用作单个角色的数据面板, 目前,它里面的内容是空的):
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+
+
+*public class CharacterDataPanel : VisualElement //让该类, 继承自 VisualElement*
+{
+    *//下面这句代码的作用是让我们的自定义控件, 暴露到UXML文件里. 让它可以像其他默认的UI元素一样, 直接在 UI Builder 里使用. 这是自定义控件的模板代码, 你只需照着写就行了.*
+    *public class UxmlFactroy : UxmlFactory<CharacterDataPanel> { }*
+
+
+    //无参构造方法
+    public CharacterDataPanel()
+    {
+    }
+
+}
+
+----
+
+现在, 回到你的 ui builder 界面, 就能看到 你上面的 CharacterDataPanell类, 它被暴露在了该ui编辑器中:
+
 
 image:img/0463.png[,]
 
@@ -592,19 +698,241 @@ image:img/0468.png[,]
 
 image:img/0469.png[,]
 
+继续编辑你的 CharacterDataPanel 类文件:
+
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+
+
+public class CharacterDataPanel : VisualElement //让该类, 继承自 VisualElement
+{
+    //下面这句代码的作用是让我们的自定义控件, 暴露到UXML文件里. 让它可以像其他默认的UI元素一样, 直接在 UI Builder 里使用. 这是自定义控件的模板代码, 你只需照着写就行了.
+    public class UxmlFactroy : UxmlFactory<CharacterDataPanel> { }
+
+    readonly TemplateContainer templateContainer模板容器实例;
+
+
+    //无参构造方法
+    public CharacterDataPanel()
+    {
+        *//从Resources目录中, 加载你的 SingleCharacterDatePanel 资源(是个UXML文件), 并实例化这个UXML文件中的UI. 实例化后, 会返回一个"TemplateContainer"类型(即"模板容器"类型)的对象.*
+        *templateContainer模板容器实例 = Resources.Load<VisualTreeAsset>("SingleCharacterDatePanel").Instantiate();*
+
+        templateContainer模板容器实例.style.flexGrow= 1.0f;
+
+        *//将实例化出的模板容器对象, 添加到 hierarchy 中*
+        *hierarchy.Add(templateContainer模板容器实例);*
+
+    }
+
+
+
+}
+
+----
+
+
+
+
+
+
 image:img/0470.png[,]
 
 image:img/0471.png[,]
 
+下面, 就可以正式来做 ui和数据的绑定效果了.  +
+首先, 必须先让ui, 可以访问到数据
+
+CharacterDataPanel 中的数据,  理所当然的就是 "Cls角色数据类"(视频里是名叫 CharacterData) 这个类.
+
+CharacterDataPanel 类代码如下:
+
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+
+
+public class CharacterDataPanel : VisualElement //让该类, 继承自 VisualElement
+{
+    //下面这句代码的作用是让我们的自定义控件, 暴露到UXML文件里. 让它可以像其他默认的UI元素一样, 直接在 UI Builder 里使用. 这是自定义控件的模板代码, 你只需照着写就行了.
+    public class UxmlFactroy : UxmlFactory<CharacterDataPanel> { }
+
+    readonly TemplateContainer templateContainer模板容器实例;
+
+    //下面是存放每个角色身上的全部属性(即"每一个属性")的列表
+    readonly List<VisualElement> listSingleStatContainer个人所有属性的列表;
+
+
+    //无参构造方法
+    public CharacterDataPanel()
+    {
+        //从Resources目录中, 加载你的 SingleCharacterDatePanel 资源(是个UXML文件), 并实例化这个UXML文件中的UI. 实例化后, 会返回一个"TemplateContainer"类型(即"模板容器"类型)的对象.
+        templateContainer模板容器实例 = Resources.Load<VisualTreeAsset>("SingleCharacterDatePanel").Instantiate();
+
+        templateContainer模板容器实例.style.flexGrow= 1.0f;
+
+        //将实例化出的模板容器对象, 添加到 hierarchy 中
+        hierarchy.Add(templateContainer模板容器实例);
+
+    }
+
+
+    //有参构造方法
+    public CharacterDataPanel(Cls角色数据类 insCharacterData角色数据): this()
+    {
+        //下面的 VisualElement.userData 属性, 作用是: This property can be used to associate application-specific user data with this VisualElement. 此属性可用于将用户数据与此 VisualElement 相关联。
+        userData = insCharacterData角色数据;  //先让 userData变量, 指针指向你传入进来的具体数据
+
+        //下面, 我们就能将你ui中的"自定义控件", 和你传入的具体的数据, 捆绑起来了.
+        templateContainer模板容器实例.Q("Face").style.backgroundImage = insCharacterData角色数据.Img角色头像;  //将你角色数据实例中的具体数值, 赋值给你ui模板中的相应元素身上
+        templateContainer模板容器实例.Q<Label>("NameLabel").text = insCharacterData角色数据.Str角色名字;
+
+        //找到 ui中 所有的"SingleStatContainer"名字的元素, 将它们转为列表
+        listSingleStatContainer个人所有属性的列表 =  templateContainer模板容器实例.Query("SingleStatContainer").ToList();
+
+        fnUpdateCharacterStats更新角色属性值();
+
+    }
+
+
+
+    //下面的函数, 用来更新  SingleStatContainer  中的内容
+    void fnUpdateCharacterStats更新角色属性值()
+    {
+        var characterDate角色数据 = (Cls角色数据类)userData;
+
+        listSingleStatContainer个人所有属性的列表[0].Q<Label>("SingleStatTitleLabel").text = "等级";
+        listSingleStatContainer个人所有属性的列表[0].Q<Label>("SingleStatValueLabel").text = characterDate角色数据.Num角色等级.ToString();
+
+
+        listSingleStatContainer个人所有属性的列表[1].Q<Label>("SingleStatTitleLabel").text = "行动力";
+                listSingleStatContainer个人所有属性的列表[1].Q<Label>("SingleStatValueLabel").text = characterDate角色数据.Num角色等级.ToString() ;
+
+    }
+
+
+}
+
+----
+
 image:img/0472.png[,]
+
+ClsPartyDataScreen类的内容如下:
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+public class ClsPartyDataScreen : MonoBehaviour
+{
+
+    *[SerializeField] Cls队伍数据 ins队伍数据; //从unity中, 来给这个字段赋值, 即拖入一个 "Cls队伍数据"的实例对象上来.*
+    VisualElement re根节点;
+
+
+
+    private void Awake()
+    {
+        re根节点 = GetComponent<UIDocument>().rootVisualElement;
+
+        //先拿到ui中的"BodyContainer"节点, 并清空它里面的ui元素
+        var bodyContainer = re根节点.Q("BodyContainer");
+        bodyContainer.Clear();
+
+
+
+        foreach (Cls角色数据类 ins角色数据 in ins队伍数据.ListCls角色数据类)
+        {
+            *var CharacterDataPanel = new  CharacterDataPanel(ins角色数据); //先从"ins角色数据"实例, 创建出 CharacterDataPanel 类的实例对象 (其本质是一个ui中的"自定义控件")*
+            bodyContainer.Add(CharacterDataPanel); //添加到bodyContainer元素中
+        }
+
+    }
+
+
+}
+
+----
+
+然后运行游戏, 就能看到效果
 
 image:img/0473.png[,]
 
-image:img/0474.png[,]
+image:img/0474.svg[,]
 
 image:img/0475.png[,]
 
 image:img/0476.png[,]
+
+"Cls角色数据类" 中的代码就稍作修改成:
+
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+//让你的"存放角色数据"的这个类(视频教程中的起名是 CharacterData), 继承自 ScriptableObject 类. 这个基类, 对于"单纯存放游戏数据"的assets  最有用.
+//下面的这个[CreateAssetMenu]特性, 我们之后单独说明
+[CreateAssetMenu(menuName = ("myData/角色数据类"), fileName = ("Cls角色数据类"))]
+public class Cls角色数据类 : ScriptableObject  //要想将你的这个类的实例, 序列化成.asset文件, 就必须让这个类继承自 ScriptableObject类. 序列化出的 asset资源文件, 如何加载它呢? 如果是放在Resources里，就用Resrouces的方式加载. 如果是打成了AB包，就用AssetBundle的方式加载.
+{
+    const int num角色最大等级 = 10;
+
+    [SerializeField]
+    Texture2D img角色头像;
+
+    [SerializeField]
+    string str角色名字;
+
+    [SerializeField,Range(1, num角色最大等级) ]
+    int num角色等级 = 1;
+
+
+    [SerializeField]
+    Cls角色属性值 ins角色属性值;
+
+
+    //将上面的这些字段, 变成属性
+    public Texture2D Img角色头像 {
+        get { return img角色头像; }
+        set { img角色头像= value; }
+        }
+
+    public string Str角色名字 { get => str角色名字; set => str角色名字 = value; }
+    public int Num角色等级 { get => num角色等级; set => num角色等级 = value; }
+    public Cls角色属性值 Ins角色属性值 { get => ins角色属性值; set => ins角色属性值 = value; }
+
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+}
+
+----
+
+即: 添加这个:
 
 image:img/0477.png[,]
 
@@ -683,4 +1011,5 @@ image:img/0513.png[,]
 image:img/0514.png[,]
 
 image:img/0515.png[,]
+
 

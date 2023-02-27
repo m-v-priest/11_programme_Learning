@@ -1,0 +1,33 @@
+
+
+= uss
+:sectnums:
+:toclevels: 3
+:toc: left
+''''
+
+== uss
+
+
+image:img/0449.png[,]
+
+image:img/0450.png[,]
+
+image:img/0451.png[,]
+
+image:img/0452.png[,]
+
+image:img/0453.png[,]
+
+image:img/0454.png[,]
+
+image:img/0455.png[,]
+
+image:img/0456.png[,]
+
+如果一个元素, 应用了多个css样式, 则它以优先级最高的那个样式中的设置, 为准. 而忽略优先级低的样式文件.
+
+
+
+image:img/0457.png[,]
+
