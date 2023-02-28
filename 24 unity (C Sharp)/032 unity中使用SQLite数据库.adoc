@@ -1,0 +1,323 @@
+
+= unity中使用SQLite数据库
+:sectnums:
+:toclevels: 3
+:toc: left
+
+'''
+
+在Unity中使用SQLite数据库需要先导入三个dll文件: mono.data.sqlite.dll，System.data.dll，sqlite3.dll，到Assets/Plugins文件夹中。
+
+[options="autowidth"]
+|===
+|Header 1 |位置
+
+|mono.data.sqlite.dll 和 System.data.dll
+|在Unity\Editor\Data\MonoBleedingEdge\lib\mono\你的版本号 中
+
+|sqlite3.dll
+|需要下载  +
+https://www.sqlite.org/download.html
+|===
+
+
+
+image:img/0478.png[,]
+
+== 创建数据库
+
+
+==== Cls数据库测试
+
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Mono.Data.Sqlite;
+using System;
+using System.IO;
+
+public class Cls数据库测试
+{
+    //这个变量, 之后会用来保存对数据库的连接引用.
+    public SqliteConnection insSqliteConnection数据库连接;
+
+
+    //构造方法
+    public Cls数据库测试(string strDbPath数据库路径)
+    {
+        //如果数据库文件还不存在, 就创建它. 如果它已经存在, 就直接连接它.
+        if(! File.Exists(strDbPath数据库路径))
+        {
+            fnCreatDbSqlite创建数据库(strDbPath数据库路径);
+        }
+        fnConnectDbSqlite连接数据库(strDbPath数据库路径);
+    }
+
+
+
+    //创建数据库
+    bool fnCreatDbSqlite创建数据库(string strDbPath数据库路径)
+    {
+        try
+        {
+            SqliteConnection.CreateFile(strDbPath数据库路径);
+            return true;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"数据库创建出错{e.Message}");
+            return false;
+        }
+    }
+
+
+
+    //连接数据库
+    bool fnConnectDbSqlite连接数据库(string strDbPath数据库路径)
+    {
+        try
+        {
+            //对数据库路径, 进行连接, 初始化
+            insSqliteConnection数据库连接 = new SqliteConnection(new SqliteConnectionStringBuilder() { DataSource = strDbPath数据库路径 }.ToString());
+            //SqliteConnectionStringBuilder: Provides a simple way to create and manage the contents of connection strings used by SqliteConnection. 提供一种简单的方法来创建和管理 SqliteConnection 使用的连接字符串的内容。
+
+            //打开链接到的数据库
+            insSqliteConnection数据库连接.Open();
+            return true;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"连接数据库时出错{e.Message}");
+            return false;
+        }
+    }
+
+
+
+    private void Dispose()
+    {
+        insSqliteConnection数据库连接.Dispose();
+    }
+
+}
+
+----
+
+image:img/0479.png[,]
+
+image:img/0480.png[,]
+
+==== Cls开始游戏
+
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Cls开始游戏 : MonoBehaviour
+{
+    string strDbPath数据库路径;
+
+    void fn运行数据库 ()
+    {
+        strDbPath数据库路径 = Application.dataPath + "/我的数据库.db";
+        Cls数据库测试 ins数据库测试 = new Cls数据库测试(strDbPath数据库路径);
+    }
+
+
+    private void Awake()
+    {
+        fn运行数据库();
+    }
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+}
+----
+
+
+== 创建表
+
+image:img/0481.png[,]
+
+==== Cls数据库增删改查
+
+[,subs=+quotes]
+----
+using Mono.Data.Sqlite;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Cls数据库增删改查 : Cls数据库测试
+{
+    public SqliteCommand insSqliteCommand数据库命令;
+
+
+    //构造方法
+    public Cls数据库增删改查(string strDbPath数据库路径) : base(strDbPath数据库路径)
+    {
+        //Represents a SQL statement to be executed against a SQLite database. 拿到要对你的数据库, 进行操作的"SQL命令语句"
+        insSqliteCommand数据库命令 = new SqliteCommand(insSqliteConnection数据库连接);
+
+    }
+
+
+    //在数据库中, 创建一张表
+    public int fnCreatTable创建表()
+    {
+        string strSql语句 = "create table 我的表名字(id int, name string)";
+        insSqliteCommand数据库命令.CommandText = strSql语句; //把字符串命令, 转成数据库可识别的的命令语句格式.
+
+        return insSqliteCommand数据库命令.ExecuteNonQuery();
+        //SqlCommand.ExecuteNonQuery(): Executes a Transact-SQL statement against the connection and returns the number of rows affected.
+    }
+
+}
+
+----
+
+image:img/0483.png[,]
+
+
+
+==== Cls开始游戏
+
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Cls开始游戏 : MonoBehaviour
+{
+    string strDbPath数据库路径;
+
+    void fn运行数据库 ()
+    {
+        strDbPath数据库路径 = Application.dataPath + "/我的数据库.db";
+
+        //创建数据库, 并链接该数据库
+        //Cls数据库测试 ins数据库测试 = new Cls数据库测试(strDbPath数据库路径);
+
+        //创建表
+        Cls数据库增删改查 ins数据库增删改查 = new Cls数据库增删改查(strDbPath数据库路径);
+        ins数据库增删改查.fnCreatTable创建表();
+
+
+    }
+
+
+    private void Awake()
+    {
+        fn运行数据库();
+    }
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+}
+
+----
+
+image:img/0482.png[,]
+
+image:img/0484.png[,]
+
+
+
+==
+
+
+https://www.bilibili.com/video/BV1rr4y1F75h/?spm_id_from=333.999.0.0&vd_source=52c6cb2c1143f8e222795afbab2ab1b5
+
+
+
+image:img/0485.png[,]
+
+image:img/0486.png[,]
+
+image:img/0487.png[,]
+
+image:img/0488.png[,]
+
+image:img/0489.png[,]
+
+image:img/0490.png[,]
+
+image:img/0491.png[,]
+
+image:img/0492.png[,]
+
+image:img/0493.png[,]
+
+image:img/0494.png[,]
+
+image:img/0495.png[,]
+
+image:img/0496.png[,]
+
+image:img/0497.png[,]
+
+image:img/0498.png[,]
+
+image:img/0499.png[,]
+
+image:img/0500.png[,]
+
+image:img/0501.png[,]
+
+image:img/0502.png[,]
+
+image:img/0503.png[,]
+
+image:img/0504.png[,]
+
+image:img/0505.png[,]
+
+image:img/0506.png[,]
+
+image:img/0507.png[,]
+
+image:img/0508.png[,]
+
+image:img/0509.png[,]
+
+image:img/0510.png[,]
+
+image:img/0511.png[,]
+
+image:img/0512.png[,]
+
+image:img/0513.png[,]
+
+image:img/0514.png[,]
+
+image:img/0515.png[,]
+
+
+
+
+
