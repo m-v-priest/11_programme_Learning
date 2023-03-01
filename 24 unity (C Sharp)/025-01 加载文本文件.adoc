@@ -1,0 +1,77 @@
+
+= 加载 scv格式的 文本文件
+:sectnums:
+:toclevels: 3
+:toc: left
+
+'''
+
+== 加载 scv格式的 文本文件
+
+scv文件, 放在 Resources 目录中.
+
+image:img/0485.png[,]
+
+
+代码为:
+[,subs=+quotes]
+----
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Networking;
+
+public class Cls读取scv文件 : MonoBehaviour
+{
+
+    string pathScv文件地址 = "三国志人物数据表";
+
+
+    public string  fn读取scv文件(string path)
+    {
+        *TextAsset textAsset = Resources.Load(path) as TextAsset;*
+        *return textAsset.text;*
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        string strScv = fn读取scv文件(pathScv文件地址);
+        Debug.Log(strScv);
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+}
+
+----
+
+image:img/0487.png[,]
+
+说明:
+
+Resources.Load()我们通常是用于预制体（GameObject）的加载，但其实Resources.Load可以加在很多种类的资源，只要是在Resources文件夹下，然后找到资源相对应的类，就可以了。对于文本文件，使用的就是上面提到的 TextAsset类。
+
+用法示例：TextAsset textAsset = Resources.Load(...) as TextAsset;  ，其中参数填的依然是Resources文件夹下的相对路径。
+使用 textAsset.text; 就可以获得文本中的内容。
+
+另外，Resources.Load加载其他资源分别用的是：图片可以使用Sprite或Texture2D（我只试过这两种）；音频是使用AudioClip。
+
+同时，除GameObject外，其他文件没有发现需要进行 实例化（Object.Instantiate） 的操作。
+
+https://blog.csdn.net/f_957995490/article/details/109756085
+
+
+image:img/0486.png[,]
+
+
+'''
+
+
+
+
+

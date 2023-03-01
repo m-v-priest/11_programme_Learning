@@ -5,6 +5,39 @@
 :toc: left
 ---
 
+
+
+== 在unity中使用随机数
+
+[,subs=+quotes]
+----
+int nub=Random.Range(3,5); //用来在3到5里面生成一个随机的整数，但是不包括5
+float nub=Random.Range(1,5)//用来在1到5之间生成一个随机的浮点数，但是不包括5
+----
+
+查看Unity官方文档，我们发现Random的静态特性和静态方法有下面的几种：
+
+
+特性：
+
+- insideUnitCircle：返回半径为1的圆内的随机点（只读）
+- insideUnitSphere：返回半径为1（只读）的球体内的随机点
+- onUnitSphere：返回半径为1（只读）的球体表面上的随机点
+- rotation：返回随机旋转（只读）
+- rotationUniform：返回具有均匀分布的随机旋转（只读）
+- state：获取/设置随机数生成器的完整内部状态
+- value：返回介于0.0（含）和1.0（含）之间的随机数（只读）
+
+
+方法：
+
+- ColorHSV：从HSV和alpha范围生成随机颜色
+- InitState：用种子初始化随机数生成器状态
+- Range：返回介于min [inclusive]和max [inclusive]之间的随机浮点数（只读）
+
+
+'''
+
 == 伪随机数
 
 *什么是伪随机数 psreudorandom number ? 这些数, 是使用一些称为种子（seed）的初始值, 通过某种算法得到的。由于这个算法是确定的，所以产生的数字序列, 在统计上并不是随机的.* 不过, 除非你知道这些算法和种子，否则就不大能推测出这个序列.
