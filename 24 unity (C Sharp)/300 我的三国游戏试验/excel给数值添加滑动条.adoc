@@ -1,0 +1,25 @@
+
+
+= excel
+:sectnums:
+:toclevels: 3
+:toc: left
+---
+
+== 给数值添加滑动条
+
+点击“文件” -> 选项 -> 自定义功能区 -> 勾选“开发工具”
+
+image:img/sg004.png[,]
+
+image:img/sg005.png[,]
+
+image:img/sg006.png[,]
+
+image:img/sg007.png[,]
+
+image:img/sg008.png[,]
+
+image:img/sg009.png[,]
+
+
