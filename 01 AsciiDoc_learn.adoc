@@ -23,7 +23,43 @@ http://www.seinan-gu.ac.jp/~shito/asciidoctor/html_chunk/chap16.html#links
 https://powerman.name/doc/asciidoc
 
 
----
+'''
+== #自定义css, 来取代 asciidoc 默认的样式#
+
+官方教程: https://docs.asciidoctor.org/asciidoctor/latest/html-backend/custom-stylesheet/
+
+(1).在和你的 asciidoc文件的 同目录中, 创建css文件, 比如起名叫 my-stylesheet.css
+
+css内容比如如下:
+....
+body {
+  color: #ff0000;
+}
+....
+
+
+(2).将 `:stylesheet: my-stylesheet.css` 这句话, 添加到你的asciidoc文档标题中.
+
+....
+= 方法论
+:stylesheet: my-stylesheet.css   ← 写在这里
+:toc: left
+:toclevels: 3
+:sectnums:
+....
+
+
+'''
+
+
+== 修改asciidoc自带的默认css样式
+
+官方教程: https://docs.asciidoctor.org/asciidoctor/latest/html-backend/default-stylesheet/#customize-extend
+
+
+
+
+''''
 
 == ★ 插入 latex 代码
 
