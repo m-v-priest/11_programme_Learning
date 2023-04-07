@@ -7,6 +7,8 @@
 
 == 官方文档
 
+https://www.ahamojo.com/global-dev/developer/page/ahamojo/ahamojoIntroduction/asciidoc.adoc#_%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F
+
 https://docs.asciidoctor.org/asciidoc/latest/
 
 https://asciidoctor.org/docs/user-manual/#cols-format
@@ -171,14 +173,30 @@ x = 22-y \\
 \end{align*}
 |===
 
-==== #行内写矩阵的写法#
+==== #行内写矩阵, 或行列式的写法#
+
+官方文档  +
+https://www.ahamojo.com/global-dev/developer/page/ahamojo/ahamojoIntroduction/asciidoc.adoc#_%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F
+
 
 ....
+//方法1:
 stem:[[[a,b\],[c,d\]\]((n),(k))]
+
+//方法2: 推荐
+latexmath:[\left| \begin{matrix}
+	a_x&		b_x\\
+	a_y&		b_y\\
+\end{matrix} \right|]
 ....
 
 效果: +
 stem:[[[a,b\],[c,d\]\]((n),(k))]
+
+latexmath:[\left| \begin{matrix}
+	a_x&		b_x\\
+	a_y&		b_y\\
+\end{matrix} \right|]
 
 '''
 
