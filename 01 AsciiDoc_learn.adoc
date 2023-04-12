@@ -758,7 +758,35 @@ asciiDoc_1.adoc 中的内容:
 
 ....
 
----
+'''
+
+== #在 pycharm 中 配置 asciidoc 的下划线快捷键#
+
+先设置 pycharm的 :
+
+image:img_adoc,md,other/img_adoc/adoc_05.png[,]
+
+image:img_adoc,md,other/img_adoc/adoc_06.png[,]
+
+image:img_adoc,md,other/img_adoc/adoc_07.png[,]
+
+即, 输入代码
+....
+[underline]#$SELECTION$#
+....
+
+并指定给 asciidoc 文档编辑.
+
+然后, 在 asciidoc页面中, 就能选中你的某个文本, 按 ctrl + alt + T, 然后点击 你刚才起名的下划线功能. 就能包围住该文本了.
+
+image:img_adoc,md,other/img_adoc/adoc_08.png[,]
+
+
+image:img_adoc,md,other/img_adoc/adoc_09.png[,]
+
+
+
+'''
 
 == 下划线 -> [underline]后跟两个#号, 把要下划线的内容, 放在这两个#号中间
 
@@ -770,6 +798,25 @@ asciiDoc_1.adoc 中的内容:
 
 ---
 
+
+== #下划线#: pass:[<u>文本装在这里</u>]
+
+官方文档 https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
+
+....
+pass:[<u>underline me</u>] is also underlined.
+....
+
+效果: +
+pass:[<u>underline me</u>] is also underlined.
+
+== 下划线:
+...
++++<u>underline me</u>+++ is underlined.
+...
+
+效果 +
++++<u>underline me</u>+++ is underlined.
 
 
 == 高亮(黄色底) (github中无效, 但hexo博客中有效!)
