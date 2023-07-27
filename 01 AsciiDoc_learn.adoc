@@ -1608,6 +1608,24 @@ Another paragraph.
 
 == 表格
 
+
+==== #★ 让表格中的文字变小 -> 在表格上加上命令 "[.small]" 即可.#
+
+默认情况时, 在导出成pdf时, 表格中的文字会比外面的文字大一号, 如何让表格中的文字能缩小一点呢? 加上命令 "[.small]" 即可.
+
+....
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|表格中的文字
+|
+|===
+....
+
+
+
 ```
 [options="autowidth"]
 |===
@@ -1914,7 +1932,41 @@ Another paragraph.
 
 ---
 
-==== 边框线 => 表格边框线的显示或隐藏 -> [frame="all/ends/none/sides"]
+==== #★ 边框线 => 表格边框线的显示或隐藏# -> [frame="all/ends/none/sides"]
+
+官网教程: https://docs.asciidoctor.org/asciidoc/latest/tables/borders/
+
+
+- frame=all, grid=all 框架=全部，网格=全部
+- frame=all, grid=none 框架=全部，网格=无
+- frame=all, grid=rows 框架=所有，网格=行
+- frame=all, grid=cols 框架=全部，网格=列
+- frame=ends, grid=rows 框架=结束，网格=行
+- frame=sides, grid=cols 框架=边，网格=列
+- frame=none, grid=none 框架=无，网格=无
+
+
+边框透明的表格
+
+....
+[options="autowidth" cols="1a,1a" frame=none, grid=none]
+....
+
+效果为:
+
+[options="autowidth" cols="1a,1a" frame=none, grid=none]
+|===
+|Header 1 |Header 2
+
+|
+|
+
+|
+|
+|===
+
+
+
 
 ....
 [frame="ends"] //让表格的左右 不显示边框线

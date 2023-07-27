@@ -2,5 +2,26 @@
 
 
 
+正常文字
 
 
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|表格中的文字
+|
+|===
+
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|表格中的文字
+|表格中的文字
+
+|表格中的文字
+|表格中的文字
+|===
