@@ -1,7 +1,10 @@
 
 = python dict
-:toc:
----
+:toc: left
+:toclevels: 3
+:sectnums:
+
+'''
 
 
 字典是映射,不是序列, 所以在它的项中没有'有序'这个概念. 像合并(有序连接), 分片(提取相邻片段)这样的操作都无法运用.
@@ -75,6 +78,33 @@ key = seq +
 listName = ['zzr', 'wyy', 'mwq']
 dictMoney = dict.fromkeys(listName, 0) # fromkeys() 属于类方法，会返回一个新字典。 value 默认为 None。
 print(dictMoney)  # {'zzr': 0, 'wyy': 0, 'mwq': 0}
+....
+
+
+'''
+
+== ★ 创建一个对key不区分大小写的字典
+
+首先要安装 requests 模块, 才能用.
+方法是: 在 cmd(管理员模式打开) 中, 输入命令:
+....
+pip install requests -i https://pypi.tuna.tsinghua.edu.cn/simple torch
+....
+
+然后, 在python文件中, 尝试:
+
+[source, python]
+....
+from requests.structures import CaseInsensitiveDict
+
+user_dict = CaseInsensitiveDict()
+user_dict['name'] = 'John'
+user_dict['Age'] = 25
+user_dict['EMail'] = 'john@example.com'
+
+print(user_dict['name'])
+print(user_dict['age'])
+print(user_dict['email'])
 ....
 
 ---
