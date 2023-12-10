@@ -8,6 +8,31 @@
 
 ---
 
+
+== 安装第三方模块
+
+官方的
+....
+pip install 模块名
+....
+这个命令速度太慢, 就快成考虑用国内镜像来下载. 方法是 :
+....
+下载时加入参数 -i [镜像源地址]
+
+即 :
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple torch
+或者
+pip install torch -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+
+例如 : 安装 requests 模块 :
+pip install requests -i https://pypi.tuna.tsinghua.edu.cn/simple torch
+....
+
+
+'''
+
+
 == 模块文件在自执行, 则 -> \___name___ = '\___main___'
 
 一个python的文件有两种使用的方法，除了可以被直接运行外，还可以作为模块（也就是库）被导入。

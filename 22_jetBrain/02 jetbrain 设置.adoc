@@ -1,10 +1,19 @@
 
 = jetbrain 设置
-:toc:
+:toc: left
+:toclevels: 3
+:sectnums:
+
+
+
 
 ---
 
 == 最常用
+
+==== #自定义的代码, 头尾包围住你选中的内容 : ctrl + alt + t#
+
+
 
 ==== 将你的jetbrain设置, 导出或导入
 file -> export setting, 会导出一个 setting.jar 文件
@@ -32,6 +41,22 @@ settings设置 -> editor -> code style -> python -> 右侧 blank lines -> around
 搜 appearance ->show whitespaces 打钩
 
 ---
+
+
+
+==== #遇到NBSP空格的问题#
+
+默认情况下, 将notion中的加粗字体, 拷贝到 jetbrain 软件中, 会变成 NBSP空格字符, 如何解决这个问题?
+
+image:img/001.png[,]
+
+只要在 jetbrain的设置中, 把下面的打钩去掉即可
+
+image:img/002.png[,]
+
+
+
+'''
 
 ==== 窗口多开
 在页面标签上右键 -> split vertically
@@ -68,7 +93,7 @@ for(int i ;i< $END$;i++){
 
 ---
 
-==== 光标选择变成了竖直选择, 怎么改回来?
+==== #光标选择变成了竖直选择, 怎么改回来?#
 edit  -> column selection  mode 去掉打钩
 
 ---
