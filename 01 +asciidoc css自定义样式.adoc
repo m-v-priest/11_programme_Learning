@@ -6,6 +6,8 @@
 
 '''
 
+== adoc 自定义 css 样式
+
 比如, 你的css文件名是: myAdocCss.css
 
 css文件里面, 这样写:
@@ -80,6 +82,35 @@ image:img_adoc,md,other/img_adoc/adoc_11.png[,%]
 注意: 你使用上边的自定义css时, 会把 asciidoc的默认css给完全覆盖掉, 这意味着你的 目录显示在左侧的代码会失效, 表格也会变得不好看.
 
 你要看默认的 css 是怎样的, 可以搜索名叫 asciidoctor.css 的文件. 可以直接修改这个默认的css即可.
+
+
+'''
+
+== 自定义某一文字的某景色
+
+在css文件中, 创建一个类, 比如写作:
+....
+.myRed {
+    color: white;  /* 白色字体 */
+    background-color: #e34838; /* 红色背景 */
+
+}
+....
+
+然后, 在 adoc中, 这样写:
+
+....
+我是 [.myRed]#红色背景的# 字体    //注意: 包起来的代码, 前后都要有一个空格
+....
+
+效果如下:
+
+image:img_adoc,md,other/img_adoc/adoc_12.png[,%]
+
+
+可以看出来 `[.myRed]# ... #` 相当于这个html标签 `<div>...</div>`
+
+'''
 
 
 
