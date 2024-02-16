@@ -931,25 +931,38 @@ image:img_adoc,md,other/img_adoc/adoc_09.png[,]
 ---
 
 
-== #下划线#: pass:[<u>文本装在这里</u>]
+== #★★ 下划线#: pass:[<u>文本装在这里</u>]
 
-官方文档 https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
+官方文档 https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/ +
+https://github.com/asciidoctor/asciidoctor/issues/867
 
-....
+
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|写法 |效果
+
+|....
 pass:[<u>underline me</u>] is also underlined.
 ....
+|pass:[<u>underline me</u>] is also underlined.
 
-效果: +
-pass:[<u>underline me</u>] is also underlined.
+|....
+[.underline]#underline me#
+....
+|[.underline]#underline me#
 
-== 下划线:
-...
+
+|...
 +++<u>underline me</u>+++ is underlined.
 ...
+|+++<u>underline me</u>+++ is underlined.
+|===
 
-效果 +
-+++<u>underline me</u>+++ is underlined.
 
+
+'''
 
 == 高亮(黄色底) (github中无效, 但hexo博客中有效!)
 高亮部分用 ### 号包围即可
