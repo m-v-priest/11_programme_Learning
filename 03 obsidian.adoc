@@ -1,8 +1,42 @@
 
 = obsidian
-:toc:
+:toc: left
+:toclevels: 3
+:sectnums:
 
----
+'''
+
+== 设置
+
+
+==== 自定义你新建页面的存储目录, 和图片目录
+
+现在你的项目目录下, 新建两个文件, 会用来分别存放你的markdown页面文件和图片
+
+image:img_adoc,md,other/img_obsidian/obsidian 44.png[]
+
+然后在"设置"中, 更改下面两个内容:
+
+image:img_adoc,md,other/img_obsidian/obsidian 45.png[]
+
+image:img_adoc,md,other/img_obsidian/obsidian 46.png[]
+
+
+
+'''
+
+==== 自定义快捷键
+
+
+image:img_adoc,md,other/img_obsidian/obsidian 52.png[]
+
+
+
+
+
+
+
+'''
 
 == 插件
 
@@ -522,9 +556,19 @@ image:img_adoc,md,other/img_obsidian/obsidian 12-2.png[]
 
 ---
 
-==== 双向链接时, 引用另一个页面中的"块" -> ![[file_name路径#^id名]]
+==== #★★# 双向链接时, 引用另一个页面中的"块" -> ![[file_name路径#^id名]]
 
 将某段文字(即块), 添加上id, 以方便另一个页面来引用它, 只需在它后面加上 "^你的-id" 即可.
+
+image:img_adoc,md,other/img_obsidian/obsidian 47.png[]
+
+image:img_adoc,md,other/img_obsidian/obsidian 48.png[]
+
+image:img_adoc,md,other/img_obsidian/obsidian 49.png[]
+
+
+
+
 
 注意 :
 
@@ -548,6 +592,18 @@ image:img_adoc,md,other/img_obsidian/obsidian 16.png[]
 然后在另一个文件中, 引用该表格
 
 image:img_adoc,md,other/img_obsidian/obsidian 17.png[]
+
+'''
+
+==== #让链接的内容, 直接显示里面的具体内容, 而不是超链接形式#
+
+
+image:img_adoc,md,other/img_obsidian/obsidian 50.png[]
+
+image:img_adoc,md,other/img_obsidian/obsidian 51.png[]
+
+
+
 
 
 ---
