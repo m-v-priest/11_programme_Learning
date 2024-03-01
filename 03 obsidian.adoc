@@ -32,6 +32,104 @@ image:img_adoc,md,other/img_obsidian/obsidian 52.png[]
 
 
 
+'''
+
+==== #自定义css#
+
+官方文档说明
+https://publish.obsidian.md/help-zh/%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/%E8%87%AA%E5%AE%9A%E4%B9%89+CSS
+
+https://forum.obsidian.md/t/getting-comfortable-with-obsidian-css/133
+
+在 obsidian 的页面中, 按  CTRL-SHIFT-I , 就能在 ob中自动打开 chrome开发者窗口, 就能查看你要改变的那个元素的html标签了
+
+image:img_adoc,md,other/img_obsidian/obsidian 53.png[]
+
+然后, 在ob的设置中, appearance里,  打开 css Snippet 的文件夹.
+
+image:img_adoc,md,other/img_obsidian/obsidian 54.png[]
+
+image:img_adoc,md,other/img_obsidian/obsidian 56.png[]
+
+image:img_adoc,md,other/img_obsidian/obsidian 57.png[]
+
+然后, 在你的 css文件中, 写下面的内容:
+
+....
+
+li, p {
+	margin-top: 0.5em;
+
+}
+
+li {
+	border-bottom: 1px dotted #00000059;
+}
+
+br {
+	display: block;
+	content: "";
+	margin: 0.5em;
+	/* border-top: 1px solid #000; */
+}
+....
+
+就可以将 obsidian默认css中的 list 和 p 元素, 增加上下边距. 因为默认的css 它们间隔太紧了,
+
+'''
+
+====  #如何让 你自定义的css, 在iphone 上 也生效?#
+
+国外讨论教程 +
+https://forum.obsidian.md/t/mobile-ios-app-to-work-with-hidden-folder/25741/2
+
+icloud 虽然能同步你的css文件, 但因为该css是存储在一个隐藏文件 .obsidian中的, 导致 iphone上无法读取它, 也无法访问该隐藏的css文件来重新编辑它. 所以, 你要安装可以访问 ios上隐藏文件的 第三方app, 才能操作.
+
+image:img_adoc,md,other/img_obsidian/obsidian 58.png[]
+
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|方法1: 安装 ish Shell  软件
+|
+image:img_adoc,md,other/img_obsidian/obsidian 59.png[]
+
+然后输入下面的几行命令, 中间会让你选择你的obsidian的位置.
+
+image:img_adoc,md,other/img_obsidian/obsidian 60.jpg[]
+
+
+a-shell 上的编辑是通过 vim 进行的……所以，你需要了解 vim。
+
+|方法2: Textastic 软件
+|可以直接访问隐藏文件. 但这个软件需要收费
+
+
+|方法3:
+|Taio 软件 +
+image:img_adoc,md,other/img_obsidian/obsidian 61.jpg[,20%]
+
+image:img_adoc,md,other/img_obsidian/obsidian 62.png[,20%]
+
+image:img_adoc,md,other/img_obsidian/obsidian 63.png[,20%]
+
+image:img_adoc,md,other/img_obsidian/obsidian 64.png[,20%]
+
+image:img_adoc,md,other/img_obsidian/obsidian 65.png[,20%]
+
+因为 Taio 如果要编辑 css的话, 会收费, 但编辑txt则不用收费, 所以我们可以把 这个css文件, 重命名扩展名为txt, 来改就行了.
+
+不过, 既然能访问到 iphone上面的 css文件, 并且里面的确是有内容的, 就说明 icloud的同步没有任何问题, 是 obsidian 手机版本身无法访问到 css文件.
+
+
+|===
+
+
+
+
 
 
 
@@ -141,7 +239,13 @@ C:\Users\mvpri\iCloudDrive\iCloud~md~obsidian\my value\.obsidian\plugins\obsidia
 ....
 
 
----
+'''
+
+
+
+
+
+
 
 ==== 对tag标签, 批量修改 -> Tag wrangler
 
