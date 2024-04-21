@@ -1,0 +1,131 @@
+
+= swift 变量和常量
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+
+'''
+
+== 变量 var, 常量 let
+
+[source, swift]
+----
+var name = "zrx" // 用 var 声明变量
+name = "slf"
+print(name) // slf
+----
+
+[source, swift]
+----
+var name = "zrx" , age = 19, sex = "male"  //一次性定义多个变量
+var 官职 = "丞相" //变量名支持中文名
+print(name, age, sex, 官职) // zrx 19 male 丞相
+----
+
+'''
+
+== 查看某变量的数据类型 ->  type(of: 某变量名)
+
+[source, swift]
+----
+var name = "zrx" , married = true, money = 800.8
+print(type(of: money)) // 输出某变量的数据类型. 这里会输出 Double
+print(type(of: married)) // Bool
+----
+
+注意: swift只能推断出四种基本类型: Int, Double, String, Bool
+
+'''
+
+== print函数
+
+==== 分隔符参数 ->  separator:"你自定义的分隔符"
+
+[source, swift]
+----
+var name = "zrx" ,   money = 800.8
+
+// 在 print函数中, 用参数  separator:"你自定义的分隔符", 就是在输出的内容中, 使用你自定义的分隔符来分隔各内容
+print("名字", name, "财产", money, "是否结婚", true, separator:"-" ) //名字-zrx-财产-800.8-是否结婚-true
+----
+
+'''
+
+==== print输出, 不换行 -> 参数 terminator:"自定义最后的字符"
+
+[source, swift]
+----
+//print输出, 默认最后会换行, 如果不想换行, 就用参数 terminator 自定义字符, 来取代默认的换行符
+print("zrx", terminator:"\t" )
+print("slf") //zrx	slf
+----
+
+'''
+
+== 字符串 String
+
+==== 定义一个变量的值为"空字符串"
+
+[source, swift]
+----
+var str1 = "" //定义一个空字符串变量
+var str2 = String() // 同样定义一个空字符串变量
+----
+
+'''
+
+==== 将一个变量值重复多次输出 -> print()函数中, 用 repeating 和 count 参数
+
+[source, swift]
+----
+var str3 = String(repeating: "zz0", count: 5) // 将"zz0"字符串, 重复输出5次
+print(str3) //zz0zz0zz0zz0zz0
+----
+
+'''
+
+==== 输出多行字符串
+
+[source, swift]
+----
+//输出多行字符串, 把多行文字, 用三个双引号"""的包围起来就行了
+print("""
+第一行
+第二行
+第三行
+""")
+
+//虽然写成多行输出, 但实际上让它按单行输出, 就在每行后面, 加个反斜杠\
+print("""
+第一行\
+第二行\
+第三行
+""") //第一行第二行第三行
+----
+
+'''
+
+==== 输出双引号, 需要转义 -> 在字符前加反斜杠\
+
+[source, swift]
+----
+print("我是\"zrx\"") //我是"zrx"
+----
+
+
+
+
+https://www.bilibili.com/video/BV1nz4y1N7NZ/?p=8&spm_id_from=pageDriver&vd_source=52c6cb2c1143f8e222795afbab2ab1b5
+
+
+
+
+
+
+
+
+
+
+
