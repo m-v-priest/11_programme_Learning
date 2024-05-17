@@ -1,6 +1,13 @@
 
 = github
-:toc:
+:toc: left
+:toclevels: 3
+:sectnums:
+//:stylesheet: myAdocCss.css
+
+
+
+
 ---
 
 == ★ 强制将本地文件, 上传覆盖掉github上的仓库
@@ -282,4 +289,51 @@ image:img_github/49.png[]
 2.再执行：git remote prune origin
 
 ---
+
+== ★ git中的objects文件夹特别大
+
+就是这个目录下的 +
+C:\phpStorm_proj\02_myself_ID_EGO\.git\objects\pack
+
+
+
+Git中的objects文件夹特别大, 通常是因为存储了大量的数据对象，这些对象是Git用来保存项目文件内容变化历史的元数据。如果objects文件夹大小超过了预期，可能是由于以下原因：
+
+1. 有大文件被提交到了版本控制中。
+2. 存在大量的历史提交或分支。
+3. 存在未优化的git对象（比如旧的提交、合并、tags等）。
+
+
+解决方法：
+
+[.my1]
+.案例
+====
+
+1.清理未跟踪的大文件：
+
+git clean -fdx
+
+这将删除所有未跟踪的文件和文件夹，包括生成的二进制文件等。
+====
+
+
+[.my1]
+.案例
+====
+2.压缩历史： +
+使用git gc命令来清理无用的objects并优化本地库：
+
+git gc --prune=now --aggressive
+
+`--prune=now` 选项将删除所有不再被引用的objects，``--aggressive``选项会尝试更加频繁地压缩和删除objects。
+====
+
+3.如果是因为分支过多，可以尝试合并不必要的分支，使用``git merge --squash``将分支的历史压缩，减少objects的数量。
+
+4.如果是因为某些旧的对象没有被及时清理，可以手动找到这些对象的hash值，然后用``git hash-object -w --stdin <hash>``来重写它们。
+
+5.如果是因为某些大的二进制文件被误提交到了版本控制系统中，从版本控制历史中移除它们需要使用``git filter-branch``或者``git rm``命令来从历史中移除这些文件，然后再进行一次全面的垃圾收集。
+
+确保在执行这些操作之前，对当前的仓库做好备份，以防止操作失误导致数据丢失。
 
