@@ -425,6 +425,18 @@ https://blog.mrhaki.com/2019/03/awesome-asciidoctor-collapsible-content.html
 
 ---
 
+
+
+== #★★★ 展开到自定义折叠处#
+
+image:img_adoc,md,other/0002.png[,]
+
+image:img_adoc,md,other/0001.png[,]
+
+
+
+''
+
 == #单行折叠#
 
 ....
