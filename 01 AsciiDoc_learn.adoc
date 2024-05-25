@@ -10,6 +10,10 @@
 
 ---
 
+== #预览窗口中, 记住缩放页面的比例#
+
+
+image:img_adoc,md,other/0003.png[,]
 
 
 == 让 asciidoc支持数据图 -> 安装  Asciidoctor图表扩展
