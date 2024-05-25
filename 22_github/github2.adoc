@@ -8,7 +8,85 @@
 
 
 
----
+'''
+
+== ★ git clone 下载你网上的仓库时,  报错 : git@github.com:Permission denied (publickey).fatal:Could not read from remote repository.
+
+你在执行
+....
+git clone git@github.com:m-v-priest/03_myLife_commonSense.git
+....
+
+时, 报错 :
+
+image:img_github/0053.png[,]
+
+原因是: 你本电脑的密钥和公钥文件丢失了. 你的这两个钥匙文件, 会存放在这个目录中: +
+....
+C:\Users\mvpri\.ssh
+....
+
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|第1步: 先检查你本地电脑的"密钥"和"公钥"文件还在不在?
+|在 git bash 中, 输入命令:  +
+....
+ls -al ~/.ssh
+....
+
+image:img_github/0054.png[,]
+
+
+|第2步: 重新在本地电脑上, 生成密钥和公钥文件
+|输入命令: +
+....
+ssh-keygen -t rsa -C "346669129@qq.com"
+....
+
+然后一路回车.
+
+image:img_github/0055.png[,]
+
+然后, 你手动打开你电脑目录
+....
+C:\Users\mvpri\.ssh
+....
+
+就能看到这几个文件: +
+
+image:img_github/0056.png[,]
+
+|第3步: 登录你的github网站上, 将本地电脑的公钥输进去
+|image:img_github/0057.png[,]
+
+image:img_github/0058.png[,]
+
+image:img_github/0059.png[,]
+
+image:img_github/0060.png[,]
+
+image:img_github/0061.png[,]
+
+image:img_github/0062.png[,]
+
+
+
+
+
+
+|===
+
+
+
+
+
+
+'''
+
 
 == ★ 强制将本地文件, 上传覆盖掉github上的仓库
 
