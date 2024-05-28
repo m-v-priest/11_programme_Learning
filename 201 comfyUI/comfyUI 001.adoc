@@ -1,0 +1,108 @@
+
+= comfyUI 001
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+
+'''
+
+== 让 comfyUI 和 sd web ui 共享模型
+
+打开 comfyUI 中的这个文件
+
+image:img/0001.png[,]
+
+image:img/0002.png[,]
+
+保存后就行了, 然后重启 comfyUI, 就能看到所有 sd web ui 中共享的模型了.
+
+'''
+
+== 第一课: 生成一张图片 (没用到lora)
+
+image:img/0003.png[,]
+
+image:img/0004.png[,]
+
+image:img/0005.png[,]
+
+image:img/0006.png[,]
+
+image:img/0007.png[,]
+
+image:img/0008.png[,]
+
+image:img/0009.png[,]
+
+image:img/0010.png[,]
+
+image:img/0011.png[,]
+
+image:img/0012.png[,]
+
+'''
+
+== 第二课: 控制画面上元素的生成位置
+
+image:img/0013.png[,]
+
+image:img/0014.png[,]
+
+image:img/0015.png[,]
+
+image:img/0016.png[,]
+
+image:img/0017.png[,]
+
+image:img/0018.png[,]
+
+注意: 负向提示词节点, 也要添加
+
+image:img/0019.png[,]
+
+image:img/0020.png[,]
+
+image:img/0021.png[,]
+
+image:img/0022.png[,]
+
+image:img/0023.png[,]
+
+image:img/0024.png[,]
+
+image:img/0025.png[,]
+
+image:img/0026.png[,]
+
+image:img/0027.png[,]
+
+image:img/0028.png[,]
+
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
