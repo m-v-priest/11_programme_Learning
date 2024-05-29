@@ -3,13 +3,14 @@
 :toc: left
 :toclevels: 3
 :sectnums:
-:stylesheet: myAdocCss.css
+//:stylesheet: myAdocCss.css
 
 
 '''
 
-== 让 comfyUI 和 sd web ui 共享模型
-
+.让 comfyUI 和 sd web ui 共享模型
+[%collapsible]
+====
 打开 comfyUI 中的这个文件
 
 image:img/0001.png[,]
@@ -19,8 +20,11 @@ image:img/0002.png[,]
 保存后就行了, 然后重启 comfyUI, 就能看到所有 sd web ui 中共享的模型了.
 
 '''
+====
 
-== 第一课: 生成一张图片 (没用到lora)
+.第一课: 生成一张图片 (没用到lora)
+[%collapsible]
+====
 
 image:img/0003.png[,]
 
@@ -43,8 +47,11 @@ image:img/0011.png[,]
 image:img/0012.png[,]
 
 '''
+====
 
-== 第二课: 控制画面上元素的生成位置
+.第二课: 控制画面上元素的生成位置
+[%collapsible]
+====
 
 image:img/0013.png[,]
 
@@ -81,6 +88,28 @@ image:img/0027.png[,]
 image:img/0028.png[,]
 
 '''
+====
+
+.添加 lora 模型
+[%collapsible]
+====
+image:img/0029.png[,]
+
+image:img/0030.png[,]
+
+image:img/0029.png[,]
+
+image:img/0030.png[,]
+
+image:img/0031.png[,]
+
+image:img/0032.png[,]
+
+现在, 就能运行了.
+
+'''
+====
+
 
 
 
