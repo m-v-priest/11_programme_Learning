@@ -1,8 +1,27 @@
 
 = jetbrain 快捷键
-:toc:
+:toc: left
+:toclevels: 3
+:sectnums:
+//:stylesheet: myAdocCss.css
+
+'''
+
 
 ---
+
+== 折叠到某一层的快捷键, 怎么按?
+
+image:/img/003.png[,]
+
+如上图的快捷键, 怎么按?  +
+先同时按下 ctrl + shift + 小键盘上的星号键, +
+然后放开它们, 再单独按小键盘上的2
+
+
+'''
+
+
 
 
 ## 最常用
