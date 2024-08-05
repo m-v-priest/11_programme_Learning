@@ -64,6 +64,33 @@ image:/img/006.png[,%]
 
 
 
+== google earth pro 中如何导入 kml 图层?
 
+在 菜单 file -> import 中导入
+
+
+image:/img/012.png[,%]
+
+免费的 kml 文件下载网站有:
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|美国各州的边界线
+|https://kml4earth.appspot.com/data.html
+
+|世界各国的边界线
+|https://public.opendatasoft.com/explore/dataset/world-administrative-boundaries/export/?refine.status=US+Territory
+
+|世界主要最长的河流
+|https://datacatalog.worldbank.org/search/dataset/0042032
+|===
+
+
+
+
+'''
 
 
