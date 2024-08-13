@@ -22,6 +22,20 @@ image:img/0002.png[,]
 '''
 ====
 
+.安装新插件
+[%collapsible]
+====
+image:img/0033.png[,]
+
+image:img/0034.png[,]
+
+image:img/0035.png[,]
+
+'''
+====
+
+
+
 .第一课: 生成一张图片 (没用到lora)
 [%collapsible]
 ====
@@ -110,7 +124,25 @@ image:img/0032.png[,]
 '''
 ====
 
+.添加 Openpose
+[%collapsible]
+====
+image:img/0037.png[,]
 
+'''
+====
+
+
+
+.workflow 工作流
+[%collapsible]
+====
+当你下载了一个workflow并加载后，如果发现有大量的红色节点, 这是因为缺失了一些custom node，并且ComfyUI已经把缺的列出来了. 这时只需打开Manager，点击Install Missing Custom Nodes, 它会自动把这个workflow需要补充的插件摆好.
+
+image:img/0036.png[,]
+
+'''
+====
 
 
 
