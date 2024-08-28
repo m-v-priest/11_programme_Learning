@@ -1,0 +1,25 @@
+
+
+= clash for windows
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+== 第一课
+
+安装完软件后, 要做下面两步操作, 就能顺利上外网了:
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|1.打开 system proxy
+|image:img/001.png[,]
+
+|2.导入配置文件
+|image:img/002.png[,]
+|===
