@@ -1,0 +1,30 @@
+<svg viewBox="0 0 281 281" xmlns:xlink="http://www.w3.org/1999/xlink" width="281" height="281" xmlns="http://www.w3.org/2000/svg">
+    <defs/>
+    <g transform="translate(-320.00,-287.50)">
+        <g transform="translate(321.00,288.50)" id="shape1">
+            <path d="M278.5,278.5L278.5,.0L.0,.0L.0,278.5L278.5,278.5z" stroke="#323232" fill="none"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="19.0" x="119.8">子网络</tspan>
+                <tspan y="38.0" x="109.3">(子网掩码)</tspan>
+            </text>
+        </g>
+        <g transform="translate(352.00,350.85)" id="shape2">
+            <path d="M120.0,92.0L120.0,.0L.0,.0L.0,92.0L120.0,92.0z" stroke="#323232" fill-rule="nonzero" fill="#ffffff"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="23.0" x="43.0">网卡1</tspan>
+                <tspan y="42.0" x="11.0">(固定: MAC地址)</tspan>
+                <tspan y="61.0" x="16.5">( 随机: IP地址 )</tspan>
+                <tspan y="80.0" x="12.5">(端口: 0-65535)</tspan>
+            </text>
+        </g>
+        <g transform="translate(352.00,456.00)" id="shape3">
+            <path d="M120.0,92.0L120.0,.0L.0,.0L.0,92.0L120.0,92.0z" stroke="#323232" fill-rule="nonzero" fill="#ffffff"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="23.0" x="43.0">网卡2</tspan>
+                <tspan y="42.0" x="11.0">(固定: MAC地址)</tspan>
+                <tspan y="61.0" x="16.5">( 随机: IP地址 )</tspan>
+                <tspan y="80.0" x="12.5">(端口: 0-65535)</tspan>
+            </text>
+        </g>
+    </g>
+</svg>
