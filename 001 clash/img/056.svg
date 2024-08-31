@@ -1,0 +1,67 @@
+<svg viewBox="0 0 247 251" xmlns:xlink="http://www.w3.org/1999/xlink" width="247" height="251" xmlns="http://www.w3.org/2000/svg">
+    <defs/>
+    <g transform="translate(-56.00,-446.00)">
+        <g transform="translate(57.00,555.50)" id="shape1">
+            <path d="M120.0,32.0L120.0,.0L.0,.0L.0,32.0L120.0,32.0z" stroke="#323232" fill-rule="nonzero" fill="#ffffff"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="21.5" x="27.5">走分流规则</tspan>
+            </text>
+        </g>
+        <g transform="translate(132.00,447.00)" id="shape2">
+            <path d="M120.0,32.0L120.0,.0L.0,.0L.0,32.0L120.0,32.0z" stroke="#323232" fill-rule="nonzero" fill="#b0ddc1"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="21.5" x="27.5">白名单模式</tspan>
+            </text>
+        </g>
+        <g transform="translate(192.00,479.00)" id="shape3">
+            <path d="M.0,.0L-70.8,72.2" stroke="#191919" fill="none"/>
+            <path d="M-68.7,74.3L-75.0,76.5L-72.9,70.1L-68.7,74.3" stroke="#191919" stroke-width="1" stroke-linecap="round" fill="#191919"/>
+            <rect width="52.0" height="19.0" y="30.8" fill="#ffffff" x="-64.5"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="45.8" x="-64.5">有匹配的</tspan>
+            </text>
+        </g>
+        <g transform="translate(223.48,523.25)" id="shape4">
+            <path d="M78.5,32.0L78.5,.0L.0,.0L.0,32.0L78.5,32.0z" stroke="#323232" fill-rule="nonzero" fill="#b0ddc1"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="21.5" x="6.8">走代理节点</tspan>
+            </text>
+        </g>
+        <g transform="translate(192.00,479.00)" id="shape5">
+            <path d="M.0,.0L65.7,41.1" stroke="#191919" fill="none"/>
+            <path d="M67.2,38.5L70.7,44.3L64.1,43.6L67.2,38.5" stroke="#191919" stroke-width="1" stroke-linecap="round" fill="#191919"/>
+            <rect width="26.0" height="19.0" y="7.7" fill="#ffffff" x="15.6"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="22.7" x="15.6">其他</tspan>
+            </text>
+        </g>
+        <g transform="translate(223.48,599.50)" id="shape6">
+            <path d="M78.5,32.0L78.5,.0L.0,.0L.0,32.0L78.5,32.0z" stroke="#323232" fill-rule="nonzero" fill="#fedad0"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="21.5" x="19.8">走直连</tspan>
+            </text>
+        </g>
+        <g transform="translate(132.00,664.00)" id="shape7">
+            <path d="M120.0,32.0L120.0,.0L.0,.0L.0,32.0L120.0,32.0z" stroke="#323232" fill-rule="nonzero" fill="#fedad0"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="21.5" x="27.5">黑名单模式</tspan>
+            </text>
+        </g>
+        <g transform="translate(132.00,680.00)" id="shape8">
+            <path d="M.0,.0L-14.0,-86.6" stroke="#191919" fill="none"/>
+            <path d="M-17.0,-86.1L-15.0,-92.5L-11.1,-87.1L-17.0,-86.1" stroke="#191919" stroke-width="1" stroke-linecap="round" fill="#191919"/>
+            <rect width="52.0" height="19.0" y="-62.1" fill="#ffffff" x="-33.5"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="-47.1" x="-33.5">有匹配的</tspan>
+            </text>
+        </g>
+        <g transform="translate(192.00,664.00)" id="shape9">
+            <path d="M.0,.0L65.3,-30.0" stroke="#191919" fill="none"/>
+            <path d="M64.0,-32.7L70.7,-32.5L66.5,-27.3L64.0,-32.7" stroke="#191919" stroke-width="1" stroke-linecap="round" fill="#191919"/>
+            <rect width="26.0" height="19.0" y="-24.0" fill="#ffffff" x="19.5"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="-9.0" x="19.5">其他</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

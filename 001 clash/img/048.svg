@@ -1,0 +1,151 @@
+<svg viewBox="0 0 1118 481" xmlns:xlink="http://www.w3.org/1999/xlink" width="1118" height="481" xmlns="http://www.w3.org/2000/svg">
+    <defs/>
+    <g transform="translate(-43.48,-180.57)">
+        <g transform="translate(416.00,248.00)" id="shape1">
+            <path d="M120.0,35.0L120.0,.0L.0,.0L.0,35.0L120.0,35.0z" stroke="#323232" fill-rule="nonzero" fill="#ffffff"/>
+            <text xml:space="preserve" style="fill:#ff0000;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="23.0" x="58.5">.</tspan>
+            </text>
+        </g>
+        <g transform="translate(340.00,331.00)" id="shape2">
+            <path d="M63.0,35.0L63.0,.0L.0,.0L.0,35.0L63.0,35.0z" stroke="#323232" fill-rule="nonzero" fill="#ffffff"/>
+            <text xml:space="preserve" style="fill:#ff0000;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="23.0" x="16.5">.com</tspan>
+            </text>
+        </g>
+        <g transform="translate(444.50,331.00)" id="shape3">
+            <path d="M63.0,35.0L63.0,.0L.0,.0L.0,35.0L63.0,35.0z" stroke="#323232" fill-rule="nonzero" fill="#ffffff"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="23.0" x="19.5">.org</tspan>
+            </text>
+        </g>
+        <g transform="translate(561.00,331.00)" id="shape4">
+            <path d="M63.0,35.0L63.0,.0L.0,.0L.0,35.0L63.0,35.0z" stroke="#323232" fill-rule="nonzero" fill="#ffffff"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="23.0" x="22.5">.be</tspan>
+            </text>
+        </g>
+        <g transform="translate(246.00,400.00)" id="shape5">
+            <path d="M104.0,35.0L104.0,.0L.0,.0L.0,35.0L104.0,35.0z" stroke="#323232" fill-rule="nonzero" fill="#ffffff"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan style="fill:#ff0000" y="23.0" x="16.0">google</tspan>
+                <tspan x="58.0">.com</tspan>
+            </text>
+        </g>
+        <g transform="translate(364.00,400.00)" id="shape6">
+            <path d="M104.0,35.0L104.0,.0L.0,.0L.0,35.0L104.0,35.0z" stroke="#323232" fill-rule="nonzero" fill="#ffffff"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="23.0" x="4.0">ruanyifeng.com</tspan>
+            </text>
+        </g>
+        <g transform="translate(540.50,400.00)" id="shape7">
+            <path d="M139.5,35.0L139.5,.0L.0,.0L.0,35.0L139.5,35.0z" stroke="#323232" fill-rule="nonzero" fill="#ffffff"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="23.0" x="19.8">linux-training.be</tspan>
+            </text>
+        </g>
+        <g transform="translate(476.00,283.00)" id="shape8">
+            <path d="M.0,.0L-99.0,45.5" stroke="#191919" fill="none"/>
+            <path d="M-97.8,48.2L-104.5,48.0L-100.3,42.8L-97.8,48.2" stroke="#191919" stroke-width="1" stroke-linecap="round" fill="#191919"/>
+        </g>
+        <g transform="translate(476.00,283.00)" id="shape9">
+            <path d="M.0,.0L.0,42.0" stroke="#191919" fill="none"/>
+            <path d="M3.0,42.0L.0,48.0L-3.0,42.0L3.0,42.0" stroke="#191919" stroke-width="1" stroke-linecap="round" fill="#191919"/>
+        </g>
+        <g transform="translate(476.00,283.00)" id="shape10">
+            <path d="M.0,.0L111.0,45.7" stroke="#191919" fill="none"/>
+            <path d="M112.1,42.9L116.5,48.0L109.8,48.5L112.1,42.9" stroke="#191919" stroke-width="1" stroke-linecap="round" fill="#191919"/>
+        </g>
+        <g transform="translate(371.50,366.00)" id="shape11">
+            <path d="M.0,.0L-68.1,31.5" stroke="#191919" fill="none"/>
+            <path d="M-66.8,34.2L-73.5,34.0L-69.3,28.8L-66.8,34.2" stroke="#191919" stroke-width="1" stroke-linecap="round" fill="#191919"/>
+        </g>
+        <g transform="translate(371.50,366.00)" id="shape12">
+            <path d="M.0,.0L39.7,30.4" stroke="#191919" fill="none"/>
+            <path d="M41.6,28.0L44.5,34.0L37.9,32.7L41.6,28.0" stroke="#191919" stroke-width="1" stroke-linecap="round" fill="#191919"/>
+        </g>
+        <g transform="translate(592.50,366.00)" id="shape13">
+            <path d="M.0,.0L15.0,28.7" stroke="#191919" fill="none"/>
+            <path d="M17.6,27.3L17.8,34.0L12.3,30.1L17.6,27.3" stroke="#191919" stroke-width="1" stroke-linecap="round" fill="#191919"/>
+        </g>
+        <g transform="translate(532.50,247.93)" id="shape14">
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="23.1" x="25.5">根域名 root</tspan>
+            </text>
+        </g>
+        <g transform="translate(624.00,330.93)" id="shape15">
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="23.1" x="14.0">顶级域名 top-level domain，简写 TLD</tspan>
+            </text>
+        </g>
+        <g transform="translate(690.00,399.85)" id="shape16">
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="23.1" x="11.5">一级域名</tspan>
+            </text>
+        </g>
+        <g transform="translate(643.00,181.57)" id="shape17">
+            <path d="M281.0,101.5L281.0,.0L.0,.0L.0,101.5L281.0,101.5z" fill-rule="nonzero" fill="#ebebeb"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="19.0" x="4.0">所有域名的起点都是根域名，它写作一个点.，</tspan>
+                <tspan y="38.0" x="4.0">放在域名的结尾。因为这部分对于所有域名都是</tspan>
+                <tspan y="57.0" x="4.0">相同的，所以就省略不写了，</tspan>
+                <tspan y="76.0" x="4.0">比如example.com等同于example.com.（结尾</tspan>
+                <tspan y="95.0" x="4.0">多一个点）。</tspan>
+            </text>
+        </g>
+        <g transform="translate(879.50,322.10)" id="shape18">
+            <path d="M281.0,149.5L281.0,.0L.0,.0L.0,149.5L281.0,149.5z" fill-rule="nonzero" fill="#ebebeb"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="19.0" x="4.0">顶级域名, 它分成两种：</tspan>
+                <tspan y="38.0" x="4.0">1.通用顶级域名（gTLD)，比如 .com 和 .net</tspan>
+                <tspan y="57.0" x="4.0">2.国别顶级域名（ccTLD)，比如 .cn 和 .us</tspan>
+                <tspan y="95.0" x="4.0">顶级域名由国际域名管理机构 ICANN 控制，它</tspan>
+                <tspan y="114.0" x="4.0">委托商业公司管理 gTLD，委托各国管理自己的</tspan>
+                <tspan y="133.0" x="4.0">国别域名。</tspan>
+            </text>
+        </g>
+        <g transform="translate(540.50,445.50)" id="shape19">
+            <path d="M243.5,83.5L243.5,.0L.0,.0L.0,83.5L243.5,83.5z" fill-rule="nonzero" fill="#ebebeb"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="19.0" x="4.3">一级域名, 就是你在某个顶级域名下面，</tspan>
+                <tspan y="38.0" x="4.3">自己注册的域名。</tspan>
+                <tspan y="57.0" x="4.3">比如，ruanyifeng.com就是我在顶级域</tspan>
+                <tspan y="76.0" x="4.3">名.com下面注册的。</tspan>
+            </text>
+        </g>
+        <g transform="translate(347.48,541.50)" id="shape20">
+            <path d="M137.0,35.0L137.0,.0L.0,.0L.0,35.0L137.0,35.0z" stroke="#323232" fill-rule="nonzero" fill="#ffffff"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan style="fill:#ff0000" y="23.0" x="8.5">es6</tspan>
+                <tspan x="29.5">.ruanyifeng.com</tspan>
+            </text>
+        </g>
+        <g transform="translate(416.00,435.00)" id="shape21">
+            <path d="M.0,.0L.0,100.5" stroke="#191919" fill="none"/>
+            <path d="M3.0,100.5L.0,106.5L-3.0,100.5L3.0,100.5" stroke="#191919" stroke-width="1" stroke-linecap="round" fill="#191919"/>
+        </g>
+        <g transform="translate(347.48,589.00)" id="shape22">
+            <path d="M295.5,72.0L295.5,.0L.0,.0L.0,72.0L295.5,72.0z" fill-rule="nonzero" fill="#ebebeb"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="19.0" x="4.3">二级域名, 是一级域名的子域名，是域名拥有者自</tspan>
+                <tspan y="38.0" x="4.3">行设置的，不用得到许可。</tspan>
+                <tspan y="57.0" x="4.3">比如，es6 就是 ruanyifeng.com 的二级域名。</tspan>
+            </text>
+        </g>
+        <g transform="matrix(0.00,1.00,-1.00,0.00,189.0,246.0)" id="shape23">
+            <path d="M.0,.0L296.0,.0" stroke="#191919" fill="none"/>
+            <path d="M296.0,-3.0L302.0,.0L296.0,3.0L296.0,-3.0" stroke="#191919" stroke-width="1" stroke-linecap="round" fill="#191919"/>
+        </g>
+        <g transform="translate(44.48,331.00)" id="shape24">
+            <path d="M125.5,136.0L125.5,.0L.0,.0L.0,136.0L125.5,136.0z" fill-rule="nonzero" fill="#ebebeb"/>
+            <text xml:space="preserve" style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="19.0" x="4.3">这种树状结构的意义</tspan>
+                <tspan y="38.0" x="4.3">在于，</tspan>
+                <tspan style="font-weight:bold" x="43.3">只有上级域</tspan>
+                <tspan style="font-weight:bold" y="57.0" x="4.3">名，才知道下一级域</tspan>
+                <tspan style="font-weight:bold" y="76.0" x="4.3">名的 IP 地址，需</tspan>
+                <tspan style="font-weight:bold" y="95.0" x="4.3">要"逐级查询"。</tspan>
+            </text>
+        </g>
+    </g>
+</svg>
