@@ -1,0 +1,119 @@
+
+
+=  flux
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+
+'''
+
+== 第一课 : flux 基本工作流
+
+
+image:img/0054.png[,]
+
+image:img/0055.png[,]
+
+image:img/0056.png[,]
+
+image:img/0057.png[,]
+
+image:img/0058.png[,]
+
+image:img/0059.png[,]
+
+image:img/0060.png[,]
+
+image:img/0061.png[,]
+
+image:img/0062.png[,]
+
+image:img/0063.png[,]
+
+image:img/0064.png[,]
+
+image:img/0065.png[,]
+
+image:img/0066.png[,]
+
+image:img/0067.png[,]
+
+image:img/0068.png[,]
+
+image:img/0069.png[,]
+
+image:img/0070.png[,]
+
+image:img/0071.png[,]
+
+
+'''
+
+==== k采样器的参数
+
+
+
+image:img/0072.png[,]
+
+注意, 采样器 dmp-2 不推荐, 速度太慢了.
+
+
+
+image:img/0073.png[,]
+
+image:img/0074.png[,]
+
+image:img/0075.png[,]
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|速度之王
+|image:img/0076.png[,]
+
+image:img/0077.png[,]
+
+|质量之王
+|image:img/0078.png[,]
+
+推荐6步左右.
+
+image:img/0079.png[,]
+
+|均衡之王
+|euler调度器, 可以跟simple, beta, sgm_u 三个调度器任意搭配. +
+收敛最好的是beta
+|===
+
+'''
+
+==== flux 的引导参数
+
+image:img/0080.png[,]
+
+引导参数值越大, 图像就会有油腻的ai感(即越不真实).
+
+image:img/0081.png[,]
+
+image:img/0082.png[,]
+
+image:img/0083.png[,]
+
+image:img/0084.png[,]
+
+image:img/0085.png[,]
+
+image:img/0086.png[,]
+
+image:img/0087.png[,]
+
+image:img/0088.png[,]
+
+
+
+
+
