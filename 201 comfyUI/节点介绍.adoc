@@ -1,0 +1,836 @@
+
+= 节点介绍
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+== ★ Stable Diffusion 的原理
+
+Stable Diffusion 模型，原名为潜扩散模型（LDM），它能##从"随机噪声"中直接"生成图片"。##这个##扩散过程, 发生在"潜在空间"中.##
+
+一个标准扩散模型, 有两个主要过程：正向扩散和反向扩散:+
+
+image:/../img/1010.webp[,]
+
+- 正向扩散：在正向扩散阶段，通过逐渐引入"噪声"来破坏图像，直到图像变成完全随机的噪声。
+- 反向扩散：在反向扩散阶段，使用一系列马尔可夫链, 逐步去除预测噪声，从高斯噪声中恢复数据，最终生成一张图像。
+
+*"图像生成"的简单解析过程：就是用户输入一段描述后，这些信息首先会被"文本编码器"转化为机器可理解的形式，接着在"潜在空间模型"中生成相应的"潜在向量"，最后"解码器"将这些潜在"向量"转化为"图像"。*
+
+image:/../img/1011.webp[,]
+
+
+
+
+图片生成流程, 都在一个叫「latent space（潜在空间）」的魔法盒子里进行。 +
+
+image:/../img/1001.svg[,]
+
+'''
+
+==== ★ #Latent Space 潜空间#
+
+通常，**我们会把一组数据进行压缩，以便进行深度学习。**如下图所示，我们把一个19位的数据集，压缩成9位的数据集，用形象化的图像方式表示。其中空白的四个点位被去除。"临近相同的点位"被合并，并标注出总共有几个临近相同的点位被合并。这样19个点位就压缩成了9个点位。
+
+image:/../img/1036.webp[,]
+
+image:/../img/1037.png[,100%]
+
+
+'''
+
+==== ★ #VAE (Variational AutoEncoder) 变分自编码器#
+
+VAE 它是一种神经网络，同属于生成模型的还有著名的GAN。 +
+#VAE 的核心是一个"编码器"网络, 和一个"解码器"网络#:
+
+image:/../img/1038.webp[,]
+
+- 编码器（Encoder）：编码器用来学习##将"自然数据集"压缩成"潜空间"中的点，##这个点在坐标体系中的的坐标, 由"潜在向量"（latent vector）表示。"潜在向量"不是一个确定的点，而是一个分布（通常假设是"正态分布"）。
+- 解码器（Decoder）：##解码器用来从"潜空间"中的"潜在向量"中采样，然后学习将这个"采样点"进行识别，解码为"数据集"（通常为图像），##这个数据集如果接近当初输入给"编码器"的图像，就被确定这个解码器合格了。
+
+**"编码器"和"解码器", 可以看作是两个"函数"，一个用于将"高维"输入的数据, 编码为潜空间中的"低维数据"，另一个用于将潜空间中的"低维数据", 解码为输出（如生成的图片）。**这两个函数在神经网络中一般用 CNN（卷积神经网络）来构建的。
+
+image:/../img/1039.svg[,90%]
+
+在 VAE 之前的 AE版本中, 有个问题: 在训练过程中，**随着不断降低输入图片与输出图片之间的误差，AE 模型会过于拟合，缺乏泛化性能。也就是说，输入某个训练过的图片，就只会将其编码为某个确定的 code; 反过来，输入某个确定的 code 就只会输出为某个确定的图片.** 如果这个 code 是来自未训练过的陌生图片，那么则无法生成出我们想要的那个陌生图片。
+
+VAE 正是为了解决 AE（Auto Encoder 自动编码器）的这个不足, 而产生的升级版本.
+
+
+'''
+
+==== Diffusion 扩散模型
+
+受非平衡热力学（Non-equilibrium thermodynamics）的启发，Diffusion 的意思就是如滴入一杯清水中的墨滴一样，慢慢散开最终变成一片浑浊。如果这个过程可逆，那么就可以创造一个由一片浑浊去探寻最初墨滴状态的方法。于是 Diffusion Models 模型诞生了，它分为两个部分：Diffusion 模型分为两个部分：前向过程、反向过程
+
+image:/../img/1040.webp[,]
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|前向过程（Forward Diffusion Process）
+|在图片中"#添加噪声#"，犹如墨滴逐渐扩散开来。这个过程##用于训练阶段##. *训练 U-Net 网络预测噪点的能力.* +
+注意，噪点并不是直接在"人肉眼可见的像素维度"加到图片上的，而是在"潜空间"中加到图片的"潜空间数据矩阵"中的。.
+
+|#反向过程#（Reverse Diffusion Process）
+|"#去除图片中的噪声#"，犹如一片浑浊的水逐渐逆转，时间倒流回到一滴墨汁的状态。这个过程##用于生成阶段##。 *首先给定一个全高斯噪点图 ，通过训练好的 U-Net 网络估算的噪点逐步去噪，直至最终复现出图像0 。*
+|===
+
+*"前向过程"和"反向过程"最关键的地方就是"训练 U-Net 网络"，即"训练模型"。当模型训练完成后, 只要给定一张全噪点图，就可以生成一张从未见过的新图像。*
+
+
+Diffusion 扩散模型在"前向过程"时，对图像逐步"施加噪点"，直至图像变成完全的"高斯噪声图"。然后##在"反向过程"中，从"高斯噪声"逐渐还原为"某一张"图像（*注意: 这里是说"某一张"图片，而不是"之前那一张"图片.*)## +
+这就是 Diffusion 扩散模型的魅力所在。因为时间根本无法逆转，"反扩散"过程(即生成图像的过程)只是因为在"正向扩散"过程中**AI学会了一个技能，从而能用这个技能进行图像的创作。**
+
+常见的几种生成模型有:  GAN，Flow-based Model，VAE，Energy-Based Model 以及 Diffusion。 +
+Diffusion扩散模型, 和其它生成模型的区别是，它不是直接地从"图像"到"潜变量"、再从"潜变量"到"图像"的一步到位，它是一步一步地逐渐分解、逐渐去噪的过程。
+
+
+image:/../img/1041.webp[,]
+
+'''
+
+==== ★ #U-Net 网络# -> 图像语义分割网络
+
+##U-Net网络, ##是一个基于CNN（ Convolutional Neural Network 卷积神经网络）"的##图像语义分割网络"（Semantic Segmentation）##。 +
+**"语义分割"是对图像中每一个像素点进行分类，确定每个点的类别（如属于背景、道路、人或车等），从而进行内容区域划分。**目前，语义分割已经被广泛应用于自动驾驶、无人机落点判定等场景中。
+
+自动驾驶汽车视角的图像语义分割: +
+image:/../img/1042.webp[,50%]
+
+#*"U-Net 网络"在 Stable Diffusion 模型中处于核心地位，因为它对"噪点"的预测, 才最终帮助 Diffusion 的反向过程生成图像.*#
+
+
+'''
+
+
+==== Stable Diffusion 稳定扩散模型
+
+Stable Diffusion 是 "Diffusion 扩散模型"中最先进的模式. 目前 Stable Diffusion 的应用已经不局限于图像生成领域，它还被广泛应用于自然语言处理、音频视频等生成领域。
+
+Stable Diffusion 背后的公司, 是 Stability AI 公司。
+
+Stable Diffusion 本身并不是一个模型，而是一个由多个模块和模型组成的系统。 +
+论模型来说，*Stable Diffusion 由三大核心部件组成，每个组件都是一个神经网络系统，也称为三大基础模型：*
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|-> CLIPText  +
+功能: 它将文本信息, 转换为用"数字化表达"的信息（通常为一个数据集 ），以便让机器能够捕捉文本的含义。
+|它的输入是文本，输出则为数据集，即用数据集的方式来表达文本中的每个单词/token（通常每个向量对应一个token)。
+
+|-> U-Net + Scheduler
+|#图像信息创建器(Image information creator),# 完全在"潜在空间"中工作. #这个组件由一个 U-Net 神经网络, 和一个"调度算法"组成。#
+
+|Auto-EncoderDecoder （主要是一个VAE：Variational AutoEncoder ）
+|图像解码器(Image Decoder ), 根据从"图像信息创建器"传递过来的信息, 绘制出图像。 它只在之前的 Diffusion 过程完全结束后才运行一次，即把"潜空间中的图像信息"解码生成"最终的像素图像"。
+|===
+
+image:/../img/1043.webp[,]
+
+image:/../img/1044.webp[,] +
+蓝色3*5的格子为Token转化的数据集，粉红色黄色模块为图像生成器 Image Generato
+
+
+**扩散的过程, 发生在图中粉红色的部分，即"图像信息创建器"（Image Information Creator）组件中。这部分同时包含了两个输入，**见下图： +
+①从文本编码器（ CLIP Text模型）输出过来的 Token embeddings，  +
+和②随机的"初始图像信息矩阵"，即"潜空间的噪点图"， +
+然后经过"图像信息创建器"（Image Information Creator）处理后, 输出③处理过的"只能AI识别的图像信息矩阵"，最终交给"图像解码器"来绘制出"人肉眼可见的图像"。
+
+image:/../img/1045.webp[,]
+
+#输入① ②，再输出 ③#，这些步骤不是一次性完成的，而是一个反复迭代多次的进程 ，*每一次迭代都会去掉部分噪点, 并添加更多与目标图片相关的信息。*
+
+image:/../img/1046.svg[,]
+
+在实际模型运行过程中，都可以在每一次迭代步骤后, 添加一个"检查点"，以查看图像中的噪点被逐渐去除的效果。我们在使用 Stable Diffusion WebUI 软件时能够看到，每过一段时间预览窗口中就会生成出一个中间步骤的图像，这个图像逐渐变得清晰，就是源于这些"检查点"。
+
+可以看出，CLIP 文本语义的潜空间矩阵, 和大模型中提炼出来的 U-Net 预测噪点潜空间矩阵, 给 Diffusion 的多次迭代过程提, 供了不断校准的能力。
+
+当扩散过程发生时，每迭代一步就会引入一个 U-Net 预测噪点矩阵，并用之前一步包含噪点的图片, 减去这个预测噪点矩阵，产生一个更好的、噪点更少的图片。
+
+image:/../img/1047.png[,]
+
+
+在第 1、2、4、5、10、30、50 步后查看噪点去除情况: +
+image:/../img/1048.webp[,]
+
+这就是"反向过程"（Reverse Diffusion Process） 。而"前向过程"就是预训练模型阶段，通过不断地加噪点, 去训练模型对每一个阶段噪点的"预测能力"，以便为日后"反向过程"中为每一次迭代"去噪点"阶段, 提供"噪点校准"的能力。
+
+**Diffusion 扩散模型生成图像（反向过程）的过程中, 最关键地方是我们事先拥有了一个强大的 "U-Net 模型"。**
+
+
+
+
+为了找到图片与图片之间潜在的联系与规律，**Stable Diffusion 的运行, 不是在图像本身的"像素维度"上来进行的，而是在图像的压缩版本即"潜空间"中进行的。** +
+**#这种压缩和解压缩过程, 是通过 Autoencoder 自动编码器完成的。#**自动编码器中的 "Encoder 编码器", 将图像"压缩到"潜空间中，然后把处理过的潜空间中的信息, 再交给 Decoder 解码器, 来重建图像。**#这个 Autoencoder 其实是一个VAE#，**Variational Autoencoder 变分自编码器.
+
+image:/../img/1049.webp[,]
+
+Stable Diffusion 的运, 行是在压缩后的"潜空间"中进行的。**由于噪点是以"潜空间中的噪点"形式存在的，**它在上图中用黄色网格来表示，**即"噪点的向量数据矩阵"。**因此，*"噪点预测器 U-Net" 实际是被训练用来预测"压缩后的潜空间中的噪点数据矩阵"的。*
+
+image:/../img/1050.webp[,]
+
+**前向过程, 是把图片压缩到潜空间中，逐步加"噪点矩阵"，生成新数据，来训练"噪点预测器 U-Net" 。**一旦它被训练成功，我们便可以利用它通过"反向过程"来逐步去噪点生成图像。
+
+
+**Clip text 是一个 Text Encoder 文本编码器，**就是图中左上角深蓝色模块，**它本身是一个 Transformer 自然语言模型，它把输入的文本提示词, 生成①的Token embeddings。** +
+**embedding 是指将高维度的数据（可以是文字、图片、声音等）, 映射到低维度空间的过程，其结果也可以称为 embeddings。** +
+在 embedding 中，文本同样以"向量矩阵"的数据形式表现，它们可以被理解成某一个维度空间中连续数值的点。
+
+image:/../img/1051.webp[,]
+
+
+**CLIP， 全称是 Contrastive Language-Image Pre-Training，**中文的翻译是：通过语言与图像比对方式进行预训练，**可以简称为"图文匹配模型"，**即通过对语言和图像之间的一一对应关系进行比对训练，然后产生一个预训练的模型，能为日后有文本参与的生成过程所使用。
+
+**CLIP 本身也是一个神经网络，它将 Text Encoder 从文本中提取的语义特征, 和 Image Encoder 从图像中提取的图像特征, 进行匹配训练。**研究人员发现在后续处理环节中，*用来生成图像的 Diffusion,  与表示的文本数据的 CLIP,  可以非常好地协同工作，这也是为什么 Stable Diffusion 选择 CLIP 作为其图像生成方面的三大基础模型之一的原因。*（ Stable Diffusion 的三大基础模型为 CLIP、Diffusion、VAE ）
+
+
+
+
+
+'''
+
+==== Token 词元
+
+机器读懂词汇和语句是通过 Token (词元)来进行的。是语言类模型的最小数据单位。 +
+在提示词文本, 发送给神经网络之前，Tokenizer 将"组合词、句子、段落、文章"这类型的长文本, 分解为最小单位的 Token 词元，并且用"向量"来表示数据结构，输入给神经网络。
+
+所谓最小单位的“词元”，或者说单词的“片段”，就是不可再拆分的最小语义单位，比如 “waterfall”，会被拆成2个 token：water、fall。 +
+另外，**标点符号也会被分解为 token，**因为标点符号也影响了对全文的语义理解。比如“I don‘t know.”可以分解为5个Token，他们是：“ I ”、“don”、“ ‘t” 、“know”、“.”。
+
+因此，**在 Stable Diffusion 中默认的提示词输入, 最大量为不超过75个，这里的75指的是Token 数，**这并不意味着是75个单词。所以，经常会发生你输入的单词数字没有到达75个时，Token 就已经超过75个了。因为标点符号、复合词等等都会被解读为 Token（当然，现在无需担心在提示词输入框中输入超过75个 Token 的问题，因为它可以通过分段输入的方式来进行）。
+
+
+
+
+
+
+'''
+
+== 所有模型的存放位置
+
+不同类型的模型, 需要放置在特定的文件夹内, 才能被正确识别和使用. 具体分类位置可以在 #extra_model_paths.yaml.example# 文档内查询. 指向的就是models文件夹。
+
+image:/../img/1003.webp[,]
+
+在models文件夹, 除了以上提的常见模型类型，还有很多别的功能模型种类，比如：controlnet、upscale_models等，这些模型通常会以"插件"配合的方式存在.
+
+'''
+
+
+
+== 文生图工作流
+
+image:/../img/1017.webp[,]
+
+'''
+
+==== comfyui 中的节点
+
+每个节点, 相当于一个函数体, 都有"输入"(从前面节点输入进来的参数, 或在本节点直接输入进去的内容) 和"输出"部分(经过本节点函数体处理后, 将数据再输出给后面的节点来处理).
+
+image:/../img/1006.png[,]
+
+'''
+
+==== CheckPoint 主模型
+
+image:/../img/1002.svg[,]
+
+在 ComfyUI 中, checkpoint模型 由 "Load Checkpoint 节点"来加载.
+
+image:/../img/1004.webp[,]
+
+其中, "输出部分"的三个参数连线, 分别是:
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|MODEL
+|模型用于对"潜空间"中的图片, 进行去噪。
+
+|CLIP
+| 模型用于对 文本提示词Prompt, 进行编码, 才能让潜空间理解你的意思。
+
+#CLIP：该模型用于将输入的"正反提示词", 转换为 UNET 模型能够理解的语义向量#，引导 UNET 模型扩散.
+
+比如我们输入了提示词"red dow wearing a coat"，*经过 CLIP 中分词器处理，就会分解为一个个的 Token.* 比如上面的提示词就可以分解为 ['red dow', 'wearing a coat']，而**所有的 Token 会形成一个组，即我们的 Embedding**.
+
+给我们原来的题词中加上绿色的围巾 A close-up of a panda warrior wearing armor and red scarf in the rainforest 一个熊猫战士穿着铠甲和红色围巾在雨林中的特写  ，然后输出。结果虽然是穿上了红色围巾，但是整个画面也有了些红色，*被这个提示词污染了。那么我们该如何修复呢？上面的提示词在同一个 Embedding 中的，所以我们就需要将其分离处理。*
+
+首先我们新建一个 CLIP Text Encode (Prompt) 节点，并将red scarf分离处理到这个新节点中，并**通过 Conditioning (Cancat) （条件联结）节点联结，**可以看到输出结果画面的污染基本得到了解决。
+
+image:/../img/1013.png[,]
+
+image:/../img/1014.webp[,]
+
+
+
+
+|VAE
+|模型用于对"潜在空间"中的图像数据, 进行编码和解码, 才能让你拿到真正的肉眼可见的图片。 +
+#VAE，它负责图像进入"潜空间"的"编码"，和回到"像素空间"的"解码"。#
+
+注意: *图像的"编解码"可不是无损的，因此我们在搭建工作流中要尽量避免频繁的"编解码"，它不仅会消耗算力，更不是无损的。*
+|===
+
+注：StableDIffusion官方模型（checkpoint）, 通常内置有CLIP和VAE模型。
+
+
+Load Checkpoint (主检查点加载器)，它主要传递大模型的三个组件。
+
+image:/../img/1012.webp[,]
+
+
+'''
+
+==== CLIP TextEncode（Prompt）节点
+
+image:/../img/1005.webp[,]
+
+CLIP TextEncode（Prompt）节点, 是用来输入你的"正反向提示词"的.
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+|输入
+|- clip: 用来接收用于对 提示词prompt 进行编码的CLIP模型。  +
+只有通过 clip模型, AI才能把你输入的文本, 和对应的图片, 连接映射起来.
+
+|参数
+|- 文本输入框 → 输入需要模型生成的文本信息。（正/反向提示词）
+
+|输出
+|- CONDITIONING：输出"提示词经过CLIP编码后, 引导模型扩散"的条件信息
+|===
+
+'''
+
+
+==== CLIP Set Last Layer 节点
+
+作用：设置CLIP模型的终止层数
+
+image:/../img/1015.png[,]
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|输入
+|- clip : 接受的CLIP模型，比如 Checkpoint 的CLIP模型
+
+|参数
+|- stop_at_clip_layer：设置在第几层终止
+
+|输出
+|- CLIP：输出具有"新的终止层数"的CLIP模型
+|===
+
+
+'''
+
+==== KSampler 节点
+
+功能是: 在潜空间中, 对噪声图进行逐步去噪.
+
+image:/../img/1007.webp[,]
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|输入
+|- model：接受大模型的输入
+- positive → 接收经过clip编码后的"正向提示词"的条件信息（注意是"条件信息"，即 COMDITIONING）
+- negative → 接收经过clip编码后的"反向提示词"的条件信息（注意是条件信息，即 COMDITIONING）
+- latent_image → 接收"潜空间"中的图像信息。
+
+|参数
+|- #seed# → 该参数表示##"去噪"过程中，噪声生成使用的随机数种子##（种子数有上限）
+- control_after_generate → 表示产生seed之后的控制方式，fixed代表固定种子，increment代表每次增加1，decrement代表每次减少1，randomize表示种子随机选择。
+- #steps# → 该参数表示: 对潜空间图像##进行"指定步数"的去噪##。
+- #cfg# → 该参数为"#提示词引导系数#"，即提示词对最终结果会产生多大的影响。（过高会产生负面影响）
+- ##sampler##_name → 该参数表示您所选择的"#采样器#"名称
+- #scheduler# → 该参数表示您所选择"#调度器#"的名称,负责每一步去噪的程度。（"采样器"和"调度器"在ComfyUI里是分开的）
+
+.. normal：以统一的方式"#均匀#"减少噪声。
+.. karras：以曲线的方式"#慢慢加速#"来优化减少噪声，用的最多且比较科学的方式。
+.. exponential：指数的意思，以"#突然加速#"的方式减少噪声。生成的图像可能有背景虚化的效果。
+.. sgm_uniform：对低步数的采样进行了优化，和 LCM 采样器搭配使用。
+
+- #denoise# → 该参数表示"#去噪幅度#"和"重绘幅度"，值越大, 对图片产生的影响和变化越大（高清修复一般使用较低的值）
+
+|输出
+|- LATENT → 经过KSampler采样器进行"去噪"后的潜空间图像。#输出"采样去噪后"的浅空间图像#.
+|===
+
+
+
+
+'''
+
+==== Empty Latent Image节点
+
+功能: 用来生成"纯噪声"的"潜空间图像"，并且设置图像的比例。
+
+image:/../img/1008.webp[,]
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|参数
+|- width → 要生成"潜空间图像"的宽度。
+- height → 要生成"潜空间图像"的高度。
+- batch_size → 需要生成多少张"潜空间图像"。
+
+注：SD1.0,SD1.5模型的使用尺寸为512*512。 +
+而SDXL，SDturbo则为1024*1024， +
+这取决模型训练时的图像数据。
+
+|输出
+|- LATENT → 输出指定形状和数量的"潜空间图像"。
+|===
+
+
+'''
+
+==== VAE Decode节点
+
+功能: 用来##将"潜空间图像"(AI可识别),解码到"像素空间图像"(人眼可识别)##。
+
+image:/../img/1009.webp[,]
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|输入
+|- samples → 接收 经过"KSampler采样器"处理后的"潜空间图像"。
+- vae → 接收对"潜空间图像"解码使用的"vae模型"（大部分checkpoint自带vae）
+
+|输出
+|- IMAGE → 输出经过vae解码后的"像素空间图像"(人眼可识别)。
+|===
+
+
+'''
+
+==== Preview Image 节点
+
+作用：用于预览图像
+
+image:/../img/1016.webp[,]
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|输入
+|- images：接受要预览的图像
+|===
+
+
+
+'''
+
+==== Save Image 节点
+
+功能: 用于保存生成的图像。 保存图像到 comfyui 的 output 文件夹
+
+image:/../img/1023.webp[,]
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|输入
+|- images：接受输入的图像
+
+|参数
+|
+
+|输出
+|- filename_prefix："保存的图像"的前缀
+|===
+
+
+'''
+
+== 图生图工作流
+
+image:/../img/1018.webp[,]
+
+
+'''
+
+==== Load Image 节点
+
+作用：加载图像
+
+image:/../img/1019.webp[,]
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|输入
+|
+
+|参数
+|- upload：选择相应的图像上传，也可以拖拽图片到方框上传
+
+|输出
+|- IMAGE：输出的图像
+MASK："输出的图像"中的 Alpha 通道信息(透明通道)。
+
+右键图像，选择 Open in Maskeditor , 可进入图像的"蒙版"编辑界面。
+
+image:/../img/1020.png[,]
+
+蒙版编辑的参数:
+
+- Clear：清除绘制的蒙版
+- Thickness：蒙版笔刷的大小
+- Cancel：取消蒙版绘制
+- Save to node：保存蒙版的绘制信息
+
+左键绘制蒙版，右键擦除绘制的蒙版
+
+
+|===
+
+'''
+
+==== Upscale Image By / Upscale Image 节点
+
+作用：有时候输入的图像太大，可以使用该节点来##缩放图像##.
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |参数
+
+|Upscale Image By 节点:  ##按"系数"缩放##图像
+image:/../img/1021.webp[,]
+|.输入：
+- image：接受一张"需要调整大小的图像"
+
+.参数：
+- upscale_method：指定 #用何种"算法"来放大图片#。这些算法通过"插值"的方式, 计算图像调整后新位置的像素值。
+- scale_by：调整"图像的比例"
+
+|Upscale Image 节点: 按"指定宽高"缩放图像
+|image:/../img/1022.webp[,]
+
+
+.参数：
+- width：缩放的宽度
+- height：缩放的高度
+- crop：是否裁剪
+.. disabled：不裁剪
+.. center：居中裁剪后, 再来缩放
+
+|===
+
+
+
+
+'''
+
+==== Pad Image for Outpainting 节点
+
+作用：将输入的图像, 向指定的方向的扩展，生成对应的蒙版, 和扩展后的图像
+
+image:/../img/1024.png[,]
+
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|输入
+|接受图像的输出
+
+|参数
+|- left：向左边扩展像素值
+- top：向上边扩展像素值
+- right：向右边扩展像素值
+- bottom：向下边扩展像素值
+- feathering：*蒙版边缘的羽化值*
+
+|输出
+|
+|===
+
+'''
+
+====  VAE Encode (for Inpainting) 节点
+
+作用：接受蒙版区域信息，控制去噪的区域，对图像进行编码
+
+image:/../img/1025.webp[,]
+
+image:/../img/1026.png[,]
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|输入
+|- pixels：接受图像
+- vae：接受对图像编码的VAE模型
+- mask：接受蒙版信息，控制扩散的区域
+
+|参数
+|- grow_mask_by：蒙版的羽化区域
+
+|输出
+|- LATENT：输出"潜空间图像"信息
+|===
+
+'''
+
+== 局部重绘
+
+==== Load Image (as Mask) 节点
+
+作用：只加载图像的遮罩部分
+
+image:/../img/1027.webp[,]
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|输入
+|
+
+|参数
+|- image：需要处理的外部图像
+- channel：图像通道
+.. alpha：透明通道
+.. red / green / blue：红 / 绿 / 蓝 通道
+
+|输出
+|- mask : 遮罩图
+|===
+
+'''
+
+====  InvertMask 节点
+
+作用：翻转遮罩图
+
+image:/../img/1028.webp[,]
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|输入
+|- mask：原始遮罩图
+
+|参数
+|
+
+|输出
+|- Mask：反转后的遮罩图
+|===
+
+
+'''
+
+==== Set Latent Noise Mask 节点
+
+作用：生成潜空间的"遮罩噪声图"
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|输入
+|- samples：接受经过 KSampler 处理后的潜空间图像
+- mask：遮罩图
+
+|参数
+|
+
+|输出
+|- LATENT：输出潜空间图像信息
+|===
+
+'''
+
+== 潜空间放大
+
+作用：放大"潜空间图像"，并"重新采样"进行细节重绘，注意 denoise 的值不宜过高
+
+image:/../img/1029.webp[,]
+
+'''
+
+==== Upscale Latent By 按系数缩放
+
+image:/../img/1030.webp[,]
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|输入
+|- samples：接受"经过 Ksamples 采样器处理后的潜空间图像"
+
+|参数
+|- upscale_method：放大算法。这些算法通过插值的方式, 计算图像调整后新位置的像素值
+- scale_by：调整图像的比例
+
+|输出
+|- LATENT：缩放后的潜空间图像
+|===
+
+
+
+'''
+
+==== Upscale Latent
+
+image:/../img/1031.webp[,]
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|输入
+|
+
+|参数
+|- width：缩放宽度
+- height：缩放高度
+- crop：是否裁剪
+.. disabled：不裁剪
+.. center：居中裁剪后缩放
+
+|输出
+|- LATENT：缩放后的潜空间图像
+|===
+
+'''
+
+
+== SD 放大
+
+需要安装 Ultimate SD Upscale 插件  +
+https://github.com/ssitu/ComfyUI_UltimateSDUpscale
+
+作用：接受输入的图像，按指定系数, 对图像进行重采样放大。主要原理对潜空间图像"分块重绘放大"。
+
+image:/../img/1032.webp[,]
+
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|输入
+|- image：像素空间的图像，会在节点内部转换为潜空间图像
+- model：接受"大模型"的输入
+- positive：接受"正向提示词"经过CLIP编码后的"条件信息"
+- negative：接受"反向提示词"经过CLIP编码后的"条件信息"
+- vae：编解码图像的"VAE模型"
+- upscale_model："放大图像"的算法
+
+|参数
+|其中圈出参数, 和采样器中的参数一致，这里不再解释
+
+- upscale_by：缩放系数
+- mode_type：分块重绘模式类型
+.. Chess：方块
+.. Linear：线性
+- tile_width：重绘分块的宽
+- tile_height：重绘分块的高
+- mask_blur：分块边缘的羽化像素
+- tile_padding：区块分区，一般默认即可
+- seam_fix_mode：分块之间的接缝修复方式
+.. None：不使用接缝修复。
+.. Band Pass：一般使用该方式
+.. Half Tile：修复能力比较弱
+.. Half Tile + Intersections：折中方式
+- seam_fix_denoise：接缝修复的"去噪程度"，原理也是重绘修复。
+- seam_fix_width：接缝修复的宽度
+- seam_fix_mask_blur：接缝修复区域的羽化
+- seam_fix_padding：接缝修复分区
+- force_unifoem_tiles：强制统一分块
+- tiled_decode：分块是否解码
+
+|输出
+|
+|===
+
+'''
+
+==== Load Upscale Model
+
+作用：加载"放大的算法"模型
+
+image:/../img/1033.webp[,]
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|输入
+|
+
+|参数
+|选择的放大模型
+
+|输出
+|- UPSCALE_MODEL：放大模型
+|===
+
+'''
+
+== 模型放大
+
+作用：通过模型,对"像素空间的图像"进行放大。类似 SD WebUI 的后期处理
+
+image:/../img/1034.webp[,]
+
+
+'''
+
+== SDXL 工作流
+
+
+
+

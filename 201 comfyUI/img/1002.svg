@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 297 318" width="297" xmlns:xlink="http://www.w3.org/1999/xlink" height="318">
+    <defs/>
+    <g transform="translate(-460.50,-445.50)">
+        <g transform="translate(461.50,446.50)" id="shape1">
+            <path fill="#ffffff" d="M294.5,134.5L294.5,.0L.0,.0L.0,134.5L294.5,134.5z" fill-rule="nonzero" stroke="#323232"/>
+            <text style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt" xml:space="preserve">
+                <tspan x="71.3" y="25.5">CheckPoint (ckpt) 主模型</tspan>
+                <tspan x="113.3" y="63.5">里面包含了:</tspan>
+                <tspan x="55.3" y="82.5"> TextEncoder（文本编码器）、</tspan>
+                <tspan x="90.3" y="101.5">U-net（神经网络）</tspan>
+                <tspan x="74.3" y="120.5">和 VAE（变分自解码器）</tspan>
+            </text>
+        </g>
+        <g transform="translate(461.50,670.00)" id="shape2">
+            <path fill="#ffffff" d="M120.0,92.0L120.0,.0L.0,.0L.0,92.0L120.0,92.0z" fill-rule="nonzero" stroke="#323232"/>
+            <text style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt" xml:space="preserve">
+                <tspan x="46.5" y="23.0">ckpt</tspan>
+                <tspan x="8.0" y="42.0">是早期版本的模型</tspan>
+                <tspan x="8.0" y="61.0">格式，</tspan>
+                <tspan style="fill:#c00000" x="47.0">里面可以包</tspan>
+                <tspan style="fill:#c00000" x="14.5" y="80.0">含一些恶意代码</tspan>
+            </text>
+        </g>
+        <g transform="translate(608.75,581.00)" id="shape3">
+            <path fill="none" d="M.0,.0L.0,57.0L-87.3,57.0L-87.3,83.0" stroke="#191919"/>
+            <path fill="#191919" d="M-84.3,83.0L-87.3,89.0L-90.3,83.0L-84.3,83.0" stroke-width="1" stroke="#191919" stroke-linecap="round"/>
+            <rect fill="#ffffff" width="209.0" height="19.0" x="-103.5" y="19.9"/>
+            <text style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt" xml:space="preserve">
+                <tspan x="-103.5" y="34.9">格式一般有ckpt 和 safetensors两种</tspan>
+            </text>
+        </g>
+        <g transform="translate(636.00,670.00)" id="shape4">
+            <path fill="#ffffff" d="M120.0,92.0L120.0,.0L.0,.0L.0,92.0L120.0,92.0z" fill-rule="nonzero" stroke="#323232"/>
+            <text style="fill:#191919;font-family:Microsoft YaHei;font-size:10.00pt" xml:space="preserve">
+                <tspan x="25.0" y="32.5">safetensors</tspan>
+                <tspan style="fill:#c00000" x="8.0" y="51.5">只包含数据，没有</tspan>
+                <tspan style="fill:#c00000" x="11.0" y="70.5">任何代码, 更安全</tspan>
+            </text>
+        </g>
+        <g transform="translate(608.75,581.00)" id="shape5">
+            <path fill="none" d="M.0,.0L.0,57.0L87.3,57.0L87.3,83.0" stroke="#191919"/>
+            <path fill="#191919" d="M90.3,83.0L87.3,89.0L84.3,83.0L90.3,83.0" stroke-width="1" stroke="#191919" stroke-linecap="round"/>
+        </g>
+    </g>
+</svg>
