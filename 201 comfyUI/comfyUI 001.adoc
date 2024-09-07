@@ -65,7 +65,7 @@ image:img/0084.png[,]
 == comfyui 的设置
 
 
-==== 让 comfyUI 和 sd web ui 共享模型
+==== ★ 让 comfyUI 和 sd web ui 共享模型
 
 
 
@@ -185,7 +185,12 @@ image:img/0032.png[,]
 '''
 
 
-==  添加 Openpose
+== ★ 添加 controlNet Openpose
+
+image:img/0088.png[,]
+
+
+下面的不用看了
 
 image:img/0037.png[,]
 
