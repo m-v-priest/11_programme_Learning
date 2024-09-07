@@ -8,9 +8,67 @@
 
 '''
 
-.让 comfyUI 和 sd web ui 共享模型
-[%collapsible]
-====
+== 安装 comfyui
+
+官网地址 +
+https://github.com/comfyanonymous/ComfyUI?tab=readme-ov-file
+
+image:img/0082.png[,]
+
+大多数情况下点击run_nvidia_gpu.bat就可以运行了
+
+
+'''
+
+== 安装插件
+
+==== 安装新插件
+
+image:img/0033.png[,]
+
+image:img/0034.png[,]
+
+image:img/0035.png[,]
+
+'''
+
+==== 安装 comfyui 节点管理器
+
+官网安装地址 +
+https://github.com/ltdrdata/ComfyUI-Manager
+
+image:img/0083.png[,]
+
+1. 点击"download ZIP",下载到本地.
+2. 解压它, 将里面的包, 拷贝到 D:\ my\ComfyUI_windows_portable_nvidia\ComfyUI_windows_portable\ComfyUI\custom_nodes 目录.
+3. 然后重新启动comfyui,  软件会自动安装插件中的依赖, 需要等一会时间.
+
+image:img/0084.png[,]
+
+
+
+
+
+
+
+
+
+'''
+
+
+==== "查看CPU/GPU/内存资源消耗、出图进度和已用时间" 插件: ComfyUI-Crystools
+
+
+
+
+'''
+== comfyui 的设置
+
+
+==== 让 comfyUI 和 sd web ui 共享模型
+
+
+
 打开 comfyUI 中的这个文件
 
 image:img/0001.png[,]
@@ -20,25 +78,29 @@ image:img/0002.png[,]
 保存后就行了, 然后重启 comfyUI, 就能看到所有 sd web ui 中共享的模型了.
 
 '''
-====
 
-.安装新插件
-[%collapsible]
-====
-image:img/0033.png[,]
 
-image:img/0034.png[,]
+==== 让节点间的连线变成直线
 
-image:img/0035.png[,]
+image:img/0085.png[,]
+
+image:img/0086.png[,]
+
+image:img/0087.png[,]
 
 '''
-====
+
+== 安装模型
+
+checkpoint 官方 1.5版 模型 (不用翻墙, 可直接打开) +
+https://cyberes.github.io/stable-diffusion-models/#stable-diffusion-1-5
 
 
 
-.第一课: 生成一张图片 (没用到lora)
-[%collapsible]
-====
+'''
+
+
+== 第一课: 生成一张图片 (没用到lora)
 
 image:img/0003.png[,]
 
@@ -61,11 +123,11 @@ image:img/0011.png[,]
 image:img/0012.png[,]
 
 '''
-====
 
-.第二课: 控制画面上元素的生成位置
-[%collapsible]
-====
+
+
+== 第二课: 控制画面上元素的生成位置
+
 
 image:img/0013.png[,]
 
@@ -102,11 +164,10 @@ image:img/0027.png[,]
 image:img/0028.png[,]
 
 '''
-====
 
-.添加 lora 模型
-[%collapsible]
-====
+
+== 添加 lora 模型
+
 image:img/0029.png[,]
 
 image:img/0030.png[,]
@@ -122,27 +183,25 @@ image:img/0032.png[,]
 现在, 就能运行了.
 
 '''
-====
 
-.添加 Openpose
-[%collapsible]
-====
+
+==  添加 Openpose
+
 image:img/0037.png[,]
 
 '''
-====
 
 
 
-.workflow 工作流
-[%collapsible]
-====
+
+== workflow 工作流
+
 当你下载了一个workflow并加载后，如果发现有大量的红色节点, 这是因为缺失了一些custom node，并且ComfyUI已经把缺的列出来了. 这时只需打开Manager，点击Install Missing Custom Nodes, 它会自动把这个workflow需要补充的插件摆好.
 
 image:img/0036.png[,]
 
 '''
-====
+
 
 
 
