@@ -1,0 +1,43 @@
+
+= comfyui 局部重绘
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: ../../myAdocCss.css
+
+
+'''
+
+== 用法
+
+image:img/0089.png[,100%]
+
+'''
+
+==== vae encode for inpainting 节点说明
+
+官方说明: +
+https://blenderneko.github.io/ComfyUI-docs/Core%20Nodes/Latent/inpaint/VAEEncodeForInpainting/
+
+
+The _VAE Encode For Inpainting_ node can be used to encode (v.) _pixel space_ images into _latent space_ images, using the provided VAE. It also takes a mask for inpainting, indicating to _a sampler node_ which parts of the image should be denoised. The area of the mask can be increased using _grow_mask_by_ to provide the inpainting process with some additional padding to work with.
+
+
+VAE Encode For Inpainting 节点, 用来将"像素空间"的图片, 转成"潜空间"中的图片, 并且它还带有蒙版区域. 该蒙版在潜在空间中, 会被噪点化. 这块蒙版区域, 能用 grow_mask_by 来增加蒙版的面积.
+
+
+image:img/0091.png[,100%]
+
+
+
+
+
+'''
+
+==== Set Latent Noise Mask 节点说明
+
+官方说明: +
+https://blenderneko.github.io/ComfyUI-docs/Core%20Nodes/Latent/inpaint/SetLatentNoiseMask/
+
+
+image:img/0090.png[,100%]

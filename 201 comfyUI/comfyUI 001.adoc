@@ -58,6 +58,22 @@ image:img/0084.png[,]
 
 ==== "查看CPU/GPU/内存资源消耗、出图进度和已用时间" 插件: ComfyUI-Crystools
 
+'''
+
+==== 安装 ComfyUI_TensorRT 插件, 能加速 comfyui 的出图速度
+
+https://github.com/comfyanonymous/ComfyUI_TensorRT.git
+
+安装完插件后,
+
+'''
+==== 肖像大师
+
+原版 +
+https://github.com/florestefano1975/comfyui-portrait-master/
+
+汉化版 +
+https://github.com/ZHO-ZHO-ZHO/comfyui-portrait-master-zh-cn
 
 
 
@@ -78,6 +94,8 @@ image:img/0002.png[,]
 保存后就行了, 然后重启 comfyUI, 就能看到所有 sd web ui 中共享的模型了.
 
 '''
+
+
 
 
 ==== 让节点间的连线变成直线
