@@ -1,0 +1,35 @@
+
+= comfyui 遮罩
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+
+'''
+
+== 预览遮罩
+
+image:/img/0098.png[,]
+
+如果想让空白图片, 和人物图片具有相同的宽高尺寸, 可以用 getImageSize 节点, 来接收人物图片的尺寸
+
+image:/img/0100.png[,]
+
+
+'''
+
+== 翻转遮罩
+
+image:/img/0101.png[,]
+
+'''
+
+== 用黑白图(透明 png), 转成蒙版
+
+如果要做视频, 那只能用蒙版, 而不是遮罩. 因为蒙版能动态, 遮罩只能静态.
+
+image:/img/0102.png[,]
+
+'''
+
