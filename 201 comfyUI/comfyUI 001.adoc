@@ -203,17 +203,6 @@ image:img/0032.png[,]
 '''
 
 
-== ★ 添加 controlNet Openpose
-
-image:img/0088.png[,]
-
-
-下面的不用看了
-
-image:img/0037.png[,]
-
-'''
-
 
 
 
