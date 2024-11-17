@@ -1,0 +1,25 @@
+
+= comfyui 提示词
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+
+'''
+
+== 从图片反推出提示词 -> wd14 tagger 节点
+
+image:img/0113.png[,]
+
+
+image:img/0114.png[,]
+
+image:img/0115.png[,]
+
+image:img/0116.png[,]
+
+image:img/0117.png[,]
+
+'''
+

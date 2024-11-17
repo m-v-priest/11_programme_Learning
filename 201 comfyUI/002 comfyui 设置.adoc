@@ -1,0 +1,106 @@
+
+= comfyui 的设置
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+
+'''
+
+
+== 安装 comfyui
+
+官网地址 +
+https://github.com/comfyanonymous/ComfyUI?tab=readme-ov-file
+
+image:img/0082.png[,]
+
+大多数情况下点击run_nvidia_gpu.bat就可以运行了
+
+
+'''
+
+== ★ 让 comfyUI 和 sd web ui 共享模型
+
+
+
+打开 comfyUI 中的这个文件
+
+image:img/0001.png[,]
+
+image:img/0002.png[,]
+
+保存后就行了, 然后重启 comfyUI, 就能看到所有 sd web ui 中共享的模型了.
+
+'''
+
+
+== 安装模型
+
+checkpoint 官方 1.5版 模型 (不用翻墙, 可直接打开) +
+https://cyberes.github.io/stable-diffusion-models/#stable-diffusion-1-5
+
+
+
+'''
+
+
+== 让节点间的连线变成直线
+
+image:img/0085.png[,]
+
+image:img/0086.png[,]
+
+image:img/0087.png[,]
+
+'''
+
+
+== 安装插件
+
+==== 安装新插件
+
+image:img/0033.png[,]
+
+image:img/0034.png[,]
+
+image:img/0035.png[,]
+
+'''
+
+==== 安装 comfyui 节点管理器
+
+官网安装地址 +
+https://github.com/ltdrdata/ComfyUI-Manager
+
+image:img/0083.png[,]
+
+1. 点击"download ZIP",下载到本地.
+2. 解压它, 将里面的包, 拷贝到 D:\ my\ComfyUI_windows_portable_nvidia\ComfyUI_windows_portable\ComfyUI\custom_nodes 目录.
+3. 然后重新启动comfyui,  软件会自动安装插件中的依赖, 需要等一会时间.
+
+image:img/0084.png[,]
+
+
+
+
+
+
+
+
+
+'''
+
+
+==== "查看CPU/GPU/内存资源消耗、出图进度和已用时间" 插件: ComfyUI-Crystools
+
+'''
+
+==== 安装 ComfyUI_TensorRT 插件, 能加速 comfyui 的出图速度
+
+https://github.com/comfyanonymous/ComfyUI_TensorRT.git
+
+安装完插件后,
+
+'''
