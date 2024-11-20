@@ -8,6 +8,30 @@
 
 '''
 
+== controlnet 预处理器 下载
+
+这里推荐两个插件：
+
+ControlNet 预处理器插件：包含各种常用的ControlNet预处理器。 +
+https://github.com/Fannovel16/comfyui_controlnet_aux
+
+高级ControlNet：支持 ControlNet 调度和遮罩等高级特性。 +
+https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet
+
+在 ComfyUI 管理器中点击“通过 Git URL 安装”，输入上边的链接，即可开始安装。
+
+对于 ComfyUI，请安装 comfyui_controlnet_aux 扩展
+如果需要使用 ControlNet-LLLite，请安装 ControlNet-LLLite-ComfyUI 扩展
+
+ControlNet 预处理器模型存放路径：ComfyUI/custom_nodes/comfyui_controlnet_aux/ckpts/lllyasviel/Annotators
+
+ControlNet 模型存放路径：ComfyUI/models/controlnet
+
+ControlNet-LLLite 模型存放路径：ComfyUI/custom_nodes/ControlNet-LLLite-ComfyUI/models
+
+
+'''
+
 == controlnet 模型的存放位置
 
 C:\software\+++ComfyUI-aki-v1.3\ComfyUI-aki-v1.3\models\controlnet

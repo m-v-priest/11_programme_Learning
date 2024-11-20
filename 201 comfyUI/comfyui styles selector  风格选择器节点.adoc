@@ -1,0 +1,6 @@
+
+= styles selector 风格选择器节点
+
+可以选择各种风格, 真人, 动漫, 3d等,
+
+image:img/0123.png[,]
