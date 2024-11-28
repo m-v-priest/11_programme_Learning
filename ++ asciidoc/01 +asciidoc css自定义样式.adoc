@@ -76,7 +76,7 @@ h1, h2, h3, h4, h5, h6, #toctitle,
 
 效果:
 
-image:img_adoc,md,other/img_adoc/adoc_11.png[,%]
+image:../img_adoc,md,other/img_adoc/adoc_11.png[,%]
 
 
 注意: 你使用上边的自定义css时, 会把 asciidoc的默认css给完全覆盖掉, 这意味着你的 目录显示在左侧的代码会失效, 表格也会变得不好看.
@@ -105,7 +105,7 @@ image:img_adoc,md,other/img_adoc/adoc_11.png[,%]
 
 效果如下:
 
-image:img_adoc,md,other/img_adoc/adoc_12.png[,%]
+image:../img_adoc,md,other/img_adoc/adoc_12.png[,%]
 
 
 可以看出来 `[.myRed]# ... #` 相当于这个html标签 `<div>...</div>`
@@ -113,4 +113,40 @@ image:img_adoc,md,other/img_adoc/adoc_12.png[,%]
 '''
 
 
+== #自定义css, 来取代 asciidoc 默认的样式#
+
+官方教程: https://docs.asciidoctor.org/asciidoctor/latest/html-backend/custom-stylesheet/
+
+(1).在和你的 asciidoc文件的 同目录中, 创建css文件, 比如起名叫 my-stylesheet.css
+
+css内容比如如下:
+....
+body {
+  color: #ff0000;
+}
+....
+
+
+(2).将 `:stylesheet: my-stylesheet.css` 这句话, 添加到你的asciidoc文档标题中.
+
+....
+= 方法论
+:stylesheet: my-stylesheet.css   ← 写在这里
+:toc: left
+:toclevels: 3
+:sectnums:
+....
+
+
+'''
+
+
+== 修改asciidoc自带的默认css样式
+
+官方教程: https://docs.asciidoctor.org/asciidoctor/latest/html-backend/default-stylesheet/#customize-extend
+
+
+
+
+''''
 

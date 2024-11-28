@@ -1,0 +1,127 @@
+
+= asciidoc 插入_链接, 锚点
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+== #用相对路径, 链接到本机的另一个adoc文件#
+
+....
+link:相对路径/file.adoc[本链接在页面上显示时, 可自定义的文字]
+....
+
+注意:
+
+1. file文件名中, 不能有空格! 也不能有英文的单引号和双引号， 只能用中文的双引号.
+2. [] 中括号里面, 可以写上你自定义的, 该链接的展示文字
+
+效果:
+
+link:相对路径/file.adoc[本链接在页面上显示时, 可自定义的文字]
+
+
+---
+
+== ★ 页面内链接(锚点)
+
+```
+锚点：[[本锚点名字]]
+链接：<<本锚点名字, 点我跳转>>
+```
+
+例如,
+
+....
+[#sec_a]  // 设置锚点
+== Section A
+
+content A
+
+
+---
+
+[id="sec_b"] // 设置锚点
+== Section B
+
+content B
+
+
+---
+
+[[sec_c]] // 设置锚点
+== Section C
+
+content C
+---
+
+
+<<sec_a, 点我跳转到sec_a处>>  // 跳转到锚点处
+
+....
+
+官方文档 https://asciidoc-py.github.io/userguide.html, 搜索关键词 "13. BlockId Element"
+
+---
+
+==== ★ 设置 id (可作为锚点用) -> 有三种写法: ① #idName, ② id=idName, ③ \[[idName]]
+
+[options="autowidth"]
+|===
+|设置id的写法 |Header 2
+
+|#
+|
+
+|id=
+|
+
+|[[]]
+|
+|===
+
+id必须写在第一行前面! +
+例如:
+....
+[#goals]
+* Goal 1
+* Goal 2
+....
+
+....
+[id=goals]
+* Goal 1
+* Goal 2
+....
+
+....
+[[goals]]
+* Goal 1
+* Goal 2
+....
+
+....
+[#free_the_world]*free the world*
+....
+
+
+
+
+---
+
+== ★ 链接到另一个文件中的某锚点处
+
+比如, 你在当前文件(比如 asciiDoc_1.adoc), 要链接到 asciiDoc_2.adoc中的锚点sec_b 处, 就写成:
+
+....
+asciiDoc_1.adoc 中的内容:
+
+<<asciiDoc_2.adoc#sec_b>>
+
+<<asciiDoc_2.adoc#abc, 点我链接到2文件的abc锚点处>>
+
+....
+
+'''

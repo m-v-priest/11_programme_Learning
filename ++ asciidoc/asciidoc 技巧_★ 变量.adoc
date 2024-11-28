@@ -1,0 +1,93 @@
+
+= AsciiDoc格式, 扩展名是 .adoc
+:toc: left
+:toclevels: 3
+:sectnums:
+// :stylesheet: myAdocCss.css
+
+'''
+
+
+== ★ 自定义代换 -> :<name>: <value>
+
+官方文档介绍 : https://asciidoc.org/asciidoc.css-embedded.html#X18
+
+https://stackoverflow.com/questions/52528641/with-asciidoctor-how-to-pass-variables-in-source-and-example-blocks
+
+==== 用法及效果展示
+....
+:刘备: 蜀国皇帝刘玄德
+
+//相当于kv键值对, 这行内容渲染后不可见.
+//注意: 第二个冒号后, 即value前, 必须要有一个空格!
+
+我是{刘备}  //会替换{}中的内容(即key), 为上面定义的value值
+....
+
+效果:
+
+:刘备: 蜀国皇帝刘玄德
+
+我是{刘备}
+
+'''
+
+====  如果要暂时令替换功能失效, 可以写成 -> :<name>!:
+
+....
+:刘备!: 蜀国皇帝刘玄德
+//将感叹号!写在冒号内, 则该 key 不会被后面的value值替换
+
+我是{刘备}
+....
+
+效果:
+
+:刘备!: 蜀国皇帝刘玄德
+
+我是{刘备}
+
+'''
+
+又如:
+
+....
+
+:country: France   //定义变量
+:city: Shanghai
+
+[source, subs="attributes"]   //注意这里要加上 subs属性
+----
+  print("{country} is a country")   //使用变量
+  print("{city} is a city")
+----
+
+.Example with better alignment
+====
+[subs="attributes"]
+    {country} is a country
+    {city} is a city
+====
+
+....
+
+效果如下:
+
+:country: France
+:city: Shanghai
+
+[source, subs="attributes"]
+----
+  print("{country} is a country")
+  print("{city} is a city")
+----
+
+.Example with better alignment
+====
+[subs="attributes"]
+    {country} is a country
+    {city} is a city
+====
+
+'''
+

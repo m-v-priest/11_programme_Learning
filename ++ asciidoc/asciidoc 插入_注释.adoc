@@ -1,0 +1,23 @@
+
+= asciidoc 插入 - 注释
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+
+== 注释 -> //
+犹如程序一样, 被注释的内容, 不会渲染在页面上.
+```
+// 单行注释
+```
+
+```
+////
+块注释
+////
+```
+
+'''

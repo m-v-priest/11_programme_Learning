@@ -1,0 +1,128 @@
+
+
+= asciidoc 效果样式_标题
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+== 标题
+
+```
+= 文档标题 (0级) =
+== 段落标题 (1级) ==
+=== 段落标题 (2级) ===
+==== 段落标题 (3级) ====
+===== 段落标题 (4级) =====
+```
+
+---
+
+
+== ★ 在内文年段落中的小标题 -> 前面加个点.即可
+
+....
+.Optional Title
+
+Usual
+paragraph.
+....
+
+.Optional Title
+
+Usual
+paragraph.
+
+又例: ---------- ----------
+
+....
+.Optional Title
+
+ Literal paragraph.
+  Must be indented.
+....
+
+.Optional Title
+
+ Literal paragraph.
+  Must be indented.
+
+又例: ---------- ----------
+
+....
+.Optional Title
+NOTE: This is an example
+      single-paragraph note.
+....
+
+.Optional Title
+NOTE: This is an example
+      single-paragraph note.
+
+又例: ---------- ----------
+
+
+....
+.Optional Title
+[NOTE]
+This is an example
+single-paragraph note.
+....
+
+
+.Optional Title
+[NOTE]
+This is an example
+single-paragraph note.
+
+又例: ---------- ----------
+
+....
+.Optional Title
+****
+*Sidebar* Block
+
+Use: sidebar notes :)
+****
+....
+
+
+.Optional Title
+****
+*Sidebar* Block
+
+Use: sidebar notes :)
+****
+
+又例: ---------- ----------
+
+....
+.Optional Title
+====
+*Example* Block
+
+aa
+
+ [caption="Custom: "]
+
+bbb
+====
+....
+
+.Optional Title
+====
+*Example* Block
+
+aa
+
+ [caption="Custom: "]
+
+bbb
+====
+
+又例: ---------- ----------
+
+'''
+

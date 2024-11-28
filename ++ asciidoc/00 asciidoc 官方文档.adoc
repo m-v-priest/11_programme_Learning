@@ -1,0 +1,31 @@
+
+= asciidoc 官方文档
+=
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+== 官方文档
+
+https://www.ahamojo.com/global-dev/developer/page/ahamojo/ahamojoIntroduction/asciidoc.adoc#_%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F
+
+https://docs.asciidoctor.org/asciidoc/latest/
+
+https://asciidoctor.org/docs/user-manual/#cols-format
+
+
+各种块的写法, 可见下面
+https://asciidoctor.cn/docs/asciidoc-syntax-quick-reference/index.html#block-id-role-and-options
+
+及 ★ +
+http://www.seinan-gu.ac.jp/~shito/asciidoctor/html_chunk/chap16.html#links
+
+快速教程
+
+https://powerman.name/doc/asciidoc
+
+
+'''

@@ -1,0 +1,232 @@
+
+= asciidoc 插入 html
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+== 嵌入html
+把html代码, 用两个\++++包裹起来即可. 例如:
+
+....
+++++
+<p>
+朝辞<b>白帝</b>彩云间，<u style="background-color:rgb(255,255,0)">千里江陵一日还</u>。<u>下划线</u>
+两岸猿声啼不住，<span style="font-weight: bolder;">轻舟已过万重山</span>。
+</p>
+++++
+....
+
+== 下划线u, 换行br, 样式css -> 有效;  加粗b -> 无效
+
+上面例子的显示效果:
+
+++++
+<p>
+朝辞<b>白帝</b>彩云间，<u style="background-color:rgb(255,255,0)">千里江陵一日还</u>。 <u>下划线</u>
+两岸猿声啼不住，<span style="font-weight: bolder;">轻舟已过万重山</span>。
+</p>
+++++
+
+[options="autowidth"]
+|===
+|是否有效 |tag
+
+|有效的
+|下划线<u>, 换行<br/> +
+css背景色样式 <tag style="background-color:rgb(255,255,0)">
+
+|无效的
+|加粗<b>, 即使用css样式来加粗,也无效
+|===
+
+
+---
+
+== pre代码块 -> 有效
+
+pre代码块有效, 但是代码里如果出现"<"或">"符号时, 需要对它们进行转义! 否则<pre>会错乱.
+
+写法:
+....
+++++
+<pre>
+for (var i=0;i&lt;cars.length;i++){
+    console.log(123)
+}
+</pre>
+++++
+....
+
+效果:
+
+++++
+<pre>
+for (var i=0;i&lt;cars.length;i++){
+    console.log(123)
+}
+</pre>
+++++
+
+
+常用的转义:
+
+[options="autowidth"]
+|===
+|特殊符号 |必须被转义成符号实体
+
+|<
+|\&lt;
+
+|>
+|\&gt;
+
+|&
+|\&amp;
+
+|"
+|\&quot;
+
+|'
+|\&apos;
+|===
+
+完整的实体符号, 见: http://www.w3school.com.cn/tags/html_ref_entities.html
+
+
+---
+
+
+== img图像 -> 有效
+
+写法:
+....
+++++
+<img src="https://www.google.cn/landing/cnexp/google-search.png" alt="" width="200">
+++++
+....
+
+效果
+++++
+<img src="https://www.google.cn/landing/cnexp/google-search.png" alt="" width="200">
+++++
+
+---
+
+== form表格 -> 有效
+
+写法:
+....
+++++
+<table border="1">
+    <tr>
+        <td>row 1, cell 1</td>
+        <td>row 1, cell 2</td>
+    </tr>
+    <tr>
+        <td>row 2, cell 1</td>
+        <td>row 2, cell 2</td>
+    </tr>
+</table>
+++++
+....
+
+效果
+++++
+<table border="1">
+    <tr>
+        <td>row 1, cell 1</td>
+        <td>row 1, cell 2</td>
+    </tr>
+    <tr>
+        <td>row 2, cell 1</td>
+        <td>row 2, cell 2</td>
+    </tr>
+</table>
+++++
+
+
+---
+
+== form表单 -> 有效
+
+写法:
+....
+++++
+<form action="form_action.asp" method="get">
+  First name: <input type="text" name="fname"/> <br/>
+  Last name: <input type="text" name="lname"/> <br/>
+  <textarea rows="3" cols="20"></textarea> <br/>
+  <input type="submit" value="Submit" />
+</form>
+++++
+....
+
+效果
+++++
+<form action="form_action.asp" method="get">
+  First name: <input type="text" name="fname"/> <br/>
+  Last name: <input type="text" name="lname"/> <br/>
+  <textarea rows="3" cols="20"></textarea> <br/>
+  <input type="submit" value="Submit" />
+</form>
+++++
+
+---
+
+
+== ul列表 -> 有效
+
+写法:
+....
+++++
+<ul>
+<li>Coffee</li>
+<li>Milk</li>
+</ul>
+++++
+....
+
+效果:
+
+++++
+<ul>
+<li>Coffee</li>
+<li>Milk</li>
+</ul>
+++++
+
+---
+
+== css背景色 -> 有效. 但github中无效
+
+....
+++++
+<pre>
+function fn() {
+    let arr = []
+    for(let i =0;i&lt;10;i++) {
+     <span style="background:#900000; color:#FFF">arr.push(parseInt(Math.random()*100));</span>
+    }
+    return arr
+}
+</pre>
+++++
+....
+
+效果
+++++
+<pre>
+function fn() {
+    let arr = []
+    for(let i =0;i&lt;10;i++) {
+     <span style="background:#900000; color:#FFF">arr.push(parseInt(Math.random()*100));</span>
+    }
+    return arr
+}
+</pre>
+++++
+
+'''
