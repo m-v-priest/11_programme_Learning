@@ -8,17 +8,6 @@
 
 '''
 
-==== 肖像大师
-
-原版 +
-https://github.com/florestefano1975/comfyui-portrait-master/
-
-汉化版 +
-https://github.com/ZHO-ZHO-ZHO/comfyui-portrait-master-zh-cn
-
-
-
-'''
 
 == 第一课: 生成一张图片 (没用到lora)
 

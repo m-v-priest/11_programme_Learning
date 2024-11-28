@@ -95,6 +95,20 @@ image:img/0084.png[,]
 
 ==== "查看CPU/GPU/内存资源消耗、出图进度和已用时间" 插件: ComfyUI-Crystools
 
+
+'''
+
+==== 查看每个节点运行时间的插件 easy use
+
+image:img/0124.png[,]
+
+image:img/0125.png[,]
+
+image:img/0126.png[,]
+
+image:img/0127.png[,]
+
+
 '''
 
 ==== 安装 ComfyUI_TensorRT 插件, 能加速 comfyui 的出图速度

@@ -46,3 +46,40 @@ https://blenderneko.github.io/ComfyUI-docs/Core%20Nodes/Latent/inpaint/SetLatent
 
 
 image:img/0090.png[,100%]
+
+'''
+
+== brushNet 插件
+
+官网 +
+https://github.com/nullquant/ComfyUI-BrushNet
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|1.下载 brushNet 插件
+|image:img/0128.png[,100%]
+
+|2.下载模型
+| - ① `diffusion_pytorch_model.safetensors` 模型, 和 ② `pytorch_model.bin` 模型, 放入 C:\software\+++ComfyUI-aki-v1.3\ComfyUI-aki-v1.3\models\inpaint 目录中 +
+模型下载地址: https://huggingface.co/JunhaoZhuang/PowerPaint-v2-1/tree/main/PowerPaint_Brushnet
+
+- ③ `model.safetensors` 模型, 放到 C:\software\+++ComfyUI-aki-v1.3\ComfyUI-aki-v1.3\models\clip 目录中 +
+模型下载地址:  https://huggingface.co/ashllay/stable-diffusion-v1-5-archive/tree/main/text_encoder
+
+|使用方法
+|第1步: 把 brushnet节点, 放到 clip提示词, 和 k sample 采样器中间就行了.  +
+第2步: 然后别忘了给 brushNet节点, 加载一个 brushNet 模型.
+image:img/0129.png[,100%]
+
+|===
+
+'''
+
+
+
+
+
+

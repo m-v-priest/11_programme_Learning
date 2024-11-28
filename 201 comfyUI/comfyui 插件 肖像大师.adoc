@@ -1,0 +1,23 @@
+
+= 插件 肖像大师
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+
+'''
+
+==== 肖像大师
+
+原版 +
+https://github.com/florestefano1975/comfyui-portrait-master/
+
+汉化版 +
+https://github.com/ZHO-ZHO-ZHO/comfyui-portrait-master-zh-cn
+
+
+
+'''
+
+
