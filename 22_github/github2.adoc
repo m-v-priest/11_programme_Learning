@@ -83,10 +83,168 @@ image:img_github/0062.png[,]
 
 
 
+'''
+
+== 报错: ssh: connect to host git.zhlh6.cn port 22: Network is unreachable
+
+这个报错中, 有cn字样, 说明你没有用git官方服务器.
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|1.查看当前配置的远程仓库地址
+|输入 git remote -v
+
+image:/img_github/0067.png[,]
+
+从这里可以看到，当前远程地址是基于 git.zhlh6.cn 的。
+
+|2.获取 GitHub 仓库的官方地址
+|登录你的 GitHub 账号，找到目标仓库，点击 Code 按钮，可以看到 HTTPS 或 SSH 格式的仓库地址，例如：
+
+HTTPS 格式：https://github.com/username/repository.git +
+SSH 格式：git@github.com:username/repository.git
+
+|3.修改远程仓库地址
+|根据你选择的协议（HTTPS 或 SSH），运行以下命令修改远程地址：
+
+如果选择 HTTPS：
+....
+git remote set-url origin https://github.com/username/repository.git
+....
+
+如果选择 SSH：
+....
+git remote set-url origin git@github.com:username/repository.git
+....
+
+|4.验证远程地址修改
+|再次查看远程地址，确保修改成功：git remote -v
+
+输出应类似：
+....
+origin  https://github.com/username/repository.git (fetch)
+origin  https://github.com/username/repository.git (push)
+....
+
+或
+....
+origin  git@github.com:username/repository.git (fetch)
+origin  git@github.com:username/repository.git (push)
+....
+
+image:/img_github/0069.png[,]
+
+image:/img_github/0068.png[,]
+
+现在, 再次 git pull origin master 等, 就正常了.
+
+|===
+
+
 
 
 '''
 
+
+== (这个不用看了)报错: ssh: connect to host git.zhlh6.cn port 22: Network is unreachable
+
+报错
+....
+ssh: connect to host git.zhlh6.cn port 22: Network is unreachable
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+....
+
+这个错误提示表明, 你的电脑无法通过 SSH 协议, 连接到 git.zhlh6.cn，可能的原因包括: 网络问题、SSH 配置错误, 或远程仓库地址有误。
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|1.检查远程地址 :   +
+|报错中出现的 git.zhlh6.cn 可能不是 GitHub 的官方地址
+
+要查看当前配置的远程地址, 就用下面的命令:
+....
+git remote -v
+....
+
+image:/img_github/0063.png[,]
+
+如果地址不正确，修改为 GitHub 的正确仓库地址。例如：
+....
+git remote set-url origin git@github.com:username/repository.git
+....
+
+
+
+
+
+|2.测试网络连接
+|使用 ping 测试是否能连接到 GitHub
+....
+ping github.com
+....
+
+比如, 我们来 ping 你上面的中国服务器
+
+image:/img_github/0064.png[,]
+
+从 ping 的结果来看，网络是畅通的，但这只说明可以通过 ICMP 协议（ping 使用的协议）与服务器通信。即使 ping 正常，SSH 可能仍受限（如防火墙阻止 22 端口）。
+
+
+|3.测试 SSH 配置
+|尝试以下命令, 检查 SSH 端口是否通畅
+
+....
+telnet git.zhlh6.cn 22
+....
+
+注意: win10 默认没有安装 telnet, 可以这样安装:
+用win+R键打开运行程序，在输入框里输入：OptionalFeatures, 回车
+
+image:/img_github/0065.png[,]
+
+
+或, 使用其他端口测试连接
+....
+ssh -T -p 443 git@104.21.51.157
+....
+
+
+image:/img_github/0066.png[,]
+
+根据上图返回的结果, 综合判断是: 你的网络和目标服务器之间存在访问限制，主要表现在： +
+22 端口被阻止，无法进行 SSH 通信。 +
+443 端口的连接未成功，可能是目标服务器未支持。
+
+
+
+
+|4.切换端口或协议
+|
+
+|5.进一步调试
+|
+|===
+
+
+
+
+
+
+
+
+
+
+
+'''
 
 == ★ 强制将本地文件, 上传覆盖掉github上的仓库
 
