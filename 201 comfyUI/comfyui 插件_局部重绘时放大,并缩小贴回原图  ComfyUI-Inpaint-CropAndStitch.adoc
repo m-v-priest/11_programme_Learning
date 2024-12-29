@@ -1,0 +1,21 @@
+
+= 局部重回时, 放大重绘, 并缩小后贴回原图原位置 ComfyUI-Inpaint-CropAndStitch
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+
+'''
+
+== 插件名 ComfyUI-Inpaint-CropAndStitch
+
+插件地址: +
+https://github.com/lquesada/ComfyUI-Inpaint-CropAndStitch?tab=readme-ov-file
+
+image:/img/0132.png[,%]
+
+image:/img/0131.png[,%]
+
+
+

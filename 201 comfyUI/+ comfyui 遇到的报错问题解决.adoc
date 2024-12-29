@@ -1,0 +1,69 @@
+
+= comfyui 中 遇到的报错问题解决
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+
+'''
+
+== 无法通过github 安装, 报错: This action is not allowed with this security level configuration
+
+解决方法: +
+打开 comfyUI\custom_nodes\comfyUI-Manager 中的 config.ini 文件,
+
+添加这行代码:
+....
+security_level=weak
+....
+
+image:/img/0133.png[,%]
+
+保存更改后，重新启动 ComfyUI 以应用设置。
+
+image:/img/0134.png[,%]
+
+
+
+
+[.my1]
+.title
+====
+Security policy 官網解釋如下:
+https://github.com/ltdrdata/ComfyUI-Manager#security-policy
+
+Edit config.ini file: add security_level = <LEVEL>
+
+- strong +
+-> doesn't allow high and middle level risky feature
+
+- normal +
+-> doesn't allow high level risky feature +
+-> middle level risky feature is available
+
+- normal- +
+-> doesn't allow high level risky feature if --listen is specified and not starts with 127. +
+-> middle level risky feature is available
+
+- weak +
+-> all feature is available
+
+
+- high level risky features +
+-> Install via git url, pip install +
+-> Installation of custom nodes registered not in the default channel. +
+-> Fix custom nodes
+
+- middle level risky features +
+->  Uninstall/Update +
+->  Installation of custom nodes registered in the default channel. +
+->  Restore/Remove Snapshot +
+->  Restart
+
+- low level risky features +
+-> Update ComfyUI
+====
+
+'''
+

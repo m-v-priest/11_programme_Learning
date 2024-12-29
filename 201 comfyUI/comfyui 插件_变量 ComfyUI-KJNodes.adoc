@@ -1,0 +1,47 @@
+
+= 插件 ComfyUI-KJNodes 变量节点
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+
+'''
+
+== ComfyUI-KJNodes
+
+
+安装地址 +
+https://github.com/kijai/ComfyUI-KJNodes
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|1.设置变量
+|搜索节点, 关键词 "set" +
+image:/img/0135.png[,%]
+
+image:/img/0136.png[,%]
+
+|2.读取变量
+|image:/img/0138.png[,%]
+
+|3.折叠set 和 get 节点
+|image:/img/0139.png[,%]
+
+image:/img/0140.png[,%]
+
+|4.运行
+|运行comfyui ,发现能正常运行. 变量可行!
+|===
+
+
+
+
+
+
+
+
+
