@@ -1,5 +1,0 @@
-
-= flux 版本
-
-image:/img/1052.jpg[,%]
-

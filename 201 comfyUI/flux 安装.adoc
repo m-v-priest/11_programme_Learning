@@ -1,0 +1,92 @@
+
+= flux 安装
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+
+'''
+
+== 模型版本
+
+
+image:/img/1052.jpg[,%]
+
+
+
+继续安装以下模型
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|1. 下载 gguf版模型
+|模型官方 +
+https://huggingface.co/city96/FLUX.1-dev-gguf/tree/main
+
+下面的gguf版模型下载后, 放在   C:\software\+++ComfyUI-aki-v1.3\ComfyUI-aki-v1.3\models\unet 目录中
+
+- pro版:
+只能通过 api 使用, 不提供下载
+- dev  fp16 :满血版, 我们能用到的最好的模型, 需要4090显卡才行.
+
+- dev  fp8: 显存需16g
+
+- schell fp16 和 schell fp8 : 显存依然需16g, 只不过出图速度稍快一点
+
+- gguf版: 显存8g即可 +
+6G显存 : 可以选择q4以下模型 +
+8G显存 : 可以选择q4至q5模型
+
+- org版:
+模型里整合了 vae 和 clip
+
+
+|2.
+|https://huggingface.co/comfyanonymous/flux_text_encoders/tree/main
+
+image:/img/0141.png[,%]
+
+这两个模型, 放在:
+C:\software\+++ComfyUI-aki-v1.3\ComfyUI-aki-v1.3\models\clip  目录中
+
+
+
+|下载 vae 模型
+|https://huggingface.co/black-forest-labs/FLUX.1-schnell/tree/main
+
+image:/img/0142.png[,%]
+
+这个模型, 放在 C:\software\+++ComfyUI-aki-v1.3\ComfyUI-aki-v1.3\models\vae 目录中
+
+|4.安装 gguf 插件
+|要用 gguf模型, 还需安装一个gguf 插件
+image:/img/0143.png[,%]
+
+|5.现在就可以正常使用 flux 了
+|整个工作流连接 +
+image:/img/0144.png[,%]
+
+注意:
+
+- 上图中的 nent 节点中的 q5 模型, 跑了9分钟, 太慢了
+- 上图中的 nent 节点中的 q4 模型, 也要跑 3分钟
+
+image:/img/0145.png[,%]
+
+|===
+
+
+
+
+
+
+
+
+'''
+
+
+
+
