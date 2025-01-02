@@ -76,6 +76,19 @@ image:/img/0144.png[,%]
 
 image:/img/0145.png[,%]
 
+|6.加上"阿里加速lora"
+|下载地址: +
+https://huggingface.co/alimama-creative/FLUX.1-Turbo-Alpha/tree/main
+
+image:/img/0146.png[,%]
+
+lora放在 C:\software\+++ComfyUI-aki-v1.3\ComfyUI-aki-v1.3\models\loras 目录中
+
+工作流为:
+
+image:/img/0147.png[,%]
+
+耗时 1分30秒, 的确快了
 |===
 
 
