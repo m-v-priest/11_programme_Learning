@@ -93,4 +93,27 @@ image:/img/012.png[,%]
 
 '''
 
+== 给 google earth pro 更换底图
+
+在google 中搜索 "map overlays for google earth"
+
+https://ge-map-overlays.appspot.com/
+
+下载 kmz文件
+
+image:/img/015.png[,%]
+
+
+或, 也可下载
+
+image:/img/013.png[,%]
+
+image:/img/014.png[,%]
+
+
+
+
+
+
+
 
