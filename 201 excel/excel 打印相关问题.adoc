@@ -1,0 +1,20 @@
+
+= excel 打印的相关问题
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+== 将表格打印在一张a4上
+
+image:/img/0014.png[,%]
+
+image:/img/0015.png[,%]
+
+image:/img/0016.png[,%]
+
+'''
+
+
