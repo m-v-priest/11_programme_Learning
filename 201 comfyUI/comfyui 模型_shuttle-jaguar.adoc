@@ -1,0 +1,20 @@
+
+= shuttle-jaguar 模型 -> 可以4步出图, 亲测35秒 (1024*768)
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+
+'''
+
+官网: +
+https://huggingface.co/shuttleai/shuttle-jaguar/tree/main/gguf
+
+下载下面的版本 +
+shuttle-jaguar-Q4_K_S.gguf
+
+下载完后, 放在下面的目录中 +
+C:\software\+++ComfyUI-aki-v1.3\ComfyUI-aki-v1.3\models\unet
+
+
