@@ -1,0 +1,20 @@
+
+= asciidoc 加上边框线
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+
+'''
+
+== 方法1
+....
+pass:[<span style="border: 1px solid black; padding: 2px;">word</span>]
+....
+
+效果 +
+pass:[<span style="border: 1px solid black; padding: 2px;">word</span>]
+
+'''
+
