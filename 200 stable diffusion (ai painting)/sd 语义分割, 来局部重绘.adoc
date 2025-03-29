@@ -1,0 +1,40 @@
+
+= sd 语义分割, 来局部重绘
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+
+'''
+
+image:img/0006.png[,]
+
+image:img/0007.png[,]
+
+image:img/0008.png[,]
+
+image:img/0009.png[,]
+
+image:img/0010.png[,]
+
+image:img/0011.png[,]
+
+image:img/0012.png[,]
+
+image:img/0013.png[,]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
