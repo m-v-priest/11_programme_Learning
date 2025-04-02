@@ -1,0 +1,159 @@
+
+= python 数值
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+== 普通计算
+
+==== 除法(/) -> 永远返回一个浮点数
+
+[source, python]
+....
+print(8/2) # 4.0
+....
+
+
+
+'''
+== 求余数 -> %
+
+[source, python]
+....
+print(5%2) # 1
+....
+
+'''
+
+==== 除法,获得"商"和"余数" -> divmod(num1,num2)
+
+divmod(a, b)  实现a除以b，返回一个元组, 里面有两个元素, 分别是商与余数。 +
+-> 如果两个参数 a,b 都是整数，那么会采用"整数除法"，结果相当于（a//b, a % b)。 +
+-> 如果a或b是浮点数，相当于（math.floor(a/b), a%b)。
+
+
+
+[source, python]
+....
+print(divmod(7,3)) # (2, 1)
+
+....
+
+
+
+'''
+
+====  n次方指数 -> **
+
+使用 ** 运算符, 计算幂乘方
+
+[source, python]
+....
+print(2**3) # 8
+....
+
+
+'''
+
+== 小数点操作
+
+==== 四舍五入 -> round()
+
+[source, python]
+....
+a = 3.94
+print(round(a)) # 4
+
+b = 2.45
+print(round(b)) # 2
+
+....
+
+'''
+
+==== 向下取整 -> int()
+
+[source, python]
+....
+a = 3.94
+print(int(a)) # 3
+....
+
+'''
+
+==== 向上取整 -> math.ceil()
+
+向上取整, 需要用到 math 模块中的 ceil() 方法.
+
+[.my1]
+.案例
+====
+- ceil : (v.) to line (a ceiling) with plaster, boarding, etc 用熟石膏、木板等装天花板
+====
+
+[source, python]
+....
+import math
+
+b = 2.05
+print(math.ceil(b)) # 3
+....
+
+'''
+
+== 拆分小数点前后
+
+==== 分别取小数部分和整数部分 -> math.modf()
+
+获取"整数部分"和"小数部分"，用 math 模块中的 modf() 方法，该方法返回一个包含"小数部分"和"整数部分"的元组. +
+The modf function breaks down _the floating-point value x_ into fractional and integer parts.
+
+
+fractional [ˈfrækʃənl] [数]分数的，小数的
+
+
+[source, python]
+....
+import math
+
+b = 2.15
+print(math.modf(b)) # (0.1499999999999999, 2.0) //计算机中是无法精确的表示小数的
+
+....
+
+'''
+
+==== 只保留整数部分, 舍弃小数 -> 使用//运算符
+
+只想要整数结果（丢掉任何小数部分），你可以使用 // 运算符。
+
+[source, python]
+....
+print(5//2) # 2
+
+....
+
+'''
+
+== 转换
+
+==== 将"小数点"转成"分数"形式 -> as_integer_ratio()
+
+浮点数类的 as_integer_ratio()方法, 能将"浮点数", 转换成"分数"形态表示, 用一个元组表示.
+
+[.my1]
+.案例
+====
+.integer  +
+/'ɪntɪdʒə/
+N-COUNT	可数名词整数 In mathematics, an integer is an exact whole number such as 1, 7, or 24 as opposed to a number with fractions or decimals.
+
+====
+
+[source, python]
+....
+print(0.75.as_integer_ratio()) # (3, 4)
+....
