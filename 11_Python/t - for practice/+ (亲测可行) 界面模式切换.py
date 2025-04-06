@@ -1,4 +1,5 @@
 
+
 import random
 from dataclasses import dataclass
 from enum import Enum, auto
@@ -87,7 +88,7 @@ list所有城市实例列表:[Cls城市类] = [
 #游戏主控类
 class Cls游戏主控类:
     def __init__(self): # 在这里, 我们进行游戏中相关数据的初始化赋值
-        self.bool是否继续游戏 = True # 使用一个 "self.bool是否继续游戏" 的标志变量，来控制 最后的 "主控循环函数"中的 while 循环是否继续。
+        self.bool是否继续游戏 = True # 使用一个 "self.bool是否继续游戏" 的标志变量，来控制 最后的 "主控循环函数"中的 while 循环是否继续。 你也可以用 sys.exit() 来直接终止程序，不过推荐使用 bool 控制，便于将来加入“存档提示”“确认退出”等功能。
         self.enum界面模式 = ClsEnum界面模式.enum大地图模式 #刚进游戏时,先进入大地图模式界面的状态
         self.enum玩家所选的势力: ClsEnum各政治势力名字
         self.list所有人才实例列表 :[Cls人才类]= list所有人才实例列表 # 从外面拿到整个人才列表, 相当于导入了人才数据库, 只不过放在一个列表中, 但更好的选中, 是放在dict中

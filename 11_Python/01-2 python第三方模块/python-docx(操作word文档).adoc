@@ -149,7 +149,7 @@ insDoc.save(pathDoc) # 保存文档
 
 ==== 段落中的文字格式 /对 run 设置字体、大小、颜色, 加粗, 下划线等
 
-[source, python]
+[source,python]
 ....
 import docx
 from docx.shared import Pt, RGBColor, Length
@@ -169,8 +169,8 @@ myPara.add_run('下划线').font.underline = True
 注意, 设置字体名字时, 并非是字体.tff文件的文件名! 而是word中显示的字体名字.
 另外, 下面的方法只可对英文进行字体设置, 中文无效.
 '''
-myPara.add_run('微软雅黑字体msyh').font.name = '微软雅黑'
-myPara.add_run('Times New Roman字体').font.name = '680-CAI978'
+myPara.add_run('微软雅黑字体msyh').font.str人才名字 = '微软雅黑'
+myPara.add_run('Times New Roman字体').font.str人才名字 = '680-CAI978'
 
 insDoc.save(path)
 ....

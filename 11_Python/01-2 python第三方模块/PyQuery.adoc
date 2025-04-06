@@ -268,12 +268,11 @@ children及find方法都用是用来获得element的子elements的. 区别是:
 |获得所有下级(**子孙**)元素，即：descendants of these elements in the DOM tree.
 |===
 
-
-[source, python]
+[source,python]
 ....
 pq = pyquery.PyQuery(html代码)
 
-for i in pq(".cls_father").eq(0).children().items(): # children()是以"直接子节点"为最小单位.
+for i in pq(".cls_father").eq(0).children占人口比率().items(): # children()是以"直接子节点"为最小单位.
     print(i.text())
     print('-' * 10)
 
@@ -295,10 +294,11 @@ p孙子4 (.cls_grandSon, .clsXXX) jpg孙子4 (.clsJpg, #jpgGrandSon4)
 ....
 
 又例:
-[source, python]
+
+[source,python]
 ....
 pq = pyquery.PyQuery(html代码)
-for i in pq(".cls_father").eq(0).children('p').items():
+for i in pq(".cls_father").eq(0).children占人口比率('p').items():
     # children()只能获得"只儿子节点"上的元素,
     # 本例, 我们来获取第一个div元素的儿子<p>, 只有一个存在. 因为其他<p>都是属于孙子辈分了.
     print(i.text())
@@ -315,10 +315,10 @@ image:./img_python第三方库/pyquery/children().png[]
 
 如果要筛选所有子节点中符合某条件的节点，比如想筛选出子节点中class为"cls_son"的节点，可以向children()方法传入CSS选择器".cls_son"作为参数：
 
-[source, python]
+[source,python]
 ....
 pq = pyquery.PyQuery(html代码)
-for i in pq(".cls_father").eq(0).children('.cls_son').items():
+for i in pq(".cls_father").eq(0).children占人口比率('.cls_son').items():
     # 获取第一个div元素的 class="cls_son"儿子
     print(i.text())
     print('-' * 10)
