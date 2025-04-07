@@ -401,7 +401,7 @@ sex female
 
 ==== 遍历key和value -> for k,v in dict1.items()
 
-items()方法把字典中的每个'键值对'组成一个元组, 并把这些元组放在列表(其实是 <class 'dict_items'>类型)中返回.
+*items()方法##把字典中的每个'键值对'组成一个元组*##, 并把这些元组放在列表(其实是 <class 'dict_items'>类型)中返回.
 
 [source, python]
 ....
@@ -422,6 +422,32 @@ age 19
 sex female
 '''
 ....
+
+
+'''
+
+==== 遍历时, 再加上索引值 index -> 要借用 enumerate() 函数
+
+虽然字典本身不是一个可迭代对象（你不能直接迭代字典来获取键和值），但**你可以使用 dict.items() 方法将其转换为一个可迭代对象，该对象包含字典中的"键值对"。**然后，你可以使用 enumerate() 来遍历这些"键值对". 但请注意，**enumerate() 实际上会为你提供每个键值对的"索引"（即它们在迭代中的位置），**而不是字典中的键。当然, 一般我们更关心键和值本身，而不是它们的索引。
+
+[source, python]
+....
+dict_Person = {'周芷若':'female', '王语嫣':'female',  '令狐冲':'male'}
+
+obj_枚举 = enumerate(dict_Person.items()) # ① dict.items() 方法, 将字典转换为一个可迭代对象(里面的每一个元素, 是元组类型, 即(key,value) )，该对象包含字典中的键值对。② enumerate() 再将可迭代对象, 转成枚举对象(里面的每一个元素, 也是元组类型, 即(indx, value) )
+
+for index, (dict_key, dict_value) in obj_枚举:
+    print(index, dict_key, dict_value)
+
+'''
+0 周芷若 female
+1 王语嫣 female
+2 令狐冲 male
+'''
+....
+
+image:img_python/0006.png[,%]
+
 
 
 

@@ -1,0 +1,81 @@
+
+= match ... case
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+
+'''
+
+== match ... case
+
+它类似于其他语言中的switch-case结构.
+
+
+[source, python]
+....
+a = 1
+
+match a:
+    case 1 :
+        print("a是1") # 会输出这个
+    case 2:
+        print("a是2")
+....
+
+
+
+
+[source, python]
+....
+a = 3
+
+match a:
+    case 1 :
+        print("a是1")
+    case 2|3:  # 还可以多选匹配
+        print("a是2或3") # 会输出这个
+....
+
+
+
+[source, python]
+....
+a = 99
+
+match a:
+    case 1:
+        print("a是1")
+
+    case 2 | 3:  # 还可以多选匹配
+        print("a是2或3")
+
+    case _:  # 最后的这个 case _: 相当于if-elif最后的else，它能匹配任何值。
+        print("其它")  # 会输出这个
+....
+
+
+
+
+
+[source, python]
+....
+from enum import Enum, auto
+
+
+class ClsEnum性别(Enum):
+    enum男= auto() # 注意! 这里要写等号 = , 不能写成冒号: !!
+    enum女= auto()
+
+
+enumSex: ClsEnum性别 = ClsEnum性别.enum女
+
+match enumSex:
+    case ClsEnum性别.enum男:
+        print('性别是男')
+    case ClsEnum性别.enum女:
+        print('性别是女') # 会打印出这个
+....
+
+

@@ -1,0 +1,98 @@
+
+= python enmu 枚举
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+
+'''
+
+官方文档
+https://docs.python.org/zh-cn/3.10/library/enum.html
+
+== 创建一个自定义的enum类
+
+[source, python]
+....
+
+from enum import  Enum
+
+class Enum_country(Enum):  #你的自定义枚举类, 要继承 python 自带的Enum类
+    wei = 1 #魏国   <- 成员值可以是 int、str 等。
+    shu = 2 #蜀国
+    wu = 3 #吴国
+
+'''
+现在, Enum_country.wei, Enum_country.shu 等属性, 就是 枚举成员 （或 enum 成员）了，也是常量。
+枚举成员具有 "名称" 和 "值" , 例如: +
+Enum_country.wei 的名称为 Enum_country,
+Enum_country.wei 的值为 1 等等
+'''
+
+print(Enum_country.shu) # Enum_country.shu   <- 这种打印没有用
+
+#要打印出枚举类中, 成员的名字和值, 必须要用 name 和 value 属性
+print(Enum_country.shu.name) # shu
+print(Enum_country.shu.value) # 2
+
+print(type(Enum_country)) #<class 'enum.EnumMeta'>
+
+#迭代输出 枚举类中的成员:
+for member in Enum_country:
+    print(member)
+
+'''
+Enum_country.wei
+Enum_country.shu
+Enum_country.wu
+'''
+....
+
+== 与枚举值的比较
+
+[source, python]
+....
+
+from enum import  Enum
+
+class Enum_country(Enum):  #你的自定义枚举类, 要继承 python 自带的Enum类
+    wei = 1 #魏国   <- 成员值可以是 int、str 等。
+    shu = 2 #蜀国
+    wu = '吴' #吴国
+
+
+print(Enum_country.shu.value == 2) # True
+print(Enum_country.wu.value == '吴') # True
+
+print(Enum_country.wu) # Enum_country.wu
+print(Enum_country.wu == '吴') # False
+
+....
+
+
+
+
+== 枚举中的 auto
+
+如果具体的枚举值无所谓是什么，可以使用 auto(), 它会自动以合适的值代替 Enum 成员的实例。 初始值默认从 1 开始。
+
+[source, python]
+....
+from enum import Enum, auto
+
+class Enum_country(Enum):  #你的自定义枚举类, 要继承 python 自带的Enum类
+    wei = auto() # 如果具体的枚举值无所谓是什么，可以使用 auto(), 它会自动以合适的值代替 Enum 成员的实例。 初始值默认从 1 开始。
+    shu = auto()
+
+print(Enum_country) # <enum 'Enum_country'>
+
+#要查看枚举类中的所有成员和值, 可以简单把它传入list()函数, 来打印
+print(list(Enum_country)) # [<Enum_country.wei: 1>, <Enum_country.shu: 2>]
+
+print(Enum_country.shu.name) # shu
+print(Enum_country.shu.value) # 2
+....
+
+
+

@@ -1,0 +1,39 @@
+
+= pip
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+
+
+== 查看当前 pip版本
+pip show pip
+
+'''
+
+== 安装第三方库时, 报错: ERROR: Could not install packages due to an OSError: [WinError 2]
+
+这个错误通常发生在 Windows 系统上，当 Python 尝试更新或覆盖一个"当前正在使用"的文件时。
+
+解决方案：
+​​关闭所有使用 Python 的程序​​：
+确保没有其他程序（如 IDE、终端、Jupyter Notebook 等）正在使用 Python. 即将 python编辑器, 关了重开.
+
+
+
+'''
+
+== 升级 pip 时, 报错: ERROR: Could not install packages due to an OSError: [WinError 5] 拒绝访问
+
+这个错误（ERROR: Could not install packages due to an OSError: [WinError 5] 拒绝访问）表明 ​​Windows 权限不足​​，导致 pip 无法更新自身。以下是解决方案：
+
+右键点击​​ cmd 或 PowerShell，选择 ​​“以管理员身份运行”​​。
+再次运行：
+....
+python.exe -m pip install --upgrade pip  (亲测可行)
+....
+
+'''

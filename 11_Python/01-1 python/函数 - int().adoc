@@ -1,0 +1,24 @@
+
+= int()
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+
+'''
+
+int() 函数用于将一个字符串或数字, 转换为整型。
+
+[source, python]
+....
+print(int(0.49)) # 0  <- 注意: 对与小数点, int()会向下取整.
+print(int(0.5)) # 0
+print(int(0.51)) # 0
+print(int(0.99)) # 0
+
+print(int(1.01)) # 1
+
+....
+
+
