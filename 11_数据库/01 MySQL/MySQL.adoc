@@ -1,8 +1,0 @@
-= MySQL
-:toc:
----
-
-== 安装
-
-中文文档 https://www.mysqlzh.com/doc/24.html
-
