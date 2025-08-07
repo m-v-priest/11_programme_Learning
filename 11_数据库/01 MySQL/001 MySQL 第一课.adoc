@@ -388,6 +388,10 @@ select * from tab2 where is_active !=0;
 
 image:/img/0055.png[,%]
 
+image:/img/0059.png[,%]
+
+
+
 
 
 '''
@@ -593,9 +597,17 @@ drop column age; # 删除 tab2 表中的 age 列
 '''
 
 
+== 第二课 : 关联两张表
+
+现在有两张表, 两张表有字段是关联的
+
+image:/img/0057.png[,%]
+
+image:/img/0058.png[,%]
 
 
 
 
 
 
+https://www.bilibili.com/video/BV1B34y1R7in?spm_id_from=333.788.player.switch&vd_source=52c6cb2c1143f8e222795afbab2ab1b5&p=20
