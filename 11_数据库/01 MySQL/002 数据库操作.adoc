@@ -1,0 +1,54 @@
+
+= 002 数据库操作
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+
+
+mysql 中, 有"数据库", 和"数据表"的概念. +
+数据库, 就相当于是文件夹 +
+数据表, 就相当于是 excel 文件.
+
+
+== 列出所有可用的数据库 -> SHOW DATABASES;
+
+image:/img/0013.png[,%]
+
+image:/img/0014.png[,%]
+
+
+成功连接到 MySQL 后，你可以在命令行中直接执行 SQL 查询。
+
+列出所有可用的数据库： +
+SHOW DATABASES;
+
+选择要使用的数据库： +
+USE your_database;
+
+列出所选数据库中的所有表： +
+SHOW TABLES;
+
+退出 mysql> 命令提示窗口可以使用 exit 命令，如下所示： +
+EXIT;
+
+或者使用： +
+QUIT;
+
+
+'''
+
+== 数据库: 增 (创建数据库) -> CREATE DATABASE 数据库名;
+
+
+'''
+
+== 当你有多个数据库时, 要把你执行的那个, 设置为默认数据库, 再来写命令语句, 才不会报错
+
+image:/img/0042.png[,%]
+
+
+

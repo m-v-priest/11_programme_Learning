@@ -1,0 +1,16 @@
+
+= 004 关联两张表
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+
+现在有两张表, 两张表有字段是关联的
+
+image:/img/0057.png[,%]
+
+image:/img/0058.png[,%]
+
