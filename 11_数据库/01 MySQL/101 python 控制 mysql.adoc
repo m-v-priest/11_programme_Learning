@@ -1,0 +1,224 @@
+
+= python 控制 mysql
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+== 安装 PyMySQL 库
+
+PyMySQL 是在 Python3.x 版本中用于连接 MySQL 服务器的一个库
+
+安装命令: +
+pip3 install PyMySQL
+
+
+== 第一个案例
+
+[source, python]
+....
+
+import pymysql
+
+# 连接 mysql
+conn = pymysql.connect( host='localhost',
+                        port = 3306,
+                        user = 'root',
+                        password='000',
+                        charset='utf8'
+                     )
+
+# 使用 cursor() 方法创建一个游标对象 cursor
+cursor = conn.cursor() # cursor 是光标, 游标的意思.
+
+#使用 execute() 方法执行 SQL
+#创建数据库, 创建一个名叫 db1 的数据库
+cursor.execute("create database IF NOT EXISTS db1 default charset utf8 COLLATE utf8_general_ci")
+
+'''
+
+如果数据库已经存在，执行 CREATE DATABASE 将导致错误。  +
+为了避免这种情况，你可以在 CREATE DATABASE 语句中添加 IF NOT EXISTS 子句.
+
+
+
+中文，常用的编码方式就是utf-8，但是在MySQL中的utf8编码其实并不是我们平时使用的utf-8编码，正确的对应编码是utf8mb4，在MySQL中utf8编码最多只能支持3 bytes长度的字符编码，对于一些需要占用4 bytes的字符使用utf8编码方式就不支持了，需要使用utf8mb4才行，这是MySQL的一个遗留问题。
+
+COLLATE属性用于指定列的排序和比较方式，我们在使用ORDER BY、DISTINCT、GROUP BY等命令时都会涉及到该属性。COLLATE通常是和字符编码CHARSET相关的，每种CHARSET都对应了多种它所支持的COLLATE，并且会指定一个默认COLLATE。比如utf8mb4编码的默认COLLATE为utf8mb4_general_ci.
+
+很多COLLATE里面都带有_ci后缀，这是Case Insensitive的缩写，表示大小写无关。对应的_cs后缀表示大小写敏感。
+'''
+
+#进入 db1数据库
+cursor.execute("use db1")
+
+# # 创建表
+# str命令 = """
+# create table tab1 (
+# id int primary key auto_increment,
+# 用户名 VARCHAR(50),
+# 生日 DATE,
+# is_active BOOLEAN DEFAULT NULL
+# ) default charset = utf8;
+# """
+#
+# cursor.execute(str命令)
+
+# 查看表
+cursor.execute("show tables")
+res = cursor.fetchall()
+print(res)  #输出的结果是:  (('tab1',),)
+
+'''
+fetchall() 方法也是游标对象的重要成员，它的功能是从数据库查询结果集中获取所有的元组，也就是返回所有符合查询条件的记录（rows）。可以把它想象成将整个查询结果集一次性“打包”取出来。
+
+当执行一个查询操作后，fetchall 方法会遍历整个结果集，将所有记录以"元组"的形式返回。这个返回的元组包含了多个子元组，每个子元组对应一条记录。例如，如果查询结果集有 10 条记录，那么 fetchall 方法返回的就是一个包含 10 个子元组的大元组。
+
+与 fetchone 类似，如果查询结果集中没有任何记录，即查询没有找到符合条件的结果，fetchall 方法将返回一个空元组 ()。这表明结果集中没有任何数据。
+
+需要特别说明的是，在数据库领域，不同的数据库系统对于空值的表示方式有所不同。在 MySQL 数据库中，空值通常用 NULL 来表示；而在 Python 语言中，与之对应的空值表示为 None。这种差异在进行数据库与 Python 交互编程时需要特别注意，以确保数据的正确处理和逻辑的准确性。
+
+---------
+
+
+fetchmany
+fetchmany 方法同样是数据库游标对象的一个方法，它的作用是从数据库查询结果集中获取多个元组，即返回多条记录（rows）。与 fetchone 每次只取一条记录不同，fetchmany 允许我们一次性获取多条记录，这在需要批量处理数据的场景中非常有用。
+
+使用 fetchmany 方法时，我们需要指定要获取的记录数量。例如，调用 fetchmany(2)，它会从结果集中取出两条记录，并以元组的形式返回这两条记录。这里的元组嵌套了两个子元组，每个子元组代表一条记录。
+
+如果在调用 fetchmany 方法时没有指定具体的数量，那么它默认会返回 1 条记录。这就相当于如果没有明确告诉它要取多少条，它就按照“保守”的方式只取一条记录。
+
+---------
+
+
+fetchone
+fetchone 是数据库游标对象提供的一个方法，主要用于从数据库查询结果集中获取单个元组。简单来说，它返回的是一条记录（row）。这个方法就像是从数据库这个“大仓库”里精确地取出一件物品。
+
+当执行一个 SQL 查询语句后，数据库会返回相应的结果集。fetchone 方法会从这个结果集中取出第一条记录，并以元组的形式返回。例如，在一个存储用户信息的数据库表中，假设我们执行了一个查询语句来获取某个特定用户的信息，fetchone 方法就会返回包含该用户各项信息的一个元组。
+
+需要注意的是，如果查询结果集中没有任何记录，也就是说查询没有找到符合条件的结果，那么 fetchone 方法将返回 None。这就好比在仓库里寻找一件特定的物品，但这件物品根本不存在，此时就会得到一个表示“没有找到”的信号，在 Python 中这个信号就是 None。
+
+
+'''
+
+# #关闭连接
+# cursor.close()
+# conn.close()
+
+....
+
+
+'''
+
+== 创建表
+
+[source, python]
+....
+import pymysql
+
+# 连接 mysql, 并进如数据库 db1 中
+db1 = pymysql.connect(
+    host='127.0.0.1',
+    port = 3306,
+    user = 'root',
+    passwd = '000',
+    charset = 'utf8',
+    db= 'db1'  # 链接 db1 数据库
+)
+
+c = db1.cursor() # 获取游标
+
+
+#创建表
+str_sql命令 = """
+create table tb3(
+name char(20) not null,
+age int,
+sex enum('male','female'),
+income float
+)  # 注意: python中, 写sql语句, 最后这里没有加分号
+"""
+
+c.execute(str_sql命令)
+....
+
+image:/img/0056.png[,%]
+
+
+
+== 对已有数据的表, 增加一列放在第一列的位置上
+
+[source, python]
+....
+import pymysql
+
+# 连接 mysql, 并进如数据库 db1 中
+db1 = pymysql.connect(
+    host='127.0.0.1',
+    port = 3306,
+    user = 'root',
+    passwd = '000',
+    charset = 'utf8',
+    db= 'db1'  # 链接 db1 数据库
+)
+
+c = db1.cursor() # 获取游标
+
+
+#创建表
+str_sql命令 = """
+create table tb3(
+name char(20) not null,
+age int,
+sex enum('male','female'),
+income float
+)  # 注意: python中, 写sql语句, 最后这里没有加分号
+"""
+
+c.execute(str_sql命令)
+
+# 新增数据, 必须执行 数据库(而非游标)的commit()方法. 才能增加数据成功.
+c.execute("insert into tb3 (name, age, sex, income) values('zrx',47, 'male', 5000),('wyy',22,'female',3000)")
+db1.commit()
+
+
+# 删除数据, 必须执行 commit方法
+c.execute("delete from tb3 where name='zrx'") # 删除name字段的值是'zrx'的所有数据行
+db1.commit()
+
+# 插入列, 必须执行 commit方法
+#下面为现有表格tb3, 增加一列id, 作为主列, 放在第一列的位置上.
+c.execute("alter table tb3    add column   id int primary key    auto_increment     first") #FIRST表示将该列放在第一位置。AUTO_INCREMENT使该列自增。PRIMARY KEY设置为主键。
+# 注意:某些 MySQL 版本可能要求 PRIMARY KEY在前面, 而不是写在 auto_increment 后面.
+db1.commit()
+
+
+# 修改数据, 必须执行 commit方法
+c.execute("update tb3 set income = 6000 where id=2")  # 将 id=2 这一行的 income值, 改为6000
+db1.commit()
+
+# 查询
+c.execute("select * from tb3 where id>=2") #查询tb3表中, id>=2的所有行的数据
+data = c.fetchone() # 对这些数据只取出第一行
+print (data) # (2, 'wyy', 22, 'female', 6000.0)
+
+dataAll = c.fetchall()
+print(dataAll) # ((2, 'wyy', 22, 'female', 6000.0), (3, 'wyy', 22, 'female', 3000.0), (4, 'wyy', 22, 'female', 3000.0))
+
+#关闭连接
+c.close()
+db1.close()
+....
+
+
+
+
+
+
+
+
+
+
+https://www.bilibili.com/video/BV1B34y1R7in?spm_id_from=333.788.videopod.episodes&vd_source=52c6cb2c1143f8e222795afbab2ab1b5&p=15

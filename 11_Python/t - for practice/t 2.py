@@ -32,7 +32,7 @@ class ClsPopulationStructure人口年龄结构类:
         return self.elderly老年人占总人口比例 / (self.children儿童占总人口比例 + self.youth年轻人占总人口比例 + self.adults成年人占总人口比例 + self.elderly老年人占总人口比例)
 
 
-class ClsCountryEconomy国家经济系统类:
+class ClsCountryEconomy国家经济参数系统类:
     """
     国家经济系统
     使用系统动力学模型模拟经济运行
@@ -223,41 +223,6 @@ class ClsCountryEconomy国家经济系统类:
         '''
 
         self.unemployment失业率 = max(0.02, min(0.15, self.unemployment失业率))  # 保持在2%-15%之间. min() 方法返回给定参数中的最小值，参数可以为序列。
-        '''
-        max(0.02)​​：失业率下限2%（接近充分就业）
-        ​​min(0.15)​​：失业率上限15%（经济危机水平）
-        ​​设计目的​​：
-        防止极端值破坏模拟合理性
-        符合历史数据范围（现代国家失业率通常2%-15%）
-        
-        经济学逻辑图示​​
-GDP增长 > 3% → 失业率加速下降
-            │
-            ▼
-自然失业率(5%) ←─┐
-            ▲    │
-            │    │
-GDP增长 < 3% → 失业率缓慢上升
-
-示例场景​​
-​​经济过热（GDP增长=5%）​​：
-        gdp_impact = -0.02*(0.05-0.03) = -0.0004
-        失业率额外下降0.04%
-​​经济衰退（GDP增长=1%）​​：
-        gdp_impact = -0.02*(0.01-0.03) = 0.0004
-        失业率额外上升0.04%
-​​失业率7%时​​：
-        unemployment_change = (0.05-0.7)*0.2 = -0.004
-        自发向5%回归（每月减少0.4%）
-
-为什么需要边界限制？​​
-​​技术性失业​​：不可能完全消除失业（下限2%）
-​​社会稳定性​​：超过15%的失业可能引发革命（游戏性考虑）
-​​历史参照​​：
-美国大萧条时期失业率≈25%
-现代正常范围通常2%-10%
-
-        '''
 
 
 
@@ -291,52 +256,119 @@ GDP增长 < 3% → 失业率缓慢上升
             self.gdp *= 0.995  # 紧缩政策短期抑制经济
 
 
-class InternationalTrade:
+class ClsInternationalTrade国际贸易系统类:
     """
     国际贸易系统
     模拟国家间的经济互动
+    作用​​：创建一个管理多国汇率和贸易的系统
     """
 
-    def __init__(self, countries: List[ClsCountryEconomy国家经济系统类]):
-        self.countries = {c.name国家名字: c for c in countries}
-        self.exchange_rates = {}  # 汇率矩阵
+    def __init__(self, list_countries国家经济参数实例: List[ClsCountryEconomy国家经济参数系统类]):
+        # countries - 国家经济对象列表（如[魏国, 蜀国, 吴国]）
+
+        self.dict_countries各国名字与其经济参数实例的键值对 = {c.name国家名字: c for c in list_countries国家经济参数实例} # 这里创建了一个dict字典, key就是特定国家的名字, value就是该国的"经济参数实例"
+        '''
+        数据结构​​：将国家列表转为{国家名: 国家对象}的字典
+        （例如 {"魏": wei_obj, "蜀": shu_obj}）
+        ​​目的​​：快速通过国家名访问经济数据
+        '''
+
+        self.dict_exchange_rates各国间汇率系统字典 = {}  # 空字典. 汇率矩阵.  格式: {(国家A,国家B): 汇率} <- dict的 key,可以是一个元组类型
+
+        '''        
+        汇率定义​​：
+        1单位A货币 = X单位B货币
+        例如 ("魏","蜀")=1.5,  表示: 1魏币=1.5蜀币
+        
+        该"dict_exchange_rates各国间汇率系统字典", 最终会是比如:
+        {
+         ("魏","魏"): 1.0,  
+         ("魏","蜀"): 1.6,  ("蜀","魏"): 0.625,  # 1/1.6
+         ("魏","吴"): 0.8,  ("吴","魏"): 1.25,   # 1/0.8
+         ("蜀","吴"): 1.2,  ("吴","蜀"): 0.833   # 1/1.2
+        }
+        '''
+
 
         # 初始化随机汇率
-        names = [c.name国家名字 for c in countries]
-        for i, c1 in enumerate(names):
-            for j, c2 in enumerate(names):
-                if i == j:
-                    self.exchange_rates[(c1, c2)] = 1.0
-                elif i < j:
-                    rate = random.uniform(0.5, 2.0)
-                    self.exchange_rates[(c1, c2)] = rate
-                    self.exchange_rates[(c2, c1)] = 1 / rate
+        list_names各国名字 = [c.name国家名字 for c in list_countries国家经济参数实例]
+        for i, c1 in enumerate(list_names各国名字):
+            for j, c2 in enumerate(list_names各国名字):
+                if i == j: # 相同国家
+                    self.dict_exchange_rates各国间汇率系统字典[(c1, c2)] = 1.0  # 自兑换汇率为1, 即本"国的货币"兑换"本国的货币", 那汇率肯定是1:1了
+                elif i < j:  # 避免重复计算
+                    rate随机汇率 = random.uniform(0.5, 2.0) # 随机初始汇率. uniform() 方法将随机生成下一个实数，它在 [x, y] 范围内。如, uniform(5, 10) 的随机数为 :  6.98774810047.
+                    # 随机设定在0.5~2.0之间，模拟现实中的汇率差异. （例如：1魏币=0.8吴币，1魏币=1.8蜀币）
+                    self.dict_exchange_rates各国间汇率系统字典[(c1, c2)] = rate随机汇率 # 将随机汇率, 赋值给c1,c2这两个国家货币的 汇率交换值.
+                    self.dict_exchange_rates各国间汇率系统字典[(c2, c1)] = 1 / rate随机汇率 # 反向汇率. 反向汇率通过倒数自动计算 （若 魏/蜀=1.5 → 则 蜀/魏=1/1.5≈0.67）
+
+        '''
+        关键设计​​：
+        -​​对角线元素(i=j)​​
+        任何国家与自身的汇率, 都是1:1
+        （如 ("魏","魏")=1.0）
+        
+        -​​"非对称"汇率关系​​
+        只计算i<j的组合（避免重复生成"魏-蜀"和"蜀-魏"）
+        反向汇率, 通过"倒数"自动计算
+        （若 魏/蜀=1.5 → 则 蜀/魏=1/1.5≈0.67）
+        
+        ​-​"初始汇率"范围​​
+        随机设定在0.5~2.0之间，模拟现实中的汇率差异
+        （例如：1魏币=0.8吴币，1魏币=1.8蜀币）
+        '''
 
     def update_trade(self):
         """
         更新国际贸易关系
         包括汇率变化和贸易量调整
+
+        这段代码是​​"国际贸易系统"的动态更新方法​​，实现了两个核心经济机制：​"​汇率浮动机制"​​和​​"贸易量自适应调整"​​。
         """
         # 1. 更新汇率 (基于相对经济表现)
-        names = list(self.countries.keys())
-        for i, c1 in enumerate(names):
-            for j, c2 in enumerate(names):
+        list_names各国名字 = list(self.dict_countries各国名字与其经济参数实例的键值对.keys()) # 将dict中的key, 即各国名字, 放在一个list中.
+
+        for i, c1 in enumerate(list_names各国名字):
+            for j, c2 in enumerate(list_names各国名字):
                 if i < j:
-                    # 经济表现好的国家货币升值
-                    growth_diff = (self.countries[c1].fn_get_gdp_growth_rate计算gdp增长率() -
-                                   self.countries[c2].fn_get_gdp_growth_rate计算gdp增长率()) / 100
-                    change = growth_diff * 0.1  # 增长率差异的10%影响汇率
-                    self.exchange_rates[(c1, c2)] *= (1 + change)
-                    self.exchange_rates[(c2, c1)] = 1 / self.exchange_rates[(c1, c2)]
+                    #  计算两国GDP增长率差异, 经济表现好的国家货币升值.
+                    growth_diff两国GDP增长率差异 = (self.dict_countries各国名字与其经济参数实例的键值对[c1].fn_get_gdp_growth_rate计算gdp增长率() -
+                                   self.dict_countries各国名字与其经济参数实例的键值对[c2].fn_get_gdp_growth_rate计算gdp增长率()) / 100
+                    '''
+                    growth_diff = (c1最新GDP/c1上期GDP - c2最新GDP/c2上期GDP)  
+                    '''
+
+                    change对汇率的影响度 = growth_diff两国GDP增长率差异 * 0.1  # gdp增长率差异中的10%, 会影响汇率
+                    # 若c1比c2经济增长快1%，则c1货币升值0.1%（系数0.1控制敏感度）. 例如：魏国GDP增长5%，蜀国增长3% → 魏币对蜀币升值0.2%
+
+
+                    # 更新汇率
+                    self.dict_exchange_rates各国间汇率系统字典[(c1, c2)] *= (1 + change对汇率的影响度)
+                    self.dict_exchange_rates各国间汇率系统字典[(c2, c1)] = 1 / self.dict_exchange_rates各国间汇率系统字典[(c1, c2)] # 保持A→B和B→A汇率的数学倒数关系
+
+                    '''
+                    关键逻辑：
+                    -​​相对增长决定汇率​​
+                    若c1比c2经济增长快1%，则c1货币升值0.1%（系数0.1控制敏感度）
+                    例如：魏国GDP增长5%，蜀国增长3% → 魏币对蜀币升值0.2%
+                    
+                    -​​双向汇率同步更新​​
+                    保持A→B和B→A汇率的数学倒数关系
+                    
+                    -​​经济学原理​​
+                    模仿现实中的"经济增长→资本流入→货币升值"机制
+                    类似人民币升值与中国经济高速增长的关系
+                    
+                    '''
 
         # 2. 贸易量自动调整 (基于相对价格和汇率)
-        for country in self.countries.values():
-            # 出口竞争力受汇率和PPI影响
-            export_factor = (1 / self.exchange_rates[(country.name国家名字, "魏")]) * (100 / country.ppi)
+        for country in self.dict_countries各国名字与其经济参数实例的键值对.values():
+            # 出口公式. 出口竞争力受汇率和PPI影响
+            export_factor = (1 / self.dict_exchange_rates各国间汇率系统字典[(country.name国家名字, "魏")]) * (100 / country.ppi)  #  export_factor = (1/该国对魏汇率) * (100/该国PPI)
             country.exports出口额 *= (0.9 + 0.2 * export_factor)
 
-            # 进口需求受收入和汇率影响
-            import_factor = country.disposable_income * self.exchange_rates[(country.name国家名字, "魏")]
+            # 进口公式. 进口需求受收入和汇率影响
+            import_factor = country.disposable_income * self.dict_exchange_rates各国间汇率系统字典[(country.name国家名字, "魏")] # import_factor = 该国人均可支配收入 * 该国对魏汇率
             country.imports进口额 *= (0.95 + 0.1 * import_factor)
 
 
@@ -347,9 +379,9 @@ class ThreeKingdomsEconomyGame:
 
     def __init__(self):
         # 初始化三个国家
-        self.wei = ClsCountryEconomy国家经济系统类("魏", initial_gdp=1000, population=1000000)
-        self.shu = ClsCountryEconomy国家经济系统类("蜀", initial_gdp=800, population=800000)
-        self.wu = ClsCountryEconomy国家经济系统类("吴", initial_gdp=900, population=900000)
+        self.wei = ClsCountryEconomy国家经济参数系统类("魏", initial_gdp=1000, population=1000000)
+        self.shu = ClsCountryEconomy国家经济参数系统类("蜀", initial_gdp=800, population=800000)
+        self.wu = ClsCountryEconomy国家经济参数系统类("吴", initial_gdp=900, population=900000)
 
         # 设置初始差异
         self.wei.ins_policy经济政策设置类实例.tech_spending = 0.04  # 魏国科技投入更高
@@ -357,7 +389,7 @@ class ThreeKingdomsEconomyGame:
         self.wu.ins_policy经济政策设置类实例.military_spending = 0.15  # 吴国军费更高
 
         # 国际贸易系统
-        self.trade_system = InternationalTrade([self.wei, self.shu, self.wu])
+        self.trade_system = ClsInternationalTrade国际贸易系统类([self.wei, self.shu, self.wu])
 
         # 游戏时间
         self.year = 190
@@ -378,7 +410,7 @@ class ThreeKingdomsEconomyGame:
         # 更新国际贸易
         self.trade_system.update_trade()
 
-    def display_status(self, country: ClsCountryEconomy国家经济系统类):
+    def display_status(self, country: ClsCountryEconomy国家经济参数系统类):
         """显示国家经济状况"""
         print(f"\n{country.name国家名字}国 {self.year}年{self.month}月经济状况:")
         print(f"GDP: {country.gdp:.2f}亿钱 (增长率: {country.fn_get_gdp_growth_rate计算gdp增长率():.1f}%)")
@@ -389,7 +421,7 @@ class ThreeKingdomsEconomyGame:
         print(f"老龄化率: {country.ins_population_struct年龄人口结构实例.fn_aging_ratio获取老龄化比例 * 100:.1f}%")
         print(f"当前政策: 利率{country.ins_policy经济政策设置类实例.interest_rate * 100:.1f}% 税率{country.ins_policy经济政策设置类实例.tax_rate * 100:.1f}%")
 
-    def player_adjust_policy(self, country: ClsCountryEconomy国家经济系统类):
+    def player_adjust_policy(self, country: ClsCountryEconomy国家经济参数系统类):
         """玩家调整政策"""
         print("\n可调整政策:")
         print(f"1. 调整利率 (当前: {country.ins_policy经济政策设置类实例.interest_rate * 100:.1f}%)")

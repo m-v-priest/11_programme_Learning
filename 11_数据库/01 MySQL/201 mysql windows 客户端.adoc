@@ -1,0 +1,129 @@
+
+= 002 mysql windows 客户端
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+
+
+
+== ★ mysql windows 客户端 -> MySQL Workbench 这属于mysql官方出品，免费，功能强大，是首选。
+
+下载地址: +
+https://www.mysql.com/cn/products/workbench/
+
+注意: 首先, 你要修改一下这个目录中的文件,
+C:\Program Files\MySQL\MySQL Workbench 8.0 CE\workbench\os_utils.py
+
+
+
+
+把约在356行的，
+默认是：
+....
+process = subprocess.Popen(command, stdin = subprocess.PIPE, encoding="utf-8", stdout = subprocess.PIPE, stderr = subprocess.STDOUT, shell=True)
+....
+
+修改为如下：
+....
+process = subprocess.Popen(command, stdin = subprocess.PIPE, encoding="gbk", stdout = subprocess.PIPE, stderr = subprocess.STDOUT, shell=True)
+....
+
+image:/img/0016.png[,%]
+
+
+即把utf-8修改为gbk保存即可，
+这样重新打开 MySQL Workbench, 即可查看 Server Status 而不会报错了。
+
+image:/img/0015.png[,%]
+
+'''
+
+== 数据库 :创建
+
+image:/img/0017.png[,%]
+
+image:/img/0018.png[,%]
+
+image:/img/0019.png[,%]
+
+
+'''
+
+== 数据库: 删除
+
+image:/img/0020.png[,%]
+
+'''
+
+== 表:创建
+
+image:/img/0021.png[,%]
+
+image:/img/0022.png[,%]
+
+image:/img/0023.png[,%]
+
+image:/img/0024.png[,%]
+
+
+'''
+
+== 表:删除
+
+
+image:/img/0025.png[,%]
+
+
+'''
+
+== 表 : 输入数据
+
+image:/img/0026.png[,%]
+
+image:/img/0027.png[,%]
+
+image:/img/0028.png[,%]
+
+'''
+
+== 手动输入 sql 命令
+
+image:/img/0029.png[,%]
+
+你可以按 ctrl + s 来保存脚本. 扩展名是 .sql
+
+image:/img/0030.png[,%]
+
+'''
+
+== 收藏语句
+
+image:/img/0031.png[,%]
+
+image:/img/0032.png[,%]
+
+
+== 数据库: 导入/导出
+
+image:/img/0034.png[,%]
+
+image:/img/0035.png[,%]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

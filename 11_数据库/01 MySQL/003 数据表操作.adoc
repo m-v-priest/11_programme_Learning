@@ -1,0 +1,638 @@
+
+
+= 003 数据表操作
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+== 数据类型
+
+
+==== 长文本类型
+
+在 MySQL 中，如果需要存储 ​​不限长度的文本段落​​（可能很长），你可以选择以下几种 ​​TEXT​​ 类型，具体取决于你的需求：
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|1.TEXT类型（适合大多数长文本）​​
+|最大长度​​：约 ​​65,535 字符​​（64KB） +
+
+在UTF-8 编码中，一个中文字符通常占用1 到3 个字节，所以65,535 字节可以存储大约21,845 个中文字符（65,535 / 3 ≈ 21,845），如果使用2个字节来存储中文字符，则可以存储32767个字符。
+
+
+​​适用场景​​：*文章、评论、描述等普通长文本* +
+
+​​示例​​：
+
+[source, sql]
+....
+CREATE TABLE articles (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    content TEXT  -- 存储长文本
+);
+....
+
+|2.MEDIUMTEXT（适合更长的内容，如博客文章、文档）​​
+|最大长度​​：约 ​​16,777,215 字符​​（16MB） +
+​​适用场景​​：*较长的文章、HTML 内容、JSON 数据等*
+
+​​示例​​：
+
+[source, sql]
+....
+CREATE TABLE blog_posts (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    body MEDIUMTEXT  -- 存储更长的文本
+);
+....
+
+|3.LONGTEXT（适合超长文本，如书籍、大型文档）​​
+|最大长度​​：约 ​​4,294,967,295 字符​​*（4GB）* +
+​​适用场景​​：*电子书、大型报告、XML/JSON 数据等*
+
+​​示例​​：
+
+[source, sql]
+....
+CREATE TABLE books (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    full_text LONGTEXT  -- 存储超长文本
+);
+....
+
+|4.VARCHAR（如果长度可控，比如几千字符以内）​​
+|最大长度​​：最多 ​​65,535 字节​​（实际字符数取决于编码，如 UTF-8 下约 21,844 字符） +
+​​适用场景​​：较短的段落，如简介、标题等
+
+示例：
+
+[source, sql]
+....
+CREATE TABLE comments (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    comment VARCHAR(10000)  -- 存储较长的评论
+);
+....
+|===
+
+
+如果你的文本 ​​可能很长​​（如文章、书籍），建议使用 MEDIUMTEXT或 LONGTEXT。 +
+如果只是 ​​段落级别​​（如评论、简介），TEXT通常足够。
+
+具体也可查看教程文档 +
+https://www.runoob.com/mysql/mysql-data-types.html
+
+
+==== 插入可换行的段落
+
+image:/img/0041.png[,%]
+
+'''
+
+== 数据表: 增
+
+
+创建一张表:
+....
+create table table_专业(  //注意: 这里要用小括号, 而不是大括号!
+	id int,              //注意, 里面的字段, 必须用逗号作为结尾
+	str专业名 varchar(16)      //但最后一个字段, 不需要标点
+);      //最后的小括号外, 需要分号
+....
+
+
+image:/img/0036.png[,%]
+
+image:/img/0037.png[,%]
+
+image:/img/0038.png[,%]
+
+'''
+
+== 数据表: 删
+
+==== 删除表 -> DROP TABLE 表名;
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|直接删除表，不检查是否存在
+|DROP TABLE table_name;
+
+|会检查是否存在，如果存在则删除
+|DROP TABLE [IF EXISTS] table_name;
+
+|如果你只是想删除表中的所有数据，但保留表的结构
+|TRUNCATE TABLE table_name; +
+这会清空表中的所有数据，但不会删除表本身。
+|===
+
+'''
+
+==== 清空表中所有内容, 但保留表的存在
+
+
+
+[source, sql]
+....
+SET SQL_SAFE_UPDATES = 0; # 注意: 默认情况下, mysql有安全模式, 禁止清空表中的所有内容. 如果你要执行清空命令, 必须先禁用该安全模式, 即输入本行代码才行.
+delete from tab2  # 清空 tab2 表中的所有数据
+....
+
+'''
+
+
+
+== 数据表: 改字段(列)
+
+
+====  #对表中增加列(增加字段)#
+
+
+image:/img/0039.png[,%]
+
+image:/img/0040.png[,%]
+
+
+
+使用ALTER TABLE语句, 来向表中添加新的列。
+
+格式
+....
+ALTER TABLE table_name
+ADD column_name column_definition [FIRST|AFTER existing_column];
+....
+
+- table_name 是你想要添加列的表名。
+- column_name 是你想要添加的列的名称。
+- column_definition 定义了列的数据类型、是否允许为空、是否有默认值等属性。
+- FIRST（可选）表示将新列添加为表中的第一列。
+- AFTER existing_column（可选）表示将新列添加在existing_column之后。
+
+假设你有一个名为students的表，你想添加一个名为email的新列，数据类型为VARCHAR(255)，并且不允许为空，你可以使用以下SQL语句：
+
+[source, sql]
+....
+ALTER TABLE students
+ADD COLUMN email VARCHAR(255) NOT NULL;
+....
+
+如果你想将email列, 添加为表中的第一列，可以使用：
+
+[source, sql]
+....
+ALTER TABLE students
+ADD COLUMN email VARCHAR(255) NOT NULL FIRST;
+....
+
+如果你想将email列, 添加在name列之后，可以使用：
+
+[source, sql]
+....
+ALTER TABLE students
+ADD COLUMN email VARCHAR(255) NOT NULL AFTER name;
+....
+
+
+默认值：如果需要，可以指定一个默认值。例如：
+
+[source, sql]
+....
+ALTER TABLE students
+ADD COLUMN email VARCHAR(255) NOT NULL DEFAULT 'default@example.com';
+....
+
+
+如
+
+[source, sql]
+....
+alter table tab2
+add column age TINYINT default null after 用户名 ;  # 对tab2 表格增加一列 age, 位置放在 "用户名"列 的后面.
+....
+
+
+
+image:/img/0051.png[,%]
+
+'''
+
+==== 删除列
+
+....
+alter table 表名 drop column 列名;
+....
+
+如
+
+[source, sql]
+....
+alter table tab2
+drop column age; # 删除 tab2 表中的 age 列
+....
+
+'''
+
+==== 复制表
+
+命令是:
+
+[source, sql]
+....
+CREATE TABLE new_table LIKE old_table;
+INSERT INTO new_table SELECT * FROM old_table;
+....
+
+
+如
+
+[source, sql]
+....
+# 对tab1 表, 复制出一个新的tab2 表来
+CREATE TABLE tab2 LIKE tab1;
+INSERT INTO tab2 SELECT * FROM tab1;
+....
+
+image:/img/0047.png[,%]
+
+'''
+
+
+
+== --- --- --- ---
+
+'''
+
+== #行操作#
+
+
+==== 行:  #增加行# -> insert into 表名 (列名1,列名2,列名3) values (列名1的值,列名2的值,列名3的值)
+
+
+命令:
+
+
+....
+insert into 表名 (列名1,列名2,列名3) values (列名1的值,列名2的值,列名3的值)
+....
+
+如
+
+[source, sql]
+....
+#在 tab1 表中, 插入一行数据
+INSERT INTO tab1 (id,用户名,生日,is_active) values (Null,'zrx', '1981-08-16',1);  # 这里，NULL 是用于"自增长"列的占位符，表示系统将为 id 列生成一个唯一的值。
+....
+
+image:/img/0044.png[,%]
+
+image:/img/0043.png[,%]
+
+
+还可以同时插入多行
+
+[source, sql]
+....
+INSERT INTO tab1 (id,用户名,生日,is_active) values
+(Null,'zrx', '1981-08-16',1),   # 注意, 非最后一行的数据, 要用逗号结尾.
+(Null,'wyy', '1992-05-12',1),
+(Null,'zzr', '1988-09-06',1);  # 最后一行的数据, 才用分号结尾
+....
+
+image:/img/0045.png[,%]
+
+
+你也可以简化的来写, 不用写列名, 直接写上values值即可
+
+[source, sql]
+....
+insert into tab1 values
+(Null, 'girl1', '1992-03-02',0),
+(Null, 'girl2', '1997-04-22',0);
+....
+
+image:/img/0046.png[,%]
+
+'''
+
+
+==== 按条件, 删除数据 (#删除行#) -> delete form 表名 where 字段名='值';
+
+
+[source, sql]
+....
+delete from tab2 where 用户名='zrx';  # 删除tab2表中, 用户名字段为zrx 的所有行. 注意, 对于字符串值, 必须用单引号, 而不是双引号!
+
+delete from tab2 where 用户名='zrx' and is_active =0;  # 删除tab2表中, 用户名字段为zrx, 且 is_active=0 的所有行. 注意: 字段名不要用单引号来包裹! (​列名不要加引号​​（除非有特殊字符，用反引号 `）),  数字值也不要用单引号包裹!
+
+
+delete from tab2 where  is_active >0;  #  删除tab2表中, is_active字段的值大于0的所有行数据.
+....
+
+image:/img/0048.png[,%]
+
+
+
+
+'''
+
+== ##修改##行中的数据
+
+
+格式是:
+
+[source, sql]
+....
+update 表名 set 列名=新值;
+update 表名 set 列名=新值 where 条件;
+....
+
+
+如
+[source, sql]
+....
+update tab2 set 用户名='张三'; #将tab2表中所有行数据的"用户名"字段的值, 都改成'张三'
+....
+
+image:/img/0049.png[,%]
+
+
+[source, sql]
+....
+update tab2 set 用户名='李四' where id=16; #将tab2表中id=16那一行的"用户名"字段的值, 改成'李四'
+....
+
+image:/img/0050.png[,%]
+
+
+[source, sql]
+....
+
+update tab2 set age =age+10; # 将 tab2表中的每一行的age值, 都在原基础上增加10
+....
+
+'''
+
+== #查询行#
+
+
+[source, sql]
+....
+
+select * from tab2; # 查询tab2 表中的所有数据
+....
+
+image:/img/0052.png[,%]
+
+
+[source, sql]
+....
+
+select 用户名, age from tab2; # 只查看显示tab2表中的 "用户名"和 age 列中的值
+....
+
+image:/img/0053.png[,%]
+
+
+[source, sql]
+....
+
+select 用户名 as name, age from tab2;
+# 只查看显示tab2表中的 "用户名"和 age 列中的值, 但临时将"用户名"字段, 显示成"name"字段名.
+....
+
+image:/img/0054.png[,%]
+
+
+[source, sql]
+....
+select * from tab2 where is_active !=0;
+# 只查看显示tab2表中的 is_active 列中的值不为0 的所有行数据
+....
+
+image:/img/0055.png[,%]
+
+image:/img/0059.png[,%]
+
+
+
+下面的查询命令, 是对同一张表进行查询操作, 先找到该表所有 depart_id=2 的行数据, 把它作为一张临时的表 T,  然后在 T表里, 进一步查询 income>5000 的数据.  其实就相当于 and 的命令了.
+
+[source, sql]
+....
+select * from (select * from tb_people where depart_id=2) as T    where income >5000;
+
+#上面的命令就等于下面的命令, 下面的更直观
+select * from tb_people    where  depart_id=2  and income >5000;
+....
+
+
+查询时, 下面两句其实是一样的意思. 如果只查询本表中的数据, 在字段名前, 本表的名字可以不用显示写出.  如果有多张表的话, 你可以带上表命, 用"名表.字段名"来表示.
+
+[source, sql]
+....
+select * from tb_people   where depart_id=1 ;
+select * from tb_people   where tb_people.depart_id=1 ;
+....
+
+
+==== 查询时##只显示某几列##的内容, 而非整张表的所有列
+
+[source, sql]
+....
+select name, age  from tb_people where name like "周_"; # 只查询显示 name 和 age 列
+....
+
+image:/img/0063.png[,%]
+
+
+[source, sql]
+....
+select name, age, '新添加的列'  from tb_people where name like "周_"; # 除了取出name 和 age列外, 你还自己临时新添加了一列'新添加的列', 值也是这个'新添加的列'.
+....
+
+image:/img/0064.png[,%]
+
+
+
+[source, sql]
+....
+select name, age, '新添加的列' as '说明' from tb_people where name like "周_"; # 将你还新添加了一列'新添加的列', 字段名字改为'说明'.
+....
+
+image:/img/0065.png[,%]
+'''
+
+
+[source, sql]
+....
+select name, (select depart_name from tb_depart
+                where tb_depart.id=tb_people.depart_id) as '部门名字'
+from tb_people;
+
+# 这里是, 在tb_people表中, 取出name字段, 再根据depart_id的值, 到 tb_depart表中取出  depart_name 的值.  也就是说从两张表中取出各自的字段, 来组成一张新的表返回.
+
+#where tb_depart.id = tb_people.depart_id 的意思是, 如果部门表中的id值(相当于"键值对"中的 key 键), 等于 人员表中的 depart_id 的话.  就从部门表中取出 depart_name 的值 (相当于"键值对"中的 value值).
+....
+
+image:/img/0066.png[,%]
+
+image:/img/0067.png[,%]
+
+image:/img/0068.png[,%]
+
+
+
+
+
+'''
+
+
+
+
+
+==== 通配符
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+
+|===
+|Header 1 |Header 2
+
+|%
+|代表"n个字符"的意思
+
+|_
+|下划线, 代表"1个字符"的意思
+|===
+
+[source, sql]
+....
+select * from tb_people    where name like "z%";  #查找所有z开头的名字
+....
+
+image:/img/0060.png[,%]
+
+image:/img/0061.png[,%]
+
+image:/img/0062.png[,%]
+
+
+
+
+注意: 如果数据库很大, 强烈不建议用通配符来搜索, 因为通配符的效率很低. 而要用专门的组件来操作.
+
+
+'''
+
+== #排序#
+
+.从小到大排:
+
+[source, sql]
+....
+select * from tb_people   order by age desc;  -- 按age值,倒序排列, 从大到小
+....
+
+image:/img/0069.png[,%]
+
+
+
+.从大到小排:
+
+[source, sql]
+....
+select name, income from tb_people   order by income asc;  -- 按 income值 正序排列, 从小到大
+....
+
+image:/img/0070.png[,%]
+
+
+.对多列, 分别指定排序顺序:
+
+[source, sql]
+....
+select name, age, income from tb_people   order by age asc, income desc;  -- age按从小到大排, income 按从大到小排
+....
+
+
+image:/img/0071.png[,%]
+
+
+.还可以先用 where 来筛选出要排序的数据.
+
+[source, sql]
+....
+select id, name, age from tb_people   where id >10   order by age asc;
+-- 先选出 id>10 的数据, 再来对选出的数据进行排序
+....
+
+image:/img/0072.png[,%]
+
+
+
+
+'''
+
+== #取出部分数据#
+
+.只获取前n行数据:
+
+[source, sql]
+....
+select * from tb_people  limit 5;  -- 只获取前5行数据
+....
+
+image:/img/0073.png[,%]
+
+
+.也可以先排序, 再来取出排序后的前n行:
+
+[source, sql]
+....
+select * from tb_people    order by age asc    limit 5;  -- 先排序age, 再来只获取前5行数据
+....
+
+image:/img/0074.png[,%]
+
+
+
+[source, sql]
+....
+select * from tb_people  where id>10    order by age asc    limit 5;
+-- 先筛选出id>10的数据, 再来排序age, 再获取前5行数据
+....
+
+image:/img/0075.png[,%]
+
+.指定获取数据的索引值 (从第几行, 到第几行)
+
+[source, sql]
+....
+select * from tb_people   limit 5  offset 4;
+-- 从位置4开始, 向后获取前5行数据.  offset n. 偏离量，偏离距离
+....
+
+image:/img/0076.png[,%]
+
+
+
+'''
+
+== #分组#
+
+
+
+
+
+
+
+https://www.bilibili.com/video/BV1B34y1R7in?spm_id_from=333.788.videopod.episodes&vd_source=52c6cb2c1143f8e222795afbab2ab1b5&p=25
