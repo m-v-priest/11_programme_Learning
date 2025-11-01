@@ -1,0 +1,11 @@
+# Rime user dictionary
+#@/db_name	luna_pinyin
+#@/db_type	userdb
+#@/rime_version	1.13.1
+#@/tick	5
+#@/user_id	ce5e4c4c-00c1-4d03-a928-7b726f83f7ce
+shu ru fa 	輸入法	c=1 d=0.980199 t=5
+shuang pin 	雙拼	c=1 d=0.99005 t=5
+wei ruan 	微軟	c=1 d=0.985112 t=5
+zhe 	喆	c=1 d=1 t=5
+zhou 	周	c=1 d=0.995012 t=5

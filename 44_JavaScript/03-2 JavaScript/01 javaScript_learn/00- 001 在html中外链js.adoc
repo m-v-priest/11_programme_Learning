@@ -1,0 +1,9 @@
+
+= html中 外链 js
+
+外链js文件, 写在 <script src="外链js文件名.js"></script> 中
+
+image:/img_javaScript/001.png[,%]
+
+
+

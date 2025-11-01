@@ -1,0 +1,86 @@
+
+= FLUX.1-Krea-dev-GGUF
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+https://huggingface.co/QuantStack/FLUX.1-Krea-dev-GGUF/tree/main
+
+image:/img/0149.png[,%]
+
+上面的这些名字有什么区别?
+
+*Q: 表示百万亿（quadrillion）参数。* +
+T: 表示万亿（trillion）参数。 +
+B: 表示十亿（billion）参数。 +
+M: 表示百万（million）参数。 +
+K: 表示千（thousand）参数。 +
+
+当前主流大模型多为 B 级参数（十亿级），但未来 T（万亿级）模型可能会成为主流。 +
+
+参数，例如 Q, K, T，这些表示量化方式或其他模型特性。
+
+
+.什么是量化？
+量化 是一种让模型变得更小、更高效的技术。想象一下，把一本 1000 页的书压缩成一份摘要，但仍然保留了所有关键信息——这就是量化的核心思想。它通过减少模型的大小和复杂性，使其能够在资源有限的设备上运行。
+
+.什么是 GGUF 格式？
+GGUF 是一种专门用于存储量化模型的文件格式。它在存储效率和运行性能上都进行了优化，使得量化模型更容易加载和运行，即使在显存较少的硬件上也能流畅使用。
+
+量化级别, 指的是模型精度被降低的程度。例如，将模型从 FP16 压缩到 Q8、Q6 甚至 Q4，可以显著减少其大小和运行所需的显存。不同的量化级别（如 Q2 到 Q8）代表了不同程度的压缩，会影响模型的质量和显存占用。
+
+如果你的 GPU 有 12GB 显存，理论上可以运行 Q5 或 Q6 模型。但请记住，系统本身也需要占用一些显存，因此你可能需要选择更低的量化级别，比如 Q4，以确保稳定运行。
+
+Flux.1 Dev GGUF Q2-Q8 版本列表:
+
+image:/img/0150.png[,70%]
+
+
+开源的 Flux 社区 有多个贡献者, 创建了不同的量化模型。
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|Q
+|row 1Quantized 量化 +
+Q 之后的数字（例如 Q 4 ）-- 每个量化权重存储器中的位数。 +
+
+Q4: 表示 4-bit 量化
+
+|K
+|Grouped quantization (uses per-group scale + zero point)  -- 分组量化（使用每组比例+零点）
+
+|S/M/L
+|S — Small precision (fastest, lower accuracy) +
+S — S 精度较小（最快，准确率较低） +
+
+M — Medium precision +
+M — 中等精度 +
+
+L —Large precision (slowest, higher accuracy) +
+L — 高精度（ 最慢，准确度更高） +
+
+|0/1
+|0 — Ungrouped (older style quantization) +
+0 — 未分组（旧式量化） +
+
+1 — Another legacy quantization format +
+1 — 另一种传统的量化格式 +
+|===
+
+
+
+
+
+
+
+
+
+
+
+
