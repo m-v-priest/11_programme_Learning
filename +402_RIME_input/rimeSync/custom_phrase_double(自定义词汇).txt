@@ -31,6 +31,10 @@ image:/img/.png[,%]	ei	1
 [.small][options="autowidth" cols="1a,1a"]	auto	1
 = 001+:toc: left+:toclevels: 3+:sectnums:+:stylesheet: ../../myAdocCss.css+'''	toc	1
 [.my1]+.案例+====+====	sp	1
+:stylesheet: myAdocCss.css	css	1
+[.my2]	ff	1
+[source, python]+....+....	py	1
+
 ★	xx	1
 ☆	xx	1
 √	gb	1
@@ -44,6 +48,11 @@ image:/img/.png[,%]	ei	1
 (adj.)	jj	1
 (adv.)	ad	1
 (n.)	nn	1
-`主`		zz	1
-`谓`		ww	1
-`系`		xx	1
+`主`	zz	1
+`谓`	ww	1
+`系`	xx	1
+`表`	bb	1
+latexmath:[ ]	lx	1
+\frac{}{}	fr	1
+stem:[ ]	sm	1
+\sqrt{}	sq	1
