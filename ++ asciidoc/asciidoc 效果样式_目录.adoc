@@ -77,7 +77,42 @@ image:.././img_adoc,md,other/img_adoc/adoc_03.png[]
 效果 +
 image:.././img_adoc,md,other/img_adoc/adoc_04.png[]
 
----
+'''
+
+
+==== #★ 夸目录调用css文件#
+
+文件目录层级如下:
+
+....
+02_myself_ID_EGO
+-> myAdocCss.css
+
+11_programme_Learning
+-> 201 comfyUI
+-> -> adoc.adoc
+....
+
+即, -> 符号是用来表示目录层级.
+
+*我想让 adoc.adoc 读取 02_myself_ID_EGO 目录下的 myAdocCss.css 这个css文件, 该怎么写地址?*
+
+这样写: +
+....
+:stylesheet: ../../02_myself_ID_EGO/myAdocCss.css
+....
+
+image:/img/svg 001.svg[,%]
+
+我们来分解一下这个相对路径是如何工作的：
+
+- 当前文件位置：/11_programme_Learning/201 comfyUI/adoc.adoc
+- #../#：从 201 comfyUI 目录向上退一级，到达 /11_programme_Learning/ 目录。
+- #../#：再向上退一级，到达根目录（即 02_myself_ID_EGO 和 11_programme_Learning 的共同父目录）。
+- 02_myself_ID_EGO：进入平级的 02_myself_ID_EGO 目录。
+- /myAdocCss.css：找到目标 CSS 文件。
+
+'''
 
 == 画"目录结构图" -> 安装 mddir模块
 
