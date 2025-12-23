@@ -1,0 +1,8 @@
+
+= comfyui 将两个字符串连接
+
+使用 comfyroll 插件
+
+https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes
+
+image:/img/2001.jpg[,%]

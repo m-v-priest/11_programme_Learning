@@ -1,0 +1,11 @@
+
+= comfyui 插件 - 电路板风格的连接线
+
+
+https://github.com/niknah/quick-connections
+
+安装完插件,什么都不用设置, 就能立即生效了.
+
+风格如下:
+
+image:/img/CircuitBoardExample.webp[,100%]
