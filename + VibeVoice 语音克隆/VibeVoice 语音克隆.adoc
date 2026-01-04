@@ -137,7 +137,9 @@ generation_config.json
 
 请手动在你的 ComfyUI 根目录下创建以下文件夹结构：
 
-目标根目录： ComfyUI/models/vibevoice/
+目标根目录： ComfyUI/models/tts/vibevoice/
+
+image:/img/006.webp[,%]
 
 
 
