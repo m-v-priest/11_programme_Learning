@@ -1,0 +1,29 @@
+
+:toc:
+:toclevels: 3
+:sectnums:
+
+== 手动下载pycharm插件, 来离线安装
+
+官方插件地址
+https://plugins.jetbrains.com/
+
+
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|asciidoc 插件
+|https://plugins.jetbrains.com/plugin/7391-asciidoc
+
+|latex 插件
+|https://plugins.jetbrains.com/plugin/9473-texify-idea
+
+|Rainbow Brackets 插件
+|https://plugins.jetbrains.com/plugin/10080-rainbow-brackets
+|===
+
+
+
+

@@ -1,0 +1,167 @@
+
+= random模块 - 随机
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+
+'''
+
+== 生成一个指定范围内的"随机整数" -> random.randrange([start], stop,[step])  包头不包尾
+
+参数说明：
+
+- start：可选，范围的起始值（默认值为0）
+- stop：范围的结束值，但不包括该值
+- step：可选，步长（默认值为1）
+- 返回一个随机选择的整数，范围在 [start, stop) 之间，按照步长 step 进行选择
+
+
+[source, python]
+....
+import random
+
+for i in range(10):
+    print(random.randrange(0,2)) #因为包头不包尾, 所以要生成 0和 1 两者的随机数, 就只能用 (0,1)
+
+for i in range(20):
+    print(random.randrange(1,11,2)) # 生成1-10之间的随机奇数. 第三个参数2, 意思是步长跨度为2
+    # 此处, 会随机输出 1,3,5,7,9 中的任意一个数
+....
+
+
+== 生成一个指定范围内的"随机整数" -> random.randint(start, stop)  包头又包尾
+
+参数说明：
+
+- start：生成随机整数的起始值
+- stop：生成随机整数的结束值
+- 函数返回一个随机选择的整数，范围在 [start, stop] 之间，包含 stop
+
+[source, python]
+....
+import  random
+
+for i in range(10):
+    print(random.randint(0,2)) #因为包头, 也包尾, 所以会生成 0, 1,2 三个数字间的随机数
+....
+
+'''
+
+== 生成一个0到1之间的随机浮点数 -> random.random()
+
+random.random() +
+注意: 这个函数, 不需要传入参数. 直接用就行. 返回一个0到1之间的随机浮点数， 包括0但不包括1
+
+
+[source, python]
+....
+import  random
+
+for i in range(5):
+    print(random.random()) # 注意: 包头不包尾
+
+'''
+输出
+0.35713435601835186
+0.39945243189000956
+0.663771799218004
+0.8838034073883017
+0.8543095314350694
+'''
+....
+
+== 从一个非空序列中, 随机选择一个元素 -> random.choice(seq)
+
+random.choice(seq)
+
+参数说明：
+
+- seq：表示一个非空的序列，可以是列表、元组、字符串等
+- 返回 seq 序列中的一个随机元素
+
+
+[source, python]
+....
+import  random
+
+list1 = ['zrx','wyy','zzr']
+
+for i in range(10):
+    print(random.choice(list1))
+
+'''
+输出
+zzr
+wyy
+wyy
+zzr
+wyy
+wyy
+wyy
+zrx
+zzr
+zzr
+'''
+....
+
+
+'''
+
+== 从一个序列中随机选择多个元素，返回一个新的列表 -> random.sample(seq, k)
+
+
+random.sample(seq, k)
+
+参数说明：
+
+- seq：表示一个非空的序列，可以是列表、元组、字符串等
+- k：表示需要选择的元素个数，k 必须小于或等于 seq 的大小
+- 返回一个新的列表，其中包含从 seq 中随机选择的 k 个元素
+
+[source, python]
+....
+import  random
+
+list1 = ['zrx','wyy','zzr']
+
+for i in range(10):
+    print(random.sample(list1,2)) # 从这个非空序列中, 随机取出2个元素
+
+'''
+输出
+['zrx', 'zzr']
+['zzr', 'wyy']
+['zrx', 'zzr']
+['zrx', 'zzr']
+['zzr', 'zrx']
+['zzr', 'wyy']
+['zrx', 'zzr']
+['zzr', 'zrx']
+['zrx', 'wyy']
+['zrx', 'wyy']
+'''
+....
+
+
+== 对一个可变序列进行随机打乱顺序 -> random.shuffle(seq)
+
+random.shuffle(seq)
+
+参数说明：
+
+- seq：表示一个可变序列，例如列表之类的
+- 注意: 该方法将会打乱"原列表"的顺序，并不会生成新的可变序列
+
+[source, python]
+....
+import  random
+
+list1 = ['zrx','wyy','zzr']
+
+random.shuffle(list1) # 注意: 该方法会修改原始列表, 原列表中的元素顺序会被打乱
+print(list1) # ['wyy', 'zrx', 'zzr']
+....
+
+'''

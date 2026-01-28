@@ -1,0 +1,193 @@
+
+= VibeVoice
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: ../../myAdocCss.css
+
+'''
+
+== 安装
+
+
+== 很好的声音: keith 口语
+
+https://www.bilibili.com/video/BV1wU2nY9Eic?spm_id_from=333.788.videopod.sections&vd_source=52c6cb2c1143f8e222795afbab2ab1b5
+
+image:/img/007.webp[,%]
+
+
+
+==== b站教程 +
+
+https://www.bilibili.com/video/BV1xUxvzoEaN/?spm_id_from=333.337.search-card.all.click&vd_source=52c6cb2c1143f8e222795afbab2ab1b5
+
+
+https://www.bilibili.com/video/BV1v6a2zWEwR/?spm_id_from=333.337.search-card.all.click&vd_source=52c6cb2c1143f8e222795afbab2ab1b5
+
+要在 comfyui 中使用.
+
+==== 安装地址
+
+https://github.com/wildminder/ComfyUI-VibeVoice
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|
+|导航至 ComfyUI/custom_nodes/ 目录并克隆此存储库：
+
+....
+git clone https://github.com/wildminder/ComfyUI-VibeVoice.git
+....
+
+
+|
+|安装依赖项： 打开终端或命令提示符，导航到克隆的目录，并安装所需的 Python 包。 要获得量化支持，您必须安装 bitsandbytes 。
+
+....
+cd ComfyUI-VibeVoice
+
+pip install -r requirements.txt //别急着用这个, 看下面
+
+
+
+注意: 第二个命令, 需要在PowerShell 中, 使用 --user 参数：如果你没有管理员权限，可以在命令末尾加上 --user。
+
+pip install -r requirements.txt --user
+
+
+
+为了防止旧的损坏文件干扰安装，我们需要强制重新下载：(如果这个命令报错 [WinError 5] 拒绝访问, 就用上面的命令,即 使用 --user 参数 (最安全))
+
+pip install -r requirements.txt --no-cache-dir
+....
+
+|
+|重启 ComfyUI： 启动 ComfyUI。“VibeVoice TTS”节点将出现在 audio/tts 类别下。首次使用该节点时，它会自动将所选模型下载到 ComfyUI/models/tts/VibeVoice/ 文件夹。
+|===
+
+image:/img/001.webp[,%]
+
+
+[.small]
+[options="autowidth" cols="1a,1a,1a,1a"]
+|===
+| 维度 | VibeVoice-1.5B | VibeVoice-Large | 通俗比喻
+
+| 上下文长度 | 64K | 32K
+| 记忆力：1.5B 能“记住”更长的参考音频和文字，说话语气更连贯。
+
+上下文长度 (Context Length)：
+**这是模型的“临时记忆”。**在语音克隆（TTS）中，如果你想让 AI 模仿一段很长的说话风格，或者一次性读几千字的长文本，*1.5B 能够处理的信息量是 Large 的两倍。*
+
+比喻：就像背课文，1.5B 能一下记住两页纸，而 Large 只能记住一页。
+
+
+| 世代长度 | ~90 分钟 | ~45 分钟
+| 肺活量：1.5B 一口气能生成的音频总时长更长。
+
+世代长度 (Generation Length)：
+这代表了**模型在单次任务中能“输出”的音频上限。1.5B 能连续生成一个半小时的播客，而 Large 则适合生成短音频或短视频配音。**
+
+比喻：1.5B 像是一个跑马拉松的运动员，耐力极好；Large 像是一个短跑选手。
+
+| 模型重量 | 较重 | 较轻
+| 脑容量：1.5B 模拟出的音色细节通常更细腻、更像真人。
+|===
+
+- VibeVoice-1.5B (旗舰版),
+显存要求：建议 8GB - 10GB 以上。
+
+- VibeVoice-Large (平衡版): 显存要求：建议 4GB - 6GB 以上。
+
+
+==== 下载模型:
+
+https://huggingface.co/microsoft/VibeVoice-1.5B/tree/main
+
+你只需要下载以下几类文件：
+
+image:/img/002.webp[,%]
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|模型权重文件 (Weights)：
+|model.safetensors.index.json
+
+model-00001-of-00003.safetensors
+
+model-00002-of-00003.safetensors
+
+model-00003-of-00003.safetensors
+
+注：如果有 .bin 格式的文件，建议优先下载 .safetensors 格式，安全性更高且加载更快。
+
+|配置文件 (Configs)：
+|config.json
+
+generation_config.json
+
+|特殊模块 (Embedded Modules)：
+|如果页面中有 vvembed 文件夹或相关的 Python 脚本文件，也建议一并下载，因为某些版本的插件需要这些本地脚本来解析模型结构。
+
+|===
+
+不需要下载的文件： .gitattributes、README.md 以及任何后缀为 .md 或以 . 开头的隐藏文件。
+
+
+==== 模型存放的目录位置:
+
+请手动在你的 ComfyUI 根目录下创建以下文件夹结构：
+
+目标根目录： ComfyUI/models/tts/vibevoice/
+
+image:/img/006.webp[,%]
+
+
+
+==== 下载 Tokenizer (分词器)
+
+
+VibeVoice 使用的是 Qwen2.5-1.5B 的分词器。
+
+你需要前往 https://huggingface.co/Qwen/Qwen2.5-1.5B/tree/main  下载 tokenizer.json、tokenizer_config.json、vocab.json 和 merges.txt，并把它们放在 ComfyUI/models/vibevoice/tokenizer/ 文件夹中。
+
+
+==== 总结操作流程
+
+下载模型：从 microsoft/VibeVoice-1.5B 下载所有的 .safetensors 和 .json 文件。
+
+放置模型：放入 ComfyUI/models/vibevoice/VibeVoice-1.5B/。
+
+下载分词器：从 Qwen 仓库下载 4 个分词器相关文件。
+
+放置分词器：放入 ComfyUI/models/vibevoice/tokenizer/。
+
+重启 ComfyUI：刷新页面，在 VibeVoice Engine 节点的下拉菜单中就能看到模型了。
+
+对于你的 8GB 显存 3060，1.5B 版本加载后约占用 5GB 左右空间，建议在生成时关闭浏览器等占用显存的程序，以防报错。
+
+image:/img/003.webp[,%]
+
+image:/img/004.webp[,%]
+
+
+==== 针对 8GB 显存的特别提醒
+
+因为你的显卡是 8GB 显存的 3060，在加载这堆文件时，请留意以下逻辑：
+
+1. 加载过程： config.json → 读取结构描述 preprocessor_config.json → 准备音频处理空间 model-000xx.safetensors → 搬运权重进入显存（约占用 5.5GB）
+
+2. 潜在报错： 如果你启动 ComfyUI 后，点击生成却看到控制台卡在 Loading checkpoint... 很久，最后弹出一个红色 Error，那通常是因为 8GB 显存被占满了。
+
+3. 避坑指南：
+不要同时开启浏览器的高级渲染（比如在看 4K 视频）。 +
+如果报错 AttributeError 或 KeyError，那通常不是因为缺了 generation_config.json，而是因为 tokenizer 文件夹里的分词器文件没放对位置。
+
+

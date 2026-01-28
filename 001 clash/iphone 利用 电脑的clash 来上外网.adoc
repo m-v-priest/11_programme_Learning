@@ -1,0 +1,28 @@
+
+= iphone 利用 电脑的 clash 来上外网
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|步骤 |Header 2
+
+|1.电脑端的 clash 设置
+|image:/img/063.png[,]
+
+image:/img/064.png[,]
+
+image:/img/065.png[,]
+
+image:/img/066.png[,]
+
+
+
+|2.iPhone上的设置
+|image:/img/067.png[,]
+
+image:/img/068.png[,]
+
+image:/img/069.png[,]
+|===
+
+现在就能实现手机直接上外网了.

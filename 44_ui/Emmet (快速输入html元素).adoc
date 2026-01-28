@@ -1,0 +1,358 @@
+
+= Emmet (前身为 Zen Coding)
+:toc:
+
+---
+
+== 官方文档
+
+官方文档 +
+https://docs.emmet.io/cheat-sheet/
+
+---
+
+== 用法/ 层级关系
+
+==== 儿子(即子元素): >
+
+[source, Javascript]
+----
+后代：>
+grandfather>fahter*2>son
+----
+
+[source, html]
+....
+<grandfather>
+    <fahter> //←--
+        <son></son>
+    </fahter> //←--
+    
+    <fahter>
+        <son></son>
+    </fahter>
+</grandfather>
+....
+
+---
+
+==== 兄弟: 加号(+)
+
+[source, Javascript]
+----
+兄弟：+
+brother1+b2+b3*2
+----
+
+[source, html]
+....
+<brother1></brother1>
+<b2></b2>
+<b3></b3>
+<b3></b3>
+....
+
+---
+
+==== 上一级(即父元素): ^
+
+[source, Javascript]
+----
+上级：^
+grand>father>son^fahter2
+----
+
+[source, html]
+....
+<grand>
+    <father>
+        <son></son>
+    </father>
+    <fahter2></fahter2> //←--
+</grand>
+....
+
+---
+
+==== 上两级：^^
+
+[source, Javascript]
+----
+上两级：^^
+grand>father>son^^grand2
+----
+
+[source, html]
+....
+<grand> //←--
+    <father>
+        <son></son>
+    </father>
+</grand> 
+
+<grand2></grand2> //←--
+....
+
+---
+
+==== 分组：( )
+
+[source, Javascript]
+----
+分组：( )
+grand>(f1>s1*2)+(f2>s2+s3)
+----
+
+[source, html]
+....
+<grand>
+    <f1> //←--
+        <s1></s1>
+        <s1></s1>
+    </f1>
+
+    <f2> //←--
+        <s2></s2>
+        <s3></s3>
+    </f2>
+</grand>
+....
+
+---
+
+==== 分组嵌套: (())
+
+[source, Javascript]
+----
+分组嵌套 (())
+g>(f>(s>gs)*2)^g2
+----
+
+[source, html]
+....
+<g>
+    <f>
+        <s> //←--
+            <gs></gs>
+        </s>
+
+        <s> //←--
+            <gs></gs>
+        </s>
+    </f>
+</g>
+<g2></g2>
+....
+
+---
+
+==== 乘法：*
+
+[source, css]
+....
+乘法：*
+s*3
+....
+
+[source, html]
+....
+<s></s><s></s><s></s>
+....
+
+---
+
+---
+
+== 用法/ 添加属性
+
+==== id属性: #
+[source, Javascript]
+----
+id属性  #
+s#id_son1
+----
+
+[source, html]
+....
+<s id="id_son1"></s>
+....
+
+---
+
+==== 类属性: 点号(.)
+
+[source, Javascript]
+----
+类属性  .
+(s.cls_son)*2
+----
+
+[source, html]
+....
+<s class="cls_son"></s>
+<s class="cls_son"></s>
+....
+
+又例:
+[source, Javascript]
+----
+div#di_div.class1.class2.class3
+----
+
+[source, html]
+....
+<div id="di_div" class="class1 class2 class3">
+</div>
+....
+
+---
+
+==== 自定义属性: [key=value]
+
+[source, Javascript]
+----
+自定义属性 [key=value]
+div[key=value_$]*3
+----
+
+[source, html]
+....
+<div key="value_1"></div>
+<div key="value_2"></div>
+<div key="value_3"></div>
+....
+
+又例:
+[source, Javascript]
+----
+span[k1=v1 k2=v2 k3=v3]
+----
+
+[source, html]
+....
+<span k1="v1" k2="v2" k3="v3">
+</span>
+....
+
+---
+
+==== 文本内容: {}
+
+文本内容, 不需要双引号.
+
+[source, Javascript]
+----
+文本内容  {}
+f{i am father}>s{i am son}
+----
+
+[source, html]
+....
+<f>i am father
+    <s>i am son</s>
+</f>
+....
+
+---
+
+== 用法/ 数字递增
+
+==== 数字自增(递增1)符号：$
+
+[source, Javascript]
+----
+数字自增符号：$
+ul>li.cls_li$*4
+或
+ul>(li.cls_li$)*4
+----
+
+[source, html]
+....
+<ul>
+    <li class="cls_li1"></li>
+    <li class="cls_li2"></li>
+    <li class="cls_li3"></li>
+    <li class="cls_li4"></li>
+</ul>
+....
+
+例子2:
+[source, Javascript]
+----
+h$[id=id_h$]{text...$}*3
+----
+
+[source, html]
+....
+<h1 id="id_h1">text...1</h1>
+<h2 id="id_h2">text...2</h2>
+<h3 id="id_h3">text...3</h3>
+....
+
+例子3:
+[source, Javascript]
+----
+ul>li#id_$$$*4
+----
+
+[source, html]
+....
+<ul>
+    <li id="id_001"></li>
+    <li id="id_002"></li>
+    <li id="id_003"></li>
+    <li id="id_004"></li>
+</ul>
+....
+
+---
+
+==== 数字倒序自增符号: $@-
+
+数字倒序自增符号 $@-
+
+- @表示不属于正常的加1递增,
+- 减号 - 表示"递减"
+
+[source, Javascript]
+----
+ul>li$@-*4
+或
+ul>(li$@-)*4
+----
+
+[source, html]
+....
+<ul>
+    <li4></li4>
+    <li3></li3>
+    <li2></li2>
+    <li1></li1>
+</ul>
+....
+
+---
+
+==== 从第n位开始递增: $@n
+
+[source, Javascript]
+----
+从第n位开始递增 $@n
+ul>li#id_$@7*4   //从第7开始递增
+或
+ul>(li#id_$@7)*4
+----
+
+[source, html]
+....
+<ul>
+    <li id="id_7"></li>
+    <li id="id_8"></li>
+    <li id="id_9"></li>
+    <li id="id_10"></li>
+</ul>
+....
+
+---
+

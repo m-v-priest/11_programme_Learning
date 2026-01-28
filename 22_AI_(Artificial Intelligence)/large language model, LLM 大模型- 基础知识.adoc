@@ -1,0 +1,65 @@
+
+= large language model 基础知识
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+== 排名网站
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|斯坦福的 HELM 评测体系 +
+Holistic (a.)整体的，全面的；功能整体性的 Evaluation of Language Models
+|https://crfm.stanford.edu/helm/lite/latest/#/leaderboard
+
+是由"斯坦福大学"推出的大模型评测体系. +
+HELM评测体系正如其名，非常Holistic，测评场景（考察项目）就有73种，评价指标有65项，可以说是非常严谨了。
+
+
+|斯坦福的Alpaca 评测体系
+|https://tatsu-lab.github.io/alpaca_eval/
+
+斯坦福的Alpaca是主观评测体系(Open compass 与HELM是客观评测体系)。通俗来讲就是让人去“判题”，不过Alpaca eval并不是真正的雇佣人去判题，而是通过一个AlpacaFarm(羊驼农场)训练出来一个专业去“判题的机器人”来判题，判题方法就是和GPT4或者Claude的答案来对比。
+
+|专为中文：SuperCLUE
+|https://www.cluebenchmarks.com/introduce.html
+
+全称是: Chinese Language Understanding Evaluation, 英文谐名clue对应的是“线索” 之意. +
+SuperCLUE是一个专门为中文大语言模型评测的开源工具.
+
+
+|===
+
+'''
+
+== 参数中是 B 是什么意思? -> Billion 十亿
+
+6B : 表示模型有6个十亿（即6亿）个参数. +
+34B : 表示模型有34个十亿（即34亿）个参数.
+
+[.small]
+[options="autowidth" cols="1a,1a,1a,1a"]
+|===
+|Header 1 |Header 2||
+
+|B	|Billion	|十亿
+|如, GPT1的参数, 是117M，就是1.17亿
+
+|M	|Million	|百万
+|
+
+|K	|Thousand	|千
+|
+|===
+
+
+
+
+
+

@@ -1,0 +1,126 @@
+
+= asciidoc 插入 视频, 音频
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+官网说明: +
+https://docs.asciidoctor.org/asciidoc/latest/macros/audio-and-video/
+
+
+'''
+
+== 插入方法
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|插入音频
+|
+....
+audio::ocean-waves.wav[]
+....
+
+audio::ocean-waves.wav[]
+
+'''
+
+您可以使用“ start属性”来抵消播放的开始时间，并使用autoplay选项启用自动播放。
+....
+audio::ocean-waves.wav[start=60,opts=autoplay]
+....
+
+audio::ocean-waves.wav[start=60,opts=autoplay]
+
+
+
+|在音频中添加标题
+|
+....
+.Take a zen moment
+audio::ocean-waves.wav[]
+....
+
+.Take a zen moment
+audio::ocean-waves.wav[]
+
+|插入视频
+|
+....
+video::video-file.mp4[]
+....
+
+video::video-file.mp4[]
+
+'''
+
+您可以使用“ start属性”来抵消播放的开始时间，并使用autoplay选项启用自动播放。
+....
+video::video-file.mp4[width=640,start=60,opts=autoplay]
+....
+
+video::video-file.mp4[width=640,start=60,opts=autoplay]
+
+|在视频中添加标题
+|
+....
+.A walkthrough of the product
+video::video-file.mp4[]
+....
+
+.A walkthrough of the product
+video::video-file.mp4[]
+
+|===
+
+
+'''
+
+== Audio and video attributes and options 音频和视频属性和选项
+
+
+
+[.small]
+[options="autowidth" cols="1a,1a,1a,1a"]
+|===
+|Header 1 |Header 2 |Header 3 |Header 4
+
+|Attribute  |属性	Value(s)   值	|Example Syntax  示例语法	|Notes  笔记
+|title
+|User defined text   +
+用户定义的文本
+|.Ocean waves
+|
+
+|start
+|User-defined playback start time in seconds. +
+用户定义的播放开始时间在几秒钟内。
+|start=30
+|
+
+|end
+|User-defined playback end time in seconds. +
+用户定义的播放时间在几秒钟内。
+|end=90
+|
+
+|options (opts)
+|autoplay, loop, controls, nocontrols
+|opts="autoplay,loop"
+|The controls value is enabled by default +
+默认启用控件值
+|===
+
+
+'''
+
+
+== Audio and video attributes and options 音频和视频属性和选项
+
+image:/img/0001.png[,100%]
+

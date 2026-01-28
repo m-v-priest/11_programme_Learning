@@ -1,0 +1,60 @@
+
+= asciidoc 加上边框线
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+
+'''
+
+== 方法1
+....
+pass:[<span style="border: 1px solid black; padding: 2px;">word</span>]
+....
+
+效果 +
+pass:[<span style="border: 1px solid black; padding: 2px;">word</span>]
+
+'''
+
+== 给行内的文字, 加边框
+
+定义一个 .boxed 的 CSS 样式（你可以在 HTML 模板或通过 ++++ 嵌入 CSS）：
+
+....
+++++
+<style>
+.boxed {
+  border: 1px solid #000;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+</style>
+++++
+....
+
+然后在asciidoc文件中直接就可以写:
+
+....
+I [.boxed]#like# you
+....
+
+实际效果如下:
+
+++++
+<style>
+.boxed {
+  border: 1px solid #000;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+</style>
+++++
+
+I [.boxed]#like# you
+
+
+'''
+
+

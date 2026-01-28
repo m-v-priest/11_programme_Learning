@@ -1,0 +1,64 @@
+<svg viewBox="0 0 682 232" xmlns:xlink="http://www.w3.org/1999/xlink" width="682" height="232" xmlns="http://www.w3.org/2000/svg">
+    <defs/>
+    <g transform="translate(-207.00,-767.00)">
+        <g transform="translate(208.00,768.00)" id="shape1">
+            <path d="M189.0,194.0L189.0,.0L.0,.0L.0,194.0L189.0,194.0z" stroke="#323232" fill-rule="nonzero" fill="#ffffff"/>
+            <text xml:space="preserve" style="fill:#ff0000;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="19.0" x="55.5">根域名服务器</tspan>
+            </text>
+        </g>
+        <g transform="translate(236.48,804.00)" id="shape2">
+            <path d="M132.0,130.0L132.0,.0L.0,.0L.0,130.0L132.0,130.0z" stroke="#323232" fill-rule="nonzero" fill="#ffffff"/>
+            <text xml:space="preserve" style="fill:#000000;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="19.0" x="14.0">肚子里里面存放了</tspan>
+                <tspan style="fill:#ff0000" y="38.0" x="20.5">顶级域名</tspan>
+                <tspan x="72.5">服务器</tspan>
+                <tspan y="57.0" x="18.0">(即  </tspan>
+                <tspan style="fill:#ff0000" x="43.0">TLD </tspan>
+                <tspan x="71.0">服务器)</tspan>
+                <tspan y="76.0" x="38.5">的IP 地址</tspan>
+                <tspan y="114.0" x="51.0">.com</tspan>
+            </text>
+        </g>
+        <g transform="translate(454.00,796.00)" id="shape3">
+            <path d="M189.0,166.0L189.0,.0L.0,.0L.0,166.0L189.0,166.0z" stroke="#323232" fill-rule="nonzero" fill="#ffffff"/>
+            <text xml:space="preserve" style="fill:#ff0000;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="19.0" x="63.0">TLD服务器</tspan>
+            </text>
+        </g>
+        <g transform="translate(482.48,832.00)" id="shape4">
+            <path d="M132.0,111.0L132.0,.0L.0,.0L.0,111.0L132.0,111.0z" stroke="#323232" fill-rule="nonzero" fill="#ffffff"/>
+            <text xml:space="preserve" style="fill:#000000;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="19.0" x="14.0">肚子里里面存放了</tspan>
+                <tspan style="fill:#ff0000" y="38.0" x="20.5">一级域名</tspan>
+                <tspan x="72.5">服务器</tspan>
+                <tspan y="57.0" x="38.5">的IP 地址</tspan>
+                <tspan y="95.0" x="18.0">ruanyifeng.com</tspan>
+            </text>
+        </g>
+        <g transform="translate(368.52,860.81)" id="shape5">
+            <path d="M.0,.0L79.5,-0.1" stroke="#191919" fill="none"/>
+            <path d="M79.5,-3.1L85.5,-0.1L79.5,2.9L79.5,-3.1" stroke="#191919" stroke-width="1" stroke-linecap="round" fill="#191919"/>
+        </g>
+        <g transform="translate(699.00,832.00)" id="shape6">
+            <path d="M189.0,166.0L189.0,.0L.0,.0L.0,166.0L189.0,166.0z" stroke="#323232" fill-rule="nonzero" fill="#ffffff"/>
+            <text xml:space="preserve" style="fill:#ff0000;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="19.0" x="49.0">一级域名服务器</tspan>
+            </text>
+        </g>
+        <g transform="translate(727.48,868.00)" id="shape7">
+            <path d="M132.0,111.0L132.0,.0L.0,.0L.0,111.0L132.0,111.0z" stroke="#323232" fill-rule="nonzero" fill="#ffffff"/>
+            <text xml:space="preserve" style="fill:#000000;font-family:Microsoft YaHei;font-size:10.00pt">
+                <tspan y="19.0" x="14.0">肚子里里面存放了</tspan>
+                <tspan style="fill:#ff0000" y="38.0" x="20.5">二级域名</tspan>
+                <tspan x="72.5">服务器</tspan>
+                <tspan y="57.0" x="38.5">的IP 地址</tspan>
+                <tspan y="95.0" x="6.0">es6.ruanyifeng.com</tspan>
+            </text>
+        </g>
+        <g transform="translate(614.52,891.05)" id="shape8">
+            <path d="M.0,.0L78.5,.0" stroke="#191919" fill="none"/>
+            <path d="M78.5,-3.0L84.5,.0L78.5,3.0L78.5,-3.0" stroke="#191919" stroke-width="1" stroke-linecap="round" fill="#191919"/>
+        </g>
+    </g>
+</svg>

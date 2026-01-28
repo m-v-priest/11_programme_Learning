@@ -1,0 +1,18 @@
+
+
+安装装个软件, 就能打开 github, 亲测可行:  https://www.neechigo.com/
+
+输入下面的两句代码, 使用代理, 可以push 和 pull github 顺利
+
+....
+git config --global http.proxy 127.0.0.1:7890
+git config --global https.proxy 127.0.0.1:7890
+....
+
+如果要取消代理, 就输入:
+
+....
+git config --global --unset http.proxy
+git config --global --unset https.proxy
+....
+

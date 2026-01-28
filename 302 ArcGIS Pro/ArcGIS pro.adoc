@@ -1,0 +1,58 @@
+
+= ArcGIS pro
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+== 设置
+
+==== 初始设置
+
+image:/img/0001.png[,]
+
+image:/img/0002.png[,]
+
+image:/img/0003.png[,]
+
+image:/img/0004.png[,]
+
+== 新建
+
+image:/img/0005.png[,]
+
+如果打开软件后, 发现地球是一片空白, 你需要先加载地图才行.
+
+image:/img/0010.png[,]
+
+
+== 换底图
+
+image:/img/0006.png[,]
+
+
+== 改成地球圆形地图
+
+image:/img/0007.png[,]
+
+== 提升地理3d效果
+
+image:/img/0008.png[,]
+
+
+== 旋转: ‌逆时针 (A); 顺时针 (D)
+
+
+A键：‌逆时针旋转视图。 +
+‌D键：‌顺时针旋转视图。‌
+
+== 查找定位
+
+image:/img/0011.png[,]
+
+== 添加数据
+
+image:/img/0012.png[,]
+

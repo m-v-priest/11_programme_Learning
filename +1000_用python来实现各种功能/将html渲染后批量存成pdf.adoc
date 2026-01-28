@@ -1,0 +1,163 @@
+
+= 将 多个 html 渲染后, 批量存成pdf
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+== 01.安装 wkhtmltopdf
+
+https://github.com/wkhtmltopdf/wkhtmltopdf
+
+安装地址: +
+https://wkhtmltopdf.org/downloads.html
+
+== 02.python 程序
+
+假设你的所有html文件, 在  C:\Users\priest\Desktop\ttt 目录中
+
+
+[source, python]
+....
+import os
+import pdfkit
+from pathlib import Path
+
+def html_to_text_pdf_batch_converter(directory, wkhtmltopdf_path=None):
+    """
+    批量将指定目录下的 HTML 文件转换为只包含文本的 PDF 文件
+
+    参数:
+    directory (str): 包含 HTML 文件的目录路径
+    wkhtmltopdf_path (str): wkhtmltopdf 可执行文件的完整路径
+    """
+    target_dir = Path(directory)
+    if not target_dir.exists():
+        print(f"错误：目录 '{target_dir}' 不存在")
+        return
+
+    # 配置 wkhtmltopdf
+    if wkhtmltopdf_path and os.path.isfile(wkhtmltopdf_path):
+        config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
+        print(f"使用指定的 wkhtmltopdf: {wkhtmltopdf_path}")
+    else:
+        config = None
+        print("⚠️  将尝试使用系统 PATH 中的 wkhtmltopdf")
+
+    # 核心配置：忽略图片、背景等资源，专注于文本[2,5](@ref)
+    options = {
+        'no-images': None,           # 不加载图片[2,5](@ref)
+        'disable-external-links': None, # 禁用外部链接[2](@ref)
+        'disable-internal-links': None, # 禁用内部链接[2](@ref)
+        'no-background': None,       # 不打印背景（包括背景颜色和图片）[5](@ref)
+        'page-size': 'A4',
+        'margin-top': '0.5in',
+        'margin-right': '0.5in',
+        'margin-bottom': '0.5in',
+        'margin-left': '0.5in',
+        'encoding': 'UTF-8',         # 确保字符编码正确
+        'enable-local-file-access': None,  # 允许访问本地文件（有时仍需此选项）
+        'quiet': '',                 # 减少输出
+        'load-error-handling': 'ignore',  # 忽略加载错误[2](@ref)
+        'load-media-error-handling': 'ignore', # 忽略媒体加载错误
+    }
+
+    success_count = 0
+    fail_count = 0
+    failed_files = []
+
+    # 获取所有HTML文件
+    html_files = [f for f in target_dir.iterdir() if f.suffix.lower() in ['.html', '.htm']]
+    total_files = len(html_files)
+
+    print(f"开始转换，共发现 {total_files} 个 HTML 文件。模式：仅文本。")
+
+    for i, file_path in enumerate(html_files, 1):
+        pdf_path = file_path.with_suffix('.pdf')
+
+        print(f"[{i}/{total_files}] 正在转换: {file_path.name} -> {pdf_path.name}")
+
+        try:
+            # 执行转换
+            pdfkit.from_file(
+                str(file_path),
+                str(pdf_path),
+                options=options,
+                configuration=config
+            )
+            print(f"   ✓ 成功: {file_path.name}")
+            success_count += 1
+
+        except Exception as e:
+            error_msg = str(e)
+            print(f"   ✗ 失败: {file_path.name} - 错误: {error_msg}")
+            fail_count += 1
+            failed_files.append((file_path.name, error_msg))
+
+    # 输出结果摘要
+    print("\n" + "="*60)
+    print("转换完成！")
+    print(f"成功转换: {success_count} 个文件")
+    print(f"转换失败: {fail_count} 个文件")
+    print("="*60)
+
+    if failed_files:
+        print("\n失败的文件及原因:")
+        for filename, error in failed_files:
+            print(f"  - {filename}: {error}")
+
+if __name__ == "__main__":
+    # ================================
+    # 🛠️ 用户配置区域
+    # ================================
+
+    # 1. 指定您的 HTML 文件目录
+    target_directory = r"C:\Users\priest\Desktop\ttt"
+
+    # 2. 手动指定 wkhtmltopdf.exe 的完整路径 (如果自动查找失败或您知道确切路径)
+    # 取消下一行的注释，并将路径替换为您电脑上的实际路径
+    wkhtmltopdf_exe_path = r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
+    # wkhtmltopdf_exe_path = None  # 设为 None 先尝试自动查找
+
+    # ================================
+    # 🚀 执行转换
+    # ================================
+    html_to_text_pdf_batch_converter(target_directory, wkhtmltopdf_exe_path)
+....
+
+关键配置说明
+
+这段代码的核心在于 options字典中的这些参数，它们协同工作以忽略非文本资源
+：
+
+'no-images': None: ​​不加载和渲染任何图片​​。
+
+'disable-external-links': None和 'disable-internal-links': None: ​​禁用链接​​，避免因链接无法访问而产生错误。
+
+'no-background': None: ​​不渲染背景颜色和背景图片​​，使PDF更干净。
+
+'load-error-handling': 'ignore'和 'load-media-error-handling': 'ignore': ​​忽略加载资源和媒体文件时产生的错误​​，让转换过程不会因个别资源问题而中断。
+
+💡 注意事项
+​​样式可能依然部分生效​​：即使忽略了外部CSS文件，HTML标签内联的 style属性或 <style>标签中的​​基本文本样式​​（如颜色、字体大小、粗体）可能仍会被wkhtmltopdf的渲染引擎处理。要完全去除所有样式非常困难。
+
+​​布局可能变化​​：去掉图片后，原本依靠图片占位的布局可能会错乱，文字排列可能会和浏览器中看到的不一样。
+
+​​中文支持​​：请确保你的HTML文件 <head>部分包含 <meta charset="UTF-8">声明。如果生成的PDF中中文显示为方块，可能需要在CSS中指定中文字体（尽管我们希望忽略样式，但字体有时是必要的）。
+
+​​复杂结构​​：对于非常复杂的HTML结构，忽略资源后可能布局会变得混乱，这是正常现象。
+
+🔧 可选的其他参数
+如果你想进一步精简输出，还可以在 options字典中添加以下参数：
+
+'disable-smart-shrinking': None, # 禁用智能缩放
+'disable-javascript': None,      # 禁用JavaScript[2](@ref)
+'print-media-type': None,        # 使用打印媒体类型，有时会更简洁
+'user-style-sheet': None         # 理论上可指定一个极简的CSS，但通常不需要
+使用上述代码和配置，wkhtmltopdf 会专注于提取和渲染HTML中的文本内容，并尽可能忽略所有非文本元素，这应该能有效解决你遇到的 ContentNotFoundError问题。
+
+
+'''
+

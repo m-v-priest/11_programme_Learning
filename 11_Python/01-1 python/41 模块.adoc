@@ -1,0 +1,240 @@
+
+= python 模块
+:toc:
+
+---
+
+模块的文件名, 必须以.py为扩展名。
+
+---
+
+
+== 安装第三方模块
+
+官方的
+....
+pip install 模块名
+....
+这个命令速度太慢, 就快成考虑用国内镜像来下载. 方法是 :
+....
+下载时加入参数 -i [镜像源地址]
+
+即 :
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple torch
+或者
+pip install torch -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+
+例如 : 安装 requests 模块 :
+pip install requests -i https://pypi.tuna.tsinghua.edu.cn/simple torch
+....
+
+
+'''
+
+
+== 模块文件在自执行, 则 -> \___name___ = '\___main___'
+
+一个python的文件有两种使用的方法，除了可以被直接运行外，还可以作为模块（也就是库）被导入。
+
+现在有两个py文件: module.py, 和 test.py(会把module.py当做模块导入), 代码分别如下:
+
+module.py
+[source, python]
+....
+def fn_main():
+    print('我在{}中'.format(__name__))
+
+
+print(__name__) # __main__
+'''
+__name__ 是内置变量，用于表示当前模块的名字，同时还能反映一个包的结构。
+模块文件在自执行, 则__name__的值永远等于"__main__"
+''''
+
+if __name__ == '__main__':
+    fn_main()  # 我在__main__中
+....
+
+test.py
+[source, python]
+....
+import module
+
+module.fn_main()  # 我在module中 <--模块文件被导入到其他文件里执行, 则__name__的值就指向该模块的出生地文件名字(module.py).
+....
+
+可以知道,  __name__的值, 永远指向该文件自己的文件名本身. 即, **如果它是自执行的, 没有被当做模块导入其他文件中来执行, 那么它的__name__就是指向自己(用"__main__"来指代自己), 就不用显示的说出自己的文件名(module.py)了.**
+
+**如果它被当做模块导入了其他的文件中, 那么它的 __name__ 就会明确的指出自己的诞生地文件名(module.py).**
+
+其实这完全和人们自称自己,和别人称呼自己, 是一样的道理.  你自己称呼自己,永远不会叫自己的全名, 而是称呼"我"(孤, 朕, __main__). 当别人叫你时, 才会称呼你的全名(刘玄德, 曹操, module.py).
+
+---
+
+==== 如果模块文件不加上 \___name___ = '\___main___' 语句的话, 只要其他文件导入了该模块, 就会造成里面的函数执行语句, 全部自动执行! 哪怕你没有调用它.
+
+例如, 依然有两个文件, module.py是模块, test.py会导入module模块.
+
+module.py # 注意: 此处没有加进 if \___name___=='\___main___':  这条语句
+[source, python]
+....
+dictZzr = {"name":"zzr","age":19}
+
+def fnGetInfo():
+    print(dictZzr) # {'name': 'zzr', 'age': 19}
+
+fnGetInfo() # 执行函数
+....
+
+test.py
+[source, python]
+....
+import module
+
+# 只要导入模块, 即使你啥都不做, 也会自动执行模块文件中的 执行函数语句, 打印出 {'name': 'zzr', 'age': 19}
+....
+
+事实上, 这个问题, 你在JavaScript中的导入模块时, 也遇到过! 比如你创建了一个模块.js文件, 专门用来连接了mongodb数据库, 在模块文件里你定义并执行了一个函数(假设叫 fnGetCollection()), 用来返回collection对象. 并暴露出去该collection对象. 但你只要在其他js文件中导入了该模块, 哪怕你没有手动调用  fnGetCollection(), 该函数也会自动执行!
+
+回到python, **如果你不想模块中的 执行fnGetInfo()函数语句, 在模块被其他文件导入时, 就会自动执行的话, 就一定要在模块文件中加上这句话:  if \___name___ == '\___main___' **
+
+即, 改成:
+module.py
+[source, python]
+....
+dictZzr = {"name":"zzr","age":19}
+
+def fnGetInfo():
+    print(dictZzr) # {'name': 'zzr', 'age': 19}
+
+if __name__=='__main__':
+    fnGetInfo() # 执行函数
+....
+
+test.py
+[source, python]
+....
+import module
+
+# 现在ok了, module.py这个模块文件中的 fnGetInfo() ,在本test.py导入module.py模块时, 就不会再自动执行了!
+....
+
+所以，if \___name___ == '\___main___' 的意思就是： 如果本模块(本py文件)是直接自运行的，则 此if语句中的代码块, 就被执行; 如果本模块是被导入给其他py文件来调用的，则此 if代码块中的语句, 就别自作主张地运行! 不运行.
+
+
+---
+
+== 导入模块
+
+如果找不到自定义的模块, 解决办法可以见: 01_myLearn/02 IDE (集成开发环境)/31 jetBrain/02 jetbrain 设置.adoc 中的 "对自定义的模块文件, 导入时却说找不到?"一节.
+
+---
+
+==== 导入模块中的全部内容 ->  from module import *
+
+尽管强烈反对使用 ‘from module import *’, 但是在定义了大量变量名的模块中, 这种导入方式却被频繁使用。
+
+如果你不做任何事, **这样的导入, 将会导入所有不以_下划线开头的变量。**
+
+---
+
+==== 导入模块中的某些内容 -> \___all___ = [要暴露出去的变量, ...]
+
+如果你只想导入一个模块中的某些内容, 可以这样做: +
+**在你的模块中定义一个变量 \___all___ 来明确地列出需要导出的内容。**
+
+module.py
+[source, python]
+....
+dictZzr = {"name":"zzr","age":19}
+
+def fn1():
+    pass
+
+def fn2():
+    pass
+
+def fn3():
+    pass
+
+__all__ = ['fn1','fn2']  # 即,只向外暴露出 fn1 和fn2 两个函数.
+....
+
+test.py
+[source, python]
+....
+from module import *
+
+fn1() # ok
+fn2() # ok
+fn3() # NameError: name 'fn3' is not defined
+....
+
+**但注意: 如果你在导入模块时, 使用了 "import 模块文件名" 语句, 则 \___all___ 列表中的限制, 就会失效. 你依然可以访问模块中的全部变量.**
+
+test.py
+[source, python]
+....
+import module # 这种导入模块的方式, 能绕过__all__ 的限制.
+
+module.fn1()  # ok
+module.fn3()  # ok
+....
+
+
+
+如果你将 __all__ 定义成一个空列表, 则本模块没有对外暴露出任何东西. 其他引入该模块的文件, 也无法拿到模块中的任何东西.
+[source, python]
+....
+__all__ = []
+....
+
+---
+
+==== 模块文件在子目录中的话 -> 必须在该目录中创建空白的 \___init___.py文件
+
+
+如果 test.py 和 moudle.py 在同一目录下, 只要直接"import 模块文件名" 就行了.
+
+但**如果 模块文件在一个目录中的话, 就必须在该目录中, 创建一个空的 \___init___.py文件. 该文件能让python解释器, 将该目录整个当成一个模块. 然后在test.py中, 直接写“import 模块目录.模块文件”导入即可。**
+
+
+
+假设目录结构如下:
+
+....
+|-- undefined
+    |-- test.py # 该文件会导入模块
+
+    |-- dirFather
+    |   |-- moduleFather.py # 模块1
+    |   |-- __init__.py
+    |   |-- dirSon
+    |   |   |-- moduleSon.py # 模块2
+    |   |   |-- __init__.py
+....
+
+导入的写法是:
+test.py
+[source, python]
+....
+import dirFather.moduleFather
+import dirFather.dirSon.moduleSon
+
+dirFather.moduleFather.fnFather() # ok
+dirFather.dirSon.moduleSon.fnSon() # ok
+....
+
+---
+
+==== 导入上级目录中的模块
+
+如果module.py 在test.py所在目录的父目录中, 则导入的写法是:
+[source, python]
+....
+
+....
+
+---
+

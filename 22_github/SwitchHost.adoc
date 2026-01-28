@@ -1,0 +1,34 @@
+
+= SwitchHost
+:toc:
+:sectnums:
+
+---
+
+== SwitchHost 使用方法
+
+image:img_github/43.png[]
+
+URL地址, 到下面的官网查找 +
+https://github.com/ineo6/hosts
+
+
+image:img_github/44.png[]
+
+....
+URL 地址：https://gitee.com/ineo6/hosts/raw/master/hosts
+....
+
+image:img_github/45.png[]
+
+---
+
+== 如果提示 “没有写入 Hosts 文件的权限”
+
+image:img_github/46.png[]
+
+image:img_github/47.png[]
+
+
+---
+

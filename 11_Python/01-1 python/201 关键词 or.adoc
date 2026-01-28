@@ -1,0 +1,31 @@
+
+=  or
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+
+'''
+
+
+== or关键字, 在变量赋值时的用法
+
+
+[source, python]
+....
+
+sex = 'male' or 'female'  # 这个意思是如果 or前面的值存在, 变量sex就会用or前面的值作为自己的值. 否则, 如果or前面的值为空(=null,0,或空列表[]), sex就用or后面的值作为自己的值.
+print(sex) # male
+
+sex2 = None or 'female' # or 前面的值为空, 则 sex2就取or后面的'female'作为自己的值
+print(sex2) # female
+
+sex3 = 0 or 'female' # 同理, or前面的值为0, 就取后面的值'female'
+print(sex2) # female
+
+
+sex4 = [] or 'female' # 同理, or前面的值为空列表[], 就取后面的值'female'
+print(sex4) # female
+....
+

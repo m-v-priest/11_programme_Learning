@@ -1,0 +1,5 @@
+
+如果是网上搜索, 就输入 gis data
+
+
+https://public.opendatasoft.com/explore/dataset/world-administrative-boundaries/export/?refine.status=US+Territory

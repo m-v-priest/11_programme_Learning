@@ -1,0 +1,191 @@
+
+
+= asciidoc 插入 latex 代码
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+
+
+== ★ 插入 latex 代码
+
+
+官方文档
+
+https://docs.asciidoctor.org/asciidoc/latest/stem/
+
+https://webcache.googleusercontent.com/search?q=cache:aB1APK9SnygJ:https://docs.asciidoctor.org/asciidoc/latest/stem/stem/+&cd=1&hl=en&ct=clnk&gl=sg
+
+'''
+
+== 单行用 stem:[] 包围 LaTex 语法, 多行则包在 "反斜杠(\)begin{align*} 和 "\end{align*}" 里面.
+
+
+单行公式, 有两种写法:
+
+....
+stem:[latex公式]
+
+latexmath:[latex公式]
+....
+
+多行公式, 也有两种写法:
+
+....
+\begin{align*}
+latex多行公式
+\end{align*}
+....
+
+....
+[asciimath]
+++++
+sqrt(4) = 2
+++++
+....
+
+
+
+asciidoctor 通过 mathjax 实现 LaTex 字体的显示，方法和 markdown 差不多，区别是:
+
+- markdown（不同差距实现方法不同）使用 $$ 或者 $``$ 包围 LaTex 语法，
+- asciidoctor 使用 stem:[] 包围 LaTex 语法。
+- 多行的话, 包在  反斜杠(\)begin{align*} 和 \end{align*} 里面
+....
+\begin{align*}
+latex多行公式
+...
+\end{align*}
+....
+
+如:
+
+[cols="1a,1a"]
+|===
+|源码 |渲染后
+
+|
+....
+stem:[E = mc^2]
+....
+|stem:[E = mc^2]
+
+|....
+stem:[c = \sqrt{a^{2}+b_{xy}^{2}+e^{x}}]
+....
+|stem:[c = \sqrt{a^{2}+b_{xy}^{2}+e^{x}}]
+
+|
+....
+\begin{cases}
+x+y = 22 \\
+1200x : 2000y = 1:2
+\end{cases}
+
+\begin{cases}
+x = 22-y \\
+\frac{1200x}{2000y} = \frac{1}{2}
+\end{cases}
+....
+|\begin{cases}
+x+y = 22 \\
+1200x : 2000y = 1:2
+\end{cases}
+
+\begin{cases}
+x = 22-y \\
+\frac{1200x}{2000y} = \frac{1}{2}
+\end{cases}
+
+|
+....
+\begin{align*}
+& 2*1200x = 2000y \\
+& 2*1200(22-y) = 2000y \\
+& y = 12 \\
+& ∵ x + y = 22 \\
+& x +12 =22 \\
+& x =10
+\end{align*}
+....
+|\begin{align*}
+& 2*1200x = 2000y \\
+& 2*1200(22-y) = 2000y \\
+& y = 12 \\
+& ∵ x + y = 22 \\
+& x +12 =22 \\
+& x =10
+\end{align*}
+|===
+
+'''
+
+== #行内写矩阵, 或行列式的写法#
+
+官方文档  +
+https://www.ahamojo.com/global-dev/developer/page/ahamojo/ahamojoIntroduction/asciidoc.adoc#_%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F
+
+
+....
+//方法1:
+stem:[[[a,b\],[c,d\]\]((n),(k))]
+
+//方法2: 推荐
+latexmath:[\left| \begin{matrix}
+	a_x&		b_x\\
+	a_y&		b_y\\
+\end{matrix} \right|]
+....
+
+效果: +
+stem:[[[a,b\],[c,d\]\]((n),(k))]
+
+latexmath:[\left| \begin{matrix}
+	a_x&		b_x\\
+	a_y&		b_y\\
+\end{matrix} \right|]
+
+'''
+
+
+== ★★★ 注意 adoc文件中latex的空格问题!!
+
+adoc中用latex时 : 注意空格和空行的问题
+
+[options="autowidth"]
+|===
+|□ |Header 2
+
+|□+-×÷□
+|+-×÷符号的前后, 最好要有空格(下面用□来表示空格), 否则可能会渲染出错!
+
+|(a^m□ )^n
+|指数的指数次方, 内外两个指数之间也要用空格隔开, 要写成 (a^m□ )^n , 否则可能渲染出错!
+
+|a^3□ b^2
+|多个变量相乘, 中间要有空格隔开! 必须写成比如: 12 a^3□ b^2 , 而不能连在一起写! 否则肯定渲染出错.
+
+|\frac{}□{}
+|分式 \frac{}□{} 的两个花括号, 中间要有空格! 否则可能会渲染出错.
+
+|\frac{c^2□ } {4a^2}
+|分式中, 如果第一个花括号, 即分子是个指数, 指数和}之间必须要有空格! 否则渲染肯定出错. 即要写成
+\frac{c^2□ } {4a^2}
+
+|方程组间不能有空行!
+|如果你在 \begin{align} 中使用\begin{cases}, 当你要书写多个方程组时, 方程组与方程组之间, 不能有空行! 否则会渲染出错
+
+|公式的每一行间不能有空行
+|latex公式中的每一行之间, 不能有空行! 否则肯定渲染出错
+
+|\stem:[  ]所在的行前面, 不能有空格!
+|如果你在行内用了 stem:[], 却发现它没有被渲染成公式, 就检查一下该行的最开头是否误打了一个空格?
+
+|===
+
+
+
+'''

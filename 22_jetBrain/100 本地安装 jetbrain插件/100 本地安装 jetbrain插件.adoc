@@ -1,0 +1,27 @@
+
+= 手动安装 jetbrain 插件
+
+[cols="1a,3a"]
+|===
+|Header 1 |Header 2
+
+|1.先查看本软件的版本号
+|image:img/jetbrain_plug 01.png[]
+
+|2.打开官网
+|https://plugins.jetbrains.com/
+
+|3.搜索你要装的插件, 比如 asciidoc
+|image:img/jetbrain_plug 02.png[]
+
+找到和你软件版本匹配的 asciidoc的版本
+
+image:img/jetbrain_plug 03.png[]
+
+|4.下载下来后, 不要解压
+|选择settings -> plug -> install from disks
+
+image:img/jetbrain_plug 04.png[]
+
+|===
+

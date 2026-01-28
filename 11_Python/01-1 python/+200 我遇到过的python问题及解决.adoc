@@ -1,0 +1,51 @@
+
+= 我遇到过的python问题及解决
+
+:toc:
+:toclevels: 3
+:sectnums:
+
+---
+
+
+== #python, 一些第三方库, 无语法提示, 解决办法#
+
+比如, 你有个变量是 np.ndarray 数组类型, 那么就可以在它的代码后面, 添加: # type: np.ndarray
+[source, python]
+....
+a = np.arange(12).reshape((3,4)) # type: np.ndarray
+....
+即, 将变量的类型名, 硬性指定在注释语句中. +
+这样, 你再输入"a.某某方法()"时, 就有代码提示了.
+
+
+
+
+
+
+---
+
+== 强烈推荐对所有可能出错的地方, 都执行 try...except
+
+**因为python对很多出错的地方, 只会默认终止执行, 而不会报错提示, 所以你一定要添加try语句, 来检测可能的出错.** 否则, 你根本就不知道你的程序是运行正确了, 还是有错误发生过了.
+
+---
+
+
+== dict
+
+====  对dict以键取值, 一定要先判断该key是否存在于dict中 -> if key in dict
+
+对dict以键取值, 一定要先判断该key是否存在于dict中, **否则如果key不存在于dict中, 会默认静态终止程序, 而不会报错! 看来python的报错提醒功能比较弱, 很多都会静态终止运行,而不提示错误.** 不像JavaScript那样智能.
+
+用 in 语法, 就能判断该key是否存在于dict中了.
+[source, python]
+....
+if key in dict:
+    # do sth
+....
+
+---
+
+
+

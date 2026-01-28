@@ -1,0 +1,240 @@
+
+= asciidoc 效果样式 字体样式
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+
+== 粗体字
+用*号包围即可
+```
+*粗体内容*
+```
+
+---
+
+== 斜体 (github中有效)
+
+对文字两边都用一个下划线_包围即可
+
+```
+_斜体效果_
+```
+
+---
+
+== 字体大小
+
+=== 大号字体
+
+....
+[big]#大号#
+....
+
+效果: +
+[big]#大号#
+
+---
+
+
+== 上下标
+
+=== 上标 -> \^上标文字^
+
+....
+正常文字^上标文字^
+....
+
+正常文字^上标文字^
+
+---
+
+=== 下标 ->  \~下标文字~
+
+....
+正常文字~下标文字~
+....
+
+正常文字~下标文字~
+
+
+---
+
+== 删除线 (github中无效)
+
+在 #[.line-through]# 后, 用两个 ### 号包裹住要被删除的文本内容
+```
+[.line-through]#被删除文本#
+
+
+白日依山尽,[.line-through]#被删除文本,# 黄河入海流
+```
+效果: +
+白日依山尽,[.line-through]#被删除文本,# 黄河入海流
+
+---
+
+== 下划线
+
+=== ★ 单独下划线 -> 放在两个+号里面
+
+....
++t______e______st+
+....
+
++t______e______st+
+
+
+---
+
+
+
+=== 下划线 -> [underline]后跟两个#号, 把要下划线的内容, 放在这两个#号中间
+
+....
+[underline]#本内容有下划线#
+....
+
+[underline]#本内容有下划线#
+
+---
+
+
+=== #★★ 下划线#: pass:[<u>文本装在这里</u>]
+
+官方文档 https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/ +
+https://github.com/asciidoctor/asciidoctor/issues/867
+
+
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|写法 |效果
+
+|....
+pass:[<u>underline me</u>] is also underlined.
+....
+|pass:[<u>underline me</u>] is also underlined.
+
+|....
+[.underline]#underline me#
+....
+|[.underline]#underline me#
+
+
+|...
++++<u>underline me</u>+++ is underlined.
+...
+|+++<u>underline me</u>+++ is underlined.
+|===
+
+
+
+'''
+
+
+== ★ 字体颜色
+....
+[red]#有色字体#
+....
+
+效果 +
+[red]#有色字体#
+
+---
+
+=== #修改字体颜色#
+
+官方文档 https://asciidoc-py.github.io/userguide.html
+
+把要改变颜色的文字, 写在下面的代码中:
+....
+[red]#*变色文字*#
+
+....
+
+效果:
+[red]#*变色文字*#
+
+
+其他可实现的效果
+....
+[red]#Obvious# and [big red yellow-background]*very obvious*.
+[underline]#Underline text#, [overline]#overline text# and
+[blue line-through]*bold blue and line-through*.
+....
+
+[red]#Obvious# and [big red yellow-background]*very obvious*.
+[underline]#Underline text#, [overline]#overline text# and
+[blue line-through]*bold blue and line-through*.
+
+
+代码说明:
+[options="autowidth"]
+|===
+|[]** 的中括号中的参数 |Header 2
+
+|color
+|text foreground color. 文字前景色, 即字体本身的颜色. +
+
+Where <color> can be any of the sixteen HTML color names. +
+https://en.wikipedia.org/wiki/Web_colors#HTML_color_names
+
+|<color>-background
+|text background color. 文字背景色
+
+|big / small
+|text size 文字大小
+
+|underline / overline /line-through (strike through)
+|text decorators.
+|===
+
+
+---
+
+== #字体背景色#
+
+....
+[white green-background]*带背景色文字*.
+....
+
+效果:
+[white green-background]*带背景色文字*.
+
+
+
+---
+
+
+=== 高亮(黄色底) (github中无效, 但hexo博客中有效!)
+高亮部分用 ### 号包围即可
+```
+i am #zzr高亮了# hello
+```
+效果: +
+i am #zzr高亮了# hello
+
+---
+
+=== 高亮再试验 -> 10.1.1. Quoted text attributes
+
+官网见 http://asciidoc.org/userguide.html
+
+....
+[red]#Obvious# and [big red yellow-background]*very obvious*.
+[underline]#Underline text#, [overline]#overline text# and
+[blue line-through]*bold blue and line-through*.
+....
+
+效果
+
+[red]#Obvious# and [big red yellow-background]*very obvious*.
+[underline]#Underline text#, [overline]#overline text# and
+[blue line-through]*bold blue and line-through*.
+
+---

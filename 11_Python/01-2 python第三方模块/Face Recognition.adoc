@@ -1,0 +1,18 @@
+
+= face_recognition 人脸识别
+:toc:
+
+---
+
+== 文档
+
+https://github.com/ageitgey/face_recognition
+
+安装
+....
+pip3 install face_recognition
+....
+
+---
+
+

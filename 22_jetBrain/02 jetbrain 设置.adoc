@@ -1,0 +1,147 @@
+
+= jetbrain 设置
+:toc: left
+:toclevels: 3
+:sectnums:
+
+
+
+
+---
+
+== 最常用
+
+==== #自定义的代码, 头尾包围住你选中的内容 : ctrl + alt + t#
+
+
+
+==== 将你的jetbrain设置, 导出或导入
+file -> export setting, 会导出一个 setting.jar 文件
+
+---
+
+==== 显示多行标签
+搜 tab -> editor tabs -> show tabs in one row 打钩去掉
+
+---
+
+==== 每个函数用横线隔开
+搜 appearance -> show method separators 打钩
+
+---
+
+==== def函数之间, 用两个空行隔开!
+
+def函数之间, 默认只用一个空行隔开, 视觉区分度太弱. 要改成两个空行隔开, 可以: +
+settings设置 -> editor -> code style -> python -> 右侧 blank lines -> around method的值设为2
+
+---
+
+==== 显示空白符, 空格与换行符
+搜 appearance ->show whitespaces 打钩
+
+---
+
+
+
+==== #遇到NBSP空格的问题#
+
+默认情况下, 将notion中的加粗字体, 拷贝到 jetbrain 软件中, 会变成 NBSP空格字符, 如何解决这个问题?
+
+image:img/001.png[,]
+
+只要在 jetbrain的设置中, 把下面的打钩去掉即可
+
+image:img/002.png[,]
+
+
+
+'''
+
+==== 窗口多开
+在页面标签上右键 -> split vertically
+
+---
+
+==== 默认的常用子窗口被关闭了, 怎么重新打开?
+菜单view -> tool windows中, 把子窗口打开. 最常用的有 project, structure, terminal子窗口
+
+---
+
+==== 保存你的代码片段(之后按tab键可快速插入)
+菜单Tools -> Save as Live Template
+
+[source, typescript]
+....
+for(int i ;i< $END$;i++){
+}
+....
+关键字\$END\$, 表示按tab键插入改代码块后, 光标所在位置
+
+
+---
+
+== 其他
+
+==== webStore内建的服务器
+端口是63342，不能改。当你新建一个工程，假设叫myproject，在浏览器中就可以通过 http://localhost:63342/myproject 来访问。Chrome的JetBrains IDE Support扩展就是连接这个Web服务器.
+
+---
+
+==== 在同一窗口同时打开两个工程
+设置 -> directories -> 右上方 +add content root
+
+---
+
+==== #光标选择变成了竖直选择, 怎么改回来?#
+edit  -> column selection  mode 去掉打钩
+
+---
+
+==== phpStorm 开启对 es6+ 的支持
+https://blog.jetbrains.com/webstorm/2015/05/ecmascript-6-in-webstorm-transpiling/
+
+---
+
+
+
+== 我遇到过的问题
+
+==== 按了project->mark directory as->exclude 后, 看不到项目目录了?
+
+解决方法: 点击 file->Settings->Project->Project structure 然后把右边Excluded红色的Excluded Folders目录给删掉就好了～
+
+---
+
+==== 对自定义的模块文件, 导入时却说找不到?
+
+解决方法1: +
+把含有你自定义模块文件的父目录, 鼠标右键, mark  Directory as -> source root
+
+项目根目录, 会自动标记为source root，加到搜索路径中。但对于其他目录, 则需要手动加为source root, 才会加入搜索路径中，否则import的时候就会提示找不到。
+
+解决方法2: +
+假设目录结构如下:
+....
+dir1
+    py1.py          //会导入myfn.py作为模块来用
+    myfn.py
+    __init__.py     //添加__init__.py文件, 把dir1变成一个package
+....
+
+myfn.py中, 有个变量a
+[source, python]
+....
+a=123
+....
+
+
+在py1.py中, 可以这样导入myfn.py中的a:
+[source, python]
+....
+from myfn import a
+print(a) #123
+....
+
+---
+

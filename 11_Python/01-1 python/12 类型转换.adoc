@@ -1,0 +1,268 @@
+
+= python 类型转换
+:toc:
+
+---
+
+== 把字符串形式的代码, 转成python可执行代码 -> eval(StrCode)
+
+[source, python]
+....
+myDict = eval(myStrCode)
+....
+
+注意: 如果你想在str字符串中, 保留换行符, 必须写成字符串形式的"\r\n"的形式! 而不要写成真正的换行符\r\n. 否则eval()函数会无法处理. +
+换言之, 用正则 \\r\\n , 就可以写成字符串形式的"\r\n".
+
+
+---
+
+== 转成 string
+
+==== (str <- list) => 连接符.join(sequence)
+
+[source, python]
+....
+连接符.join(sequence) --> new str
+....
+join() 方法用于将序列中的元素, 以指定的字符连接生成一个新的字符串。返回一个新字符串。
+
+
+根据列表中的元素, 来创建字符串:
+
+[source, python]
+....
+list1 = ['张三','李四','王五']
+str = ' '.join(list1)
+print(str) # 张三 李四 王五
+....
+
+join的方法效率, 会比用str1+str2+… 会快很多(甚至相差百倍).
+
+
+---
+
+==== (str <- dict) => str(yourDict)
+
+用str()函数, 就能把dict转成字符串形式的.
+
+[source, python]
+....
+dict1 = {'name': 'zzr', 'age': 13}
+str1 = str(dict1) # 把dict, 转成字符串形式的
+print(str1)  # {'name': 'zzr', 'age': 13}
+print(type(str1))  # <class 'str'>
+....
+
+
+---
+
+== 转成 list
+
+==== (list <- str) => 按分隔符分割字符串 str.split(str="", num=string.count(str))
+
+....
+split （使）断裂;（使）裂开;分割
+If something splits or if you split it, it is divided into two or more parts.
+....
+
+[source, python]
+....
+str.split(str="", num=string.count(str)) --> list
+....
+
+- str -- 分隔符，默认为所有的空字符，包括空格、换行(\n)、制表符(\t)等。若字符串中没有分隔符，则把整个字符串作为列表的一个元素.
+- num -- 分割次数。切几刀。**切1刀变成两段, 切2刀变成三段. 如果存在参数num，则仅分隔成 num+1 个子字符串.**
+
+**通过指定分隔符, 对字符串进行切片**，如果参数num 有指定值，则仅分隔 num 个子字符串. +
+**返回分割后的字符串列表list。**
+
+[source, python]
+....
+str = 'http://www.google.com'
+list = str.split('.')
+for tupleItem in enumerate(list):
+    print(tupleItem)
+
+# 打印:
+(0, 'http://www')
+(1, 'google')
+(2, 'com')
+....
+
+注意: **str.split不支持"正则"及"多个切割符号"，不感知空格的数量**，比如如果文本中有连续两个空格的情况, 用空格切割，会出现下面情况:
+
+[source, python]
+....
+str = 'aaa bbb  ccc'  # bbb和ccc直接有连续两个空格
+print(str.split(' '))  # ['aaa', 'bbb', '', 'ccc']
+....
+
+更好的方法是, 用正则模块中的 re.split()，支持"正则"及"多个字符"切割.
+
+**str.split()返回的是一个list**, 所以我们可以利用切片索引号, 单独提取其中某一个元素.
+
+[source, python]
+....
+url = r'http:\\www.facebook.com.cn'
+list1 = url.split('.')
+print(list1)  # ['http:\\\\www', 'facebook', 'com', 'cn'] <--\\是转义\
+
+print(url.split('.')[1])  # facebook  <--直接获取列表中的索引号[1]处的元素,即第2个元素.
+
+print(url.split('.', 2))  # ['http:\\\\www', 'facebook', 'com.cn']  切2刀,得3段. 注意方向是从左到右切的.
+....
+
+---
+
+==== (list <- str) => 按行分割字符串 str.splitlines([keepends]) -> list
+
+[source, python]
+....
+str.splitlines([keepends]) --> list
+....
+
+keepends -- 在输出结果里是否去掉换行符('\r', '\r\n', \n')，默认为 False，不包含换行符; 如果为 True，则保留换行符。 +
+**返回一个包含各行作为元素的列表。**
+
+按照行('\r', '\r\n', \n')分隔，返回一个包含各行作为元素的列表.  (有几个换行符,就分割成几个元素!)
+
+[source, python]
+....
+str = '朝辞白帝  彩云间\n 千里江陵一日还\n\n   两岸   猿声 啼不住\n'
+list_str = str.splitlines()
+for i in enumerate(list_str):
+    print(i)
+
+# 打印:
+(0, '朝辞白帝  彩云间')
+(1, ' 千里江陵一日还')
+(2, '')
+(3, '   两岸   猿声 啼不住')
+....
+
+
+---
+
+
+== 转成 tuple
+
+==== (tuple <- str) => 按分隔符, 从左向右分割字符串 str.partition(分隔符str) -> tuple[3元]
+
+[source, python]
+....
+str.partition(分隔符str) --> tuple[3元]
+....
+
+根据指定的分隔符, 从分隔符 str 出现的**第一个位置**起, 将字符串进行分割。
+
+如果字符串包含指定的分隔符，则返回一个3元的**元组**，第一个为分隔符左边的子串，第二个为分隔符本身，第三个为分隔符右边的子串。
+
+[source, python]
+....
+str = 'http://www.google.com//12345'
+tuple_str = str.partition('://')
+print(tuple_str) # ('http', '://', 'www.google.com//12345')
+....
+
+
+---
+
+==== (tuple <- str) => string.rpartition(str) 按分隔符,从右向左分割字符串
+
+类似于 partition()函数,不过是从右边开始查找. 分割.
+
+[source, python]
+....
+str = 'https://book.douban.com/tag/创业史'
+tuple_str = str.rpartition('/')
+print(tuple_str) # ('https://book.douban.com/tag', '/', '创业史')
+....
+
+
+
+
+---
+
+== 转成 dict
+
+==== dict <- list
+
+用dict()函数, 将二元组列表, 转换成字典
+
+[source, python]
+....
+list1 = [('孔明',99),('曹操',97),('孙权',85)]
+dict1 = dict(list1) # 将列表转换成字典 <-- list里的元素, 是个2元元组类型.
+print(dict1) # {'孔明': 99, '曹操': 97, '孙权': 85}
+....
+
+---
+
+==== (dict <- 两个list) => listKey 和 listValue 组成 dict
+
+dict和zip结合创建:   +
+从两个list(一个作为所有的key,一个作为所有的value), 先zip, 后dict转化
+
+[source, python]
+....
+list1 = ['张','李','马','王']
+list2 = ['zhang','li','ma','wang']
+
+new_dict = dict(zip(list1,list2))
+print(new_dict) # {'张': 'zhang', '李': 'li', '马': 'ma', '王': 'wang'}
+....
+
+zip()的作用是什么? +
+**zip()函数,会将多个可迭代对象的相同索引处的元素,打包成一个个元组, 然后返回由这些元组组成的对象(也是一个可迭代对象).**
+
+[source, python]
+....
+listKey = [1,2,3,4]
+listValue = ['a','b',['c'],'d']
+
+objZip =zip(listKey, listValue)
+print(objZip) #<zip object at 0x0000018A1C8C6E08>
+
+for i in objZip:
+    print(i)
+
+# 打印
+(1, 'a')
+(2, 'b')
+(3, ['c'])
+(4, 'd')
+....
+
+---
+
+==== dict <- list (里的元素是tuple)
+
+我们可以利用"字典推导式", 来把一个装满二元元组的列表, 转变成字典:
+
+[source, python]
+....
+
+list_国家与代码 = [
+    (86, 'China'),
+    (91, 'India'),
+    (1, 'United States'),
+    (62, 'Indonesia'),
+    (55, 'Brazil')
+]
+
+# 从元组解包,得到的两个变量code和country,分别作为字典推导式生成的字典各元素的key和value值.
+dict1 = {country: code     for code, country in list_国家与代码}
+# 解包list中的元素(元组)中的值, 到code和country这两个变量中
+
+print(dict1) # {'China': 86, 'India': 91, 'United States': 1, 'Indonesia': 62, 'Brazil': 55}
+
+'''
+下面,我们把上面刚刚创建的字典,作为原材料,来再次生成一个新字典.
+用code作为key，country作为value, 并且国家名称转换为大写，并且过滤掉区域码大于或等于 66 的地区。
+'''
+dict2 = {code: country.upper()     for country, code in dict1.items()     if code < 66}
+print(dict2)  # {1: 'UNITED STATES', 62: 'INDONESIA', 55: 'BRAZIL'}
+....
+
+---

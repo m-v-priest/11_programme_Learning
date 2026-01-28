@@ -1,0 +1,85 @@
+
+= AntD 最常用的 ui控件
+:toc:
+
+---
+
+== 安装 Ant Design Mobile of React
+....
+npm install antd-mobile --save
+或
+yarn add antd-mobile
+....
+
+官方文档
+https://mobile.ant.design/docs/react/introduce-cn
+
+---
+
+== 按钮
+
+[source, javascript]
+....
+import React from 'react';
+
+import 'antd-mobile/dist/antd-mobile.css';
+import { Button, WhiteSpace, WingBlank } from 'antd-mobile';
+
+
+export default class Cpn_ extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            msg: '',
+        }
+    }
+
+    fn_doSth = (event) => {
+        console.log('hello zzr');
+    }
+
+    render() {
+        return (
+            <React.Fragment>
+
+                {/*按钮*/}
+                <Button onClick={this.fn_doSth}>整行</Button><WhiteSpace/>
+                <Button type="primary">整行 primary</Button><WhiteSpace/>
+
+                <Button type="primary" inline style={{marginRight: '4px'}}>内联 inline primary</Button>
+                <Button type="ghost" inline style={{marginRight: '4px'}} className="am-button-borderfix">内联尾 inline
+                    ghost</Button> {/* use `am-button-borderfix`. because Multiple buttons inline arranged, the last one border-right may not display */}
+
+            </React.Fragment>
+        );
+    }
+}
+....
+
+==== Button API
+
+
+|===
+|属性 |类型 |说明
+
+|onClick
+| (e: Object): void
+|点击按钮的点击回调函数
+
+|inline
+|boolean
+|是否设置为行内按钮
+
+|type
+| string
+|按钮类型，可选值为primary/ghost/warning或者不设
+
+|style
+|Object
+|自定义样式
+
+|===
+
+
+---
+

@@ -1,0 +1,26 @@
+
+= 静态住宅ip
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: ../../myAdocCss.css
+
+'''
+
+住宅ip, 分为静态和动态两种
+
+== 静态住宅ip -> 其 ip 长时间不会变动
+
+对 静态住宅ip 有要求的网络应用:
+
+- 金融类, gpt 等
+- tiktok 等社媒类
+
+
+
+
+== 动态住宅ip -> 其 ip 会根据时间或者访问频次而自动变换
+
+
+
+

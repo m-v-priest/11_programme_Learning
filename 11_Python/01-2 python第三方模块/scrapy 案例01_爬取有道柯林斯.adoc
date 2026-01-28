@@ -1,0 +1,233 @@
+
+== scrapy 爬取有道柯林斯
+:toc:
+
+---
+
+说明: 一个单词, 只爬取第一个意思. 即, 一词一意. +
+这样能快速背单词! 而不陷于一词多义的泥潭中, 进展缓慢.
+
+第一步, 先从有道爬取内容, 并存放到txt中.
+[source, python]
+....
+# -*- coding: utf-8 -*-
+import scrapy
+from scrapy.selector import Selector
+
+urlTxt = r'E:\phpStorm_proj\testYouDao\testYouDao\spiders\txtAllWordName.txt'
+num计数器 = 0
+
+
+# 先从词头表txt文件中, 读取所有词头, 并封装到一个list中
+def fn_getListAllWordName():
+    listAllWordName = []
+    with open(urlTxt, 'r', encoding='utf-8') as f:
+        for line in f:
+            wordName = line.strip()
+            listAllWordName.append(wordName)
+    return listAllWordName
+
+
+listAllWordName = fn_getListAllWordName()  # 这个list, 存放了所有的单词词头
+
+
+# 用上面创建的list词头表, 来构造出每个单词所在的 有道词典的url地址, 返回一个list, 里面每个元素就是每个单词的 有道url地址
+def fn_getAllPageUrl():
+    list_AllPageUrl = []
+    for word in listAllWordName:
+        list_AllPageUrl.append('http://www.youdao.com/w/{}/#keyfrom=dict2.top'.format(word))
+    return list_AllPageUrl
+
+
+list_AllPageUrl = fn_getAllPageUrl()  # 所有单词的有道url地址 的list
+
+# ---------------------
+
+# 爬虫提取内容后, 会存到这个txt文件中
+path写入的文件地址 = r'E:\phpStorm_proj\testYouDao\testYouDao\spiders\txtAllSave.txt'
+
+
+# 定义一个函数, 用来将爬虫提取到的内容, 写入文件中.
+def fn_writeToFile(path写入的文件地址, str词头, str音标, str词性, str释义, str例句):
+    with open(path写入的文件地址, 'a+', encoding='utf-8') as f:
+        f.write('编号: {}'.format(num计数器) + '\r\n')
+        f.write('◆ {}'.format(str词头.strip()) + '\r\n')
+        f.write('◎ {}'.format(str音标.strip()) + '\r\n')
+        f.write('词性[{}]'.format(str词性.strip()) + '\r\n')
+        f.write('➝ {}'.format(str释义.strip()) + '\r\n')
+        f.write('例句: {}'.format(str例句.strip()) + '\r\n\r\n')
+        f.write('◇词根' + '\r\n\r\n')
+
+        f.write('-' * 20)
+        f.write('\r\n\r\n')
+
+
+# --------------------
+
+# 爬虫类
+class SpideryoudaoSpider(scrapy.Spider):
+    name = 'spiderYouDao'
+    allowed_domains = ['www.youdao.com']
+
+
+    def start_requests(self):  # 用一个生成器函数, 来取代老版的 start_urls列表
+        # urls = ['http://www.youdao.com/w/alternative/#keyfrom=dict2.top']
+        urls = list_AllPageUrl
+        for url in urls:
+            yield scrapy.Request(url=url, callback=self.parse)  # 注意是yield回去一个Request对象!
+
+
+    def parse(self, response):
+        str词头 = response.css('.wt-container').css('span.title::text').get().strip()
+        str音标 = response.css('.wt-container') \
+            .css('.additional.spell.phonetic::text')[0].get().strip()
+        str词性 = response.css('.collinsMajorTrans').css('.additional::text').get()
+
+        # 找释义
+        strHtml释义 = response.css('.collinsMajorTrans').css('p').get()
+        '''
+        有道词典网页中, 这里返回的比较特殊, 依然是一个披着纯文本外衣的html代码. 而非真正的纯文本内容.
+        所以还需要把它, 再次用Selector()方法封装成选择器对象, 才能继续用css()方法提取html里的内容.
+        '''
+        listStr释义 = Selector(text=strHtml释义).css('p *::text').getall()  # 找到p元素下面的所有子孙元素的纯文本内容, getall()返回一个list
+        str最终释义 = ''
+        for i in listStr释义:
+            str最终释义 += i.strip() + ' '
+        # print(str最终释义)
+
+        # 下面找到例句
+        strHtml例句 = response.css('.examples').getall()[0]  # 同样, 这里返回的是个披着纯文本外衣的html代码, 本质依然是个html.
+        list_str例句 = Selector(text=strHtml例句).css('p::text').getall()
+        str例句 = list_str例句[0].strip() + ' ' + list_str例句[1].strip()
+
+        # print('-'*20)
+        global num计数器
+        print('{} --> 词头:{}'.format(num计数器, str词头))
+        print('音标:{}'.format(str音标))
+        print('词性:{}'.format(str词性))
+        print('释义:{}'.format(str最终释义))
+        print('例句:{}'.format(str例句))
+        num计数器 += 1
+
+        fn_writeToFile(path写入的文件地址, str词头, str音标, str词性, str最终释义, str例句)  # 自定义一个写入文件的函数, 并调用它
+
+        print('-' * 20)
+
+....
+
+
+第二步: 把txt中的内容, 整理成dict, 再把这dict腌制到电脑上.
+
+注意: 为什么我们不把dict转存成json文件呢? 因为我们的柯林斯内容里, 有单引号存在! 而json不支持单引号, 只支持双引号, 导致你即使转存了json, 也根本无法再次重新载入! 麻烦! 所以我们腌制成python自己的格式, 就没有这种烦恼了.
+
+[source, python]
+....
+import pickle
+import os
+
+# 先把童哥词根.json读取进来, 转成dict字典
+filePath = os.getcwd() + "/+json童哥词根最终版.json"
+print(filePath)
+
+dict童哥 = {}
+
+with open(filePath, 'r', encoding='utf-8') as f:
+    dict童哥 = json.load(f)
+
+# print(dict童哥["abjure"]) # 进行测试
+# print(dict童哥["pariah"])
+
+# ---------------------
+
+# 读取保存了从有道爬取内容的txt, 转成dict, 再把这个dict腌制到电脑上
+path_txtAllSave = filePath = os.getcwd() + "/txtAllSave.txt"  # 这个文件里, 就是存着爬取到的所有单词的一词一意的内容
+
+dictAllWord = {}  # 这个dict, 用来把我们所有单词的内容, 整理并存放到这个dict中.
+
+str编号 = ''
+str词头 = ''
+str词性 = '' # 注意, 本案例这里写错了, 这个词性变量存放的其实是音标!
+str释义 = ''
+str例句 = ''
+str词根 = ''
+
+with open(path_txtAllSave, 'r', encoding='utf-8') as f:
+    for line in f:
+        if line.startswith('编号'):
+            str编号 = '{}:'.format(line[4:].strip())
+            # print(str编号)
+
+        if line.startswith('◆'):
+            str词头 = line[2:].strip()
+            # print(str词头)
+
+        if line.startswith('◎'):
+            str词性 = '[{}]'.format(line[3:-2]).strip() # 这里拿到的其实是音标!
+            # print(str词性)
+
+        if line.startswith('➝'):
+            str释义 = line[2:].strip()
+            print(str释义)
+
+        if line.startswith('例句'):
+            str例句 = '{}'.format(line[4:]).strip()
+            # print(str例句)
+
+        if line.startswith('◇词根'):
+            str词根 = '{}'.format(dict童哥.get(str词头.strip(), '无')).strip()
+            # print(str例句)
+
+        if line.startswith('----'):
+            #     str分割线 = '-' * 20
+            dictAllWord[str词头] = {'str编号': str编号, 'str词头': str词头, 'str词性': str词性, 'str词根': str词根, 'str释义': str释义,
+                                  'str例句': str例句}
+            print(str词头)
+            print('-' * 20)
+
+# for k,v in dictAllWord.items():
+#     print(k,v)
+print(len(dictAllWord))
+
+print(dictAllWord['abandon']) # 进行测试
+print(dictAllWord['yourself'])
+print(dictAllWord['yacht'])
+
+
+# 把dict 腌制到电脑上
+objFile = open('pickle腌制_AllWordSave.txt', 'wb')  # 注意,必须以wb,二进制模式写入pickle操作
+pickle.dump(dictAllWord, objFile)  # 将data数据,腌制到objFile文件中
+objFile.close()  # 注意,dump后必须先关闭文件句柄.这句一定要写!
+
+....
+
+第三步: 取出dict中的内容, 另存到txt中. 就是我们用来放在手机上背单词的txt文件, 或word文件!
+[source, python]
+....
+import pickle
+import os
+
+# 先打开之前腌制的文件, 重新转成dict格式
+filePath = os.getcwd() + "/pickle腌制_AllWordSave.txt"
+
+objFile = open(filePath, 'rb')
+dictAllWord = pickle.load(objFile)
+
+
+# 载把dict中的每一个元素, 即单词dict中的所有内容, 存到一个新的txt文件中, 每个单词用 '---------' 来分隔开.
+count = 1
+with open('new最终一词一意.txt', 'a+', encoding='utf-8') as f:
+    for k, v in dictAllWord.items():
+        str词头 = '◆ {} ({})\r\n'.format(v['str词头'], count)
+        str音标 = v['str词性'] + '\r\n'  # 是音标
+        str释义 = '→ ' + v['str释义'] + '\r\n'
+        str例句 = '· ' + v['str例句'] + '\r\n'
+        str词根 = '◎' + v['str词根'] + '\r\n'
+        str分割线 = '\r\n{}\r\n'.format('-' * 20)
+        strItem = str词头 + str音标 + str释义 + str例句 + str词根 + str分割线
+
+        f.write(strItem)
+
+        print('{} --> {}'.format(count, str词头))
+        count += 1
+
+= ....

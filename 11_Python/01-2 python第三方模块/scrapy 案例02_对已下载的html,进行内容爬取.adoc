@@ -1,0 +1,365 @@
+
+= scrapy 对已下载的html,进行内容爬取
+:toc:
+
+---
+
+== 下载html
+
+response.body 就能拿到整个页面中的html代码.
+
+如果网页html代码是个b'\xc3\x83\xc2\x9feta', 即b开头的二进制数据, 要把它转成字符串, 可以用
+response.body.decode()
+
+
+爬虫 spiderYouDaou.py文件
+[source, python]
+....
+# -*- coding: utf-8 -*-
+import scrapy
+from scrapy.selector import Selector
+
+# 词头表文件
+urlTxt = r'E:\phpStorm_proj\testYouDao\testYouDao\spiders\txtAllWordName.txt'
+num计数器 = 0
+
+
+# 先从词头表txt文件中, 读取所有词头, 并封装到一个list中
+def fn_getListAllWordName():
+    listAllWordName = []
+    with open(urlTxt, 'r', encoding='utf-8') as f:
+        for line in f:
+            wordName = line.strip()
+            listAllWordName.append(wordName)
+    return listAllWordName
+
+
+listAllWordName = fn_getListAllWordName()  # 这个list, 存放了所有的单词词头
+
+
+'''
+用上面创建的list词头表, 来构造出每个单词所在的 有道词典的url地址,
+返回一个list, 里面每个元素就是每个单词的 有道url地址
+'''
+def fn_getAllPageUrl():
+    list_AllPageUrl = []
+    for word in listAllWordName:
+        list_AllPageUrl.append('http://www.youdao.com/w/{}/#keyfrom=dict2.top'.format(word))
+    return list_AllPageUrl
+
+
+list_AllPageUrl = fn_getAllPageUrl()  # 所有单词的有道url地址 的list
+
+# --------------------
+
+# 爬虫类
+class SpideryoudaoSpider(scrapy.Spider):
+    global num计数器
+    name = 'spiderYouDao'
+    allowed_domains = ['www.youdao.com']
+
+
+    def start_requests(self):  # 用一个生成器函数, 来取代老版的 start_urls列表
+        urls = list_AllPageUrl
+        for url in urls:
+            yield scrapy.Request(url=url, callback=self.parse)  # 注意是yield回去一个Request对象!
+
+
+    def parse(self, response):
+        # response.url 能拿到url地址, 把它切割, 得到一个list, 倒数第二个元素就是url中的单词词头部分
+        list_UrlPartion = response.url.split('/')
+        wordName = list_UrlPartion[-2] # 从url中拿到词头
+
+        saveUrl = 'e:/ttt/allWordHtml/{}.html'.format(wordName) # 对每个单词的有道html, 设值一个我们想保存到电脑上的文件地址.
+        with open(saveUrl, 'w+', encoding='utf-8') as f: # 把每个单词html中的网页代码, 写入本地硬盘文件中, 即下载该html
+            f.write(response.body.decode())
+            print('{} --> {}'.format(num计数器, wordName))
+            num计数器 += 1
+....
+
+---
+
+== 对已下载的html, 进行内容爬取
+
+本例, 我们来爬取有道柯林斯单词信息
+
+==== myfunc.py # 我自定义的模块文件
+
+[source, python]
+....
+import os, json, pickle
+import openpyxl
+
+
+numCount = 1
+
+
+# 获取某目录下的所有html文件的绝对路径
+def fnList_getAllFileAbsPath(path_FatherDir):
+    list_FileName = os.listdir(path_FatherDir)  # [ 'a.html', 'abandon.html',...]
+
+    list_allFileAbsPath = []  # 这个list存放所有html文件的绝对路径
+
+    for fileName in list_FileName:
+        list_allFileAbsPath.append('file://127.0.0.1/{}\{}'.format(path_FatherDir, fileName))
+
+    return list_allFileAbsPath
+
+
+# ---------------------
+
+def fn_写入文件(path_SaveFile, strContent):
+    with open(path_SaveFile, 'a+') as f:
+        f.write(strContent)
+
+
+# ---------------------
+
+# 从童哥词根.json,读取并转成dict
+def fn_get童哥词根dict(pathFile):
+    with open(pathFile, 'r', encoding='utf-8') as f:
+        dict童哥词根 = json.load(f)
+    return dict童哥词根
+
+
+path童哥词根 = r'E:\phpStorm_proj\test1\test1\spiders\+json童哥词根最终版.json'
+dict童哥词根 = fn_get童哥词根dict(path童哥词根)
+
+
+# ---------------------
+
+# 柯林斯单词类, 封装了有道词典中柯林斯单词的所有信息
+class ClsWord:
+    global numCount
+
+
+    def __init__(self, response):  # 初始化时, 需要输入scrapy中,所请求url返回的response对象
+        self.num编号 = numCount
+        self.str词头 = self.fn_get词头(response)
+        self.str音标 = self.fn_get音标(response)
+        self.str词根 = self.fn_get词根(dict童哥词根)
+        self.list_all释例 = self.fn_getAll释例(response)
+
+
+    def fn_get词头(self, response):
+        str词头 = response.css('.wt-container').css('span.title::text').get().strip()
+        # print(str词头)
+        return str词头
+
+
+    def fn_get音标(self, response):
+        str音标 = response.css('.wt-container').css('.additional.spell.phonetic::text').get().strip()
+        # print(str音标)
+        return str音标
+
+
+    def fn_get词根(self, dict童哥词根):
+        str词根 = dict童哥词根.get(self.str词头,'词根: 无')
+        return str词根
+
+
+    # 拿到单个释例中的"释义"
+    def fn_get释义from单个释例(self, single释例选择器):
+        str释义 = ''
+        list_str释义所有片段 = single释例选择器.css('.collinsMajorTrans *::text').getall()
+        # 注意: 对于获取子孙元素, 必须要用getall()才能拿到全部, 而不能只用get()!!
+        # 因为你用 "类名 *" 虽然能拿到该元素下的所有子孙元素, 但如果你只用get()来拿, 还是只会拿到所有子孙元素中的第一个元素.
+        # 所以, 即使你选择器选中了子孙元素, 也必须用getall()才能拿到所有的子孙内容, 而不是只是第一个内容.
+
+        for str各片段 in list_str释义所有片段:
+            str释义 += str各片段.strip() + ' '  # 把各片段拼接起来,就是完整的释义
+        # print(str释义)
+        return str释义.strip()
+
+
+    # 拿到单个释例中的"所有例句", 返回一个list
+    def fn_get所有例句的list_from单个释例(self, single释例选择器):
+        list单个释例的所有例句 = []
+        list所有例句的选择器 = single释例选择器.css('.exampleLists')
+
+        for single单个例句的选择器 in list所有例句的选择器:
+            str单个例句 = ''
+            list单个例句所有片段 = single单个例句的选择器.css('*::text').getall()
+            for 单个例句片段 in list单个例句所有片段:
+                str单个例句 += 单个例句片段.strip() + ' '
+
+            list单个释例的所有例句.append(str单个例句.strip())
+        # print(list单个释例的所有例句)
+        return list单个释例的所有例句
+
+
+    def fn_getAll释例(self, response):
+        # 本方法, 我们要返回一个list, 结构为: [[释义1,例句1,例句2,...],[释义2,例句1],...]
+        list_all释例 = []
+        list_All释例选择器 = response.css('.wt-container').css('.ol li')
+        for single释例选择器 in list_All释例选择器:
+            str释义 = self.fn_get释义from单个释例(single释例选择器)
+            list所有例句 = self.fn_get所有例句的list_from单个释例(single释例选择器)
+            list_all释例.append([str释义, *list所有例句])  # 星号*可以直接解包列表
+        # print(list_all释例)
+        return list_all释例
+
+
+# ---------------------
+
+# 将每个单词的信息, 保存到excel中
+def fn_saveToExcel(pathExcelFile, firstCell_Row, firstCell_Column, num编号, str词头, str音标, str词根, list释例):
+    global numCount
+    # firstCell_Row ,firstCell_Column 是第一个单元格的所在坐标
+    firstCell_Row = firstCell_Row
+    xlsxWorkBook = openpyxl.load_workbook(pathExcelFile)
+    workSheetActive = xlsxWorkBook.active
+
+    workSheetActive.cell(row=firstCell_Row, column=firstCell_Column - 1, value=num编号)
+    workSheetActive.cell(row=firstCell_Row, column=firstCell_Column, value=str词头)
+    workSheetActive.cell(row=firstCell_Row, column=firstCell_Column + 1, value=str音标)
+    workSheetActive.cell(row=firstCell_Row, column=firstCell_Column + 2, value=str词根)
+
+    num释义数量 = len(list释例)
+    num第i个释义 = 0
+
+    for list_single释例 in list释例:
+        str释义 = list_single释例[0]
+        list例句 = list_single释例[1:]
+        num例句数量 = len(list例句)
+
+        workSheetActive.cell(row=firstCell_Row + num第i个释义, column=firstCell_Column + 3, value=str释义)  # 写入释义
+        num第i个例句 = 1
+        for single例句 in list例句:
+            workSheetActive.cell(row=firstCell_Row + num第i个释义, column=firstCell_Column + 3 + num第i个例句,
+                                 value=single例句)  # 写入例句
+            num第i个例句 += 1
+
+        num第i个例句 = 1
+        num第i个释义 += 1
+
+    num第i个释义 = 1
+    firstCell_Row += 1
+
+    xlsxWorkBook.save(pathExcelFile)
+    print('{} --> {}'.format(numCount, str词头))
+    numCount += 1
+
+    # print(firstCell_Row + num释义数量)
+    return firstCell_Row + num释义数量
+
+
+....
+
+---
+
+==== spiderCollins.py 爬虫文件
+
+[source, python]
+....
+# -*- coding: utf-8 -*-
+import scrapy, os
+from scrapy.selector import Selector
+import myFunc
+
+
+# dict_AllWordInfo = {} # 用来存放所有单词的全部音标,释义,例句,等信息. 集大成者
+'''
+此dict的结构为:
+{
+    'a':{
+        'str词头':v,
+        'str音标':v,
+        'str词根':v,
+        'list释例':[[释义1,例句1,例句2,...],[释义2,例句1],...]
+    },
+    'b':{}
+}
+
+'''
+
+# ---------------------
+
+path_FatherDir = r'E:\ttt\allWordHtml'  # path存放所有单词html的总目录
+path_saveFile = r'E:\ttt\Dict_allWord.txt'  # 将字符串形式的dict_AllWordInfo, 保存到电脑txt文件上
+# path_saveFile = r'E:\ttt\excel_allWordInfo.xlsx'
+
+numCount = 1  # 计数器
+
+firstCell_Row = 2  # excel第一个单元格所在行号
+
+
+# ---------------------
+
+class SpidercollinsSpider(scrapy.Spider):
+    name = 'spiderCollins'
+    allowed_domains = ['www.iciba.com']
+
+
+    def start_requests(self):  # 用一个生成器函数, 来取代老版的 start_urls列表
+        urls = myFunc.fnList_getAllFileAbsPath(path_FatherDir)
+
+        # urls = ['file://127.0.0.1/e:\\ttt\\allWordHtml\\abdomen.html', 'file://127.0.0.1/e:\\ttt\\allWordHtml\\abnormal.html','file://127.0.0.1/e:\\ttt\\allWordHtml\\abrade.html']
+        for url in urls:
+            yield scrapy.Request(url=url, callback=self.parse)  # 注意是yield回去一个Request对象!
+
+
+    def parse(self, response):
+        global numCount, firstCell_Row
+        insWord = myFunc.ClsWord(response)  # 调用我们自定义模块中的, 柯林斯单词类, 创建实例.
+
+        dict_SingleWordInfo = {}
+
+        num编号 = insWord.num编号
+        str词头 = insWord.str词头
+        str音标 = insWord.str音标
+        list释例 = insWord.list_all释例
+        str词根 = insWord.str词根
+
+        dict_SingleWordInfo["str词头"] = str词头
+        dict_SingleWordInfo["str音标"] = str音标
+        dict_SingleWordInfo["str词根"] = str词根
+        dict_SingleWordInfo["list释例"] = list释例
+
+        # firstCell_Row = myFunc.fn_saveToExcel(path_saveFile, firstCell_Row, 3,num编号,str词头, str音标, str词根, list释例)
+
+        # print(dict_SingleWordInfo)  # 正确输出!
+
+        # 保存到电脑txt上
+        with open(path_saveFile, 'a+', encoding='utf-8') as f:
+            f.write('"{}":{},'.format(str(str词头), str(dict_SingleWordInfo)))
+
+        print('{} --> {}'.format(numCount, str词头))
+        numCount += 1
+
+....
+
+---
+
+==== 读取txt文件, 把里面内容转成dict, 并腌制, 保存到本地
+
+经过上面的操作, 现在, 我们txt中的内容就是 一个伪dict了, 不过还缺少头尾的大括号, 并且还需要把最后一个字符, 即是一个逗号, 给删掉, 这样就是真正的str形式的dict了.  +
+下面, 就可以用eval()来把这个str转成真正的dict, 并腌制保存到电脑上.
+
+[source, python]
+....
+import pickle
+
+
+pathTxtFile = r'E:\ttt\Dict_allWord.txt'
+pathPickleFile = r'E:\ttt\pickle_DictallWord.txt'
+
+
+def fn_读取txt文件(pathTxtFile):
+    with open(pathTxtFile, 'r', encoding='utf-8') as f:
+        strContent = f.read()
+        strContent = "{" + format(strContent[:-1]) + "}"
+        # 由于txt中的内容, 要变成字符串形式的dict格式, 还需要前后加大括号, 并且把最后一个字符, 即是一个逗号去掉, 所以必须先经过上面的操作.
+        data_PythonType = eval(strContent)
+        return data_PythonType
+
+
+def fn_将dict腌制到pickle文件中(pathTxtFile, pathPickleFile):
+    with open(pathPickleFile, 'wb') as f:
+        data_PythonType = fn_读取txt文件(pathTxtFile)
+        pickle.dump(data_PythonType, f)
+
+
+fn_将dict腌制到pickle文件中(pathTxtFile, pathPickleFile)
+
+....

@@ -1,0 +1,15 @@
+
+:toc:
+:toclevels: 3
+:sectnums:
+
+
+== 在 pycharm 里面使用 Anaconda
+
+image:img/01.png[]
+
+image:img/02.png[]
+
+
+
+

@@ -1,0 +1,453 @@
+
+= python re正则模块
+:toc:
+
+---
+
+
+== #只匹配中文字#
+
+[^\x00-\xff]
+
+'''
+
+== 官方文档
+
+https://docs.python.org/zh-cn/3.7/library/re.html?highlight=re#module-re
+
+
+**字符串前带有'r'的话, 字符串中的特殊字符就会取其原始意义, 而不再转义. **比如: +
+ r"\n" 表示包含 '\' 和 'n' 两个字符的字符串. +
+ 而 "\n" 则表示只包含一个换行符的字符串。
+
+---
+
+== 匹配内容 在字符串中的位置
+
+==== [头]  只匹配字符串的"开头" -> re.match(pattern, string, flags=0) => 返回match对象
+
+只对字符串的开头进行匹配, 即如果目标内容不在首单词处, 即使文本中间,存在目标, 也不会匹配到.  +
+若要完全匹配，pattern要以$结尾。
+
+[source, python]
+....
+import re
+
+str = "Able 12 was I ere 3456 I saw Elba“Madam,I'mAdam."
+
+re_pattern = '\d+'
+result_match = re.match(re_pattern, str)
+print(result_match)  # None.  由于数字不在字符串的开头, 所以匹配不到.
+
+result_match = re.match(r'Ab', str)
+print(result_match)  # 返回一个相应的 匹配对象。 <_sre.SRE_Match object; span=(0, 2), match='Ab'>
+print(result_match.group())  # Ab  <--对于match对象, 需要使用它的group()方法, 才能取出里面的内容.
+....
+
+---
+
+==== [第一个]  只搜索"第一次出现"位置的内容 -> re.search(pattern, string, flags=0) => 返回match对象
+
+search()方法会在它查找到第一个匹配项之后, 就停止继续查找. 无论后面还有多是个能匹配的值.
+
+
+[source, python]
+....
+import re
+
+str = "Able 12 was I ere 3456 I saw Elba“Madam,I'mAdam."
+
+rePattern = '\d+'
+objMatch = re.search(rePattern,str) # 只匹配第一个出现的数值
+print(objMatch.group()) # 12
+....
+
+---
+
+==== [全部]  找到"所有"能匹配的内容 -> re.findall(pattern, string, flags=0) => 返回list
+
+[source, python]
+....
+import re
+
+str = "Able 12 was I ere 3456 I saw Elba“Madam,789 I'mAdam."
+
+rePattern = '\d+'
+resList = re.findall(rePattern,str) # 找到所有的匹配, 并返回一个list
+print(resList) # ['12', '3456', '789']
+....
+
+---
+
+==== [全部] 找到"所有"能匹配的内容 -> re.finditer(pattern, string, flags=0) => 返回一个迭代器 iterator, 里面每个元素都是一个 objMatch 匹配对象
+
+
+[source, python]
+....
+import re
+
+str = "Able 12 was I ere 3456 I saw Elba“Madam,789 I'mAdam."
+
+iterRes = re.finditer('\d+', str)  # 返回为一个迭代器 iterator 保存了"匹配对象 Match object" 。
+print(iterRes)  # <callable_iterator object at 0x000001BFDD2238C8>
+
+for objMatch in iterRes:
+    print(objMatch)
+'''
+<re.Match object; span=(5, 7), match='12'>
+<re.Match object; span=(18, 22), match='3456'>
+<re.Match object; span=(40, 43), match='789'>
+'''
+
+# 注意, 要想下面的代码生效, 必须先把上面的for...in...注释掉, 因为上面的代码已经迭代完了, 下面就没法再次迭代了.
+for objMatch in iterRes:
+    print(objMatch.group())
+'''
+12
+3456
+789
+'''
+....
+
+
+---
+
+== match对象
+
+search()和match()方法, 会返回一个 match对象. 它实际上是一个关于匹配子串的包装类, 可以通过调用group()方法得到匹配的子串.
+
+match对象支持以下方法和属性：
+
+https://docs.python.org/zh-cn/3.7/library/re.html?highlight=re#match-objects
+
+---
+
+==== 拿到"普通分组"中的内容 -> objMatch.group([group1, ...])
+
+[source, python]
+....
+import re
+
+str = "24.1632 abc 45.254 def"
+
+rePattern = '(\d+)\.(\d+)'
+objMatch = re.search(rePattern, str)
+
+print(objMatch.group())  # 24.1632 <-- # The entire match
+print(objMatch.group(1))  # 24
+print(objMatch.group(2))  # 1632
+print(objMatch.group(1, 2))  # ('24', '1632') <-- Multiple arguments give us a tuple.
+....
+
+如果正则表达式使用了 (?P<name>…) 语法， 那么就能用组合的名字name来拿到分组。
+
+[source, python]
+....
+import re
+
+str = "24.1632 abc 45.254 def"
+
+rePattern = '(?P<partOne>\d+)\.(?P<partTwo>\d+)'
+objMatch = re.search(rePattern, str)
+
+print(objMatch.group('partTwo'))  # 1632
+print(objMatch.group('partOne'))  # 24
+....
+
+
+如果一个组匹配成功多次，就只返回最后一个匹配.
+
+
+
+[source, python]
+....
+import re
+
+str = "a1b2c3"
+
+rePattern = '(..)+'
+objMatch = re.match(rePattern, str)
+
+print(objMatch) # <re.Match object; span=(0, 6), match='a1b2c3'>
+
+print(objMatch.group()) # a1b2c3
+print(objMatch.group(0)) # a1b2c3
+print(objMatch.group(1)) # c3 <-- 如果一个组匹配成功多次，就只返回最后一个匹配
+....
+
+---
+
+==== 拿到"普通分组"中的内容 Match.\___getitem___(g) -> 等价于 m.group(g)
+
+[source, python]
+....
+import re
+
+str = "a1b2c3"
+
+rePattern = '(\d)(\w)'
+objMatch = re.search(rePattern, str)
+
+print(objMatch.group())  # 1b
+print(objMatch.__getitem__(1))  # 1
+print(objMatch.__getitem__(2))  # b
+....
+
+---
+
+==== 拿到"普通分组"中的内容 -> Match.groups(default=None) => tuple
+
+注意: groups是复数! 有s! 返回一个元组，包含所有匹配的子组.
+
+[source, python]
+....
+import re
+
+str = "24.1632 abc 45.254 def"
+
+rePattern = '(\d+)\.(\d+)'
+objMatch = re.search(rePattern, str) # search()只能找到第一个.
+
+print(objMatch.groups())  # ('24', '1632') <--groups() 返回一个元组
+
+....
+
+---
+
+==== 获取"命名分组"中的内容 -> Match.groupdict(default=None) => dict
+
+返回一个字典，包含了所有的 命名 子组。key就是组名。 default 参数用于不参与匹配的组合；默认为 None。
+
+[source, python]
+....
+import re
+
+str = "abc1.414 def3.567"
+
+rePattern = '(?P<partOne>\d+)\.(?P<partTwo>\w+)'
+objMatch = re.search(rePattern, str)
+
+print(objMatch.groupdict())  # {'partOne': '1', 'partTwo': '414'}
+....
+
+---
+
+==== 拿到匹配到的内容的头尾index索引 -> Match.start([group]) 和  Match.end([group])
+
+返回 group 匹配到的字串的开始和结束的index。**注意: 这里Match.end()的值, 其实是匹配到的字串的尾巴处, 再往后面1位!**
+
+[source, python]
+....
+import re
+
+str = "abc1.414 def3.567"
+
+rePattern = '(\d+)\.(\w+)'
+objMatch = re.search(rePattern, str)
+
+print(objMatch.start())  # 3 <--匹配到的内容的头index
+print(objMatch.end())  # 8 <--匹配到的内容的尾index+1
+....
+
+---
+
+==== 拿到匹配到的内容的头尾index索引的跨度 -> Match.span([group]) => tuple
+
+返回一个二元组, 值即 (m.start(group), m.end(group)) 。
+
+[source, python]
+....
+import re
+
+str = "abc1.414 def3.567"
+
+rePattern = '(\d+)\.(\w+)'
+objMatch = re.search(rePattern, str)
+
+print(objMatch.start())  # 3 <--匹配到的内容的头index
+print(objMatch.end())  # 8 <--匹配到的内容的尾index+1
+
+print(objMatch.span())  # (3, 8) <--拿到头尾index的跨度
+....
+
+---
+
+==== match对象, 总是有一个布尔值 True。
+
+匹配对象总是有一个布尔值 True。如果没有匹配的话, match() 和 search() 就会返回 None, 所以你可以简单的用 if 语句, 来判断是否匹配到了东西(是否撒网后打到了鱼?).
+
+[source, python]
+....
+import re
+
+
+def fn_PrintInfo(objMatch):
+    if (objMatch):
+        print(objMatch.group())  # 若有匹配到, 则结果可由objMatch.group()方法中拿到
+    else:
+        print(objMatch)  # 若没有匹配到, 则objMatch的值为None
+
+
+str = "Able 12 was I ere 3456 I saw Elba“Madam,789 I'mAdam."
+
+rePattern1 = '\d+'
+objMatch1 = re.search(rePattern1, str)
+fn_PrintInfo(objMatch1)  # 12
+
+rePattern2 = '白日依山尽'
+objMatch2 = re.search(rePattern2, str)
+fn_PrintInfo(objMatch2)  # None
+....
+
+
+---
+
+== 正则表达式对象 （正则对象）
+
+==== 将字符串形式的正则规则, 编译为一个正则表达式对象  -> re.compile(pattern, flags=0)
+
+[source, typescript]
+....
+import re
+
+str = "abc1.414 def3.567"
+
+strRePattern = '(\d+)\.(\w+)'
+objRePattern = re.compile(strRePattern)  # 把字符串形式的正则规则, 编译成正则对象!
+res = objRePattern.search(str)
+
+print(res)  # <re.Match object; span=(3, 8), match='1.414'>
+print(res.group())  # 1.414
+
+....
+
+编译后的正则表达式对象, 支持以下方法和属性：
+
+---
+
+==== objRePattern.search(string[, pos[, endpos]])
+
+扫描整个 string 寻找第一个匹配的位置， 并返回一个相应的 objMatch匹配对象。如果没有匹配，就返回 None.
+
+可选的第二个参数 pos,  给出了字符串中开始搜索的位置索引. +
+可选参数 endpos, 限定了字符串搜索的结束. +
+只有从 pos 到 endpos - 1 的字符会被匹配。 +
+
+---
+
+
+== 其他
+
+==== 匹配时, 不区分大小写 -> 加上参数 re.IGNORECASE
+
+[source, python]
+....
+import re
+
+str = 'UPPER PYTHON, lower python, Mixed Python'
+
+listRes1 = re.findall('p.*?n', str)  # 在"*","?","+","{m,n}"后面加上？，使贪婪变成非贪婪。
+print(listRes1)  # ['python']
+
+listRes2 = re.findall('p.*?n', str, re.IGNORECASE)  # 第三个参数, 指定不区分大小写
+print(listRes2)  # ['PPER PYTHON', 'python', 'Python']
+....
+
+
+---
+
+==== 让点号.也能匹配换行符 -> 加上参数 flags=re.DOTALL
+
+默认模式下，**点号（.）能匹配除"换行符"以外的所有字符。** 也就是说，用 .* 这样的模式 匹配到换行符的前面时，匹配即停止。
+
+**若想让点号. 也能匹配换行符, 就要加上参数flags=re.DOTALL**, 即变成"单行模式". 换言之, "单行模式"改变了点号（.）的匹配策略。
+
+[source, python]
+....
+import re
+
+str = 'abc 123\r\n456 def'
+
+objMatch = re.search('\d.*\d', str)  # 默认模式下，点号.的匹配动作, 到"换行符"处即停止
+print(objMatch)  # <re.Match object; span=(4, 7), match='123'>
+
+# 若想让点号. 也能匹配换行符, 就要加上参数flags=re.DOTALL, 即变成"单行模式". 换言之, "单行模式"改变了点号（.）的匹配策略。
+objMatch2 = re.search('\d.*\d', str, flags=re.DOTALL)
+print(objMatch2)  # <re.Match object; span=(4, 12), match='123\r\n456'>
+....
+
+---
+
+==== 用 pattern 来分割开 string ->  re.split(pattern, string, maxsplit=0, flags=0)
+
+maxsplit参数规定最多切几刀? 进行几次分割? 比如, 1刀下去, 就是2段. 2刀下去, 就是3段. 剩下的字符, 全部返回到列表的最后一个元素中去。
+
+[source, python]
+....
+import re
+
+str = 'abc123def45jokl78;lmno901'
+
+listRes = re.split('\d+', str)  # 将匹配的模式(本例即 \d+), 当做分隔符, 来分割字符串str
+print(listRes)  # ['abc', 'def', 'jokl', ';lmno', '']
+
+listRes2 = re.split('\d+', str, maxsplit=2)  # maxsplit参数用来规定切几刀? 1刀则2段, 切2刀则3段, 以此类推
+print(listRes2)  # ['abc', 'def', 'jokl78;lmno901']
+....
+
+
+---
+
+==== 匹配并替换成新内容 -> re.sub(pattern, replace, string, count=0, flags=0) => String
+
+replace参数, 可以是字符串或函数. 如果是函数的话, 就会对每个匹配到的内容, 传入进该函数中进行处理. 类似于JavaScript中的forEach()或map()方法的功能.
+
+[source, python]
+....
+import re
+
+str = "Able 12 was I ere 3456 I saw Elba“Madam,789 I'mAdam."
+
+strNew = re.sub('\d+', '000', str) # 将匹配到的内容, 替换成'000'
+print(strNew)  # Able 000 was I ere 000 I saw Elba“Madam,000 I'mAdam.
+
+strNew = re.sub('\d+', '000', str,count=2) # count参数指明只替换几次, 剩余的保留原样.
+print(strNew)  # Able 000 was I ere 000 I saw Elba“Madam,789 I'mAdam.
+....
+
+
+replace参数是函数的话:
+[source, python]
+....
+import re
+
+
+def fnDouble(objMatch):
+    num = int(objMatch.group())
+    return str(num * 2)
+
+
+str1 = "Able 12 was I ere 3456 I saw Elba“Madam,789 I'mAdam."
+
+strNew = re.sub('\d+', fnDouble, str1) # 将匹配到的内容, 传入fnDouble中处理, 会乘以2, 然后返回回来. 作为新字符串中的替换值
+print(strNew)  # Able 24 was I ere 6912 I saw Elba“Madam,1578 I'mAdam.
+....
+
+---
+
+==== 匹配并替换成新内容 -> re.subn(pattern, replace, string, count=0, flags=0) => tuple(新字符串, 替换次数)
+
+re.subn() 行为与 re.sub() 相同，但是返回一个元组 (字符串, 替换次数).
+
+[source, python]
+....
+import re
+
+str1 = "Able 12 was I ere 3456 I saw Elba“Madam,789 I'mAdam."
+
+strNew = re.subn('\d+', '000', str1)
+print(strNew)
+# ("Able 000 was I ere 000 I saw Elba“Madam,000 I'mAdam.", 3) <--返回的是一个元组, 第二个参数是告诉你替换了多少次
+....
+
+---

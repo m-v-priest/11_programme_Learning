@@ -1,0 +1,63 @@
+
+= asciidoc 插入图片
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+
+== 插入图片
+#image:../:# 图片地址 #[]# +
+注意:
+- 双冒号::后, 和中括号[]前, 不能有空格! 必须紧密连着图片地址写!
+- 中括号[]中, 可以设置图片的显示宽高值
+
+```
+image:../:01 程序学习 (前端, ui)/03-2 JavaScript/01 javaScript_learn/img_javaScript/arr_copyWithin.svg[20,20]
+```
+
+== 图片占页面宽度的比例
+
+注意: 以下代码, 是图片占页面宽度的比例, 而不是说图片相对于本身原尺寸的缩放比例.
+....
+image:../img/0001.png[width=25%]
+....
+
+
+'''
+
+== #自定义图片高度#
+
+....
+image:..//img/102.png[,height=80]
+....
+
+width 和 height 属性的值应该是没有单位的整数。隐含 px 单位。尽管处理器可能允许，但您永远不应该依赖 % 值。
+
+更多说明见官网文档 : +
+https://docs.asciidoctor.org/asciidoc/latest/macros/image-size/
+
+
+'''
+
+== 图片以自身尺寸为比例缩放
+
+asciidoc 图片尺寸设置中, 有这个参数: iw
+....
+vw
+Percentage of the page width (edge to edge)
+
+iw
+Percentage of the intrinsic width of the image 图像固有宽度的百分比
+....
+
+'''
+
+== asciidoc 原生支持插入 svg (矢量)图片. <- 可用思维导图(xMind)导出 svg
+
+你想插入思维导图图片, 就用 xMind 软件, 导出svg 即可. asciidoc 支持插入 svg 无损格式图片.
+
+
+'''

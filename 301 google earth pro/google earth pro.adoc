@@ -1,0 +1,119 @@
+
+= google earth pro
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+== 显示设置
+
+==== 变成地球透视来查看 -> 按住鼠标中键不放, 上下拖动鼠标
+
+image:/img/008.png[,%]
+
+
+==== 查看河流轮廓
+
+image:/img/010.png[,%]
+
+
+==== 关掉默认的所有的地名
+
+image:/img/011.png[,%]
+
+
+
+
+== 保存
+
+
+==== 保存你搜索的地点
+
+image:/img/001.png[,%]
+
+image:/img/007.png[,%]
+
+
+
+==== 截图保存
+
+image:/img/009.png[,%]
+
+
+== 画路径
+
+==== 在地图上画路径, (包括直线路径)
+
+image:/img/002.png[,%]
+
+image:/img/003.png[,%]
+
+image:/img/004.png[,%]
+
+
+==== 画直线路径
+
+image:/img/005.png[,%]
+
+
+==== 画圆圈
+
+image:/img/006.png[,%]
+
+
+
+== google earth pro 中如何导入 kml 图层?
+
+在 菜单 file -> import 中导入
+
+
+image:/img/012.png[,%]
+
+免费的 kml 文件下载网站有:
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|美国各州的边界线
+|https://kml4earth.appspot.com/data.html
+
+|世界各国的边界线
+|https://public.opendatasoft.com/explore/dataset/world-administrative-boundaries/export/?refine.status=US+Territory
+
+|世界主要最长的河流
+|https://datacatalog.worldbank.org/search/dataset/0042032
+|===
+
+
+
+
+'''
+
+== 给 google earth pro 更换底图
+
+在google 中搜索 "map overlays for google earth"
+
+https://ge-map-overlays.appspot.com/
+
+下载 kmz文件
+
+image:/img/015.png[,%]
+
+
+或, 也可下载
+
+image:/img/013.png[,%]
+
+image:/img/014.png[,%]
+
+
+
+
+
+
+
+

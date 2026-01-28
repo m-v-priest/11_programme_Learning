@@ -1,0 +1,697 @@
+
+
+= asciidoc 插入表格
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+
+正常文字
+
+
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|表格中的文字
+|
+|===
+
+
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|表格中的文字
+|表格中的文字
+
+|表格中的文字
+|表格中的文字
+|===
+
+'''
+
+
+== #★ 让表格中的文字变小 -> 在表格上加上命令 "[.small]" 即可.#
+
+默认情况时, 在导出成pdf时, 表格中的文字会比外面的文字大一号, 如何让表格中的文字能缩小一点呢? 加上命令 "[.small]" 即可.
+
+....
+[.small]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|表格中的文字
+|
+|===
+....
+
+
+
+```
+[options="autowidth"]
+|===
+|Header 1 |Header 2 |Header 3
+
+|Column 1, row 1
+|Column 2, row 1
+|Column 3, row 1
+
+|Column 1, row 2
+|Column 2, row 2
+|Column 3, row 2
+
+|Column 1, row 3
+|Column 2, row 3
+|Column 3, row 3
+|===
+```
+
+效果 +
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2 |Header 3
+
+|Column 1, row 1
+|Column 2, row 1
+|Column 3, row 1
+
+|Column 1, row 2
+|Column 2, row 2
+|Column 3, row 2
+
+|Column 1, row 3
+|Column 2, row 3
+|Column 3, row 3
+|===
+
+
+---
+
+== 整张表格宽度 => 设置整张表占页面的宽度 -> width属性
+
+使用 width参数, 就能设置整张表, 占页面总宽的宽度百分比, 是多少.  +
+比如设成 width="40%", 意思就是 整张表的宽度, 就设成是页面宽度的40%.
+```
+[width="40%"]
+|===
+...
+|===
+```
+
+[width="40%"]
+|===
+|Column 1 |Column 2
+|1        |Item 1
+|2        |Item 2
+|3        |Item 3
+|===
+
+---
+
+== 合并列 ->  2+|
+
+该内容的官方文档 https://docs.asciidoctor.org/asciidoc/latest/tables/span-cells/
+
+原本的单元格, 是先写 "|",再在后面写单元格中的文字内容的. +
+为了让某行的某两列合并, 就在第一列的"|"前面, 写上比如 "2+" ,意思是将2列合并. 同理, 如果是想合并3列, 就写成"3+".
+
+....
+[options="autowidth"]
+|===
+|Header 1 |Header 2 |Header 3
+
+|Column 1, row 2
+|Column 2, row 2
+|Column 3, row 2
+
+2+|注意, 本行这两列合并了  //注意这里!
+|Column 3, row 1
+
+|Column 1, row 3
+|Column 2, row 3
+|Column 3, row 3
+|===
+....
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2 |Header 3
+
+|Column 1, row 2
+|Column 2, row 2
+|Column 3, row 2
+
+2+|注意, 本行这两列合并了
+|Column 3, row 1
+
+|Column 1, row 3
+|Column 2, row 3
+|Column 3, row 3
+|===
+
+现在, 我们来合并3列:
+
+....
+[options="autowidth"]
+|===
+|Header 1 |Header 2 |Header 3 |Header 4
+
+|Column 1, row 1
+|Column 2, row 1
+|Column 3, row 1
+|Column 4, row 1
+
+|Column 1, row 2
+|Column 2, row 2
+|Column 3, row 2
+|Column 4, row 2
+
+|Column 1, row 3
+3+| 本3列合并了
+
+|Column 1, row 4
+|Column 2, row 4
+|Column 3, row 4
+|Column 4, row 4
+|===
+....
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2 |Header 3 |Header 4
+
+|Column 1, row 1
+|Column 2, row 1
+|Column 3, row 1
+|Column 4, row 1
+
+|Column 1, row 2
+|Column 2, row 2
+|Column 3, row 2
+|Column 4, row 2
+
+|Column 1, row 3
+3+| 本3列合并了
+
+|Column 1, row 4
+|Column 2, row 4
+|Column 3, row 4
+|Column 4, row 4
+|===
+
+---
+
+== 合并行 -> .2+|
+
+在要合并n行的的第一行单元格处, 写 ".n+", 后面保留"|"
+
+....
+[options="autowidth"]
+|===
+|Header 1 |Header 2 |Header 3
+
+|Column 1, row 1
+|Column 2, row 1
+|Column 3, row 1
+
+.2+| 注意: 本2行合并了   // 注意这里
+|Column 2, row 2
+|Column 3, row 2
+
+
+|Column 2, row 3
+|Column 3, row 3
+|===
+....
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2 |Header 3
+
+|Column 1, row 1
+|Column 2, row 1
+|Column 3, row 1
+
+.2+| 注意: 本2行合并了
+|Column 2, row 2
+|Column 3, row 2
+
+
+|Column 2, row 3
+|Column 3, row 3
+|===
+
+下面, 我们来合并3行:
+
+....
+[options="autowidth"]
+|===
+|Header 1 |Header 2 |Header 3 |Header 4
+
+|Column 1, row 1
+|Column 2, row 1
+|Column 3, row 1
+|Column 4, row 1
+
+|Column 1, row 2
+|Column 2, row 2
+|Column 3, row 2
+.3+| 注意: 本3行合并了
+
+|Column 1, row 3
+|Column 2, row 3
+|Column 3, row 3
+
+
+|Column 1, row 4
+|Column 2, row 4
+|Column 3, row 4
+
+|===
+....
+
+[options="autowidth"]
+|===
+|Header 1 |Header 2 |Header 3 |Header 4
+
+|Column 1, row 1
+|Column 2, row 1
+|Column 3, row 1
+|Column 4, row 1
+
+|Column 1, row 2
+|Column 2, row 2
+|Column 3, row 2
+.3+| 注意: 本3行合并了
+
+|Column 1, row 3
+|Column 2, row 3
+|Column 3, row 3
+
+
+|Column 1, row 4
+|Column 2, row 4
+|Column 3, row 4
+
+|===
+
+---
+
+== 同时合并n列和m行 -> n.m+
+
+同时合并n列和m行, 就是把这些单元格合并成一个大矩形, 那就在该矩形左上角第一个单元格处, 写 "n.m+|"
+
+如, 我们了合并 2列3行:
+
+....
+
+|===
+|Header 1 |Header 2 |Header 3 |Header 4
+
+|Column 1, row 1
+|Column 2, row 1
+|Column 3, row 1
+|Column 4, row 1
+
+|Column 1, row 2
+2.3+| 注意: 2列3行的单元格, 已经合并
+|Column 4, row 2
+
+|Column 1, row 3
+|Column 4, row 3
+
+|Column 1, row 4
+|Column 4, row 4
+|===
+....
+
+
+
+|===
+|Header 1 |Header 2 |Header 3 |Header 4
+
+|Column 1, row 1
+|Column 2, row 1
+|Column 3, row 1
+|Column 4, row 1
+
+|Column 1, row 2
+2.3+| 注意: 2列3行的单元格, 已经合并
+|Column 4, row 2
+
+|Column 1, row 3
+|Column 4, row 3
+
+|Column 1, row 4
+|Column 4, row 4
+|===
+
+
+
+
+
+---
+
+== #★ 边框线 => 表格边框线的显示或隐藏# -> [frame="all/ends/none/sides"]
+
+官网教程: https://docs.asciidoctor.org/asciidoc/latest/tables/borders/
+
+
+- frame=all, grid=all 框架=全部，网格=全部
+- frame=all, grid=none 框架=全部，网格=无
+- frame=all, grid=rows 框架=所有，网格=行
+- frame=all, grid=cols 框架=全部，网格=列
+- frame=ends, grid=rows 框架=结束，网格=行
+- frame=sides, grid=cols 框架=边，网格=列
+- frame=none, grid=none 框架=无，网格=无
+
+
+边框透明的表格
+
+....
+[options="autowidth" cols="1a,1a" frame=none, grid=none]
+....
+
+效果为:
+
+[options="autowidth" cols="1a,1a" frame=none, grid=none]
+|===
+|Header 1 |Header 2
+
+|
+|
+
+|
+|
+|===
+
+
+
+
+....
+[frame="ends"] //让表格的左右 不显示边框线
+↓
+....
+
+[frame="ends", options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|Column 1, row 1
+|Column 2, row 1
+
+|Column 1, row 2
+|Column 2, row 2
+
+|Column 1, row 3
+|Column 2, row 3
+|===
+
+....
+[frame="sides"] //让表格的上下 不显示边框线
+↓
+....
+
+[frame="sides", options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|Column 1, row 1
+|Column 2, row 1
+
+|Column 1, row 2
+|Column 2, row 2
+
+|Column 1, row 3
+|Column 2, row 3
+|===
+
+
+....
+[frame="none"] //让表格的四周 都不显示边框线
+↓
+....
+
+[frame="none", options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|Column 1, row 1
+|Column 2, row 1
+
+|Column 1, row 2
+|Column 2, row 2
+
+|Column 1, row 3
+|Column 2, row 3
+|===
+
+
+---
+
+
+== 行间隔颜色 => 让行有间隔颜色 -> [stripes="even/odd/all/hover"]
+
+在表格上面加如下代码
+....
+[stripes="even/odd/all/hover"]
+// hover值,表示 : 只在鼠标移到目标行的上方时, 改行才显示背景色
+// all值 : 则所有行全部有默认背景色(灰色).
+....
+
+[stripes="even", options="autowidth"]
+|===
+|Header 1 |Header 2
+
+|Column 1, row 1
+|Column 2, row 1
+
+|Column 1, row 2
+|Column 2, row 2
+
+|Column 1, row 3
+|Column 2, row 3
+
+|Column 1, row 4
+|Column 2, row 4
+
+|Column 1, row 5
+|Column 2, row 5
+
+|Column 1, row 6
+|Column 2, row 6
+|===
+
+
+
+
+
+---
+
+== #子表格, 表格嵌套# => 表格单元格中, 再插入一个表格 <- 将子表格的列的间隔符, 用"!"表示即可.
+
+....
+[cols="1,2a"]
+|===
+| Col 1 | Col 2
+
+| Cell 1.1
+| Cell 1.2
+
+| Cell 2.1
+| Cell 2.2
+
+[cols="2,1"]
+!===
+! Col1 ! Col2
+
+! C11
+! C12
+
+!===
+
+|===
+....
+
+
+[cols="1,2a"]
+|===
+| Col 1 | Col 2
+
+| Cell 1.1
+| Cell 1.2
+
+| Cell 2.1
+| Cell 2.2
+
+[cols="2,1"]
+!===
+! Col1 ! Col2
+
+! C11
+! C12
+
+!===
+
+|===
+
+
+---
+
+
+== 列宽 => 控制表格的列宽 -> cols 属性
+
+可以用 cols 属性, 它有两个功能：1.设置表格的列数, 及 2. 设置"列"之间相对的宽度。
+
+如下例,
+
+- 将列数(cols)设为3列, 每列宽度占比分别是 1:1:2, +
+- options="header" 属性, 用来将第一行(即[cols...]下面的一行)的文字, 作为表的标题(即深红色的字)来用. (注意: 标题文字前, 必须加个"."号)。
+```
+[cols="1,1,2", options="header"]
+.我是表的标题
+|===
+|Name|Category|Description
+...
+|===
+```
+
+
+[cols="1,1,2", options="header"]
+.我是表的标题
+|===
+|Name
+|Category
+|Description
+
+|Firefox
+|Browser
+|Mozilla Firefox is an open-source web browser.
+It's designed for standards compliance,
+performance, portability.
+
+|Arquillian
+|Testing
+|An innovative and highly extensible testing platform.
+Empowers developers to easily create real, automated tests.
+|===
+
+也可以使用百分比, 来设成列宽.
+
+```
+[cols="50,20,30"]
+```
+
+[cols="50,20,30"]
+|===
+|Cell in column 1, row 1
+|Cell in column 2, row 1
+|Cell in column 3, row 1
+
+|Cell in column 1, row 2
+|Cell in column 2, row 2
+|Cell in column 3, row 2
+|===
+
+---
+
+== 列宽 => 让表格的列, 根据里面文字内容的长度, 来设成自动列宽 -> [options="autowidth"]
+
+加上下面的参数即可
+```
+[options="autowidth"]
+```
+
+[cols = "3", options="autowidth"]
+|===
+|111
+|123456789123456789
+|112233
+
+|1
+|2
+|3
+|===
+
+
+
+---
+
+== 自动序号 => 在表格中, 再使用列表序号
+
+在cols属性中, 在想使用"列表"的单元格位置处, 在数字后面再填个"a"即可.
+```
+[cols="2,2,5a"]
+```
+
+[cols="2,2,5a"]
+|===
+|Firefox
+|Browser
+|Mozilla Firefox is an open-source web browser.
+
+It's designed for:
+
+* standards compliance
+* performance
+* portability
+
+http://getfirefox.com[Get Firefox]!
+|===
+
+
+---
+
+
+== 内容对齐 => 单元格中内容的对齐(左对齐, 居中, 右对齐) -> [cols="<,^,>"]
+
+在cols属性的值中, "<"代表左对齐, "^"代表居中对齐, ">"代表右对齐
+
+比如, 下面的表格, 即列1 左对齐, 列2 居中对齐, 列3 右对齐.
+```
+[cols="<,^,>"]
+|===
+...
+|===
+```
+
+
+[cols="<,^,>"]
+|===
+|Cell in column 1, row 1
+|Cell in column 2,  +
+row 1
+|Cell in column 3, row 1
+
+|Cell in column 1, row 2
+|Cell in column 2, row 2
+|Cell in column 3, row 2
+|===
+
+还可以在设置对齐的同时, 设置每个列宽. +
+比如下标, 即三列的宽度比例, 分别是 1:2:3
+
+```
+[cols="<1,^2,>3"]
+```
+
+
+[cols="<1,^2,>3"]
+|===
+|Cell in column 1, row 1
+|Cell in column 2, row 1
+|Cell in column 3, row 1
+
+|Cell in column 1, row 2
+|Cell in column 2, row 2
+|Cell in column 3, row 2
+|===
+
+'''

@@ -1,0 +1,683 @@
+
+= PyMongo 库
+:toc:
+
+---
+
+== 文档
+
+官方文档 +
+https://api.mongodb.com/python/current/# +
+https://api.mongodb.com/python/current/tutorial.html +
+https://api.mongodb.com/python/current/api/pymongo/collection.html
+
+---
+
+== 第一个例子
+
+
+
+---
+
+
+== 创建/连接 数据库
+
+创建数据库需要使用 MongoClient对象，并且指定连接的 URL地址, 和要创建的数据库名。
+
+[source, python]
+....
+import pymongo  # 或 from pymongo import MongoClient
+
+urlDb = "mongodb://localhost:27017/"
+
+# 1. Making a Connection with MongoClient
+# 为正在运行的mongod实例, 创建一个MongoClient。
+client = pymongo.MongoClient(urlDb)  # 或 pymongo.MongoClient('localhost', 27017)
+
+
+# 2. Getting a Database
+'''
+MongoDB的单个实例, 可以支持多个独立的数据库。
+使用PyMongo时，您可以使用MongoClient实例上的属性样式 , 来访问数据库：
+'''
+dbTest = client['test'] # 或 client.test <--获取名字叫test的数据库
+
+
+# 3. Getting a Collection
+colpeople = dbTest.colpeople # 或 dbTest["colpeople"] <--拿到test数据库中的colpeople集合
+'''
+关于MongoDB中的集合（和数据库）的一个重要注意事项是:
+它们是懒惰创建的 - 上述命令都没有在MongoDB服务器上, 实际执行过任何操作。
+只有在将第一个文档插入其中时，才会真正创建出集合Collections 和数据库databases.
+'''
+....
+
+---
+
+==== 获取某数据库中的所有collection集合的名字 -> 某数据库.list_collection_names()
+
+[source, python]
+....
+import pymongo
+from bson.objectid import ObjectId
+
+urlDb = "mongodb://localhost:27017/"
+client = pymongo.MongoClient(urlDb)  # 连接某数据库
+dbTest = client['test']  # 拿到test数据库
+colTest = dbTest.colTest  # 拿到colpeople集合
+
+
+# ---------------------
+
+print(dbTest.list_collection_names()) # 拿到test数据库中的所有collection集合的名字
+# ['colkollins', 'colreactstates', 'colTest', 'colpeople']
+....
+
+
+
+---
+
+== 文档操作/ 增
+
+==== 插入"一条"文档 -> 集合.insert_one(文档)
+
+insert_one() 方法会返回 InsertOneResult 对象，**该对象包含一个 inserted_id 属性，它是插入文档的 id 值。**
+
+如果我们在插入文档时没有指定 _id，MongoDB 会为每个文档添加一个唯一的 id。
+
+
+
+[source, python]
+....
+import pymongo
+
+urlDb = "mongodb://localhost:27017/"
+client = pymongo.MongoClient(urlDb)  # 连接某数据库
+dbTest = client.test # 拿到test数据库
+colpeople = dbTest.colpeople # 拿到colpeople集合
+
+# 4. Documents
+'''
+注意: 文档documents 可以包含原生的Python类型（如datetime.datetime实例），这些类型能自动被转换为适当的BSON类型。
+'''
+
+# 4.1 插入一条文档 Inserting a Document
+'''
+要将文档插入集合，我们可以使用insert_one（）方法.
+插入文档时，如果文档尚未包含“_id”键，则会自动添加“_id”。“_id”的值在整个集合中必须是唯一的。
+'''
+ins_InsertOneResult = colpeople.insert_one({'name':'zzr','age':19}) # insert_one() returns an instance of InsertOneResult.
+print(ins_InsertOneResult) # <pymongo.results.InsertOneResult object at 0x000002EE05F3B2C8>
+
+# 查看已插入的文档的id, 用inserted_id属性.
+print(ins_InsertOneResult.inserted_id) # 5d479c44928cc4e4dd28488a
+....
+
+---
+
+==== 一次性插入"多条"文档 -> 集合.insert_many(文档列表)
+
+insert_many() 方法返回 InsertManyResult 对象，该对象包含 inserted_ids 属性(注意末尾有s)，该属性保存着所有插入文档的 id 值。
+
+
+[source, python]
+....
+import pymongo
+from bson.objectid import ObjectId
+
+urlDb = "mongodb://localhost:27017/"
+client = pymongo.MongoClient(urlDb)  # 连接某数据库
+dbTest = client['test']  # 拿到test数据库
+colpeople = dbTest.colpeople  # 拿到colpeople集合
+
+# ---------------------
+
+# 一次性插入多条文档, 把它们放入列表中即可.
+listP = [
+    {'name': 'wyy', 'age': 26},
+    {'name': 'mwq', 'age': 14}
+]
+
+res = colpeople.insert_many(listP)
+# <--insert_many()方法返回的类型是InsertManyResult，调用inserted_ids属性可以获取插入数据的_id列表
+
+print(res.inserted_ids)  # [ObjectId('5d47b01cb7a3fba921edf0ec'), ObjectId('5d47b01cb7a3fba921edf0ed')]
+....
+
+---
+
+==== 创建自己的id字段
+
+mongoDb会对每条新增的文档, 都自动添加一个 _id 字段. 但这个 _id字段无法让我们获得这样一种能力: 即 防止同一个文档被重复添加进collection集合中. 为了实现这个目的, 我们必须创建一个自己的id字段.
+
+[source, python]
+....
+def findAllDoc():
+    for doc in colTest.find():
+        print(doc)
+
+# 插入一条文档, _id 的值由你自定义
+colTest.insert_one({"_id":'A001', 'name':'ypp'})
+
+findAllDoc()
+'''
+{'_id': ObjectId('5d47e1c9b77015cf64c49790'), 'name': 'mwq', 'age': 56}
+{'_id': 'A001', 'name': 'ypp'} <-- 你自定义的id
+'''
+....
+
+如果你再插入同一id值的新文档, 就会报错: pymongo.errors.DuplicateKeyError: E11000 duplicate key error collection: test.colTest index: _id_ dup key: { : "A001" }
+
+
+
+
+---
+
+== 文档操作/ 删
+
+==== 删除"第一条"符合条件的文档 -> delete_one(文档条件)
+
+[source, python]
+....
+colTest.delete_one({'sex': 'female'})
+# 删除第一条含有sex='female'字段的文档
+....
+
+---
+
+==== 一次性删除"多条"符合条件的文档-> delete_many(文档条件)
+
+[source, python]
+....
+colTest.delete_many({'name': '黄蓉'})
+# 删除所有含有name='黄蓉'的文档
+....
+
+---
+
+==== 删除集合中的"所有"文档 -> 某集合.delete_many({})
+
+delete_many() 方法如果传入的是一个空的查询对象，则会删除集合中的所有文档.
+
+---
+
+== 文档操作/ 改
+
+==== "整条替换"第一条符合条件的文档 -> replace_one(1查询条件, 2替换成的新文档, 3查询条件不存在时是否直接将新文档插入集合中)
+
+[source, python]
+....
+def findAll():
+    resCursor = colTest.find({})
+    for doc in resCursor:
+        print(doc)
+
+
+# 找到第一条含有name字段是'zzr'的文档, 并将整个文档换成{'sex':'female'}, 即, 原先的name和age字段都删了.
+colTest.replace_one({'name':'zzr'},{'sex':'female'})
+
+findAll()
+'''
+{'_id': ObjectId('5d47e1c9b77015cf64c4978e'), 'sex': 'female'}
+等等
+'''
+....
+
+replace_one()方法, 有一个可选的关键字参数 upsert, 可以用来设置: **如果没在集合中找到匹配条件的文档的话, 是否直接将新文档插入到集合中.**
+
+
+|===
+|upsert(可选)参数的值  | 说明
+
+
+|False
+|默认值
+
+|True
+|perform an insert if no documents match the filter.
+
+|===
+
+[source, python]
+....
+colTest.replace_one({'name':'xxx'},{'sex':'male'},upsert=True)
+....
+
+上例, 找到第一条含有name字段是'zzr'的文档, 并整个文档换成{'sex':'female'}; 如果没有找到符合条件的文档, 就将 {'sex':'female'} 当做新的文档插入到集合中.
+
+
+---
+
+==== "更新第一条"符合条件的文档中的字段值 -> update_one(目标文档, {'$set':{字段名:新的字段值}})
+
+下例, 将第一条name='wyy'的文档, 把name字段的值更改为'ypp', 并增加一个'charm'字段. 老的age字段保持不动.
+[source, python]
+....
+colTest.update_one({'name':'wyy'},{'$set':{'name':'ypp', 'charm':88}})
+
+'''
+{'_id': ObjectId('5d47e1c9b77015cf64c4978f'), 'name': 'ypp', 'age': 32, 'charm': 88}
+等等
+'''
+....
+
+它也有一个upsert可选参数:
+upsert (optional): If True, perform an insert if no documents match the filter.
+
+---
+
+==== 一次性"更新多条文档"中的字段值 -> update_many()
+
+update_one() 方法只能修匹配到的第一条记录，如果要修改所有匹配到的记录，可以使用 update_many()。
+
+
+下例, 将所有name='ypp'的文档, 更新成 name='黄蓉', 并添加一个husband字段, 老的age字段不动.
+
+[source, python]
+....
+colTest.update_many({'name': 'ypp'}, {'$set': {'name': '黄蓉', 'husbund': '郭靖'}})
+
+'''
+{'_id': ObjectId('5d47e8f5ff47fbfb5ada5d1e'), 'name': '黄蓉', 'charm': 88, 'husbund': '郭靖'}
+等等
+'''
+....
+
+同样有 upsert 可选参数.
+
+---
+
+
+== 文档操作/ 查
+
+
+==== 只查找"第一条"匹配到的文档 -> 集合.find_one(文档条件)
+
+[source, python]
+....
+#  只查找"第一条"匹配到的文档 Getting a Single Document With find_one()
+print(colpeople.find_one()) # 这里由于没有输入查询条件, 就会查找到所有文档中的第一条. 在JavaScript中是object类型, 在python中就是dict字典类型.
+# {'_id': ObjectId('5d1c29f878c5603368a58796'), 'isFemale': False, 'name': 'Max Terry', 'age': 37, 'charm': 59, '__v': 0}
+
+# 用查询条件, 来查找文档
+res = colpeople.find_one({'name':'zzr'}) # 搜索name字段是'zzr'的文档
+print(res) # {'_id': ObjectId('5d479c1378084c46eee1ff14'), 'name': 'zzr', 'age': 19}
+....
+
+---
+
+==== 用id来查询 -> 集合.find_one({'_id': ObjectId('xxxxx')})
+
+想要根据文档中的ObjectId来进行查询，就必须要使用bson库里面的ObjectId。
+
+[source, python]
+....
+import pymongo
+from  bson.objectid import ObjectId # 要想用id来查询文档, 必须导入此模块!!
+
+urlDb = "mongodb://localhost:27017/"
+client = pymongo.MongoClient(urlDb)  # 连接某数据库
+dbTest = client['test'] # 拿到test数据库
+colpeople = dbTest.colpeople # 拿到colpeople集合
+
+# Querying By ObjectId
+res = colpeople.find_one({'_id': ObjectId('5d479c1378084c46eee1ff14')})
+
+print(type(res)) # <class 'dict'>
+print(res) # {'_id': ObjectId('5d479c1378084c46eee1ff14'), 'name': 'zzr', 'age': 19}
+....
+
+---
+
+==== 查到"所有"符合条件的文档 -> 集合.find(文档条件)
+
+[source, python]
+....
+import pymongo
+from bson.objectid import ObjectId
+
+urlDb = "mongodb://localhost:27017/"
+client = pymongo.MongoClient(urlDb)  # 连接某数据库
+dbTest = client['test']  # 拿到test数据库
+colpeople = dbTest.colpeople  # 拿到colpeople集合
+
+# ---------------------
+
+# 查找年龄在16-29岁之间的所有人(文档)
+resCursor = colpeople.find({'$and': [{'age': {'$gte': 16}},{'age': {'$lte': 29}}]})
+'''
+find()返回多个结果。
+它的返回结果是Cursor类型，相当于一个生成器，
+我们需要遍历它, 才能拿到所有的结果，每一个结果都是字典类型。
+'''
+print(resCursor) # 它的返回结果是Cursor类型，相当于一个生成器，我们需要遍历取到所有的结果，每一个结果都是字典类型。
+
+for doc in resCursor:
+    print(doc)
+
+
+# 统计年龄在16-29岁之间的共有多少人(文档)
+count_resDoc = colpeople.count_documents({'$and': [{'age': {'$gte': 16}},{'age': {'$lte': 29}}]})
+print(count_resDoc) # 33
+....
+
+关于 与或非 等逻辑查询的所有操作, 见 +
+https://docs.mongodb.com/manual/reference/operator/query/
+
+---
+
+==== 查找文档, 但只显示某些字段 -> 某集合.find({},{'字段名':1或0})
+
+find()方法的第二个参数, 可以用来设置你只想显示哪些字段?
+
+对于你想显示的字段, 设置值为 1. +
+注意: 除了_id外, 你不能在一个对象中, 同时指定 0 和 1. 如果你设置了一个字段为 0，则其他字段都会默认为 1. 反之亦然。
+
+[source, python]
+....
+# 只查找10条文档, 并且不显示id字段, 只显示name和charm字段
+resCursor = colpeople\
+    .find({},{'_id':0, 'name':1, 'charm':1})\
+    .limit(10)
+
+for doc in resCursor:
+    print(doc)
+....
+
+---
+
+==== 用"正则表达式"进行查询 -> {"$regex": 'value'}
+
+[source, python]
+....
+# 只查找 name 字段中首字母为 "R" 的文档, 并且只显示name字段.
+resCursor = colpeople\
+    .find({'name':{'$regex':'^S'}},{'name':1})
+....
+
+
+
+---
+
+== 统计 / 排序 / 跳过skip / 限制limit
+
+
+==== 统计集合中, 或匹配到的结果中, 有多少条文档? -> 集合.count_documents({})
+
+[source, python]
+....
+print(colpeople.count_documents({})) # 120 <--colpeople集合中共有120条文档
+....
+
+
+---
+
+==== 排序 -> 集合.find().sort('字段名', 升序或降序)
+
+对查询的结果, 按某字段的值进行"排序". +
+sort() 方法第一个参数为要排序的字段，**第二个字段指定排序规则，1 为升序，-1 为降序，默认为升序。**
+
+
+[source, python]
+....
+# 1.查找全部文档, 2.只显示name和charm字段, 3. 按charm字段值,从小到大排序(升序)
+resCursor = colpeople\
+    .find({},{'_id':0,'name':1,'charm':1})\
+    .sort('charm',1)
+
+
+for doc in resCursor:
+    print(doc)
+
+'''
+{'name': 'Hattie Richards', 'charm': 24}
+{'name': 'Melvin Nichols', 'charm': 25}
+{'name': 'Floyd Santiago', 'charm': 25}
+{'name': 'Myrtie Chapman', 'charm': 27}
+{'name': 'Lydia Oliver', 'charm': 27}
+{'name': 'Jared Schmidt', 'charm': 28}
+{'name': 'Matilda Weaver', 'charm': 29}
+{'name': 'Virgie Porter', 'charm': 30}
+'''
+....
+
+又如:
+
+[source, python]
+....
+# 找到年龄在16-29岁之间所有人, 并按name名字进行排序
+resDoc = colpeople\
+    .find({'$and': [{'age': {'$gte': 16}},{'age': {'$lte': 29}}]})\
+    .sort('name')
+
+for doc in resDoc:
+    print(doc)
+....
+
+
+调用 pymongo.ASCENDING() (递增) 和pymongo.DESCENDING() (递降的) 来指定是按升/降序进行排序.
+
+[source, python]
+....
+'''
+查找全部,但只显示"name"和"age"这两个字段的值(0为隐藏, 1为显示),
+再按age的值的升序排列
+'''
+res = colpeople \
+    .find({}, {'name': 1, 'age': 1}) \
+    .sort('age', pymongo.ASCENDING)
+
+for doc in res:
+    print(doc)
+    print(doc['age']) # 各个字段,其实都只是文档的属性而已, 可以像dict一样, 以键取值
+....
+
+---
+
+==== 跳过 -> find().skip(n)
+
+注意，在数据库数量非常庞大的时候，如千万、亿级别，最好不要使用大的偏移量来查询数据，很可能会导致内存溢出. 可以使用类似find({'_id': {'$gt': ObjectId('593278c815c2602678bb2b8d')}}) 这样的方法来查询，记录好上次查询的_id。
+
+[source, python]
+....
+res = colpeople \
+    .find({}, {'name': 1, 'age': 1}) \
+    .sort('age', pymongo.ASCENDING) \
+    .skip(3) # 跳过前3个文档
+
+for doc in res:
+    print(doc)
+....
+
+---
+
+==== 只显示n个结果 -> limit(n)
+
+用limit()方法指定要取的结果个数.
+
+[source, python]
+....
+res = colpeople \
+    .find({}, {'name': 1, 'age': 1}) \
+    .sort('age', pymongo.ASCENDING) \
+    .skip(3) \
+    .limit(5) # 只取5个结果(文档)
+
+for doc in res:
+    print(doc)
+....
+
+---
+
+
+
+
+== 文档操作/ 查: 条件选择器 Query Selectors
+
+官方文档见: +
+https://docs.mongodb.com/manual/reference/operator/query/
+
+====  Comparison 比较运算符
+
+|===
+|符号 |释例
+
+|$lt小于 +
+(less than)
+|{'age': {'$lt': 20}}
+
+|$gt大于 +
+(greater than)
+|{'age': {'$gt': 20}}
+
+|$lte小于等于 +
+(less than or equal to)
+|{'age': {'$lte': 20}}
+
+|$gte大于等于 +
+(greater than or equal to)
+|{'age': {'$gte': 20}}
+
+|$ne不等于 +
+(not equal to)
+|{'age': {'$ne': 20}}
+
+|$in在范围内 +
+(注意:不是值区间范围! 而是"或 or"的意思) +
+Matches any of the values specified in an array.
+|{'age': {'$in': [20, 23]}}
+
+|$nin不在范围内 +
+Matches none of the values specified in an array.
+|{'age': {'$nin': [20, 23]}}
+
+|===
+
+注意 $or 和$in 的不同写法:
+[source, python]
+....
+db.colP1.find({age:{$in:[26,56]}})
+db.colP1.find({$or:[{age:26},{age:56}]})
+....
+
+---
+
+==== Logical 逻辑运算符
+
+|===
+|Name |Description
+
+|$and +
+|Syntax: { '$and': [ { <expression1> }, { <expression2> } , ... , { <expressionN> } ] }
+
+|$or
+|{ '$or': [ { <expression1> }, { <expression2> }, ... , { <expressionN> } ] }
+
+|$not
+|{ field: { $not: { <operator-expression> } } }
+
+|$nor
+|{ $nor: [ { <expression1> }, { <expression2> }, ...  { <expressionN> } ] }
+
+|===
+
+与 $and:
+[source, python]
+....
+import pymongo
+from bson.objectid import ObjectId
+
+urlDb = "mongodb://localhost:27017/"
+client = pymongo.MongoClient(urlDb)  # 连接某数据库
+dbTest = client['test']  # 拿到test数据库
+colpeople = dbTest.colpeople  # 拿到colpeople集合
+
+# ---------------------
+
+# 1.查找age在[16-29岁]之间的全部文档, 2.只显示age和charm字段, 3. 按charm字段值,从大到小排序(降序)
+resCursor = colpeople \
+    .find({'$and':
+               [{'age': {'$gte': 16}}, {'age': {'$lte': 29}}]
+           },
+          {'_id': 0, 'age': 1, 'charm': 1}) \
+    .sort('charm', -1)
+
+
+for doc in resCursor:
+    print(doc)
+'''
+{'age': 20, 'charm': 100}
+{'age': 25, 'charm': 98}
+{'age': 25, 'charm': 94}
+{'age': 21, 'charm': 88}
+{'age': 25, 'charm': 87}
+{'age': 25, 'charm': 78}
+'''
+....
+
+
+或 $or
+[source, python]
+....
+# 1.查找age<14 或 age>29之间的全部文档, 2.只显示age和charm字段, 3. 按charm字段值,从小到大排序(升序)
+resCursor = colpeople \
+    .find({'$or':
+               [{'age': {'$lt': 16}}, {'age': {'$gt': 29}}]
+           },
+          {'_id': 0, 'age': 1, 'charm': 1}) \
+    .sort('age', 1)
+
+
+for doc in resCursor:
+    print(doc)
+'''
+{'age': 14}
+{'age': 31, 'charm': 97}
+{'age': 31, 'charm': 37}
+'''
+....
+
+
+非 $not
+[source, python]
+....
+# 1.查找age不是>=29之间的全部文档, 2.只显示age和isFemale字段, 3. 按age字段值,从大到小排序(降序)
+resCursor = colpeople \
+    .find({'age':
+               {'$not': {'$gte': 29}}
+           },
+          {'_id': 0, 'age': 1, 'isFemale': 1}) \
+    .sort('age', -1)
+
+
+for doc in resCursor:
+    print(doc)
+'''
+{'isFemale': True, 'age': 26}
+{'isFemale': False, 'age': 26}
+{'isFemale': False, 'age': 25}
+{'isFemale': True, 'age': 23}
+'''
+....
+
+
+
+并非 $nor
+[source, python]
+....
+
+....
+
+---
+
+==== Element
+
+https://docs.mongodb.com/manual/reference/operator/query/
+
+
+---
+
+== 集合操作/ 删 -> 某集合.drop()
+
+用 drop() 方法来删除一个集合。
+

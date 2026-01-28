@@ -1,0 +1,236 @@
+
+
+= python 内置模块 random
+:toc:
+
+---
+
+== 获取随机数
+
+==== 获取 0-1之间的随机浮点数 -> random.random()
+
+[source, python]
+....
+import random
+for i in range(3):
+    print(random.random())
+
+'''
+0.6076973435383287
+0.8010506507410733
+0.6798898146966124
+'''
+....
+
+---
+
+==== 获取 m-n 之间的随机浮点数 -> random.uniform(a, b)
+
+[source, python]
+....
+import random
+print(random.uniform(2,3))  # 2.458812733450194
+....
+
+---
+
+==== 获取 [a,b] 之间的随机整数 -> random.randint(a, b)
+
+用于生成一个指定范围内的整数。其中参数a是下限，参数b是上限，生成的随机数n: a <= n <= b
+
+[source, python]
+....
+print(random.randint(10,20))   # 16
+print(random.randint(20,20))   # 结果永远是20 
+....
+
+---
+
+== 从一个集合中, 随机抽取元素
+
+==== 从序列中, 随机抽取一个元素 -> random.choice(sequence)
+
+从序列中, 获取一个随机元素。参数sequence表示一个有序类型。sequence泛指一系列的类型: list, tuple, 字符串, 都属于sequence。
+
+[source, python]
+....
+import random
+
+list1 = ['a','b','c','d','e']
+for i in range(3):
+    print(random.choice(list1))
+
+'''
+c
+c
+a
+'''
+....
+
+
+---
+
+==== 案例: 随机获取一个excel表格区域内的 单元格的坐标
+
+excel表格, 单元格坐标是这样的:
+
+|===
+| |A |B
+
+|1
+|A1
+|
+
+|2
+|
+|B2
+
+|===
+
+
+步骤: +
+1. 由于excel表格的x横坐标是字母, y纵坐标是数值. 所以我们可以先创建两个list, 一个作为x坐标的区间范围, 一个作为y坐标的区间范围. +
+2. 然后, 随机在这两个list中, 取出一个元素, 拼起来, 就是随机单元格的坐标了.
+
+
+[source, python]
+....
+import openpyxl, random
+from openpyxl.styles import PatternFill
+
+
+# 单元格坐标的类
+class Cls_CellIndex:
+    def __init__(self, x_letterMin, x_letterMax, y_numMin, y_numMax):  # x和y坐标的最小值和最大值, 就单元格坐标的区间范围.
+        # x横坐标是英文字母, y纵坐标是数字
+        self.x_letterMin = x_letterMin
+        self.x_letterMax = x_letterMax
+        self.y_numMin = y_numMin
+        self.y_numMax = y_numMax
+        self.listLetter_X = self.fn_getListLetter()  # 表格的x坐标,是字母
+        self.listNum_Y = self.fn_getListNumber()  # 表格的y坐标,是数字
+
+
+    def fn_getListLetter(self):  # 创建一个英文字母区间的list
+        list_AsciiNum = [i for i in range(ord(self.x_letterMin), ord(self.x_letterMax) + 1)] # ord(strLetter) 能将字母, 转成ascii数值
+        listLetter = [chr(i) for i in list_AsciiNum]  # chr(numAscii) 能将ascii数值,转成对应的英文字母
+        return listLetter
+
+
+    def fn_getListNumber(self):  # 创建一个数值区间的list
+        listNumber = [i for i in range(self.y_numMin, self.y_numMax + 1)]
+        return listNumber
+
+
+    def fn_getRandomIndex(self):  # 根据x和y坐标的区间范围, 获取里面随机的单元格的坐标
+        tuple_RandomIndex = (random.choice(self.listLetter_X), random.choice(self.listNum_Y))
+        # random.choice(sequence) 从序列中, 随机抽取一个元素
+        return tuple_RandomIndex
+
+
+#-------------------
+
+# 创建实例
+ins_CellIndex = Cls_CellIndex('c', 'g', 3, 7)
+print(ins_CellIndex.listLetter_X)  # ['c', 'd', 'e', 'f', 'g']
+print(ins_CellIndex.listNum_Y)  # [3, 4, 5, 6, 7]
+
+for i in range(10):
+    print(ins_CellIndex.fn_getRandomIndex())
+'''
+('g', 7)
+('e', 3)
+('f', 5)
+('c', 7)
+('e', 6)
+('d', 5)
+('c', 4)
+('e', 5)
+('c', 5)
+('d', 4)
+'''
+....
+
+
+---
+
+==== 从一个步进集合中, 随机抽取一个数 -> random.randrange([start], stop[, step])
+
+- start -- 指定范围内的开始值，包含在范围内。(包头)
+- stop -- 指定范围内的结束值，不包含在范围内。(不包尾)
+- step -- 指定递增基数。
+
+从指定范围内，按指定基数递增的集合中,获取一个随机数。如：random.randrange(10, 100, 2)，结果相当于从[10, 12, 14, 16, ... 96, 98]序列中获取一个随机数。
+
+[source, python]
+....
+import random
+
+for i in range(5):
+    print(random.randrange(10,20,2))
+
+'''
+16
+16
+10
+10
+18
+'''
+....
+
+random.randrange(10, 100, 2)在结果上, 与 random.choice(range(10, 100, 2) 等效。
+
+又如, 随机选取0到100间的偶数：
+[source, python]
+....
+import random
+print(random.randrange(0, 101, 2)) # 14
+....
+
+---
+
+==== 随机获取片段 -> random.sample(sequence, k)
+
+从指定序列中随机获取k个不同的元素, 并以片段(列表)的形式返回。sample函数不会修改原有序列。
+
+[source, python]
+....
+import random
+list1 = ['a','b','c','d','e','f','g']
+
+for i in range(4):
+    print(random.sample(list1, 4)) # 从list1中随机获取4个元素，作为一个片断返回  
+
+'''
+['b', 'a', 'c', 'e']
+['g', 'd', 'a', 'c']
+['g', 'c', 'b', 'e']
+['a', 'd', 'c', 'e']
+'''
+....
+
+---
+
+== 乱序化一个序列
+
+==== 乱序化列表 -> random.shuffle(list[, random])
+
+将一个列表中的元素打乱。
+
+[source, python]
+....
+import random
+list1 = [1,2,3,4,5,6]
+
+print(random.shuffle(list1))  # None.  注意,list会被原地修改, 所以random.shuffle()不会有返回值
+
+random.shuffle(list1)
+print(list1) # [1, 5, 3, 4, 2, 6]
+....
+
+....
+shuffle /'ʃʌf(ə)l/ v. 洗(牌)  +
+If you shuffle playing cards, you mix them up before you begin a game.
+....
+
+---
