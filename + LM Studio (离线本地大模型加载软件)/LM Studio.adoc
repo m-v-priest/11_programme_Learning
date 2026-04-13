@@ -1,0 +1,118 @@
+
+= LM Studio (离线本地大模型加载软件)
+:toc: left
+:toclevels: 3
+:sectnums:
+
+'''
+
+== 官网下载地址
+
+https://lmstudio.ai/
+
+'''
+
+== AI 离线模型 的版本
+
+[.my3]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|bartowski <- 首选
+|https://huggingface.co/bartowski
+
+|unsloth
+|https://huggingface.co/unsloth
+
+|去审查版 HauhauCS
+|https://huggingface.co/HauhauCS
+|===
+
+
+'''
+
+== 将下载的 gguf 模型, 载入到 LM Studio 中
+
+直接把 gguf 模型 放到 LM Studio 的"读取模型"的目录地址中即可.
+
+image:/img/001.webp[,]
+
+'''
+
+== 你下载的模型, 在目录中, 要按一定格式来摆放
+
+比如, 你将 D:\+AI_model 设定为你的模型目录. 但你不能把gguf模型 直接放在这个目录下, 而是要继续建立子文件夹, 如下格式:
+
+D:\+AI_model\开发商名字\模型名字\模型.gguf
+
+- 比如: Qwen_Qwen3.5-35B-A3B-IQ4_NL.gguf 模型, 就要放在下面的目录中: +
+D:\+AI_model\Qwen\Qwen3.5-35B-A3B-IQ4_NL
+
+image:/img/002.webp[,]
+
+这样, 在 LM Studio 才能读到你的 gguf 模型.
+
+image:/img/003.webp[,]
+
+'''
+
+== 跳过模型的推理过程
+
+==== 方法1:
+
+image:/img/004.webp[,]
+
+
+1. 进LM Studio的 My Models 页面
+2. 选择你的 某个模型
+3. 在右侧找到 inference
+4. 这个页面下面有 jinja 模板
+5. 在模板开头位置添加： {%- set enable_thinking = false %}
+
+'''
+
+==== 方法2: 创建 -no-thinking 虚拟模型目录
+
+
+1.保留你下载好的基础模型目录不动 +
+2.新建一个 -no-thinking 虚拟模型目录 +
+
+image:/img/005.webp[,]
+
+3.在里面写一个正确的 model.yaml, 内容如下: +
+
+image:/img/006.webp[,]
+
+
+....
+model: Qwen/Qwen3.5-35B-A3B-IQ4_NL-no-thinking
+base: Qwen/Qwen3.5-35B-A3B-IQ4_NL/Qwen_Qwen3.5-35B-A3B-IQ4_NL.gguf
+metadataOverrides:
+  reasoning: false
+customFields:
+  - key: enableThinking
+    displayName: "Enable Thinking"
+    description: "Whether to allow thinking output before the final answer"
+    type: boolean
+    defaultValue: false
+    effects:
+      - type: setJinjaVariable
+        variable: enable_thinking
+....
+
+4.在 LM Studio 里加载这个新模型 +
+
+image:/img/007.webp[,]
+
+5.新开聊天窗口验证, 应该就能跳过推理过程了.
+
+'''
+
+
+
+
+
+
+
+

@@ -1,0 +1,141 @@
+
+= AI指令: 学英语
+:toc: left
+:toclevels: 3
+:sectnums:
+
+'''
+
+
+== 用牛津高阶学习词典, 在英语句子中的生词后添加中文释义
+
+....
+Others tried to force a run on local PRC banks by withdrawing all their deposits. +
+The Alliance in Support of the Patriotic Democratic Movement in China received more than thirty million Hong Kong dollars in donations to support prodemocracy activities in the PRC.
+
+对上面的这篇英文(是一本英文书的内容), 进行改造, 要求是:
+
+1. 给英文原文中的难点单词, 加上单词释义.  注意: 简单的小学, 初中英语单词, 就不需要加上释义了.
+
+比如原文是:  Talking peace suddenly means talking about places like this—this lunar landscape, a titanium mine struggling under the Russian bombardment of Ukraine’s power grid, sometimes with only three hours of power a day.
+
+请你变成这样:  Talking peace 谓 suddenly means talking about places like this — this lunar 月球的；月亮的 landscape 景观, a titanium 钛 mine 矿，矿井 struggling under the Russian bombardment 轰炸；炮击 of Ukraine’s power grid 电网, sometimes with only three hours of power 电力 a day.
+
+即在英文原文里,把里面的重要单词 (比如托福词汇, 雅思词汇, gre词汇, 专业术语), 惯用语(比如 make a big deal of sth), 短语(比如 go through, take part in 这样的短语动词等等), 后面直接跟上牛津高阶双语学习词典中的中文解释. 即把上面的 ①, 变成 ② 这样的形式. 在原文中这样展示就行了.
+
+注意: 某单词的中文释义, 如果只用一个中文词组来解释, 意思不精确的话, 你就用多个中文词组来解释. 比如 tactic 单词, 中文释义需要多个词组来解释成"策略；手段；招数", 你就不要只给出仅一个"策略"的释义, 而要写全这些多个中文词组来释义. 即不要只写为"tactic 策略", 而要写成"tactic 策略；手段；招数". 单词的中文解释不需要用小括号括起来. 也不需要再在文章最后单独列出每个单词的释义.
+
+3. 执行上面的改造操作时, 注意不要遗漏任何英文原文. 一定要记住这一点, 不要遗漏任何英文原文的内容.
+
+4.我给出的英文, 里面带有asciidoc代码符号, 比如 ==, -, ., * 符号等等, 保留所有这些符号! 不要删掉!
+
+5.输出的内容不要做格式上的渲染, 即不要有加粗, 斜体等存在, 就普通纯文本格式输出就行了. 标点用英文标点, 不要用中文标点!
+
+6.行与行之间要再加个空行隔开.
+....
+
+
+'''
+
+== 对句子做语法结构分析
+
+
+....
+Not only was the clock a warning to the people of Hong Kong that their time under colonial rule was almost up, it became “a graphic reminder that the resumption of sovereignty and taking this new step towards national reunification involved matters of the highest prestige that the new leaders would have to manage well and manage soon.”
+
+这句的语法结构是怎样的? 并同时进行翻译(整句要翻译.  同时在做语法结构分析时, 每一语法段落小结构, 也要做翻译)和讲解.
+
+要求:
+1.如果有表格输出, 就用 asciidoc格式来输出表格.
+
+表的第一行代码不要直接用 [options="header"]
+要用
+[.my3]
+[options="autowidth" cols="1a,1a"]
+
+即,如果表是两列的, 就是 cols="1a,1a"
+
+如果表是三列的, 就是 cols="1a,1a,1a"
+
+如果表是四列的, 就是 cols="1a,1a,1a,1a"
+
+以此类推.
+
+
+2.输出中有中英文混合时, 在中文和英文之间, 要加个空格隔开(注意, 中文后有英文, 中间要有空格. 同理, 英文后有中文, 中间也要加上空格).
+比如下面的这句就没有隔开:
+
+关于"the legal matter"的翻译：这里译为"法律事务"而非"法律问题"，因为matter在此指"事务、事项"（如legal matters法律事务），强调法律调整的具体领域和内容，而非"问题"（problem）。
+
+而要输出成:
+
+关于"the legal matter"的翻译：这里译为"法律事务"而非"法律问题"，因为 matter 在此指"事务、事项"（如 legal matters 法律事务），强调法律调整的具体领域和内容，而非"问题"（problem）。
+
+
+即, 上面在 matter 和 legal matters 首尾前后, 都各有一个空格, 和两边的中文汉字隔开了. 这样才能看得清楚.
+
+3.还要用字符画(箭头→, 线条 --- 这种的符号和缩进), 画出整句的语法结构. 这个语法结构要放在纯文本框 (plain text box) 里面输出.
+
+样子如:
+
+【主句】 With regard to..., we might note in passing that...
+        │
+        ├─ 【状语】 With regard to this last question
+        ├─ 主语：we
+        ├─ 谓语：might note in passing
+        │
+        └─ 【宾语从句】 that Thompson... has probably exaggerated...
+                │
+                ├─ 主语：Thompson
+                ├─ 【让步状语从句 (插入语)】 , while rightly restoring laboring people to the stage...
+                │       (while 引导的省略结构，其逻辑主语是 Thompson)
+                │
+                ├─ 谓语：has probably exaggerated
+                ├─ 宾语：opposition
+                │       │
+                │       ├─ 【后置定语】 of these people
+                │       │
+                │       └─ 【后置定语】 to the inroads
+                │               │
+                │               ├─ 【后置定语】 of capitalist consumerism
+                │               │
+                │               └─ 【状语】 in general
+                │
+【举例分句】 ; for example, laboring people... shifted...
+        │
+        ├─ 连接词：; for example,
+        ├─ 主语：laboring people
+        │       │
+        │       └─ 【后置定语】 in eighteenth-century England
+        │
+        ├─ 谓语：readily shifted
+        ├─ 介词短语1：from home-brewed beer
+        ├─ 介词短语2：to standardized beer
+        │       │
+        │       └─ 【后置定语】 produced by huge, heavily capitalized urban breweries
+
+
+4.句子中如果有术语存在, 也要做解释.
+
+5.句中的容易翻译错误的地方, 也需要做解释.
+
+6.但翻译全部英文时, 尽量严格按照英语句子中词语的顺序来翻译. 哪怕不严格符合中文的说话顺序也没关系, 只要在理解上能达到通顺即可. 比如这段英文:
+
+The best evidence for the layered mantle thesis is the well-established fact that volcanic rocks found on oceanic islands, islands believed to result from mantle plumes arising from the lower mantle, are composed of material fundamentally different from that of the midocean ridge system, whose source, most geologists contend, is the upper mantle.
+
+那么你就要翻译成类似如下的样子:
+
+最佳证据(关于地幔分层理论的), 是公认的事实：火山岩 (该火山岩是发现于"海洋岛屿"上的, 该岛屿被认为是起源于"地幔柱"的, 该地幔柱是起源于"下地幔"上升的), 是由材料组成的 (这些材料根本不同于"洋中脊系统", 洋中脊系统的来源, 大多数地质学家认为, 是源自"上地幔").
+
+也就是说, 如果某名词a遇后置定语x, 该后置定语x可以放在它所修饰的名词a后面的括号中, 并重复一下名词a作为翻译后置定语时的主语. 并且当该后置定语x中还有名词b, 被一个新的后置定语y修饰时, 就继续把后置定语y的翻译放到b后面去, 以此类推.
+
+我再举个例子, 解释一下这种翻译方式, 比如某个句子, 你可以翻译成:
+
+我喜欢在香港(是属于中国的, 中国是东方的大国的. 东方是指东亚的. 东亚还有日韩等国家的, 日韩是民主国家)接收教育(这个教育是源自英国理念的. 这个理念是来自于英国历史文化中的.)
+
+....
+
+'''
+
+
+
