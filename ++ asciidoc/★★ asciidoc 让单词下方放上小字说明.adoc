@@ -1,0 +1,58 @@
+
+== ★ 让单词下方, 放上小字说明
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+如果你最终是将 AsciiDoc 转换为 HTML 格式，最直接且美观的方法是使用 HTML5 的 Ruby 字符语法。这是实现“大字上方有小字”的标准方式。
+
+先在toc处, 加上这行代码, 能开启小字功能:
+
+....
+:pass-through:
+....
+
+再在文中, 用下面的标签来包裹:
+
+- <ruby>: 包裹整个词组。
+- <rt>: 放在需要显示的小字（注脚/注音）两侧。
+
+'''
+
+
+== 小字放在文字上方
+
+....
+a +++<ruby>department<rt>（组织或机构中的）部，司</rt></ruby>+++ of the +++<ruby>army<rt>陆军，军队</rt></ruby>+++ that is +++<ruby>responsible<rt>（对某人、某事）负责的</rt></ruby>+++ for food supplies.
+....
+
+
+
+'''
+
+== 小字放在文字下方
+
+HTML 的 <ruby> 标签默认将内容放在上方，但你可以通过内联 CSS 样式将其强制移动到下方。
+
+
+....
+a +++<ruby style="ruby-position: under;">department<rt>（组织或机构中的）部，司</rt></ruby>+++ of the army.
+....
+
+image:/img/0002.webp[,%]
+
+image:/img/0003.webp[,%]
+
+
+
+
+
+
+
+
+
+
+

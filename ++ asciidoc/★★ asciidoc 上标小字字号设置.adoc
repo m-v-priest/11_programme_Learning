@@ -1,0 +1,40 @@
+
+== ★★ asciidoc 上标小字字号设置
+:toc: left
+:toclevels: 3
+:sectnums:
+:stylesheet: myAdocCss.css
+
+'''
+
+上标, 用 ^^ 包围即可, 效果如:
+
+我是^上标^
+
+要设置上标字号, 让它变得更小, 就在你的css中, 加上下面的代码:
+
+....
+
+/* 针对 AsciiDoc 上标 (^) 的精细化调整 */
+sup {
+font-size: 0.5em !important;    /* 正常注释 */
+vertical-align: baseline;
+position: relative;
+top: -0.9em;
+color: #BFBFBF !important;      /* 浅灰色 */
+padding-left: 1px;
+padding-right: 1px;
+font-weight: normal !important;
+display: inline-block;          /* 建议加上这个，否则 top 位移有时会失效 */
+}
+
+
+/* 优化行间距 */
+p, .paragraph {
+line-height: 1.8 !important;
+}
+....
+
+效果
+
+image:/img/0004.webp[,%]
