@@ -1,0 +1,453 @@
+
+= hermes-agent
+:toc: left
+:toclevels: 3
+:sectnums:
+
+'''
+
+== 先要安装 WSL2
+
+== 什么是 WSL ?
+
+[.my3]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|什么是 WSL
+|WSL (Windows Subsystem for Linux)，即“适用于 Linux 的 Windows 子系统”。**它允许开发者在 Windows 计算机上直接运行 Linux 环境（包括命令行工具、实用程序和应用程序），而无需传统虚拟机（VM）**的沉重开销, 或设置双系统的繁琐。
+
+|WSL的版本
+|WSL 经历了两个主要版本的迭代，其底层架构有本质区别：
+
+- WSL 1: 这是一个翻译层。当你运行一个 Linux 命令时，WSL 1 会实时将其转换为 Windows 内核能够理解的系统调用。*它的缺点是对某些复杂的 Linux 系统调用支持不全，且文件 I/O 性能较慢。*
+- WSL 2 (推荐): 这是一个真正的轻量级虚拟机。它包含了一个由微软维护的完整 Linux 内核，运行在 Hyper-V 虚拟化技术之上。
+|===
+
+'''
+
+
+=== 安装 WSL2
+
+https://learn.microsoft.com/en-us/windows/wsl/install
+
+
+在win10上安装 WSL 2 :
+
+[.my3]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|在win10电脑上, 要开启两个设置
+|. 点击 开始菜单，搜索并打开 “启用或关闭 Windows 功能”。
+. 在弹出的窗口中，确保以下两项已被打勾：
+.. 适用于 Linux 的 Windows 子系统
+.. 虚拟机平台
+. 如果没打勾，请勾选后点击确定，按提示重启。
+
+image:/img/003.webp[,]
+
+|在BIOS中, 要开启硬件虚拟化
+|重启电脑，在开机画面出现时，不断按下键盘上的 F2、F12、Del 或 Esc 键（具体取决于你的主板品牌，如 ASUS 华硕通常是 Del 或 F2）。
+
+我的电脑主板(ASUS TUF GAMING B560M-PLUS WIFI), 是按 F2.
+
+- 进入 Advanced Mode（高级模式）。按下键盘上的 F7 键，或者用鼠标点击屏幕右下角的 "Advanced Mode(F7)"。
+- 进入高级模式后，使用键盘方向键或鼠标导航到顶部的 "Advanced"（高级） 选项卡。
+- 在 "Advanced" 菜单下，找到并进入 "CPU Configuration"（CPU 设置）。
+向下滚动列表，寻找以下选项：Intel (VMX) Virtualization Technology, 将其设置为 Enabled (开启)
+
+image:/img/004.jpg[,100%]
+
+- 设置完成后：按下 F10 键。保存退出.
+
+
+|
+|以 管理员身份 运行 PowerShell，然后输入：
+....
+wsl --install --web-download
+....
+
+这一行命令会完成以下所有工作：
+
+- 启用 虚拟机平台 和 适用于 Linux 的 Windows 子系统 这两个必要的 Windows 功能。
+- 下载并安装最新的 Linux 内核。
+- 将 WSL 2 设置为默认版本。
+- 默认下载并安装 Ubuntu 分发版。
+
+
+|
+|在当前的 PowerShell 窗口中输入以下命令并回车：
+....
+wsl.exe -d Ubuntu
+....
+
+它会提示你输入 用户名和密码
+
+注意： *这里的用户名和密码, 是 Linux 系统专用的，可以和 Windows 不一样。输入密码时屏幕不会显示任何字符（这是 Linux 的安全特性），输完直接回车即可。*
+
+比如, 你就用户名和密码都输入一样的 zrx 即可.
+
+image:/img/001.webp[,]
+
+当你看到类似 yourname@yourcomputer:~$ 的提示符时，说明你已经身处 Linux 环境中了。
+
+|在安装你的 Hermes-Agent 之前的前置工作
+|在安装 hermes-agent 之前，建议先运行这两个“标准动作”来更新 Linux 的软件库：
+....
+sudo apt update
+sudo apt upgrade -y
+....
+
+输入上面命令时, SL2会先让你输入用户名和密码, 输入后, 就能执行你上面的命令了.
+
+再安装脚本运行必需的 curl 和 sudo:
+
+....
+sudo apt update && sudo apt install curl -y
+....
+
+|以后, 要进入 ubuntu
+|可以在 powershell 中, 输入
+....
+wsl.txt -d ubuntu
+....
+就能进入 ubuntu 了.
+
+image:/img/002.webp[,]
+
+
+或者在开始菜单中, 直接打开 ubuntu 图标也能直接进入.
+|===
+
+
+'''
+
+== 安装 hermes-agent (windows版)
+
+官网: +
+https://github.com/nousresearch/hermes-agent
+
+windows 版 目前还未原生支持, 只能先安装在WSL2 虚拟机 上.
+
+
+[.my3]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|安装
+|在 ubuntu中输入:
+
+....
+curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh \| bash
+....
+
+注意: 上面的命令中有个竖线, 前面是没有反斜杠的, 但为了在 asciidoc中显示竖线, 我不得不使用转义.
+
+该命令会执行很漫长的一段时间(一个多小时).
+
+运行这个脚本后，它会在后台自动完成以下工作： +
+- 环境检测： 检查你的 Python 版本是否符合要求。 +
+- 代码下载： 自动将项目拉取到本地。 +
+- 依赖安装： 自动安装所有必需的 Python 库。 +
+- 路径配置： 尝试配置好运行环境。 +
+
+安装完会看到这个界面:
+
+image:/img/005.webp[,]
+
+由于你是第一次安装，强烈建议选择第一个选项： +
+选： Quick setup — provider, model & messaging (recommended)
+
+|配置
+|image:/img/006.webp[,]
+
+我问: 现在界面是上图这样,  这里面的选项都是什么意思? 是大模型么? 我在 LM Studio 中, 下载了一些免费模型, gemma 4, qwen3.5 , 能在 hermes里用么?
+
+▶ Gemini:
+
+1.这些选项是什么意思？ +
+这些是不同的 模型供应商（Providers）：
+
+- Nous Portal / OpenRouter / Anthropic / OpenAI: 这些都是云端付费接口。你需要去这些网站注册并绑定信用卡，获取 API Key 才能使用。
+- Hugging Face: 也是云端运行，通常用于开源模型。
+- *More providers...: 隐藏选项中通常包含 Ollama 或 Local (OpenAI Compatible)，这才是连接 LM Studio 的关键。*
+
+2.如何连接到你的 LM Studio？ +
+既然你已经在 LM Studio 下载了 Gemma 和 Qwen，你可以让 Hermes 直接“白嫖”你电脑本地的算力，不需要给 OpenRouter 或 OpenAI 付钱。
+
+操作步骤如下：
+
+|(1)在 LM Studio 中开启服务器：
+|
+- 打开 LM Studio，加载好你想用的模型（比如 Qwen）。
+- 点击左侧的 “Local Server” 图标（类似双向箭头的图标）。
+- 点击 “Start Server”。此时你会看到一个地址，通常是 http://localhost:1234。
+
+
+image:/img/007.webp[,]
+
+
+不过在点击启动之前，为了确保 WSL2 里的 Hermes-Agent 能顺利连上 Windows 里的 LM Studio，请按照以下步骤进行微调：
+
+1.修改监听设置（关键步骤） +
+默认情况下，LM Studio 可能只监听 Windows 内部的请求。要让 WSL2 能访问，你需要： +
+
+- 点击左侧菜单中的 "Server Settings"。 +
+- 找到 "Cross-Origin Resource Sharing (CORS)"，确保它是 Enabled (开启) 状态。 +
+
+image:/img/008.webp[,]
+
+- 找到 "Network Settings"，将 "Server Address" 从 127.0.0.1 修改为 0.0.0.0。(不过由于你已经开启了 "Serve on Local Network"。其实在 LM Studio 的新版本中，开启这个开关就等同于将地址改成了 0.0.0.0。所以你不需要再额外寻找那个填数字的地方，现在的设置已经允许外部（包括 WSL）访问了。) +
+
+
+
+现在的操作步骤：
+
+- 启动服务器： 点击最上方那个 "Status: Stopped" 旁边的开关，让它变成 "Running"。
+- 获取连接地址： 启动后，在 "Supported endpoints" 下方或者状态栏，你会看到一个类似 http://192.168.x.x:1234 的地址。
+
+
+这样设置后，你的 Windows 防火墙可能会弹出提示，请选择“允许访问”。这允许同局域网设备（包括 WSL2）连接该服务。 +
+
+image:/img/009.webp[,]
+
+从你的 LM Studio 截图（图 009.webp）可以看到：
+
+- Status: Running（服务器已启动）
+- Reachable at: #*http://10.0.0.3:1234（这是你的 Windows 局域网 IP 地址）*#
+
+##**这个 10.0.0.3 就是我们连接的关键。**##现在请回到你的 WSL (Ubuntu) 终端，在 Hermes-Agent 的配置界面按照以下内容填入：
+
+
+
+|2.在 Hermes 配置界面选择：
+|
+- 使用方向键移到 More providers...，按回车。
+
+由于你想使用 LM Studio 中的本地模型（Gemma 或 Qwen），而 LM Studio 提供的是标准的 OpenAI 兼容接口，你应当选择列表最下方的：
+
+1.你的选择
+
+- 选项： Custom endpoint (enter URL manually)
+- 操作： 使用方向键移动到这一行，按 回车 (ENTER)。
+
+image:/img/010.webp[,]
+
+下面开始填写参数:
+
+Base URL +
+输入：http://10.0.0.3:1234/v1
+
+API Key +
+输入：zrx (其实随便填什么都行，但不能为空)
+
+Model ID +
+输入：gemma-4-26b-a4b-it (或者你在 LM Studio 中加载的其他模型 ID)
+
+image:/img/011.webp[,]
+
+- 如果它要求输入 Base URL，请输入：http://localhost:1234/v1（注意要把 localhost 换成 WSL 识别的地址，通常在 WSL 里访问 Windows 宿主机要用 $(hostname).local 或者 Windows 的局域网 IP，但我们先试简单的）。
+
+最后一行, 问的是 “上下文长度（Context length in tokens）”。它决定了 Agent 能够“记得”多长的对话历史和文档内容。 +
+对于你目前使用的 Gemma 4 26B，我有以下建议：
+
+- ① 最省事的填法：直接回车 (Leave blank) +
+正如括号里提示的 [leave blank for auto-detect]，你直接按回车键即可。 +
+原理： Hermes 会尝试通过你之前填写的 API 地址自动向 LM Studio 查询该模型的最大上下文限制。 +
+优点： 自动适配，不容易出错。 +
+
+- ② 手动填写的建议：输入 8192 或 16384 +
+如果你想手动指定一个值，建议输入 8192。 +
+原因： 虽然 Gemma 4 物理上可能支持更长的上下文（比如 32k 或更多），但上下文越长，占用的 显存 (VRAM) 就越多。 +
+硬件考虑： 你的显卡是 RTX 3060（12GB），运行 26B 的量化模型已经比较吃力了。如果上下文设置得太大，可能会导致推理速度极慢或者直接显存溢出（Out of Memory）。8192 是一个兼顾了“聪明程度”和“运行性能”的平衡点。 +
+
+
+image:/img/012.webp[,]
+
+上图这一步询问的是 “是否连接消息平台（Messaging platform）”。
+
+①这个选项是什么意思？ +
+Hermes Agent 不仅可以在你眼前的这个黑色终端（Terminal）里运行，它还支持接入第三方聊天软件（如 Telegram, Discord, Slack 等）。 +
+
+- *Set up messaging now: 如果你想在手机上的 Telegram 或 Discord 里远程指挥这个 Agent 办事，选这一项。* +
+- *Skip: 如果你目前只想在电脑的终端窗口里, 直接输入指令跟它交流，选这一项。* +
+
+②我的建议：选择 Skip +
+因为你现在是初次安装调试，最稳妥的做法是先确保它在本地终端能跑通。 +
+
+- 请使用方向键下移到 Skip — set up later...，然后按 回车 (ENTER)。 +
+- #*以后如果你想玩高级的远程控制，随时可以在终端输入 hermes setup gateway 重新回来配置这一项。*#
+
+image:/img/013.webp[,]
+
+现在如何操作？
+
+- 按 y： 会立刻启动对话界面。你可以直接开始测试你的本地 Gemma 4 模型了。
+- 按 n： 会退出当前的设置向导，回到普通的 Linux 命令行提示符（即那个 zrx@...:~$ 的界面）。
+
+下次如何进入对话界面？ +
+#*如果你现在按了 n 退出，或者以后重新打开电脑想聊天，只需在 WSL 终端中输入以下命令即可：*#
+
+....
+hermes chat
+....
+
+#*注意： 在执行这个命令前，请务必确保你的 LM Studio 已经打开并启动了 Local Server（即看到绿色的 "Running" 状态），否则 Agent 会因为找不到“大脑”而报错。*#
+
+
+常用命令清单: +
+你可以把下面这张表保存下来，方便日后维护你的 Hermes Agent：
+[.my3]
+[options="autowidth" cols="1a,2a"]
+!===
+!功能 !命令
+
+!开始聊天
+!hermes chat
+
+!检查运行状态
+!hermes doctor (如果连不上模型，运行这个可以排查问题)
+
+!重新配置模型
+!hermes setup model (如果你想把 Gemma 换成 Qwen3.5)
+
+!修改 API Key 或环境变量
+!nano ~/.hermes/.env
+!===
+
+#*你的配置文件都保存在了 Linux 目录下的 ~/.hermes/ 文件夹里。如果你以后发现 Agent 变得“健忘”或者回复异常，通常可以通过 hermes setup 重新走一遍流程来修复。*#
+
+3.特别注意：WSL 访问 Windows 的网络问题 +
+这是一个新手常踩的坑：WSL 是一个独立的子系统，它眼中的 localhost 是它自己，而不是你的 Windows。
+
+|
+|image:/img/014.webp[,]
+
+这里红色报错的意思是：Hermes Agent 默认要求模型至少有 64,000 (64K) 的上下文长度，但检测到你的 Gemma 4 只有 4,096 tokens。
+
+因为 Hermes 是一个“智能代理”，它会同时运行很多工具和技能（如你截图上方的 28 tools），这些复杂的指令非常占空间，所以它才报了这个错。
+
+解决办法：手动“欺骗”一下配置文件 +
+你需要强行告诉 Hermes 忽略这个限制。请在终端执行以下步骤：
+
+1.打开配置文件：
+
+在资源管理器左侧边栏拉到最下面，点击 Linux（图标是一个小企鹅）。 +
+依次双击进入：Ubuntu -> home -> zrx (你的用户名) -> .hermes。 +
+在这里你就能看到 config.yaml 了。 +
+
+image:/img/015.webp[,]
+
+你需要手动把 context_length 这行代码加进去
+....
+context_length: 64000  # <--- 手动添加这一行，注意缩进要对齐
+....
+
+image:/img/016.webp[,]
+
+为什么原始的config.yaml 文件中没有context_length 和 4096 的文字? +
+那个 4096 是 Hermes 启动时通过 http://10.0.0.3:1234/v1/models 接口从 LM Studio 那里实时抓取到的。因为 LM Studio 告诉它这个模型只有 4096 的上下文，所以 Hermes 才会报错。
+
+只要你在 config.yaml 里显式地写上 context_length: 64000，Hermes 就会听从配置文件的指令，不再去理会 LM Studio 报告的那个限制了。
+
+修改完保存后，回到黑色窗口直接运行 #hermes chat# 即可。
+
+如果这样改完还有问题，你可以尝试在终端输入 #hermes config# 来查看当前程序最终读取到的完整配置列表。
+
+|
+|image:/img/017.webp[,]
+
+奇怪, 为什么我输入hermes chat, 它有报错?
+
+出现这个报错的原因非常简单：系统还没有“认识” hermes 这个新安装的命令。
+
+根据你之前的截图（image_cb3769.png），安装程序已经在屏幕上给了你提示。要让 hermes 命令生效，你需要先执行一次环境刷新。
+
+解决方法 +
+请在你的 WSL 终端（黑色窗口）里依次输入以下两行命令：
+
+....
+source ~/.bashrc
+hermes chat
+....
+
+(亲测可行)
+
+为什么会这样？（原理解释） +
+
+- 路径未激活： hermes 程序通常被安装在 ~/.local/bin 或类似的隐藏目录下。虽然安装程序把这个路径写进了你的配置文件（.bashrc），但 Linux 系统只在启动时读取一次该文件。
+- source 命令的作用： #*执行 source ~/.bashrc 就像是让系统“立即刷新记忆”，把新安装的路径加载到当前的会话中。*#
+- 报错含义： Command 'hermes' not found 表示系统在目前的搜索路径里找不到这个可执行文件。
+
+image:/img/018.webp[,]
+
+依然没有成功. 没有回答.
+
+看到这个报错信息，我非常理解你的沮丧——好不容易绕过了启动检查，结果模型在运行中还是因为“容器太小”而“溢出”了。
+
+1.报错原因分析 +
+虽然我们在 config.yaml 里成功“欺骗”了 Hermes 启动，但 LM Studio 端的物理限制依然存在。
+
+[.my3]
+[options="autowidth" cols="1a,2a"]
+!===
+!报错细节 !通俗解释
+
+!n_keep: 11940 >= n_ctx: 4096
+!*Hermes 启动时带了 28 个工具的庞大“说明书”（约 1.1 万字符），而你的 LM Studio 只给了它 4096 的座位，它根本坐不下。*
+
+!Cannot compress further
+!Agent 尝试压缩内容，但说明书是“必读书目”，减不掉，所以彻底罢工了。
+
+2.解决方案：在 LM Studio 中调大“座位” +
+你不需要修改代码，只需要去 LM Studio 的界面里调整一个开关：
+
+- 打开 LM Studio，进入左侧的 Local Server 页面。
+- 在右侧的 Server Settings（或者 Load Model 时的设置）中找到 Context Overlay 或 n_ctx。
+- 将该数值从 4096 手动改为 16384 或更高（建议先试 16384，因为你的显存是 12GB，设置太大可能会爆显存）。
+- 关键步骤： 点击 "Reload Model"（重新加载模型），确保新设置生效。
+- 回到 WSL 终端： 再次输入 hermes chat。
+
+
+|我问:我单独在 LM studio 中运行模型, 可以比较顺畅, 但为什么在 hermes中就不行呢?
+|这是一个非常典型的问题，*原因在于 LM Studio 的原生对话模式 与 Hermes Agent 模式 对系统资源的消耗方式完全不同。*
+
+虽然你的 3050 8G 显卡可以流畅运行 Gemma 4 26B 的单机对话，但在 Hermes 中遇到障碍主要有以下三个深层次原因：
+
+1.“工具提示词”占用了过多的初始空间 +
+
+**当你直接在 LM Studio 聊天时，系统提示词可能只有几句话。 +
+但在 Hermes 启动时，它会向模型发送一个极其庞大的“指令集”，**包含： +
+
+- 28 个工具的详细定义（如何写代码、如何读文件、如何搜索等）。 +
+- Agent 的行为逻辑指南。 +
+
+这些初始内容加起来就占用了约 11,940 个 token。 +
+由于你的 LM Studio 默认只给模型开了 4,096 的 Context 窗口，模型连“说明书”都没读完就“溢出”了，导致无法做出任何回应。 +
+
+2.显存与内存的“极限拉锯” +
+Gemma 4 26B 的量化版（IQ4_NL）文件大小约为 14.70 GB。 +
+
+你的显卡 (RTX 3050)：只有 8 GB 显存。 +
+
+现状：显卡塞不下整个模型，约有 7-8 GB 的模型数据被迫跑在速度极慢的 系统内存 (RAM) 上。 +
+
+区别：普通对话时，模型只需要处理几十个 token 的输入；而 Hermes 每一轮对话都要带着那 1.2 万个 token 的“说明书”进行推理。在 3050 上，这种规模的计算会让推理速度从“秒回”变成“分钟级”，甚至让系统卡死。 +
+
+3.Agent 的“思考”成本更高 +
+
+- *普通聊天：模型只需根据你的话接下一句。* +
+- *Hermes 聊天：模型在回答前需要先“思考”是否需要调用工具。它会反复阅读那 28 个工具的描述，这个预处理过程（Prompt Ingestion）在长文本下对显卡的压力呈几何倍数增长。* +
+|===
+
+
+
+
+|===
+
+
+
