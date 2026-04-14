@@ -445,9 +445,66 @@ Gemma 4 26B 的量化版（IQ4_NL）文件大小约为 14.70 GB。 +
 |===
 
 
+'''
+
+== hermes 中包含的工具
+
+要删除或减少 Hermes Agent 中加载的工具数量，你需要修改 config.yaml 文件。
+
+....
+\\wsl.localhost\Ubuntu\home\zrx\.hermes\config.yaml
+....
+
+在你的 config.yaml 文件开头部分，你会看到一个 toolsets（工具集）的定义。
+
+....
+toolsets:
+- hermes-cli
+....
+
+image:/img/019.webp[,]
+
+你可以将 hermes-cli（这是一个包含几十个工具的大包）替换为更具体的、你真正需要的单个工具包。例如，如果你只需要基础的文件操作和终端功能，可以将其改为：
+
+....
+toolsets:
+- terminal
+- file
+....
+
+工具集的官方说明 +
+https://hermes-agent.nousresearch.com/docs/user-guide/features/tools
+
+https://hermes-agent.nousresearch.com/docs/reference/tools-reference
+
+https://hermes-agent.nousresearch.com/docs/reference/toolsets-reference
+
+=== 只用你需要的工具, 其他都不用
 
 
+假设, 你只要保存文本文件的读写功能, 就改为:
+
+[.my3]
+[options="autowidth" cols="1a,1a"]
+|===
+|Header 1 |Header 2
+
+|修改 config.yaml 文件
+|
+....
+toolsets:
+- file
+....
+
+|调大 LM Studio 上下文
+| 在LM Studio 中, 将你正在用的模型, 将 n_ctx 手动设为 16384。如果不给够空间，模型永远无法完成初始化，数据只会堆在内存里报错。
+
+image:/img/020.webp[,]
+
+image:/img/021.webp[,]
+
+image:/img/022.webp[,]
 |===
 
 
-
+'''
